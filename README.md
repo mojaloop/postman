@@ -1,4 +1,6 @@
 # Postman collections for Mojaloop
+
+- Github [Repo link](https://github.com/mojaloop/postman)
 - Version of Postman Collection: `v0.1-draft`
 - Support Mojaloop Versions: `v1.0`
 
