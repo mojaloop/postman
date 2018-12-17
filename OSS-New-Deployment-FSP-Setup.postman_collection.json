@@ -1,0 +1,2220 @@
+{
+	"info": {
+		"_postman_id": "5e057ec8-e728-43b2-8694-91fc53852862",
+		"name": "OSS-New-Deployment-FSP-Setup",
+		"description": "Author: Sridevi Miriyala\nPurpose: Used to add new FSP and relevant Callback Information",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Hub Account",
+			"item": [
+				{
+					"name": "Add Hub Account-HUB_MULTILATERAL_SETTLEMENT",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"type": "text",
+								"value": "{{payerfsp}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"HUB_MULTILATERAL_SETTLEMENT\",\n  \"currency\": \"XOF\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/Hub/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"Hub",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Hub Account-HUB_RECONCILIATION",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payerfsp}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"HUB_RECONCILIATION\",\n  \"currency\": \"XOF\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/Hub/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"Hub",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FSP Onboarding",
+			"item": [
+				{
+					"name": "payerfsp",
+					"item": [
+						{
+							"name": "Add payerfsp with Currency",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76c222f4-969b-4081-b4d7-133ebe48f50f",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\": \"payerfsp\",\"currency\": \"USD\"}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add initial position and limits - payerfsp",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d767079d-a9dd-401a-8d6a-5f94654c4259",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"currency\": \"XOF\",\n\t\"limit\": {\n\t  \"type\": \"NET_DEBIT_CAP\",\n\t  \"value\": 10000\n\t},\n\t\"initialPosition\": 0\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/payerfsp/initialPositionAndLimits",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants",
+										"payerfsp",
+										"initialPositionAndLimits"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payerfsp callback - PARTIES, QUOTES",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "b4e2e685-d724-4dad-acae-381abede26f8",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "{{payerfsp}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"fspId\":\"{{payerfsp}}\",\n  \"baseUrl\":\"{{HOST_SIMULATOR}}/payerfsp\",\n  \"connectorPort\": \"8091\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/fsp",
+									"host": [
+										"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+									],
+									"path": [
+										"fsp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payerfsp callback - TRANSFER POST",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_POST\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/transfers\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/payerfsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants",
+										"payerfsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payerfsp callback - TRANSFER PUT",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/transfers/{{transferId}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/payerfsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants",
+										"payerfsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payerfsp callback - TRANSFER ERROR",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/transfers/{{transferId}}/error\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/payerfsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants",
+										"payerfsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "payeefsp",
+					"item": [
+						{
+							"name": "Add payeefsp currency account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76c222f4-969b-4081-b4d7-133ebe48f50f",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\": \"payeefsp\",\"currency\": \"XOF\"}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add initial position and limits - payeefsp",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d767079d-a9dd-401a-8d6a-5f94654c4259",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"currency\": \"XOF\",\n\t\"limit\": {\n\t  \"type\": \"NET_DEBIT_CAP\",\n\t  \"value\": 10000\n\t},\n\t\"initialPosition\": 0\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/payeefsp/initialPositionAndLimits",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants",
+										"payeefsp",
+										"initialPositionAndLimits"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payeefsp callback - PARIES, QUOTES",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "b4e2e685-d724-4dad-acae-381abede26f8",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "{{payeefsp}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"fspId\":\"{{payeefsp}}\",\n  \"baseUrl\":\"{{HOST_SIMULATOR}}/payeefsp\",\n  \"connectorPort\": \"8091\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/fsp",
+									"host": [
+										"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+									],
+									"path": [
+										"fsp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payeefsp callback - TRANSFER POST",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_POST\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/transfers\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/payeefsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants",
+										"payeefsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payeefsp callback - TRANSFER PUT",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/transfers/{{transferId}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/payeefsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants",
+										"payeefsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payeefsp callback - TRANSFER ERROR",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/transfers/{{transferId}}/error\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/payeefsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants",
+										"payeefsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "testfsp1",
+					"item": [
+						{
+							"name": "Add testfsp1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "b4e2e685-d724-4dad-acae-381abede26f8",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "testfsp1"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"fspId\":\"testfsp1\",\n  \"baseUrl\":\"{{HOST_SIMULATOR}}/testfsp1\",\n  \"connectorPort\": \"8091\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/fsp",
+									"host": [
+										"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+									],
+									"path": [
+										"fsp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add initial position and limits - testfsp1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d767079d-a9dd-401a-8d6a-5f94654c4259",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"currency\": \"XOF\",\n\t\"limit\": {\n\t  \"type\": \"NET_DEBIT_CAP\",\n\t  \"value\": 10000\n\t},\n\t\"initialPosition\": 0\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/initialPositionAndLimits",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants",
+										"testfsp1",
+										"initialPositionAndLimits"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add testfsp1 callback - PARTIES, QUOTES",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "b4e2e685-d724-4dad-acae-381abede26f8",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "{{testfsp1}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"fspId\":\"{{payerfsp}}\",\n  \"baseUrl\":\"{{HOST_SIMULATOR}}/testfsp1\",\n  \"connectorPort\": \"8091\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/fsp",
+									"host": [
+										"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+									],
+									"path": [
+										"fsp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Testfsp1 callback - Transfer POST",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_POST\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/transfers\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants",
+										"testfsp1",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add testfsp1 callback - TRANSFER PUT",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/testfsp1/transfers/{{transferId}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants",
+										"testfsp1",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Testfsp1 callback - Tranfers Error",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/transfers/{{transferId}}/error\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/payerfsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants",
+										"payerfsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "Add Users to Simulators",
+			"item": [
+				{
+					"name": "payerfsp",
+					"item": [],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "payeefsp",
+					"item": [
+						{
+							"name": "Add User - 27713803912",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "e3f505ea-4c76-4c5c-944c-c9188b39b699",
+										"exec": [
+											"pm.environment.set('fullName', 'Siabelo Maroka');",
+											"pm.environment.set('firstName', 'Siabelo');",
+											"pm.environment.set('lastName', 'Maroka');",
+											"pm.environment.set('dob', '3/3/1973');",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"27713803912\",\n            \"fspId\": \"{{payeefsp}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SIMULATOR}}/payeefsp/parties/MSISDN/27713803912",
+									"host": [
+										"{{HOST_SIMULATOR}}"
+									],
+									"path": [
+										"payeefsp",
+										"parties",
+										"MSISDN",
+										"27713803912"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add User - 27713803913",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "362f872c-440c-430c-af85-133835179011",
+										"exec": [
+											"pm.environment.set('fullName', 'Nanga Makwetla');",
+											"pm.environment.set('firstName', 'Nanga');",
+											"pm.environment.set('lastName', 'Makwetla');",
+											"pm.environment.set('dob', '4/4/1974');",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"27713803932\",\n            \"fspId\": \"{{payeefsp}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SIMULATOR}}/payeefsp/parties/MSISDN/27713803913",
+									"host": [
+										"{{HOST_SIMULATOR}}"
+									],
+									"path": [
+										"payeefsp",
+										"parties",
+										"MSISDN",
+										"27713803913"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add User - 27713803914",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "e9062539-bdd2-407a-aa45-502d8dc0eee8",
+										"exec": [
+											"pm.environment.set('fullName', 'Abimbola Alao');",
+											"pm.environment.set('firstName', 'Abimbola');",
+											"pm.environment.set('lastName', 'Alao');",
+											"pm.environment.set('dob', '5/5/1975');",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"27713803914\",\n            \"fspId\": \"{{payeefsp}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SIMULATOR}}/payeefsp/parties/MSISDN/27713803914",
+									"host": [
+										"{{HOST_SIMULATOR}}"
+									],
+									"path": [
+										"payeefsp",
+										"parties",
+										"MSISDN",
+										"27713803914"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add User - 27713803915",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "1c077983-d436-4422-915c-2702111e9d73",
+										"type": "text/javascript",
+										"exec": [
+											"pm.environment.set('fullName', 'Adeola Baba');",
+											"pm.environment.set('firstName', 'Adeola');",
+											"pm.environment.set('lastName', 'Baba');",
+											"pm.environment.set('dob', '6/6/1976');",
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"27713803915\",\n            \"fspId\": \"{{payeefsp}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SIMULATOR}}/payeefsp/parties/MSISDN/27713803915",
+									"host": [
+										"{{HOST_SIMULATOR}}"
+									],
+									"path": [
+										"payeefsp",
+										"parties",
+										"MSISDN",
+										"27713803915"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add User - {{pathfinderMSISDN}}",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "13e04371-96cd-4c50-b27b-31652feed546",
+										"exec": [
+											"pm.variables.set('fullName', 'SimFirst SimLast');",
+											"pm.variables.set('firstName', 'SimFirst');",
+											"pm.variables.set('lastName', 'SimLast');",
+											"pm.variables.set('dob', '2010-10-10');",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"{{pathfinderMSISDN}}\",\n            \"fspId\": \"{{payeefsp}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SIMULATOR}}/payeefsp/parties/MSISDN/{{pathfinderMSISDN}}",
+									"host": [
+										"{{HOST_SIMULATOR}}"
+									],
+									"path": [
+										"payeefsp",
+										"parties",
+										"MSISDN",
+										"{{pathfinderMSISDN}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "testfsp1",
+					"item": [
+						{
+							"name": "Add User - 27713803912",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "e3f505ea-4c76-4c5c-944c-c9188b39b699",
+										"exec": [
+											"pm.environment.set('fullName', 'Siabelo Maroka');",
+											"pm.environment.set('firstName', 'Siabelo');",
+											"pm.environment.set('lastName', 'Maroka');",
+											"pm.environment.set('dob', '3/3/1973');",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"27713803912\",\n            \"fspId\": \"{{testfsp1}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SIMULATOR}}/payeefsp/parties/MSISDN/27713803912",
+									"host": [
+										"{{HOST_SIMULATOR}}"
+									],
+									"path": [
+										"payeefsp",
+										"parties",
+										"MSISDN",
+										"27713803912"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add User - 27713803913",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "362f872c-440c-430c-af85-133835179011",
+										"exec": [
+											"pm.environment.set('fullName', 'Nanga Makwetla');",
+											"pm.environment.set('firstName', 'Nanga');",
+											"pm.environment.set('lastName', 'Makwetla');",
+											"pm.environment.set('dob', '4/4/1974');",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"27713803932\",\n            \"fspId\": \"{{testfsp1}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SIMULATOR}}/payeefsp/parties/MSISDN/27713803913",
+									"host": [
+										"{{HOST_SIMULATOR}}"
+									],
+									"path": [
+										"payeefsp",
+										"parties",
+										"MSISDN",
+										"27713803913"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add User - 27713803914",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "e9062539-bdd2-407a-aa45-502d8dc0eee8",
+										"exec": [
+											"pm.environment.set('fullName', 'Abimbola Alao');",
+											"pm.environment.set('firstName', 'Abimbola');",
+											"pm.environment.set('lastName', 'Alao');",
+											"pm.environment.set('dob', '5/5/1975');",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"27713803914\",\n            \"fspId\": \"{{testfsp1}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SIMULATOR}}/payeefsp/parties/MSISDN/27713803914",
+									"host": [
+										"{{HOST_SIMULATOR}}"
+									],
+									"path": [
+										"payeefsp",
+										"parties",
+										"MSISDN",
+										"27713803914"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add User - 27713803915",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "1c077983-d436-4422-915c-2702111e9d73",
+										"exec": [
+											"pm.environment.set('fullName', 'Adeola Baba');",
+											"pm.environment.set('firstName', 'Adeola');",
+											"pm.environment.set('lastName', 'Baba');",
+											"pm.environment.set('dob', '6/6/1976');",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"27713803915\",\n            \"fspId\": \"{{testfsp1}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SIMULATOR}}/payeefsp/parties/MSISDN/27713803915",
+									"host": [
+										"{{HOST_SIMULATOR}}"
+									],
+									"path": [
+										"payeefsp",
+										"parties",
+										"MSISDN",
+										"27713803915"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add User - {{pathfinderMSISDN}} Copy",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "13e04371-96cd-4c50-b27b-31652feed546",
+										"exec": [
+											"pm.variables.set('fullName', 'SimFirst SimLast');",
+											"pm.variables.set('firstName', 'SimFirst');",
+											"pm.variables.set('lastName', 'SimLast');",
+											"pm.variables.set('dob', '2010-10-10');",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"{{pathfinderMSISDN}}\",\n            \"fspId\": \"{{testfsp1}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SIMULATOR}}/payeefsp/parties/MSISDN/{{pathfinderMSISDN}}",
+									"host": [
+										"{{HOST_SIMULATOR}}"
+									],
+									"path": [
+										"payeefsp",
+										"parties",
+										"MSISDN",
+										"{{pathfinderMSISDN}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "testfsp2",
+					"item": [
+						{
+							"name": "Add User - 27713803912",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "e3f505ea-4c76-4c5c-944c-c9188b39b699",
+										"exec": [
+											"pm.environment.set('fullName', 'Siabelo Maroka');",
+											"pm.environment.set('firstName', 'Siabelo');",
+											"pm.environment.set('lastName', 'Maroka');",
+											"pm.environment.set('dob', '3/3/1973');",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"27713803912\",\n            \"fspId\": \"{{testfsp2}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SIMULATOR}}/payeefsp/parties/MSISDN/27713803912",
+									"host": [
+										"{{HOST_SIMULATOR}}"
+									],
+									"path": [
+										"payeefsp",
+										"parties",
+										"MSISDN",
+										"27713803912"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add User - 27713803913",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "362f872c-440c-430c-af85-133835179011",
+										"exec": [
+											"pm.environment.set('fullName', 'Nanga Makwetla');",
+											"pm.environment.set('firstName', 'Nanga');",
+											"pm.environment.set('lastName', 'Makwetla');",
+											"pm.environment.set('dob', '4/4/1974');",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"27713803932\",\n            \"fspId\": \"{{testfsp2}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SIMULATOR}}/payeefsp/parties/MSISDN/27713803913",
+									"host": [
+										"{{HOST_SIMULATOR}}"
+									],
+									"path": [
+										"payeefsp",
+										"parties",
+										"MSISDN",
+										"27713803913"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add User - 27713803914",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "e9062539-bdd2-407a-aa45-502d8dc0eee8",
+										"exec": [
+											"pm.environment.set('fullName', 'Abimbola Alao');",
+											"pm.environment.set('firstName', 'Abimbola');",
+											"pm.environment.set('lastName', 'Alao');",
+											"pm.environment.set('dob', '5/5/1975');",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"27713803914\",\n            \"fspId\": \"{{testfsp2}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SIMULATOR}}/payeefsp/parties/MSISDN/27713803914",
+									"host": [
+										"{{HOST_SIMULATOR}}"
+									],
+									"path": [
+										"payeefsp",
+										"parties",
+										"MSISDN",
+										"27713803914"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add User - 27713803915",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "1c077983-d436-4422-915c-2702111e9d73",
+										"exec": [
+											"pm.environment.set('fullName', 'Adeola Baba');",
+											"pm.environment.set('firstName', 'Adeola');",
+											"pm.environment.set('lastName', 'Baba');",
+											"pm.environment.set('dob', '6/6/1976');",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"27713803915\",\n            \"fspId\": \"{{testfsp2}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SIMULATOR}}/payeefsp/parties/MSISDN/27713803915",
+									"host": [
+										"{{HOST_SIMULATOR}}"
+									],
+									"path": [
+										"payeefsp",
+										"parties",
+										"MSISDN",
+										"27713803915"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add User - {{pathfinderMSISDN}} Copy",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "13e04371-96cd-4c50-b27b-31652feed546",
+										"exec": [
+											"pm.variables.set('fullName', 'SimFirst SimLast');",
+											"pm.variables.set('firstName', 'SimFirst');",
+											"pm.variables.set('lastName', 'SimLast');",
+											"pm.variables.set('dob', '2010-10-10');",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"{{pathfinderMSISDN}}\",\n            \"fspId\": \"{{testfsp2}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SIMULATOR}}/payeefsp/parties/MSISDN/{{pathfinderMSISDN}}",
+									"host": [
+										"{{HOST_SIMULATOR}}"
+									],
+									"path": [
+										"payeefsp",
+										"parties",
+										"MSISDN",
+										"{{pathfinderMSISDN}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "Add Users to mock-pathfinder",
+			"item": [
+				{
+					"name": "Add 27713803910 to payerfsp",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6dc73d30-cd0b-495f-ab1f-0d0679a43f2f",
+								"type": "text/javascript",
+								"exec": [
+									"if (!pm.environment.get('participant')) {",
+									"    pm.environment.set('participant', 'testfsp');   ",
+									"}",
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "9a37f448-b328-4f61-a481-f5502c463a69",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payerfsp}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"fspId\": \"{{payerfsp}}\",\n \"currency\": \"USD\"\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST_INTEROP_SWITCH}}{{BASE_INTEROP_SWITCH}}/participants/MSISDN/27713803910",
+							"host": [
+								"{{HOST_INTEROP_SWITCH}}{{BASE_INTEROP_SWITCH}}"
+							],
+							"path": [
+								"participants",
+								"MSISDN",
+								"27713803910"
+							]
+						},
+						"description": "Set the Proxy URIs for a specific FSP. This will allow the switch to re-direct the incoming Quote requests to the respective FSP.\n\n*Note: connectorPort has been deprecated and is no longer used, but still required in the request."
+					},
+					"response": []
+				},
+				{
+					"name": "Add 27713803911 to payerfsp",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6dc73d30-cd0b-495f-ab1f-0d0679a43f2f",
+								"exec": [
+									"if (!pm.environment.get('participant')) {",
+									"    pm.environment.set('participant', 'testfsp');   ",
+									"}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "9a37f448-b328-4f61-a481-f5502c463a69",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payerfsp}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"fspId\": \"{{payerfsp}}\",\n \"currency\": \"USD\"\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/participants/MSISDN/27713803910",
+							"host": [
+								"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+							],
+							"path": [
+								"participants",
+								"MSISDN",
+								"27713803910"
+							]
+						},
+						"description": "Set the Proxy URIs for a specific FSP. This will allow the switch to re-direct the incoming Quote requests to the respective FSP.\n\n*Note: connectorPort has been deprecated and is no longer used, but still required in the request."
+					},
+					"response": []
+				},
+				{
+					"name": "Add 27713803912 to payeefsp",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6dc73d30-cd0b-495f-ab1f-0d0679a43f2f",
+								"exec": [
+									"if (!pm.environment.get('participant')) {",
+									"    pm.environment.set('participant', 'testfsp');   ",
+									"}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "9a37f448-b328-4f61-a481-f5502c463a69",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payeefsp}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"fspId\": \"{{payeefsp}}\",\n \"currency\": \"USD\"\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/participants/MSISDN/27713803912",
+							"host": [
+								"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+							],
+							"path": [
+								"participants",
+								"MSISDN",
+								"27713803912"
+							]
+						},
+						"description": "Set the Proxy URIs for a specific FSP. This will allow the switch to re-direct the incoming Quote requests to the respective FSP.\n\n*Note: connectorPort has been deprecated and is no longer used, but still required in the request."
+					},
+					"response": []
+				},
+				{
+					"name": "Add {{pathfinderMSISDN}} to payeefsp",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6dc73d30-cd0b-495f-ab1f-0d0679a43f2f",
+								"exec": [
+									"if (!pm.environment.get('participant')) {",
+									"    pm.environment.set('participant', 'testfsp');   ",
+									"}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "9a37f448-b328-4f61-a481-f5502c463a69",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payeefsp}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"fspId\": \"{{payeefsp}}\",\n \"currency\": \"USD\"\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/participants/MSISDN/27713803912",
+							"host": [
+								"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+							],
+							"path": [
+								"participants",
+								"MSISDN",
+								"27713803912"
+							]
+						},
+						"description": "Set the Proxy URIs for a specific FSP. This will allow the switch to re-direct the incoming Quote requests to the respective FSP.\n\n*Note: connectorPort has been deprecated and is no longer used, but still required in the request."
+					},
+					"response": []
+				},
+				{
+					"name": "Add 27713803913 to payeefsp",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6dc73d30-cd0b-495f-ab1f-0d0679a43f2f",
+								"exec": [
+									"if (!pm.environment.get('participant')) {",
+									"    pm.environment.set('participant', 'testfsp');   ",
+									"}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "9a37f448-b328-4f61-a481-f5502c463a69",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payeefsp}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"fspId\": \"{{payeefsp}}\",\n \"currency\": \"USD\"\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/participants/MSISDN/27713803913",
+							"host": [
+								"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+							],
+							"path": [
+								"participants",
+								"MSISDN",
+								"27713803913"
+							]
+						},
+						"description": "Set the Proxy URIs for a specific FSP. This will allow the switch to re-direct the incoming Quote requests to the respective FSP.\n\n*Note: connectorPort has been deprecated and is no longer used, but still required in the request."
+					},
+					"response": []
+				},
+				{
+					"name": "Add 27713803914 to payeefsp",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6dc73d30-cd0b-495f-ab1f-0d0679a43f2f",
+								"exec": [
+									"if (!pm.environment.get('participant')) {",
+									"    pm.environment.set('participant', 'testfsp');   ",
+									"}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "9a37f448-b328-4f61-a481-f5502c463a69",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payeefsp}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"fspId\": \"{{payeefsp}}\",\n \"currency\": \"USD\"\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/participants/MSISDN/27713803914",
+							"host": [
+								"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+							],
+							"path": [
+								"participants",
+								"MSISDN",
+								"27713803914"
+							]
+						},
+						"description": "Set the Proxy URIs for a specific FSP. This will allow the switch to re-direct the incoming Quote requests to the respective FSP.\n\n*Note: connectorPort has been deprecated and is no longer used, but still required in the request."
+					},
+					"response": []
+				},
+				{
+					"name": "Add 27713803915 to payeefsp",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6dc73d30-cd0b-495f-ab1f-0d0679a43f2f",
+								"exec": [
+									"if (!pm.environment.get('participant')) {",
+									"    pm.environment.set('participant', 'testfsp');   ",
+									"}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "9a37f448-b328-4f61-a481-f5502c463a69",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payeefsp}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"fspId\": \"{{payeefsp}}\",\n \"currency\": \"USD\"\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/participants/MSISDN/27713803915",
+							"host": [
+								"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+							],
+							"path": [
+								"participants",
+								"MSISDN",
+								"27713803915"
+							]
+						},
+						"description": "Set the Proxy URIs for a specific FSP. This will allow the switch to re-direct the incoming Quote requests to the respective FSP.\n\n*Note: connectorPort has been deprecated and is no longer used, but still required in the request."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
