@@ -13,6 +13,63 @@
 					"name": "happy_path",
 					"item": [
 						{
+							"name": "Add User - 27713803912 to payeefsp",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "e3f505ea-4c76-4c5c-944c-c9188b39b699",
+										"exec": [
+											"pm.environment.set('fullName', 'Siabelo Maroka');",
+											"pm.environment.set('firstName', 'Siabelo');",
+											"pm.environment.set('lastName', 'Maroka');",
+											"pm.environment.set('dob', '3/3/1973');",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"27713803912\",\n            \"fspId\": \"{{payeefsp}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SIMULATOR}}/payeefsp/parties/MSISDN/27713803912",
+									"host": [
+										"{{HOST_SIMULATOR}}"
+									],
+									"path": [
+										"payeefsp",
+										"parties",
+										"MSISDN",
+										"27713803912"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Get Party Receiver",
 							"event": [
 								{
@@ -43,7 +100,7 @@
 											"        });   ",
 											"      ",
 											"    });",
-											"}, 5000)",
+											"}, 4000)",
 											"",
 											""
 										],
@@ -163,7 +220,7 @@
 											"      }",
 											"       ",
 											"   });",
-											"}, 3000)",
+											"}, 5000)",
 											"",
 											"",
 											""
@@ -216,25 +273,9 @@
 							"name": "Send Transfer",
 							"event": [
 								{
-									"listen": "prerequest",
-									"script": {
-										"id": "16b4580d-74c7-44e9-952e-d40a61f9cb69",
-										"exec": [
-											"var uuid = require('uuid');",
-											"var generatedUUID = uuid.v4();",
-											"pm.environment.set('transfer_ID', generatedUUID);",
-											"",
-											"pm.variables.set('transferDate', (new Date()).toUTCString());",
-											"",
-											"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))"
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
 									"listen": "test",
 									"script": {
-										"id": "e47ebaa4-926e-4007-821a-e68cd385e18c",
+										"id": "900142b0-e4d7-43a4-a751-38202b600661",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -249,7 +290,7 @@
 											"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"transfer_ID\"), function (err, response) {",
 											"          if(response !== null) {",
 											"              var jsonData = response.json();",
-											"              pm.test(\"Response transferId is same as the request transferId\", function () {",
+											"              pm.test(\"Response transfer_ID is same as the request transfer_ID\", function () {",
 											"                pm.expect(jsonData.transferId).to.eql(pm.variables.get('transfer_ID'));",
 											"              });",
 											"              pm.test(\"Response status is COMMITTED\", function () {",
@@ -262,10 +303,26 @@
 											"              postman.setNextRequest(null)",
 											"          }",
 											"   });",
-											"}, 15000)",
+											"}, 700)",
 											"",
 											"",
 											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "20820c95-0a24-4906-a6ba-708d6ecf4a61",
+										"exec": [
+											"var uuid = require('uuid');",
+											"var generatedUUID = uuid.v4();",
+											"pm.environment.set('transfer_ID', generatedUUID);",
+											"",
+											"pm.variables.set('transferDate', (new Date()).toUTCString());",
+											"",
+											"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))"
 										],
 										"type": "text/javascript"
 									}
@@ -280,7 +337,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.transfers+json;version=1"
+										"value": "application/vnd.interoperability.transfers+json;version=1.0"
 									},
 									{
 										"key": "Date",
@@ -297,7 +354,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"99\",\n    \"currency\": \"USD\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+									"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"1\",\n    \"currency\": \"USD\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -331,6 +388,512 @@
 					"listen": "test",
 					"script": {
 						"id": "c2b5e1bd-f23e-4874-98a7-fc62bcd9d331",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "block_transfer ( p>ndc )",
+			"item": [
+				{
+					"name": "GET limits-payerfsp",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a75db36e-2d2f-432c-81a6-77f912c41aa9",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"var payerNDC = jsonData[0].limit.value",
+									"pm.environment.set(\"payerNDC\",payerNDC)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/limits",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}"
+							],
+							"path": [
+								"participants",
+								"payerfsp",
+								"limits"
+							]
+						},
+						"description": "review the payerfsp limits/NDC"
+					},
+					"response": []
+				},
+				{
+					"name": "GET limits -payeefsp",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "84ca3f51-0bdb-4905-86d9-a6179a084f88",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"var payeeNDC = jsonData[0].limit.value",
+									"pm.environment.set('payeeNDC',payeeNDC)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payeefsp}}/limits",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}"
+							],
+							"path": [
+								"participants",
+								"{{payeefsp}}",
+								"limits"
+							]
+						},
+						"description": "review payeefsp limits/NDC"
+					},
+					"response": []
+				},
+				{
+					"name": "Get payerfsp position before TheTransfer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f2c9a7dc-8b97-4b80-ad48-3b0e722f87d6",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Atleast one account position should be returned\", function () {",
+									"    pm.environment.set(\"payerfspPositionBeforeTransfer\", jsonData[0].value);",
+									"    pm.expect(jsonData).to.be.not.empty;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}}/positions",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}"
+							],
+							"path": [
+								"participants",
+								"{{payerfsp}}",
+								"positions"
+							]
+						},
+						"description": "view payerfsp current position before sending the transfer"
+					},
+					"response": []
+				},
+				{
+					"name": "Get payeefsp position before TheTransfer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9a9997f5-7f71-400c-8e4b-2234ad1aba3e",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Atleast one account position should be returned\", function () {",
+									"    pm.environment.set(\"payeefspPositionBeforeTransfer\", jsonData[0].value);",
+									"    pm.expect(jsonData).to.be.not.empty;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payeefsp}}/positions",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}"
+							],
+							"path": [
+								"participants",
+								"{{payeefsp}}",
+								"positions"
+							]
+						},
+						"description": "Get payeefsp current position before sending the transfer"
+					},
+					"response": []
+				},
+				{
+					"name": "Send Quote",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "87b53856-d305-4f6e-8fd5-3a5243ae8e4a",
+								"exec": [
+									"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
+									"   var uuid = require('uuid');",
+									"   var generatedUUID = uuid.v4();",
+									"   pm.variables.set('quoteId', generatedUUID);",
+									"}",
+									"",
+									"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
+									"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+									"}",
+									"",
+									"var amount = Number(pm.variables.get(\"payerNDC\"))-Number( pm.variables.get(\"payerfspPositionBeforeTransfer\"))+100",
+									"pm.variables.set('transferAmount',amount)"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "b7ca6bc0-b58a-46d8-8881-2db1aa0703ef",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"// pm.test(\"Check that Content-Type is present\", function () {",
+									"//     pm.response.to.have.header(\"Content-Type\");",
+									"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
+									"// });",
+									"",
+									"",
+									"setTimeout(function () {",
+									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
+									"      if(response !== null) {",
+									"          console.log(response.json());",
+									"       pm.test(\"Response ilpPacket is not null\", function () {",
+									"           pm.expect(response.json().ilpPacket).not.equal(null);",
+									"           pm.environment.set(\"ilpPacket\", response.json().ilpPacket);",
+									"       });",
+									"       ",
+									"       pm.test(\"Response condition is not null\", function () {",
+									"           pm.expect(response.json().condition).not.equal(null);",
+									"           pm.environment.set(\"condition\", response.json().condition);",
+									"       });",
+									"      } else {",
+									"          pm.test(\"Quote FAILED\", function () {",
+									"            throw new Error('Did not receive response');",
+									"           });",
+									"           postman.setNextRequest(null);",
+									"      }",
+									"       ",
+									"   });",
+									"}, 10000)",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.quotes+json;version=1"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.interoperability.quotes+json;version=1.0"
+							},
+							{
+								"key": "Date",
+								"value": "{{quoteDate}}"
+							},
+							{
+								"key": "FSPIOP-SOurce",
+								"value": "{{payerfsp}}"
+							},
+							{
+								"key": "FSPIOP-Destination",
+								"value": "{{payeefsp}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"USD\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
+							"host": [
+								"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+							],
+							"path": [
+								"quotes"
+							]
+						},
+						"description": "send a quote request for a specified amount. The ilp packet and condition that generates in quotes response body is used to send transfers request."
+					},
+					"response": []
+				},
+				{
+					"name": "Send Block Transfer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "373ce4bd-e96f-49df-a8e4-e2bd6e8490ab",
+								"exec": [
+									"",
+									"var uuid = require('uuid');",
+									"var generatedUUID = uuid.v4();",
+									"pm.environment.set('transfer_ID', generatedUUID);",
+									"pm.environment.set('transferDate', (new Date()).toUTCString());",
+									"",
+									"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))",
+									"",
+									"var amount = Number(pm.environment.get(\"payerNDC\"))-Number( pm.variables.get(\"payerfspPositionBeforeTransfer\"))+100",
+									"pm.environment.set('transferAmount',amount)"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec961c23-5b9f-4509-9b30-4ea1de9a7b43",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"// pm.test(\"Check that Content-Type is present\", function () {",
+									"//     pm.response.to.have.header(\"Content-Type\");",
+									"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.transfers+json;version=1.0\");",
+									"// });",
+									"",
+									"setTimeout(function () {",
+									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
+									"          if(response !== null) {",
+									"              var jsonData = response.json();",
+									"              pm.test(\"Error Code should be returned\", function () {",
+									"                pm.expect(jsonData.errorInformation.errorCode).to.eql(4001);",
+									"              });",
+									"              pm.test(\"Error Description should be returned\", function () {",
+									"                pm.expect(jsonData.errorInformation.errorDescription).to.eql('Payer FSP has insufficient liquidity to perform the transfer');",
+									"              });",
+									"          } else {",
+									"              pm.test(\"Transfer FAILED\", function () {",
+									"                throw new Error('Did not receive response');",
+									"              });",
+									"              postman.setNextRequest(null)",
+									"          }",
+									"   });",
+									"}, 5000)",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.transfers+json;version=1"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.interoperability.transfers+json;version=1"
+							},
+							{
+								"key": "Date",
+								"value": "{{transferDate}}"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payerfsp}}"
+							},
+							{
+								"key": "FSPIOP-Destination",
+								"value": "{{payeefsp}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"USD\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+							"host": [
+								"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+							],
+							"path": [
+								"transfers"
+							]
+						},
+						"description": "send a tranfer request with ilp packet and condition that are generated in quotes response along with expiry, fspiop source,fspiop destination, amount and currency."
+					},
+					"response": []
+				},
+				{
+					"name": "Get payerfsp position after the transfer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7174c4f7-799f-4c4a-ad66-ab598ed32477",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Position before and after the transfer should be the same\", function () {",
+									"    pm.expect(jsonData[0].value).to.eql(pm.environment.get(\"payerfspPositionBeforeTransfer\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}}/positions",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}"
+							],
+							"path": [
+								"participants",
+								"{{payerfsp}}",
+								"positions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get payeefsp position after the transfer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "864dee38-3b5b-4709-9637-92931170b286",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Position before and after the transfer should be the same\", function () {",
+									"    pm.expect(Number(jsonData[0].value)).to.eql(Number(pm.environment.get(\"payeefspPositionBeforeTransfer\")));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payeefsp}}/positions",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}"
+							],
+							"path": [
+								"participants",
+								"{{payeefsp}}",
+								"positions"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Author: Sridevi Miriyala\n\nThis features testes, if a transfer is blocked when position of a participant exceeds the Net Debit Cap for the transfer amount.\n\nSTEPS:\n\nGET Limits\nGET Positions for payer and payee\nset amount=(NDC-P) + 10\nPOST Quotes - send to payee that responds COMMITTED\nPOST Transfers-Prepare\n      -Payerfsp should get error msg \"insufficient liquidity in payerfsp to perform transfer \" \nGET positions - \n  current payer position = prev position \n  current payee position = prev position \n(Failure of the transfer due to insufficient liquidity from payerfsp, results no change in positions)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2f9024db-2f95-4bf6-9022-f7bd5d50afd3",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "eefb3ca4-f973-4059-95cc-c681c9e55121",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -541,7 +1104,7 @@
 											"      }",
 											"       ",
 											"   });",
-											"}, 10000)",
+											"}, 5000)",
 											"",
 											"",
 											""
@@ -596,17 +1159,15 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "065cdad9-3fab-48b4-b11b-5c767907c112",
+										"id": "16b4580d-74c7-44e9-952e-d40a61f9cb69",
 										"exec": [
-											"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
-											"   var uuid = require('uuid');",
-											"   var generatedUUID = uuid.v4();",
-											"   pm.environment.set('transferId', generatedUUID);",
-											"}",
+											"var uuid = require('uuid');",
+											"var generatedUUID = uuid.v4();",
+											"pm.environment.set('transfer_ID', generatedUUID);",
 											"",
-											"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-											"   pm.environment.set('transferDate', (new Date()).toUTCString());",
-											"}"
+											"pm.variables.set('transferDate', (new Date()).toUTCString());",
+											"",
+											"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))"
 										],
 										"type": "text/javascript"
 									}
@@ -614,31 +1175,37 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "d8ad8abe-ae72-4efa-a6e0-20a490929a83",
+										"id": "e47ebaa4-926e-4007-821a-e68cd385e18c",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
 											"});",
 											"",
+											"// pm.test(\"Check that Content-Type is present\", function () {",
+											"//     pm.response.to.have.header(\"Content-Type\");",
+											"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.transfers+json;version=1.0\");",
+											"// });",
+											"",
 											"setTimeout(function () {",
-											"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.environment.get(\"transferId\"), function (err, response) {",
-											"      if(err) throw new Error('Did not receive response');",
-											"      if(response !== null) {",
-											"           var jsonData = response.json();",
-											"           pm.test(\"Response transferId is same as the request transferId\", function () {",
-											"            pm.expect(jsonData.transferId).to.eql(pm.environment.get('transferId'));",
-											"           });",
-											"           pm.test(\"Response status is COMMITTED\", function () {",
-											"            pm.expect(jsonData.transferState).to.eql('COMMITTED');",
-											"           });",
-											"      } else {",
-											"          pm.test(\"Transfer FAILED\", function () {",
-											"            throw new Error('Did not receive response');",
-											"           });",
-											"           postman.setNextRequest(null);",
-											"      }",
+											"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"transfer_ID\"), function (err, response) {",
+											"          if(response !== null) {",
+											"              var jsonData = response.json();",
+											"              pm.test(\"Response transfer_ID is same as the request transfer_ID\", function () {",
+											"                pm.expect(jsonData.transferId).to.eql(pm.variables.get('transfer_ID'));",
+											"              });",
+											"              pm.test(\"Response status is COMMITTED\", function () {",
+											"                pm.expect(jsonData.transferState).to.eql('COMMITTED');",
+											"              });",
+											"          } else {",
+											"              pm.test(\"Transfer FAILED\", function () {",
+											"                throw new Error('Did not receive response');",
+											"              });",
+											"              postman.setNextRequest(null)",
+											"          }",
 											"   });",
-											"}, 5000)",
+											"},300)",
+											"",
+											"",
 											""
 										],
 										"type": "text/javascript"
@@ -658,7 +1225,7 @@
 									},
 									{
 										"key": "Date",
-										"value": "{{dateHeader}}"
+										"value": "{{transferDate}}"
 									},
 									{
 										"key": "FSPIOP-Source",
@@ -671,7 +1238,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"{{transferId}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"XOF\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+									"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"2\",\n    \"currency\": \"USD\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -5059,6 +5626,78 @@
 									"response": []
 								},
 								{
+									"name": "Reserve Settlement Copy",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "84a1662c-7bc3-4d02-a4c7-ad43d4f4b514",
+												"exec": [
+													"",
+													"var jsonData = pm.response.json();",
+													"for(var j in jsonData.participants) {",
+													"    for(var k in jsonData.participants[j].accounts) {",
+													"        console.log(jsonData.participants[j].accounts[k].id)",
+													"        const participantPutRequest = {",
+													"          url: pm.environment.get(\"HOST_CENTRAL_SETTLEMENT\")+pm.environment.get(\"BASE_CENTRAL_SETTLEMENT\")+'/settlements/'+pm.environment.get(\"settlementId\"),",
+													"          method: 'PUT',",
+													"          header: {",
+													"              \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
+													"              \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+													"              \"Content-Type\": \"application/json\"",
+													"          },",
+													"          body: {",
+													"            mode: 'raw',",
+													"            raw: JSON.stringify(",
+													"                {",
+													"                  \"participants\": [",
+													"                    {",
+													"                      \"id\": jsonData.participants[j].id,",
+													"                      \"accounts\": [",
+													"                        {",
+													"                          \"id\": jsonData.participants[j].accounts[k].id,",
+													"                          \"reason\": \"Transfers reserved\",",
+													"                          \"state\": \"PS_TRANSFERS_RESERVED\"",
+													"                        }",
+													"                      ]",
+													"                    }",
+													"                  ]",
+													"                }",
+													"            )",
+													"          }",
+													"        };",
+													"        pm.sendRequest(participantPutRequest, function (err, response) {",
+													"            console.log(response.json());",
+													"        });",
+													"        ",
+													"    }",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
+											"host": [
+												"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
+											],
+											"path": [
+												"settlements",
+												"{{settlementId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "payerfsp account status",
 									"request": {
 										"method": "GET",
@@ -6387,12 +7026,12 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "a96ad88c-c5e9-4077-b060-765ccd1e86e1",
+												"id": "2a30c098-f881-459f-b015-30e6184d78ed",
 												"exec": [
 													"var uuid = require('uuid');",
 													"var generatedUUID = uuid.v4();",
 													"pm.environment.set('fundsInPrepareTransferId', generatedUUID);",
-													"pm.environment.set('fundsInPrepareAmount', 500);",
+													"pm.environment.set('fundsInPrepareAmount', 5000);",
 													"",
 													"",
 													"const payerfspGetStatusRequest = {",
@@ -6440,7 +7079,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "96c26230-6092-4f78-882f-c5343b363fe1",
+												"id": "ce53427f-9bbb-4c9b-a38e-d8edb860e5ff",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -6819,7 +7458,7 @@
 					"name": "6. Transfer Funds Out",
 					"item": [
 						{
-							"name": "Prepare",
+							"name": "Prepare&Reserve",
 							"item": [
 								{
 									"name": "Record Funds Out Prepare- payerfsp",
@@ -7002,273 +7641,10 @@
 												"id": "db933910-0ef6-406a-bed5-76e74347f533",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});",
-													"",
-													"setTimeout(function () {",
-													"    ",
-													"    const getTransferResponse = {",
-													"      url: pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.environment.get(\"fundsOutPrepareTransferId\"),",
-													"      method: 'GET',",
-													"      header: {",
-													"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
-													"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-													"          \"Content-Type\": \"application/json\"",
-													"      }",
-													"    };",
-													"    pm.sendRequest(getTransferResponse, function (err, response) {",
-													"        console.log(response.json())",
-													"        var jsonData = response.json()",
-													"        pm.test(\"Transfer State should be RESERVED\", function () {",
-													"            pm.expect(jsonData.transferState).to.eql(\"RESERVED\");",
-													"          });    ",
-													"    ",
-													"    });",
-													"}, 2000)"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "b3d74594-fa41-3581-acf6-4909aaec8134",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/vnd.interoperability.transfers+json;version=1"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
-											},
-											{
-												"key": "Date",
-												"value": "{{dateHeader}}"
-											},
-											{
-												"key": "FSPIOP-Source",
-												"value": "{{payerfsp}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
-										"url": {
-											"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{fundsInPrepareTransferId}}",
-											"host": [
-												"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
-											],
-											"path": [
-												"transfers",
-												"{{fundsInPrepareTransferId}}"
-											]
-										},
-										"description": "The HTTP request GET /transfers/<ID> is used to get information regarding an earlier created or requested transfer. The <ID> in the URI should contain the transferId that was used for the creation of the transfer."
-									},
-									"response": []
-								}
-							],
-							"_postman_isSubFolder": true
-						},
-						{
-							"name": "Reserve",
-							"item": [
-								{
-									"name": "Record Funds Out Reserve- payerfsp",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "a96ad88c-c5e9-4077-b060-765ccd1e86e1",
-												"exec": [
-													"var uuid = require('uuid');",
-													"var generatedUUID = uuid.v4();",
-													"pm.environment.set('fundsOutPrepareTransferId', generatedUUID);",
-													"pm.environment.set('fundsOutPrepareAmount', 500);",
-													"",
-													"",
-													"const payerfspGetStatusRequest = {",
-													"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"payerfsp\")+'/accounts',",
-													"  method: 'GET',",
-													"  header: {",
-													"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
-													"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-													"      \"Content-Type\": \"application/json\"",
-													"  }",
-													"};",
-													"pm.sendRequest(payerfspGetStatusRequest, function (err, response) {",
-													"    console.log(response.json())",
-													"    var jsonData = response.json()",
-													"    for(var i in jsonData) {",
-													"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-													"            pm.environment.set(\"payerfspSettlementAccountBalanceBeforeFundsOutPrepare\",jsonData[i].value)",
-													"        }",
-													"    }",
-													"});",
-													"",
-													"const hubGetStatusRequest = {",
-													"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
-													"  method: 'GET',",
-													"  header: {",
-													"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
-													"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-													"      \"Content-Type\": \"application/json\"",
-													"  }",
-													"};",
-													"pm.sendRequest(hubGetStatusRequest, function (err, response) {",
-													"    console.log(response.json())",
-													"    var jsonData = response.json()",
-													"    for(var i in jsonData) {",
-													"        if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
-													"            pm.environment.set(\"hubReconAccountBalanceBeforeFundsOutPrepare\",jsonData[i].value)",
-													"        }",
-													"    }",
-													"});",
-													""
-												],
-												"type": "text/javascript"
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"id": "96c26230-6092-4f78-882f-c5343b363fe1",
-												"exec": [
-													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
 													"});",
 													"",
 													"setTimeout(function () {",
-													"    const payerfspGetStatusRequest = {",
-													"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"payerfsp\")+'/accounts',",
-													"      method: 'GET',",
-													"      header: {",
-													"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
-													"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-													"          \"Content-Type\": \"application/json\"",
-													"      }",
-													"    };",
-													"    pm.sendRequest(payerfspGetStatusRequest, function (err, response) {",
-													"        console.log(response.json())",
-													"        var jsonData = response.json()",
-													"        var payerfspSettlementAccountBalanceAfterFundsOutPrepare",
-													"        for(var i in jsonData) {",
-													"            if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-													"                payerfspSettlementAccountBalanceAfterFundsOutPrepare = jsonData[i].value",
-													"            }",
-													"        }",
-													"        var payerfspExpectedBalance = pm.environment.get('payerfspSettlementAccountBalanceBeforeFundsOutPrepare')-pm.environment.get(\"fundsOutPrepareAmount\")",
-													"        pm.test(\"Final Payerfsp Settlement Account Balance should increase by the transfer amount\", function () {",
-													"            pm.expect(payerfspSettlementAccountBalanceAfterFundsOutPrepare).to.eql(payerfspExpectedBalance);",
-													"          });    ",
-													"    ",
-													"    });",
-													"    ",
-													"    const hubGetStatusRequest = {",
-													"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
-													"      method: 'GET',",
-													"      header: {",
-													"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
-													"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-													"          \"Content-Type\": \"application/json\"",
-													"      }",
-													"    };",
-													"    pm.sendRequest(hubGetStatusRequest, function (err, response) {",
-													"        console.log(response.json())",
-													"        var jsonData = response.json()",
-													"        var hubReconAccountBalanceAfterFundsOutPrepare",
-													"        for(var i in jsonData) {",
-													"            if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
-													"                hubReconAccountBalanceAfterFundsOutPrepare = jsonData[i].value",
-													"            }",
-													"        }",
-													"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsOutPrepare\")+pm.environment.get(\"fundsOutPrepareAmount\")",
-													"        pm.test(\"Final Hub Reconciliation Account Balance should increase by the transfer amount\", function () {",
-													"            pm.expect(hubReconAccountBalanceAfterFundsOutPrepare).to.eql(hubExpectedBalance);",
-													"          });  ",
-													"    });",
-													"}, 2000)"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{HUBOPERATOR_BEARER_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "FSPIOP-Source",
-												"type": "text",
-												"value": "{{hub_operator}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"transferId\": \"{{fundsOutPrepareTransferId}}\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsOutPrepare\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": {{fundsOutPrepareAmount}},\n    \"currency\": \"USD\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
-										},
-										"url": {
-											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/accounts/{{payerfspSettlementAccountId}}",
-											"host": [
-												"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-											],
-											"path": [
-												"participants",
-												"{{payerfsp}}",
-												"accounts",
-												"{{payerfspSettlementAccountId}}"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Record Funds Out Reserve - transfer status",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "1809507a-83ea-469d-8692-59e38cced96d",
-												"exec": [
-													"pm.environment.set('dateHeader', (new Date()).toUTCString());"
-												],
-												"type": "text/javascript"
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"id": "db933910-0ef6-406a-bed5-76e74347f533",
-												"exec": [
-													"pm.test(\"Status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});",
-													"",
-													"setTimeout(function () {",
 													"    ",
 													"    const getTransferResponse = {",
 													"      url: pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.environment.get(\"fundsOutPrepareTransferId\"),",
@@ -7328,13 +7704,13 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{fundsInPrepareTransferId}}",
+											"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{fundsOutPrepareTransferId}}",
 											"host": [
 												"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
 											],
 											"path": [
 												"transfers",
-												"{{fundsInPrepareTransferId}}"
+												"{{fundsOutPrepareTransferId}}"
 											]
 										},
 										"description": "The HTTP request GET /transfers/<ID> is used to get information regarding an earlier created or requested transfer. The <ID> in the URI should contain the transferId that was used for the creation of the transfer."
@@ -7478,7 +7854,7 @@
 												}
 											]
 										},
-										"method": "POST",
+										"method": "PUT",
 										"header": [
 											{
 												"key": "Content-Type",
@@ -7492,10 +7868,10 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"transferId\": \"{{fundsOutCommitTransferId}}\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsOutCommit\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": {{fundsOutCommitAmount}},\n    \"currency\": \"USD\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
+											"raw": "{\n  \"action\": \"recordFundsOutCommit\",\n  \"reason\": \"string\"\n}"
 										},
 										"url": {
-											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/accounts/{{payerfspSettlementAccountId}}",
+											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/accounts/{{payerfspSettlementAccountId}}/transfers/{{fundsOutPrepareTransferId}}",
 											"host": [
 												"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
 											],
@@ -7503,7 +7879,9 @@
 												"participants",
 												"{{payerfsp}}",
 												"accounts",
-												"{{payerfspSettlementAccountId}}"
+												"{{payerfspSettlementAccountId}}",
+												"transfers",
+												"{{fundsOutPrepareTransferId}}"
 											]
 										}
 									},
@@ -7528,7 +7906,7 @@
 												"id": "db933910-0ef6-406a-bed5-76e74347f533",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
+													"    pm.response.to.have.status(202);",
 													"});",
 													"",
 													"setTimeout(function () {",
@@ -7545,8 +7923,8 @@
 													"    pm.sendRequest(getTransferResponse, function (err, response) {",
 													"        console.log(response.json())",
 													"        var jsonData = response.json()",
-													"        pm.test(\"Transfer State should be RESERVED\", function () {",
-													"            pm.expect(jsonData.transferState).to.eql(\"RESERVED\");",
+													"        pm.test(\"Transfer State should be COMMITTED\", function () {",
+													"            pm.expect(jsonData.transferState).to.eql(\"COMMITTED\");",
 													"          });    ",
 													"    ",
 													"    });",
@@ -7591,13 +7969,13 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{fundsInPrepareTransferId}}",
+											"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{fundsOutPrepareTransferId}}",
 											"host": [
 												"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
 											],
 											"path": [
 												"transfers",
-												"{{fundsInPrepareTransferId}}"
+												"{{fundsOutPrepareTransferId}}"
 											]
 										},
 										"description": "The HTTP request GET /transfers/<ID> is used to get information regarding an earlier created or requested transfer. The <ID> in the URI should contain the transferId that was used for the creation of the transfer."
@@ -10550,7 +10928,7 @@
 			"name": "position_management",
 			"item": [
 				{
-					"name": "Happy_path",
+					"name": "happy_path",
 					"item": [
 						{
 							"name": "GET limits-payerfsp",
@@ -10963,7 +11341,7 @@
 											"var jsonData = pm.response.json();",
 											"console.log(\"Payerfsp position before transfer:\",(pm.environment.get(\"payerfspPositionBeforeTransfer\")))",
 											"console.log('condition: ',Number(pm.environment.get(\"payerfspPositionBeforeTransfer\")) + 5)",
-											"pm.test(\"Payer position after the trasnfer is \", function () {",
+											"pm.test(\"Payer position after the transfer is \", function () {",
 											"    pm.expect(jsonData[0].value).to.eql(Number(pm.environment.get(\"payerfspPositionBeforeTransfer\")) + 5);",
 											"});"
 										],
@@ -12494,516 +12872,6 @@
 					"listen": "test",
 					"script": {
 						"id": "df7033f7-6c48-42f0-8414-15c328c499f6",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
-			]
-		},
-		{
-			"name": "block_transfer ( p>ndc )",
-			"item": [
-				{
-					"name": "GET limits-payerfsp",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "a75db36e-2d2f-432c-81a6-77f912c41aa9",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"var jsonData = pm.response.json();",
-									"var payerNDC = jsonData[0].limit.value",
-									"pm.environment.set(\"payerNDC\",payerNDC)"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/payerfsp/limits",
-							"host": [
-								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-							],
-							"path": [
-								"participants",
-								"payerfsp",
-								"limits"
-							]
-						},
-						"description": "review the payerfsp limits/NDC"
-					},
-					"response": []
-				},
-				{
-					"name": "GET limits -payeefsp",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "84ca3f51-0bdb-4905-86d9-a6179a084f88",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"var jsonData = pm.response.json();",
-									"var payeeNDC = jsonData[0].limit.value",
-									"pm.environment.set('payeeNDC',payeeNDC)"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payeefsp}}/limits",
-							"host": [
-								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-							],
-							"path": [
-								"participants",
-								"{{payeefsp}}",
-								"limits"
-							]
-						},
-						"description": "review payeefsp limits/NDC"
-					},
-					"response": []
-				},
-				{
-					"name": "Get payerfsp position before TheTransfer",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "f2c9a7dc-8b97-4b80-ad48-3b0e722f87d6",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"var jsonData = pm.response.json();",
-									"",
-									"pm.test(\"Atleast one account position should be returned\", function () {",
-									"    pm.environment.set(\"payerfspPositionBeforeTransfer\", jsonData[0].value);",
-									"    pm.expect(jsonData).to.be.not.empty;",
-									"});",
-									"",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/positions",
-							"host": [
-								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-							],
-							"path": [
-								"participants",
-								"{{payerfsp}}",
-								"positions"
-							]
-						},
-						"description": "view payerfsp current position before sending the transfer"
-					},
-					"response": []
-				},
-				{
-					"name": "Get payeefsp position before TheTransfer",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "9a9997f5-7f71-400c-8e4b-2234ad1aba3e",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"var jsonData = pm.response.json();",
-									"",
-									"pm.test(\"Atleast one account position should be returned\", function () {",
-									"    pm.environment.set(\"payeefspPositionBeforeTransfer\", jsonData[0].value);",
-									"    pm.expect(jsonData).to.be.not.empty;",
-									"});",
-									"",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payeefsp}}/positions",
-							"host": [
-								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-							],
-							"path": [
-								"participants",
-								"{{payeefsp}}",
-								"positions"
-							]
-						},
-						"description": "Get payeefsp current position before sending the transfer"
-					},
-					"response": []
-				},
-				{
-					"name": "Send Quote",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "87b53856-d305-4f6e-8fd5-3a5243ae8e4a",
-								"exec": [
-									"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
-									"   var uuid = require('uuid');",
-									"   var generatedUUID = uuid.v4();",
-									"   pm.variables.set('quoteId', generatedUUID);",
-									"}",
-									"",
-									"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-									"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
-									"}",
-									"",
-									"var amount = Number(pm.variables.get(\"payerNDC\"))-Number( pm.variables.get(\"payerfspPositionBeforeTransfer\"))+100",
-									"pm.variables.set('transferAmount',amount)"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "b7ca6bc0-b58a-46d8-8881-2db1aa0703ef",
-								"exec": [
-									"pm.test(\"Status code is 202\", function () {",
-									"    pm.response.to.have.status(202);",
-									"});",
-									"",
-									"// pm.test(\"Check that Content-Type is present\", function () {",
-									"//     pm.response.to.have.header(\"Content-Type\");",
-									"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
-									"// });",
-									"",
-									"",
-									"setTimeout(function () {",
-									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
-									"      if(response !== null) {",
-									"          console.log(response.json());",
-									"       pm.test(\"Response ilpPacket is not null\", function () {",
-									"           pm.expect(response.json().ilpPacket).not.equal(null);",
-									"           pm.environment.set(\"ilpPacket\", response.json().ilpPacket);",
-									"       });",
-									"       ",
-									"       pm.test(\"Response condition is not null\", function () {",
-									"           pm.expect(response.json().condition).not.equal(null);",
-									"           pm.environment.set(\"condition\", response.json().condition);",
-									"       });",
-									"      } else {",
-									"          pm.test(\"Quote FAILED\", function () {",
-									"            throw new Error('Did not receive response');",
-									"           });",
-									"           postman.setNextRequest(null);",
-									"      }",
-									"       ",
-									"   });",
-									"}, 10000)",
-									"",
-									"",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/vnd.interoperability.quotes+json;version=1"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/vnd.interoperability.quotes+json;version=1.0"
-							},
-							{
-								"key": "Date",
-								"value": "{{quoteDate}}"
-							},
-							{
-								"key": "FSPIOP-SOurce",
-								"value": "{{payerfsp}}"
-							},
-							{
-								"key": "FSPIOP-Destination",
-								"value": "{{payeefsp}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"USD\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
-						},
-						"url": {
-							"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
-							"host": [
-								"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
-							],
-							"path": [
-								"quotes"
-							]
-						},
-						"description": "send a quote request for a specified amount. The ilp packet and condition that generates in quotes response body is used to send transfers request."
-					},
-					"response": []
-				},
-				{
-					"name": "Send Block Transfer",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "373ce4bd-e96f-49df-a8e4-e2bd6e8490ab",
-								"exec": [
-									"//if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
-									"   var uuid = require('uuid');",
-									"   var generatedUUID = uuid.v4();",
-									"   pm.environment.set('transferId', generatedUUID);",
-									"//}",
-									"",
-									"//if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-									"   pm.environment.set('transferDate', (new Date()).toUTCString());",
-									"//}",
-									"",
-									"console.log('payerNDC: ',Number(pm.environment.get(\"payerNDC\")))",
-									"console.log('payerfspPositionBeforeTransfer')",
-									"var amount = (Number(pm.environment.get(\"payerNDC\"))-Number( pm.environment.get(\"payerfspPositionBeforeTransfer\")))+100",
-									"pm.environment.set('blockTransferAmount',amount)",
-									"console.log('Block Transfer Amount: ',amount)"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "ec961c23-5b9f-4509-9b30-4ea1de9a7b43",
-								"exec": [
-									"pm.test(\"Status code is 202\", function () {",
-									"    pm.response.to.have.status(202);",
-									"});",
-									"",
-									"// pm.test(\"Check that Content-Type is present\", function () {",
-									"//     pm.response.to.have.header(\"Content-Type\");",
-									"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.transfers+json;version=1.0\");",
-									"// });",
-									"",
-									"setTimeout(function () {",
-									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"transferId\"), function (err, response) {",
-									"          if(response !== null) {",
-									"              var jsonData = response.json();",
-									"              pm.test(\"Error Code should be returned\", function () {",
-									"                pm.expect(jsonData.errorInformation.errorCode).to.eql(4001);",
-									"              });",
-									"              pm.test(\"Error Description should be returned\", function () {",
-									"                pm.expect(jsonData.errorInformation.errorDescription).to.eql('Payer FSP has insufficient liquidity to perform the transfer');",
-									"              });",
-									"          } else {",
-									"              pm.test(\"Transfer FAILED\", function () {",
-									"                throw new Error('Did not receive response');",
-									"              });",
-									"              postman.setNextRequest(null)",
-									"          }",
-									"   });",
-									"}, 15000)",
-									"",
-									"",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/vnd.interoperability.transfers+json;version=1"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/vnd.interoperability.transfers+json;version=1"
-							},
-							{
-								"key": "Date",
-								"value": "{{transferDate}}"
-							},
-							{
-								"key": "FSPIOP-Source",
-								"value": "{{payerfsp}}"
-							},
-							{
-								"key": "FSPIOP-Destination",
-								"value": "{{payeefsp}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"transferId\": \"{{transferId}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"{{blockTransferAmount}}\",\n    \"currency\": \"XOF\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
-						},
-						"url": {
-							"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
-							"host": [
-								"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
-							],
-							"path": [
-								"transfers"
-							]
-						},
-						"description": "send a tranfer request with ilp packet and condition that are generated in quotes response along with expiry, fspiop source,fspiop destination, amount and currency."
-					},
-					"response": []
-				},
-				{
-					"name": "Get payerfsp position after the transfer",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "7174c4f7-799f-4c4a-ad66-ab598ed32477",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"var jsonData = pm.response.json();",
-									"",
-									"pm.test(\"Position before and after the transfer should be the same\", function () {",
-									"    pm.expect(jsonData[0].value).to.eql(pm.environment.get(\"payerfspPositionBeforeTransfer\"));",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/positions",
-							"host": [
-								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-							],
-							"path": [
-								"participants",
-								"{{payerfsp}}",
-								"positions"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get payeefsp position after the transfer",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "864dee38-3b5b-4709-9637-92931170b286",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"var jsonData = pm.response.json();",
-									"",
-									"pm.test(\"Position before and after the transfer should be the same\", function () {",
-									"    pm.expect(Number(jsonData[0].value)).to.eql(Number(pm.environment.get(\"payeefspPositionBeforeTransfer\")));",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payeefsp}}/positions",
-							"host": [
-								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-							],
-							"path": [
-								"participants",
-								"{{payeefsp}}",
-								"positions"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"description": "Author: Sridevi Miriyala\n\nThis features testes, if a transfer is blocked when position of a participant exceeds the Net Debit Cap for the transfer amount.\n\nSTEPS:\n\nGET Limits\nGET Positions for payer and payee\nset amount=(NDC-P) + 10\nPOST Quotes - send to payee that responds COMMITTED\nPOST Transfers-Prepare\n      -Payerfsp should get error msg \"insufficient liquidity in payerfsp to perform transfer \" \nGET positions - \n  current payer position = prev position \n  current payee position = prev position \n(Failure of the transfer due to insufficient liquidity from payerfsp, results no change in positions)",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "2f9024db-2f95-4bf6-9022-f7bd5d50afd3",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"id": "eefb3ca4-f973-4059-95cc-c681c9e55121",
 						"type": "text/javascript",
 						"exec": [
 							""
