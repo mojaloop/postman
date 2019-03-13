@@ -13534,7 +13534,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"name\": \"testfsp1\",\n  \"currency\": \"USD\"\n}"
+									"raw": "{\n  \"name\": \"payerfsp\",\n  \"currency\": \"XOF\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants",
@@ -14400,6 +14400,20 @@
 						},
 						{
 							"name": "Record Funds In - payerfsp",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "b805e9aa-0852-43e8-93b0-8b53cf33b95b",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -14425,7 +14439,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"7e6b03b1-0e9a-4267-bfa4-cfce0e5f319c\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsIn\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": 5000,\n    \"currency\": \"USD\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
+									"raw": "{\n  \"transferId\": \"7e6b03b1-0e9a-4267-bfa4-cfce0e5f319c\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsIn\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": 50,\n    \"currency\": \"USD\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}}/accounts/{{payerfspSettlementAccountId}}",
@@ -15864,8 +15878,8 @@
 									"script": {
 										"id": "d24a7260-f322-4686-831d-35ff197b09b7",
 										"exec": [
-											"pm.test(\"Status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
 											"});"
 										],
 										"type": "text/javascript"
@@ -18606,9 +18620,9 @@
 													"    pm.response.to.have.status(200);",
 													"});",
 													"",
-													"pm.test(\"Window for participant Id 1\", function () {",
+													"pm.test(\"Window for participant Id 4\", function () {",
 													"    console.log(pm.response.array)",
-													"    //pm.expect(jsonData[0].participantId).to.eql('1');",
+													"    //pm.expect(jsonData[0].participantId).to.eql('4');",
 													"});",
 													"",
 													""
@@ -18946,7 +18960,7 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows?participantId=4&state=OPEN",
+											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows?participantId=4&state=CLOSED",
 											"host": [
 												"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
 											],
@@ -18960,7 +18974,7 @@
 												},
 												{
 													"key": "state",
-													"value": "OPEN",
+													"value": "CLOSED",
 													"description": "Available values : OPEN, CLOSED, PENDING_SETTLEMENT, SETTLED, NOT_SETTLED"
 												},
 												{
@@ -19672,8 +19686,7 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "http://{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements?state=PENDING_SETTLEMENT",
-											"protocol": "http",
+											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements?fromDateTime=2019-02-15T17:32:28Z&toDateTime=2019-03-16T17:32:28Z",
 											"host": [
 												"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
 											],
@@ -19693,7 +19706,7 @@
 												},
 												{
 													"key": "settlementWindowId",
-													"value": null,
+													"value": "59",
 													"disabled": true
 												},
 												{
@@ -19704,7 +19717,16 @@
 												{
 													"key": "state",
 													"value": "PENDING_SETTLEMENT",
-													"description": "Available values : PENDING_SETTLEMENT, SETTLED, NOT_SETTLED"
+													"description": "Available values : PENDING_SETTLEMENT, SETTLED, NOT_SETTLED",
+													"disabled": true
+												},
+												{
+													"key": "fromDateTime",
+													"value": "2019-02-15T17:32:28Z"
+												},
+												{
+													"key": "toDateTime",
+													"value": "2019-03-16T17:32:28Z"
 												}
 											]
 										}
@@ -19775,7 +19797,7 @@
 												},
 												{
 													"key": "settlementWindowId",
-													"value": null,
+													"value": "",
 													"disabled": true
 												},
 												{
@@ -19787,6 +19809,16 @@
 													"key": "state",
 													"value": "NOT_SETTLED",
 													"description": "Available values : PENDING_SETTLEMENT, SETTLED, NOT_SETTLED",
+													"disabled": true
+												},
+												{
+													"key": "fromDateTime",
+													"value": "2019-02-05T17:32:28Z",
+													"disabled": true
+												},
+												{
+													"key": "toDateTime",
+													"value": "2019-03-05T17:32:28Z",
 													"disabled": true
 												}
 											]
@@ -19858,7 +19890,7 @@
 												},
 												{
 													"key": "settlementWindowId",
-													"value": null,
+													"value": "",
 													"disabled": true
 												},
 												{
@@ -19870,6 +19902,16 @@
 													"key": "state",
 													"value": "NOT_SETTLED",
 													"description": "Available values : PENDING_SETTLEMENT, SETTLED, NOT_SETTLED",
+													"disabled": true
+												},
+												{
+													"key": "fromDateTime",
+													"value": "2019-02-05T17:32:28Z",
+													"disabled": true
+												},
+												{
+													"key": "toDateTime",
+													"value": "2019-03-05T17:32:28Z",
 													"disabled": true
 												}
 											]
@@ -19922,7 +19964,7 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements?settlementWindowId=1",
+											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements?fromDateTime=2019-03-05&toDateTime=2019-03-07",
 											"host": [
 												"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
 											],
@@ -19942,7 +19984,8 @@
 												},
 												{
 													"key": "settlementWindowId",
-													"value": "1"
+													"value": "1",
+													"disabled": true
 												},
 												{
 													"key": "accountId",
@@ -19954,6 +19997,14 @@
 													"value": "NOT_SETTLED",
 													"description": "Available values : PENDING_SETTLEMENT, SETTLED, NOT_SETTLED",
 													"disabled": true
+												},
+												{
+													"key": "fromDateTime",
+													"value": "2019-03-05"
+												},
+												{
+													"key": "toDateTime",
+													"value": "2019-03-07"
 												}
 											]
 										}
@@ -20037,6 +20088,16 @@
 													"key": "state",
 													"value": "PENDING_SETTLEMENT",
 													"description": "Available values : PENDING_SETTLEMENT, SETTLED, NOT_SETTLED",
+													"disabled": true
+												},
+												{
+													"key": "fromDateTime",
+													"value": "2019-02-05T17:32:28Z",
+													"disabled": true
+												},
+												{
+													"key": "toDateTime",
+													"value": "2019-03-05T17:32:28Z",
 													"disabled": true
 												}
 											]
@@ -20127,6 +20188,16 @@
 													"key": "state",
 													"value": "PENDING_SETTLEMENT",
 													"description": "Available values : PENDING_SETTLEMENT, SETTLED, NOT_SETTLED"
+												},
+												{
+													"key": "fromDateTime",
+													"value": "2019-02-05T17:32:28Z",
+													"disabled": true
+												},
+												{
+													"key": "toDateTime",
+													"value": "2019-03-05T17:32:28Z",
+													"disabled": true
 												}
 											]
 										}
@@ -20157,8 +20228,8 @@
 													"var jsonData = pm.response.json();",
 													"for (var i in jsonData){",
 													"    for(j in jsonData[i].participants) {",
-													"            pm.test(\"Filter by participantId 1\", function () {",
-													"                pm.expect(jsonData[i].participants[j].id).to.eql(1);",
+													"            pm.test(\"Filter by participantId\", function () {",
+													"                pm.expect(jsonData[i].participants[j].id).to.eql(4);",
 													"            });",
 													"        ",
 													"    }",
@@ -20217,6 +20288,16 @@
 													"value": "PENDING_SETTLEMENT",
 													"description": "Available values : PENDING_SETTLEMENT, SETTLED, NOT_SETTLED",
 													"disabled": true
+												},
+												{
+													"key": "fromDateTime",
+													"value": "2019-02-05T17:32:28Z",
+													"disabled": true
+												},
+												{
+													"key": "toDateTime",
+													"value": "2019-03-05T17:32:28Z",
+													"disabled": true
 												}
 											]
 										}
@@ -20264,8 +20345,7 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "http://{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements?state=SETTLED",
-											"protocol": "http",
+											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements?state=SETTLED",
 											"host": [
 												"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
 											],
@@ -20285,7 +20365,7 @@
 												},
 												{
 													"key": "settlementWindowId",
-													"value": null,
+													"value": "",
 													"disabled": true
 												},
 												{
@@ -20297,6 +20377,104 @@
 													"key": "state",
 													"value": "SETTLED",
 													"description": "Available values : PENDING_SETTLEMENT, SETTLED, NOT_SETTLED"
+												},
+												{
+													"key": "fromDateTime",
+													"value": "2019-02-05T17:32:28Z",
+													"disabled": true
+												},
+												{
+													"key": "toDateTime",
+													"value": "2019-03-05T17:32:28Z",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "200 - param - from and toDateTime - BUG",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "53544fc0-435b-4afc-8d67-ae9fece0cb35",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"var jsonData = pm.response.json();",
+													"for (var i in jsonData){",
+													"    pm.test(\"Window State is PENDING_SETTLEMENT\", function () {",
+													"        pm.expect(jsonData[i].state).to.eql('PENDING_SETTLEMENT');",
+													"    });",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{BEARER_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements?fromDateTime=2019-03-05T17:32:28Z&toDateTime=2019-03-08T19:32:28Z",
+											"host": [
+												"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
+											],
+											"path": [
+												"settlements"
+											],
+											"query": [
+												{
+													"key": "currency",
+													"value": "USD",
+													"disabled": true
+												},
+												{
+													"key": "participantId",
+													"value": "{{payerFspId}}",
+													"disabled": true
+												},
+												{
+													"key": "settlementWindowId",
+													"value": "143",
+													"disabled": true
+												},
+												{
+													"key": "accountId",
+													"value": "{{payerFspAccountId}}",
+													"disabled": true
+												},
+												{
+													"key": "state",
+													"value": "SETTLED",
+													"description": "Available values : PENDING_SETTLEMENT, SETTLED, NOT_SETTLED",
+													"disabled": true
+												},
+												{
+													"key": "fromDateTime",
+													"value": "2019-03-05T17:32:28Z"
+												},
+												{
+													"key": "toDateTime",
+													"value": "2019-03-08T19:32:28Z"
 												}
 											]
 										}
@@ -20370,13 +20548,13 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/1",
+											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/87",
 											"host": [
 												"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
 											],
 											"path": [
 												"settlements",
-												"1"
+												"87"
 											]
 										}
 									},
@@ -21106,7 +21284,7 @@
 									"    console.log(response.json())",
 									"    var jsonData = response.json()",
 									"    for(var i in jsonData) {",
-									"        if((jsonData[i].ledgerAccountType === 'SETTLEMENT') && (jsonData[i].currency === 'XOF')) {",
+									"        if((jsonData[i].ledgerAccountType === 'SETTLEMENT') && (jsonData[i].currency === 'USD')) {",
 									"            pm.environment.set(\"payerfspSettlementAccountId\",jsonData[i].id)",
 									"            pm.environment.set(\"payerfspSettlementAccountBalanceBeforeFundsIn\",jsonData[i].value)",
 									"        }",
@@ -21226,10 +21404,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"transferId\": \"{{fundsInPrepareTransferId}}\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsIn\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": {{fundsInPrepareAmount}},\n    \"currency\": \"XOF\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
+							"raw": "{\n  \"transferId\": \"{{fundsInPrepareTransferId}}\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsIn\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": {{fundsInPrepareAmount}},\n    \"currency\": \"{{currency}}\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
 						},
 						"url": {
-							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/accounts/{{payerfspSettlementAccountId}}",
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/accounts/4",
 							"host": [
 								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
 							],
@@ -21237,7 +21415,7 @@
 								"participants",
 								"{{payerfsp}}",
 								"accounts",
-								"{{payerfspSettlementAccountId}}"
+								"4"
 							]
 						}
 					},
@@ -21534,7 +21712,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"{{fundsOutPrepareReserveTransferId}}\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsOutPrepareReserve\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": {{fundsOutPrepareReserveAmount}},\n    \"currency\": \"XOF\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
+									"raw": "{\n  \"transferId\": \"{{fundsOutPrepareReserveTransferId}}\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsOutPrepareReserve\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": {{fundsOutPrepareReserveAmount}},\n    \"currency\": \"{{currency}}\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/accounts/{{payerfspSettlementAccountId}}",
@@ -21783,7 +21961,7 @@
 										}
 									]
 								},
-								"method": "POST",
+								"method": "PUT",
 								"header": [
 									{
 										"key": "Content-Type",
@@ -21797,18 +21975,20 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"{{fundsOutCommitTransferId}}\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsOutCommit\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": {{fundsOutCommitAmount}},\n    \"currency\": \"USD\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
+									"raw": "{\n  \"action\": \"recordFundsOutCommit\",\n  \"reason\": \"Reason for out flow of funds\"\n}"
 								},
 								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{hub_operator}}/accounts/{{payerfspSettlementAccountId}}",
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/accounts/{{payerfspSettlementAccountId}}/transfers/{{fundsOutPrepareReserveTransferId}}",
 									"host": [
 										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
 									],
 									"path": [
 										"participants",
-										"{{hub_operator}}",
+										"{{payerfsp}}",
 										"accounts",
-										"{{payerfspSettlementAccountId}}"
+										"{{payerfspSettlementAccountId}}",
+										"transfers",
+										"{{fundsOutPrepareReserveTransferId}}"
 									]
 								}
 							},

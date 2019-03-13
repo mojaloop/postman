@@ -6248,7 +6248,7 @@
 											"var generatedUUID = uuid.v4();",
 											"pm.environment.set('transfer_ID', generatedUUID);",
 											"pm.environment.set('transferDate', (new Date()).toUTCString());",
-											"pm.environment.set('transferAmount', 100);",
+											"//pm.environment.set('transferAmount', 100);",
 											"",
 											"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))"
 										],
@@ -6309,7 +6309,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"nMel-FDPpp3T77jfC11fUXdcy935hy089AJ9v2OTXBI\"\n}"
+									"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"10\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"nMel-FDPpp3T77jfC11fUXdcy935hy089AJ9v2OTXBI\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -6339,7 +6339,7 @@
 											"",
 											"pm.test(\"Payerfsp position after Prepare should be same as position before prepare+transfer amout\", function () {",
 											"    ",
-											"    var expectedValue = Number(pm.environment.get('payerfspPositionBeforePrepare'))+Number(pm.environment.get('transferAmount'))",
+											"    var expectedValue = Number(pm.environment.get('payerfspPositionBeforePrepare'))+10",
 											"    ",
 											"    pm.expect(jsonData[0].value).to.equal(expectedValue);",
 											"});",

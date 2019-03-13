@@ -7058,1422 +7058,8 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"name": "ABORT  settlement",
+					"name": "ABORT  settlement (YET TO IMPLEMENT)",
 					"item": [
-						{
-							"name": "Test Account Setup (NEED TO BE MOVED TO FSP ONBOARDING )",
-							"item": [
-								{
-									"name": "testfsp1",
-									"item": [
-										{
-											"name": "Add testfsp1",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "9e301b75-8068-47e9-8248-d99fe928474c",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP1_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp1",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\"name\": \"testfsp1\",\"currency\": \"XOF\"}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Add initial position and limits - testfsp1",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "fb7f811e-1c26-46ab-a138-db682ffa96a0",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP1_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp1",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n\t\"currency\": \"XOF\",\n\t\"limit\": {\n\t  \"type\": \"NET_DEBIT_CAP\",\n\t  \"value\": 10000\n\t},\n\t\"initialPosition\": 0\n}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/initialPositionAndLimits",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants",
-														"testfsp1",
-														"initialPositionAndLimits"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Add testfsp1 callback - PARTICIPANTS/PARTIES (Do not use in ML)",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP1_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp1",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"type\": \"FSIOP_CALLBACK_URL\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/testfsp1\"\n}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/endpoints",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants",
-														"testfsp1",
-														"endpoints"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Add testfsp1 callback - TRANSFER POST",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP1_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp1",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_POST\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/testfsp1/transfers\"\n}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/endpoints",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants",
-														"testfsp1",
-														"endpoints"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Add testfsp1 callback - TRANSFER PUT",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP1_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp1",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/testfsp1/transfers/{{transferId}}\"\n}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/endpoints",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants",
-														"testfsp1",
-														"endpoints"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Add testfsp1 callback - TRANSFER ERROR",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP1_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp1",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/testfsp1/transfers/{{transferId}}/error\"\n}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/endpoints",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants",
-														"testfsp1",
-														"endpoints"
-													]
-												}
-											},
-											"response": []
-										}
-									],
-									"_postman_isSubFolder": true
-								},
-								{
-									"name": "testfsp2",
-									"item": [
-										{
-											"name": "Add testfsp2",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "9e301b75-8068-47e9-8248-d99fe928474c",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP2_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp2",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\"name\": \"testfsp2\",\"currency\": \"XOF\"}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Add initial position and limits - testfsp2",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "fb7f811e-1c26-46ab-a138-db682ffa96a0",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP2_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp2",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n\t\"currency\": \"XOF\",\n\t\"limit\": {\n\t  \"type\": \"NET_DEBIT_CAP\",\n\t  \"value\": 10000\n\t},\n\t\"initialPosition\": 0\n}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/initialPositionAndLimits",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants",
-														"testfsp2",
-														"initialPositionAndLimits"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Add testfsp2 callback - PARTICIPANTS/PARTIES",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP2_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp2",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"type\": \"FSIOP_CALLBACK_URL\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/testfsp2\"\n}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/endpoints",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants",
-														"testfsp2",
-														"endpoints"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Add testfsp1 callback - TRANSFER POST",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP2_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp2",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_POST\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/testfsp2/transfers\"\n}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/endpoints",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants",
-														"testfsp2",
-														"endpoints"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Add testfsp1 callback - TRANSFER PUT",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP2_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp2",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/testfsp2/transfers/{{transferId}}\"\n}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/endpoints",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants",
-														"testfsp2",
-														"endpoints"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Add testfsp1 callback - TRANSFER ERROR",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP2_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp2",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/testfsp2/transfers/{{transferId}}/error\"\n}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/endpoints",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants",
-														"testfsp2",
-														"endpoints"
-													]
-												}
-											},
-											"response": []
-										}
-									],
-									"_postman_isSubFolder": true
-								},
-								{
-									"name": "testfsp3",
-									"item": [
-										{
-											"name": "Add testfsp3",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "9e301b75-8068-47e9-8248-d99fe928474c",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP3_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp3",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\"name\": \"testfsp3\",\"currency\": \"XOF\"}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Add initial position and limits - testfsp3",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "fb7f811e-1c26-46ab-a138-db682ffa96a0",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP3_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp3",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n\t\"currency\": \"XOF\",\n\t\"limit\": {\n\t  \"type\": \"NET_DEBIT_CAP\",\n\t  \"value\": 10000\n\t},\n\t\"initialPosition\": 0\n}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/initialPositionAndLimits",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants",
-														"testfsp3",
-														"initialPositionAndLimits"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Add testfsp3 callback - PARTICIPANTS/PARTIES",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP3_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp3",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"type\": \"FSIOP_CALLBACK_URL\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/testfsp3\"\n}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/endpoints",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants",
-														"testfsp3",
-														"endpoints"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Add testfsp3 callback - TRANSFER POST",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP3_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp3",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_POST\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/testfsp3/transfers\"\n}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/endpoints",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants",
-														"testfsp3",
-														"endpoints"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Add testfsp3 callback - TRANSFER PUT",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP3_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp3",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/testfsp3/transfers/{{transferId}}\"\n}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/endpoints",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants",
-														"testfsp3",
-														"endpoints"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Add testfsp3 callback - TRANSFER ERROR",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP3_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp3",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/testfsp3/transfers/{{transferId}}/error\"\n}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/endpoints",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants",
-														"testfsp3",
-														"endpoints"
-													]
-												}
-											},
-											"response": []
-										}
-									],
-									"_postman_isSubFolder": true
-								},
-								{
-									"name": "testfsp4",
-									"item": [
-										{
-											"name": "Add testfsp4",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "9e301b75-8068-47e9-8248-d99fe928474c",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP4_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp4",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\"name\": \"testfsp4\",\"currency\": \"XOF\"}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Add initial position and limits - testfsp4",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "fb7f811e-1c26-46ab-a138-db682ffa96a0",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP4_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp4",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n\t\"currency\": \"XOF\",\n\t\"limit\": {\n\t  \"type\": \"NET_DEBIT_CAP\",\n\t  \"value\": 10000\n\t},\n\t\"initialPosition\": 0\n}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4/initialPositionAndLimits",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants",
-														"testfsp4",
-														"initialPositionAndLimits"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Add testfsp4 callback - PARTICIPANTS/PARTIES",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP4_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp4",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"type\": \"FSIOP_CALLBACK_URL\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/testfsp4\"\n}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4/endpoints",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants",
-														"testfsp4",
-														"endpoints"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Add testfsp4 callback - TRANSFER POST",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP4_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp4",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_POST\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/testfsp4/transfers\"\n}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4/endpoints",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants",
-														"testfsp4",
-														"endpoints"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Add testfsp4 callback - TRANSFER PUT",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP4_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp4",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/testfsp4/transfers/{{transferId}}\"\n}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4/endpoints",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants",
-														"testfsp4",
-														"endpoints"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Add testfsp4 callback - TRANSFER ERROR",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-														"exec": [
-															"pm.test(\"Status code is 201\", function () {",
-															"    pm.response.to.have.status(201);",
-															"});"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{TESTFSP4_BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "testfsp4",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/testfsp4/transfers/{{transferId}}/error\"\n}"
-												},
-												"url": {
-													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4/endpoints",
-													"host": [
-														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-													],
-													"path": [
-														"participants",
-														"testfsp4",
-														"endpoints"
-													]
-												}
-											},
-											"response": []
-										}
-									],
-									"_postman_isSubFolder": true
-								}
-							],
-							"_postman_isSubFolder": true
-						},
 						{
 							"name": "Setup Settlement",
 							"item": [
@@ -12683,7 +11269,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"99\",\n    \"currency\": \"XOF\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
+									"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"99\",\n    \"currency\": \"XOF\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"vz4f-w8iIgSLHC0xwKXeO14uy2r6QmSPv5QNtycgs6E\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -12849,7 +11435,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"fulfilment\": \"{{validFulfillment}}\",\n  \"completedTimestamp\": \"{{completedTimestamp}}\",\n  \"transferState\": \"ABORTED\"\n}"
+									"raw": "{\n  \"fulfilment\": \"Z4OXLoReF4RA8LtBrMTrFJWo5SSx5dgW6xymreuEOXc\",\n  \"completedTimestamp\": \"{{completedTimestamp}}\",\n  \"transferState\": \"ABORTED\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{transfer_ID}}",
@@ -13662,106 +12248,6 @@
 							"response": []
 						},
 						{
-							"name": "Check Payeefsp Notification",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "16b4580d-74c7-44e9-952e-d40a61f9cb69",
-										"exec": [
-											"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
-											"   var uuid = require('uuid');",
-											"   var generatedUUID = uuid.v4();",
-											"   pm.variables.set('transferId', generatedUUID);",
-											"}",
-											"",
-											"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-											"   pm.variables.set('transferDate', (new Date()).toUTCString());",
-											"}"
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"id": "6c54bbb2-0b33-4301-86ae-751142923a4c",
-										"exec": [
-											"pm.test(\"Status code is 202\", function () {",
-											"    pm.response.to.have.status(202);",
-											"});",
-											"",
-											"// pm.test(\"Check that Content-Type is present\", function () {",
-											"//     pm.response.to.have.header(\"Content-Type\");",
-											"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.transfers+json;version=1.0\");",
-											"// });",
-											"",
-											"pm.test(\"Response status is INVALID\", function () {",
-											"    pm.expect(jsonData.transferState).to.eql('INVALID');",
-											"});",
-											"",
-											"",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/vnd.interoperability.transfers+json;version=1"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
-									},
-									{
-										"key": "Date",
-										"value": "{{transferDate}}"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"value": "{{payerfsp}}"
-									},
-									{
-										"key": "FSPIOP-Destination",
-										"value": "{{payeefsp}}",
-										"disabled": true
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{HOST_SIMULATOR}}/{{payeefsp}}/correlationid/transfers/{{transfer_ID}}",
-									"host": [
-										"{{HOST_SIMULATOR}}"
-									],
-									"path": [
-										"{{payeefsp}}",
-										"correlationid",
-										"transfers",
-										"{{transfer_ID}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "Check Transfer status - RESERVED",
 							"event": [
 								{
@@ -14097,7 +12583,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"XOF\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"nMel-FDPpp3T77jfC11fUXdcy935hy089AJ9v2OTXBI\"\n}"
+									"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"nMel-FDPpp3T77jfC11fUXdcy935hy089AJ9v2OTXBI\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -14539,49 +13025,286 @@
 							"name": "original_transfer_timedout",
 							"item": [
 								{
-									"name": "Send Quote",
+									"name": "Send Quote Copy",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
+												"exec": [
+													"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
+													"   var uuid = require('uuid');",
+													"   var generatedUUID = uuid.v4();",
+													"   pm.variables.set('quoteId', generatedUUID);",
+													"}",
+													"",
+													"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
+													"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "b7ca6bc0-b58a-46d8-8881-2db1aa0703ef",
+												"exec": [
+													"pm.test(\"Status code is 202\", function () {",
+													"    pm.response.to.have.status(202);",
+													"});",
+													"",
+													"// pm.test(\"Check that Content-Type is present\", function () {",
+													"//     pm.response.to.have.header(\"Content-Type\");",
+													"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
+													"// });",
+													"",
+													"",
+													"setTimeout(function () {",
+													"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
+													"      if(response !== null) {",
+													"          console.log('response: ',response.json());",
+													"       pm.test(\"Response ilpPacket is not null\", function () {",
+													"           console.log('ilpPacket: ',response.json().ilpPacket)",
+													"           pm.expect(response.json().ilpPacket).not.eql(null);",
+													"          pm.environment.set(\"ilpPacket\", response.json().ilpPacket);",
+													"           ",
+													"       });",
+													"       ",
+													"       pm.test(\"Response condition is not null\", function () {",
+													"           pm.expect(response.json().condition).not.eql(null);",
+													"           pm.environment.set(\"condition\", response.json().condition);",
+													"       });",
+													"      } else {",
+													"          pm.test(\"Quote FAILED\", function () {",
+													"            throw new Error('Did not receive response');",
+													"           });",
+													"           postman.setNextRequest(null);",
+													"      }",
+													"       ",
+													"   });",
+													"}, 1000)",
+													"",
+													"",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
 									"request": {
-										"method": "GET",
-										"header": [],
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.quotes+json;version=1"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+											},
+											{
+												"key": "Date",
+												"value": "{{quoteDate}}"
+											},
+											{
+												"key": "FSPIOP-SOurce",
+												"value": "{{payerfsp}}"
+											},
+											{
+												"key": "FSPIOP-Destination",
+												"value": "{{payeefsp}}"
+											}
+										],
 										"body": {
 											"mode": "raw",
-											"raw": ""
+											"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"USD\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 										},
 										"url": {
-											"raw": ""
+											"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
+											"host": [
+												"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+											],
+											"path": [
+												"quotes"
+											]
 										}
 									},
 									"response": []
 								},
 								{
-									"name": "Send Transfer-prepare",
+									"name": "Send Transfer-Prepare",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "16b4580d-74c7-44e9-952e-d40a61f9cb69",
+												"exec": [
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"pm.environment.set('transfer_ID', generatedUUID);",
+													"pm.environment.set('transferDate', (new Date()).toUTCString());",
+													"pm.environment.set('transferAmount', 100);",
+													"",
+													"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "e47ebaa4-926e-4007-821a-e68cd385e18c",
+												"exec": [
+													"pm.test(\"Status code is 202\", function () {",
+													"    pm.response.to.have.status(202);",
+													"});",
+													"",
+													"",
+													"",
+													"",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
 									"request": {
-										"method": "GET",
-										"header": [],
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{BEARER_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transfers+json;version=1"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transfers+json;version=1"
+											},
+											{
+												"key": "Date",
+												"value": "{{dateHeader}}"
+											},
+											{
+												"key": "FSPIOP-Source",
+												"value": "{{payerfsp}}"
+											},
+											{
+												"key": "FSPIOP-Destination",
+												"value": "noresponsepayeefsp"
+											}
+										],
 										"body": {
 											"mode": "raw",
-											"raw": ""
+											"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"XOF\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"nMel-FDPpp3T77jfC11fUXdcy935hy089AJ9v2OTXBI\"\n}"
 										},
 										"url": {
-											"raw": ""
-										},
-										"description": "send this transfer prepare to a payeefsp that does not respond, so that we can achieve timeout scenario."
+											"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+											"host": [
+												"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+											],
+											"path": [
+												"transfers"
+											]
+										}
 									},
 									"response": []
 								},
 								{
 									"name": "Send Duplicate Transfer-prepare",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "16b4580d-74c7-44e9-952e-d40a61f9cb69",
+												"exec": [
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"pm.environment.set('transfer_ID', generatedUUID);",
+													"pm.environment.set('transferDate', (new Date()).toUTCString());",
+													"pm.environment.set('transferAmount', 100);",
+													"",
+													"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "e47ebaa4-926e-4007-821a-e68cd385e18c",
+												"exec": [
+													"pm.test(\"Status code is 202\", function () {",
+													"    pm.response.to.have.status(202);",
+													"});",
+													"",
+													"",
+													"",
+													"",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
 									"request": {
-										"method": "GET",
-										"header": [],
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{BEARER_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transfers+json;version=1"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transfers+json;version=1"
+											},
+											{
+												"key": "Date",
+												"value": "{{dateHeader}}"
+											},
+											{
+												"key": "FSPIOP-Source",
+												"value": "{{payerfsp}}"
+											},
+											{
+												"key": "FSPIOP-Destination",
+												"value": "noresponsepayeefsp"
+											}
+										],
 										"body": {
 											"mode": "raw",
-											"raw": ""
+											"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"XOF\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"nMel-FDPpp3T77jfC11fUXdcy935hy089AJ9v2OTXBI\"\n}"
 										},
 										"url": {
-											"raw": ""
-										},
-										"description": "With same ID and same other params.\nThis duplicate request must be ignored.\nNo response shd be noticed in payerfsp."
+											"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+											"host": [
+												"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+											],
+											"path": [
+												"transfers"
+											]
+										}
 									},
 									"response": []
 								}
