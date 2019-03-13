@@ -12082,49 +12082,154 @@
 							"_postman_isSubFolder": true
 						},
 						{
-							"name": "PUT - TransfersByID (NO IMPLEMENTATION)",
+							"name": "PUT - TransfersByID",
 							"item": [
 								{
-									"name": "TransfersByIDPut",
-									"request": {
-										"method": "PUT",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json"
+									"name": "Positive",
+									"item": [
+										{
+											"name": "TransfersByIDPut",
+											"request": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Length",
+														"value": "{{Content-Length}}"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": ""
+												},
+												"url": {
+													"raw": "http://fsp/transfers/:ID",
+													"protocol": "http",
+													"host": [
+														"fsp"
+													],
+													"path": [
+														"transfers",
+														":ID"
+													],
+													"variable": [
+														{
+															"key": "ID"
+														}
+													]
+												},
+												"description": "The callback PUT /transfers/<ID> is used to inform the client of a requested or created transfer. The <ID> in the URI should contain the transferId that was used for the creation of the transfer, or the <ID> that was used in the GET /transfers/<ID>."
 											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "Content-Length",
-												"value": "{{Content-Length}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
-										"url": {
-											"raw": "http://fsp/transfers/:ID",
-											"protocol": "http",
-											"host": [
-												"fsp"
-											],
-											"path": [
-												"transfers",
-												":ID"
-											],
-											"variable": [
+											"response": []
+										}
+									],
+									"_postman_isSubFolder": true
+								},
+								{
+									"name": "Negative",
+									"item": [
+										{
+											"name": "400 - Exrta transferId in body",
+											"event": [
 												{
-													"key": "ID"
+													"listen": "prerequest",
+													"script": {
+														"id": "2e244cfd-ff69-448a-8b62-176d4dd0b28d",
+														"exec": [
+															"pm.variables.set(\"completedTimestamp\",new Date().toISOString());"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"id": "358f8ed8-6882-4c54-8dfd-177607c9e07b",
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {",
+															"    pm.response.to.have.status(400);",
+															"});",
+															"",
+															"var jsonData = pm.response.json();",
+															"",
+															"pm.test(\"errorCode should be 400\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorCode).to.eql(400);",
+															"  });",
+															"  ",
+															"pm.test(\"errorDescription should be Bad Request\", function () {",
+															"    pm.expect(jsonData.errorInformation.errorDescription).to.eql('Bad Request');",
+															"  });",
+															"  ",
+															"pm.test(\"transferId should be part of error description\", function () {",
+															"    pm.expect(jsonData.errorInformation.extensionList.extension[0].value).to.include('transferId');",
+															"  });",
+															" "
+														],
+														"type": "text/javascript"
+													}
 												}
-											]
-										},
-										"description": "The callback PUT /transfers/<ID> is used to inform the client of a requested or created transfer. The <ID> in the URI should contain the transferId that was used for the creation of the transfer, or the <ID> that was used in the GET /transfers/<ID>."
-									},
-									"response": []
+											],
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{PAYEEFSP_BEARER_TOKEN}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"name": "Content-Type",
+														"type": "text",
+														"value": "application/vnd.interoperability.transfers+json;version=1"
+													},
+													{
+														"key": "Date",
+														"type": "text",
+														"value": "{{dateHeader}}"
+													},
+													{
+														"key": "FSPIOP-Source",
+														"type": "text",
+														"value": "{{payeefsp}}"
+													},
+													{
+														"key": "FSPIOP-Destination",
+														"type": "text",
+														"value": "{{payerfsp}}"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"transferId\":\"{{transfer_ID}}\",\n  \"fulfilment\": \"{{validFulfillment}}\",\n  \"completedTimestamp\": \"{{completedTimestamp}}\",\n  \"transferState\": \"COMMITTED\"\n}"
+												},
+												"url": {
+													"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{transfer_ID}}",
+													"host": [
+														"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+													],
+													"path": [
+														"transfers",
+														"{{transfer_ID}}"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"_postman_isSubFolder": true
 								}
 							],
 							"event": [
@@ -12152,7 +12257,7 @@
 							"_postman_isSubFolder": true
 						},
 						{
-							"name": "PUT - TransfersByIDError (NO IMPLEMENTATION)",
+							"name": "PUT - TransfersByIDError",
 							"item": [
 								{
 									"name": "TransfersByIDAndError",
@@ -13371,7 +13476,7 @@
 			"description": "Folder for bulkQuotes"
 		},
 		{
-			"name": "CentralLedger-Admin-API",
+			"name": "Admin-API",
 			"item": [
 				{
 					"name": "participants",
@@ -13429,7 +13534,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"name\": \"testfsp1\",\n  \"currency\": \"USD\"\n}"
+									"raw": "{\n  \"name\": \"payerfsp\",\n  \"currency\": \"XOF\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants",
@@ -14010,6 +14115,20 @@
 						},
 						{
 							"name": "Update Participant Account (Active/Inactive)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d865c86e-59db-4096-8140-9381647a9b4c",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -14281,6 +14400,20 @@
 						},
 						{
 							"name": "Record Funds In - payerfsp",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "b805e9aa-0852-43e8-93b0-8b53cf33b95b",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -14306,7 +14439,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"7e6b03b1-0e9a-4267-bfa4-cfce0e5f319c\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsIn\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": 5000,\n    \"currency\": \"USD\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
+									"raw": "{\n  \"transferId\": \"7e6b03b1-0e9a-4267-bfa4-cfce0e5f319c\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsIn\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": 50,\n    \"currency\": \"USD\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}}/accounts/{{payerfspSettlementAccountId}}",
@@ -14775,7 +14908,21 @@
 							]
 						},
 						{
-							"name": "Hub Endpoint-NET_DEBIT_CAP_THRESHOLD_BREACH_EMAIL (BUG)",
+							"name": "Hub Endpoint-NET_DEBIT_CAP_THRESHOLD_BREACH_EMAIL",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f2c3621b-1a07-4c48-89c7-9587e9c03267",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -14860,7 +15007,21 @@
 							]
 						},
 						{
-							"name": "DFSP Endpoint-NET_DEBIT_CAP_THRESHOLD_BREACH_EMAIL (BUG)",
+							"name": "DFSP Endpoint-NET_DEBIT_CAP_THRESHOLD_BREACH_EMAIL",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "67082524-b658-4f1c-90c4-af6fc24adb3e",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -14888,13 +15049,13 @@
 									"raw": "{\n  \"type\": \"NET_DEBIT_CAP_THRESHOLD_BREACH_EMAIL\",\n  \"value\": \"sridevi.miriyala@modusbox.com\"\n}"
 								},
 								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}}/endpoints",
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
 									"host": [
 										"{{HOST_CENTRAL_LEDGER}}"
 									],
 									"path": [
 										"participants",
-										"{{payerfsp}}",
+										"payerfsp",
 										"endpoints"
 									]
 								},
@@ -14946,6 +15107,20 @@
 						},
 						{
 							"name": "9. Set Endpoint-NET_DEBIT_CAP_ADJUSTMENT_EMAIL",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "83984619-0430-4a4c-87ec-671bf97894de",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -14973,13 +15148,13 @@
 									"raw": "{\n  \"type\": \"NET_DEBIT_CAP_ADJUSTMENT_EMAIL\",\n  \"value\": \"sridevi.miriyala@modusbox.com\"\n}"
 								},
 								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}}/endpoints",
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
 									"host": [
 										"{{HOST_CENTRAL_LEDGER}}"
 									],
 									"path": [
 										"participants",
-										"{{payerfsp}}",
+										"payerfsp",
 										"endpoints"
 									]
 								},
@@ -15030,7 +15205,21 @@
 							]
 						},
 						{
-							"name": "Hub Set Endpoint-NET_DEBIT_CAP_ADJUSTMENT_EMAIL (BUG) Copy",
+							"name": "Hub Set Endpoint-NET_DEBIT_CAP_ADJUSTMENT_EMAIL",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "837c7a84-ce18-4a96-b686-b2d6150a02ed",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -15116,6 +15305,20 @@
 						},
 						{
 							"name": "Set Endpoint-SETTLEMENT_TRANSFER_POSITION_CHANGE_EMAIL",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "16f8d261-3f2d-470b-986b-c8e23602605b",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -15675,8 +15878,8 @@
 									"script": {
 										"id": "d24a7260-f322-4686-831d-35ff197b09b7",
 										"exec": [
-											"pm.test(\"Status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
 											"});"
 										],
 										"type": "text/javascript"
@@ -15761,7 +15964,65 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"currency\": \"USD\",\n  \"limit\": {\n    \"type\": \"NET_DEBIT_CAP\",\n    \"value\": 9500,\n    \"alarmPercentage\":10\n  \n  }\n  \n \n  }"
+									"raw": "{\n  \"currency\": \"USD\",\n  \"limit\": {\n    \"alarmPercentage\": 10,\n    \"type\": \"NET_DEBIT_CAP\",\n    \"value\": 9500\n  }\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}}/limits",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"{{payerfsp}}",
+										"limits"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT - limits - 647 - 786 - 1726 Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "77511703-afff-48fe-8584-fb52d1e3ae7d",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "FSPIOP -Source",
+										"value": "{{payerfsp}}",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"currency\": \"USD\",\n  \"limit\": {\n    \"alarmPercentage\": 10,\n    \"type\": \"NET_DEBIT_CAP\",\n    \"value\": 9500\n  }\n}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}}/limits",
@@ -16017,6 +16278,118 @@
 						}
 					],
 					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Health",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6804f0e3-6d6b-436e-953c-bf7dd5ba3f7a",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/health",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get Participants List",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants",
+									"protocol": "http",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 22 Aug 2018 15:25:57 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "Server",
+									"value": "nginx/1.13.8",
+									"name": "Server",
+									"description": "A name for the server"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked",
+									"name": "Transfer-Encoding",
+									"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+								},
+								{
+									"key": "cache-control",
+									"value": "no-cache",
+									"name": "cache-control",
+									"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+								},
+								{
+									"key": "content-encoding",
+									"value": "gzip",
+									"name": "content-encoding",
+									"description": "The type of encoding used on the data."
+								},
+								{
+									"key": "vary",
+									"value": "accept-encoding",
+									"name": "vary",
+									"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
+								}
+							],
+							"cookie": [],
+							"body": "[{\"name\":\"payeefsp\",\"id\":\"test-central-ledger.mojaloop.test/participants/payeefsp\",\"created\":\"2018-08-21T15:57:06.000Z\",\"isActive\":1,\"links\":{\"self\":\"test-central-ledger.mojaloop.test/participants/payeefsp\"},\"currencies\":[{\"currency\":\"USD\",\"isActive\":1}]},{\"name\":\"payerfsp\",\"id\":\"test-central-ledger.mojaloop.test/participants/payerfsp\",\"created\":\"2018-08-21T15:57:06.000Z\",\"isActive\":1,\"links\":{\"self\":\"test-central-ledger.mojaloop.test/participants/payerfsp\"},\"currencies\":[{\"currency\":\"USD\",\"isActive\":1}]},{\"name\":\"test2fsp\",\"id\":\"test-central-ledger.mojaloop.test/participants/test2fsp\",\"created\":\"2018-08-22T11:12:54.000Z\",\"isActive\":1,\"links\":{\"self\":\"test-central-ledger.mojaloop.test/participants/test2fsp\"},\"currencies\":[{\"currency\":\"USD\",\"isActive\":1}]},{\"name\":\"test3fsp\",\"id\":\"test-central-ledger.mojaloop.test/participants/test3fsp\",\"created\":\"2018-08-22T11:13:40.000Z\",\"isActive\":1,\"links\":{\"self\":\"test-central-ledger.mojaloop.test/participants/test3fsp\"},\"currencies\":[{\"currency\":\"INR\",\"isActive\":1}]},{\"name\":\"testfsp\",\"id\":\"test-central-ledger.mojaloop.test/participants/testfsp\",\"created\":\"2018-08-22T08:16:50.000Z\",\"isActive\":1,\"links\":{\"self\":\"test-central-ledger.mojaloop.test/participants/testfsp\"},\"currencies\":[{\"currency\":\"USD\",\"isActive\":1}]},{\"name\":\"testfsp2\",\"id\":\"test-central-ledger.mojaloop.test/participants/testfsp2\",\"created\":\"2018-08-22T08:18:10.000Z\",\"isActive\":1,\"links\":{\"self\":\"test-central-ledger.mojaloop.test/participants/testfsp2\"},\"currencies\":[{\"currency\":\"USD\",\"isActive\":1}]}]"
+						}
+					]
 				}
 			],
 			"description": "Author : Sridevi Miriyala",
@@ -16044,7 +16417,7 @@
 			]
 		},
 		{
-			"name": "Central-Settlements-API",
+			"name": "Settlements-API",
 			"item": [
 				{
 					"name": "settlementWindows",
@@ -17826,7 +18199,7 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows?participantId=0",
+											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows?participantId=100",
 											"host": [
 												"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
 											],
@@ -17836,7 +18209,7 @@
 											"query": [
 												{
 													"key": "participantId",
-													"value": "0"
+													"value": "100"
 												},
 												{
 													"key": "state",
@@ -18200,7 +18573,7 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows?toDateTime=2018-11-09T11:00:00",
+											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows?toDateTime=2019-02-28T11:00:00",
 											"host": [
 												"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
 											],
@@ -18227,7 +18600,7 @@
 												},
 												{
 													"key": "toDateTime",
-													"value": "2018-11-09T11:00:00",
+													"value": "2019-02-28T11:00:00",
 													"description": "eg 2017-07-20T17:32:28Z"
 												}
 											]
@@ -18247,9 +18620,9 @@
 													"    pm.response.to.have.status(200);",
 													"});",
 													"",
-													"pm.test(\"Window for participant Id 1\", function () {",
+													"pm.test(\"Window for participant Id 4\", function () {",
 													"    console.log(pm.response.array)",
-													"    //pm.expect(jsonData[0].participantId).to.eql('1');",
+													"    //pm.expect(jsonData[0].participantId).to.eql('4');",
 													"});",
 													"",
 													""
@@ -18587,7 +18960,7 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows?participantId=1&state=OPEN",
+											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows?participantId=4&state=CLOSED",
 											"host": [
 												"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
 											],
@@ -18597,11 +18970,11 @@
 											"query": [
 												{
 													"key": "participantId",
-													"value": "1"
+													"value": "4"
 												},
 												{
 													"key": "state",
-													"value": "OPEN",
+													"value": "CLOSED",
 													"description": "Available values : OPEN, CLOSED, PENDING_SETTLEMENT, SETTLED, NOT_SETTLED"
 												},
 												{
@@ -18666,7 +19039,7 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows?participantId=2&toDateTime=2018-10-04T11:00:00",
+											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows?participantId=3&toDateTime=2019-02-28T11:00:00",
 											"host": [
 												"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
 											],
@@ -18676,7 +19049,7 @@
 											"query": [
 												{
 													"key": "participantId",
-													"value": "2"
+													"value": "3"
 												},
 												{
 													"key": "state",
@@ -18692,7 +19065,7 @@
 												},
 												{
 													"key": "toDateTime",
-													"value": "2018-10-04T11:00:00",
+													"value": "2019-02-28T11:00:00",
 													"description": "eg 2017-07-20T17:32:28Z"
 												}
 											]
@@ -19313,8 +19686,7 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "http://{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements?state=PENDING_SETTLEMENT",
-											"protocol": "http",
+											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements?fromDateTime=2019-02-15T17:32:28Z&toDateTime=2019-03-16T17:32:28Z",
 											"host": [
 												"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
 											],
@@ -19334,7 +19706,7 @@
 												},
 												{
 													"key": "settlementWindowId",
-													"value": null,
+													"value": "59",
 													"disabled": true
 												},
 												{
@@ -19345,7 +19717,16 @@
 												{
 													"key": "state",
 													"value": "PENDING_SETTLEMENT",
-													"description": "Available values : PENDING_SETTLEMENT, SETTLED, NOT_SETTLED"
+													"description": "Available values : PENDING_SETTLEMENT, SETTLED, NOT_SETTLED",
+													"disabled": true
+												},
+												{
+													"key": "fromDateTime",
+													"value": "2019-02-15T17:32:28Z"
+												},
+												{
+													"key": "toDateTime",
+													"value": "2019-03-16T17:32:28Z"
 												}
 											]
 										}
@@ -19416,7 +19797,7 @@
 												},
 												{
 													"key": "settlementWindowId",
-													"value": null,
+													"value": "",
 													"disabled": true
 												},
 												{
@@ -19428,6 +19809,16 @@
 													"key": "state",
 													"value": "NOT_SETTLED",
 													"description": "Available values : PENDING_SETTLEMENT, SETTLED, NOT_SETTLED",
+													"disabled": true
+												},
+												{
+													"key": "fromDateTime",
+													"value": "2019-02-05T17:32:28Z",
+													"disabled": true
+												},
+												{
+													"key": "toDateTime",
+													"value": "2019-03-05T17:32:28Z",
 													"disabled": true
 												}
 											]
@@ -19499,7 +19890,7 @@
 												},
 												{
 													"key": "settlementWindowId",
-													"value": null,
+													"value": "",
 													"disabled": true
 												},
 												{
@@ -19511,6 +19902,16 @@
 													"key": "state",
 													"value": "NOT_SETTLED",
 													"description": "Available values : PENDING_SETTLEMENT, SETTLED, NOT_SETTLED",
+													"disabled": true
+												},
+												{
+													"key": "fromDateTime",
+													"value": "2019-02-05T17:32:28Z",
+													"disabled": true
+												},
+												{
+													"key": "toDateTime",
+													"value": "2019-03-05T17:32:28Z",
 													"disabled": true
 												}
 											]
@@ -19563,7 +19964,7 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements?settlementWindowId=1",
+											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements?fromDateTime=2019-03-05&toDateTime=2019-03-07",
 											"host": [
 												"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
 											],
@@ -19583,7 +19984,8 @@
 												},
 												{
 													"key": "settlementWindowId",
-													"value": "1"
+													"value": "1",
+													"disabled": true
 												},
 												{
 													"key": "accountId",
@@ -19595,6 +19997,14 @@
 													"value": "NOT_SETTLED",
 													"description": "Available values : PENDING_SETTLEMENT, SETTLED, NOT_SETTLED",
 													"disabled": true
+												},
+												{
+													"key": "fromDateTime",
+													"value": "2019-03-05"
+												},
+												{
+													"key": "toDateTime",
+													"value": "2019-03-07"
 												}
 											]
 										}
@@ -19678,6 +20088,16 @@
 													"key": "state",
 													"value": "PENDING_SETTLEMENT",
 													"description": "Available values : PENDING_SETTLEMENT, SETTLED, NOT_SETTLED",
+													"disabled": true
+												},
+												{
+													"key": "fromDateTime",
+													"value": "2019-02-05T17:32:28Z",
+													"disabled": true
+												},
+												{
+													"key": "toDateTime",
+													"value": "2019-03-05T17:32:28Z",
 													"disabled": true
 												}
 											]
@@ -19768,6 +20188,16 @@
 													"key": "state",
 													"value": "PENDING_SETTLEMENT",
 													"description": "Available values : PENDING_SETTLEMENT, SETTLED, NOT_SETTLED"
+												},
+												{
+													"key": "fromDateTime",
+													"value": "2019-02-05T17:32:28Z",
+													"disabled": true
+												},
+												{
+													"key": "toDateTime",
+													"value": "2019-03-05T17:32:28Z",
+													"disabled": true
 												}
 											]
 										}
@@ -19798,8 +20228,8 @@
 													"var jsonData = pm.response.json();",
 													"for (var i in jsonData){",
 													"    for(j in jsonData[i].participants) {",
-													"            pm.test(\"Filter by participantId 1\", function () {",
-													"                pm.expect(jsonData[i].participants[j].id).to.eql(1);",
+													"            pm.test(\"Filter by participantId\", function () {",
+													"                pm.expect(jsonData[i].participants[j].id).to.eql(4);",
 													"            });",
 													"        ",
 													"    }",
@@ -19858,6 +20288,16 @@
 													"value": "PENDING_SETTLEMENT",
 													"description": "Available values : PENDING_SETTLEMENT, SETTLED, NOT_SETTLED",
 													"disabled": true
+												},
+												{
+													"key": "fromDateTime",
+													"value": "2019-02-05T17:32:28Z",
+													"disabled": true
+												},
+												{
+													"key": "toDateTime",
+													"value": "2019-03-05T17:32:28Z",
+													"disabled": true
 												}
 											]
 										}
@@ -19905,8 +20345,7 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "http://{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements?state=SETTLED",
-											"protocol": "http",
+											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements?state=SETTLED",
 											"host": [
 												"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
 											],
@@ -19926,7 +20365,7 @@
 												},
 												{
 													"key": "settlementWindowId",
-													"value": null,
+													"value": "",
 													"disabled": true
 												},
 												{
@@ -19938,6 +20377,104 @@
 													"key": "state",
 													"value": "SETTLED",
 													"description": "Available values : PENDING_SETTLEMENT, SETTLED, NOT_SETTLED"
+												},
+												{
+													"key": "fromDateTime",
+													"value": "2019-02-05T17:32:28Z",
+													"disabled": true
+												},
+												{
+													"key": "toDateTime",
+													"value": "2019-03-05T17:32:28Z",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "200 - param - from and toDateTime - BUG",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "53544fc0-435b-4afc-8d67-ae9fece0cb35",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"var jsonData = pm.response.json();",
+													"for (var i in jsonData){",
+													"    pm.test(\"Window State is PENDING_SETTLEMENT\", function () {",
+													"        pm.expect(jsonData[i].state).to.eql('PENDING_SETTLEMENT');",
+													"    });",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{BEARER_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements?fromDateTime=2019-03-05T17:32:28Z&toDateTime=2019-03-08T19:32:28Z",
+											"host": [
+												"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
+											],
+											"path": [
+												"settlements"
+											],
+											"query": [
+												{
+													"key": "currency",
+													"value": "USD",
+													"disabled": true
+												},
+												{
+													"key": "participantId",
+													"value": "{{payerFspId}}",
+													"disabled": true
+												},
+												{
+													"key": "settlementWindowId",
+													"value": "143",
+													"disabled": true
+												},
+												{
+													"key": "accountId",
+													"value": "{{payerFspAccountId}}",
+													"disabled": true
+												},
+												{
+													"key": "state",
+													"value": "SETTLED",
+													"description": "Available values : PENDING_SETTLEMENT, SETTLED, NOT_SETTLED",
+													"disabled": true
+												},
+												{
+													"key": "fromDateTime",
+													"value": "2019-03-05T17:32:28Z"
+												},
+												{
+													"key": "toDateTime",
+													"value": "2019-03-08T19:32:28Z"
 												}
 											]
 										}
@@ -20011,13 +20548,13 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/1",
+											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/87",
 											"host": [
 												"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
 											],
 											"path": [
 												"settlements",
-												"1"
+												"87"
 											]
 										}
 									},
@@ -20514,6 +21051,1309 @@
 							""
 						]
 					}
+				}
+			]
+		},
+		{
+			"name": "Metrics-API",
+			"item": [
+				{
+					"name": "central-ledger-service",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c8d2ec0c-6acd-4b19-962b-0e9864efc80d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check that Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.response.to.be.header(\"Content-Type\", \"text/html; charset=utf-8\");",
+									"});",
+									"",
+									"pm.test(\"Check that first and last expected response values are present\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"moja_cl_process_cpu_user_seconds_total\"); // first Value",
+									"    pm.expect(pm.response.text()).to.include(\"moja_cl_nodejs_version_info\"); // last Value",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/html; charset=utf-8",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "text/html; charset=utf-8",
+								"type": "text"
+							},
+							{
+								"key": "Date",
+								"value": "{{dateHeader}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{env_prefix}}-central-ledger.mojaloop.live/metrics",
+							"protocol": "http",
+							"host": [
+								"{{env_prefix}}-central-ledger",
+								"mojaloop",
+								"live"
+							],
+							"path": [
+								"metrics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ml-api-adapter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c8d2ec0c-6acd-4b19-962b-0e9864efc80d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check that Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.response.to.be.header(\"Content-Type\", \"text/html; charset=utf-8\");",
+									"});",
+									"",
+									"pm.test(\"Check that first and last expected response values are present\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"moja_cl_process_cpu_user_seconds_total\"); // first Value",
+									"    pm.expect(pm.response.text()).to.include(\"moja_cl_nodejs_version_info\"); // last Value",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "text/html; charset=utf-8"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "text/html; charset=utf-8"
+							},
+							{
+								"key": "Date",
+								"type": "text",
+								"value": "{{dateHeader}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{env_prefix}}-ml-api-adapter.mojaloop.live/metrics",
+							"protocol": "http",
+							"host": [
+								"{{env_prefix}}-ml-api-adapter",
+								"mojaloop",
+								"live"
+							],
+							"path": [
+								"metrics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ml-api-adapter Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c8d2ec0c-6acd-4b19-962b-0e9864efc80d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check that Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.response.to.be.header(\"Content-Type\", \"text/html; charset=utf-8\");",
+									"});",
+									"",
+									"pm.test(\"Check that first and last expected response values are present\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"moja_cl_process_cpu_user_seconds_total\"); // first Value",
+									"    pm.expect(pm.response.text()).to.include(\"moja_cl_nodejs_version_info\"); // last Value",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "text/html; charset=utf-8"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "text/html; charset=utf-8"
+							},
+							{
+								"key": "Date",
+								"type": "text",
+								"value": "{{dateHeader}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{env_prefix}}-ml-api-adapter.mojaloop.live/metrics",
+							"protocol": "http",
+							"host": [
+								"{{env_prefix}}-ml-api-adapter",
+								"mojaloop",
+								"live"
+							],
+							"path": [
+								"metrics"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FundsIn-API",
+			"item": [
+				{
+					"name": "Record Funds In - prepare",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a96ad88c-c5e9-4077-b060-765ccd1e86e1",
+								"exec": [
+									"var uuid = require('uuid');",
+									"var generatedUUID = uuid.v4();",
+									"pm.environment.set('fundsInPrepareTransferId', generatedUUID);",
+									"pm.environment.set('fundsInPrepareAmount', 200);",
+									"",
+									"",
+									"const payerfspGetStatusRequest = {",
+									"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"payerfsp\")+'/accounts',",
+									"  method: 'GET',",
+									"  header: {",
+									"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+									"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+									"      \"Content-Type\": \"application/json\"",
+									"  }",
+									"};",
+									"pm.sendRequest(payerfspGetStatusRequest, function (err, response) {",
+									"    console.log(response.json())",
+									"    var jsonData = response.json()",
+									"    for(var i in jsonData) {",
+									"        if((jsonData[i].ledgerAccountType === 'SETTLEMENT') && (jsonData[i].currency === 'USD')) {",
+									"            pm.environment.set(\"payerfspSettlementAccountId\",jsonData[i].id)",
+									"            pm.environment.set(\"payerfspSettlementAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+									"        }",
+									"    }",
+									"});",
+									"",
+									"const hubGetStatusRequest = {",
+									"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
+									"  method: 'GET',",
+									"  header: {",
+									"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+									"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+									"      \"Content-Type\": \"application/json\"",
+									"  }",
+									"};",
+									"pm.sendRequest(hubGetStatusRequest, function (err, response) {",
+									"    console.log(response.json())",
+									"    var jsonData = response.json()",
+									"    for(var i in jsonData) {",
+									"        if((jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') && (jsonData[i].currency === 'XOF')) {",
+									"            pm.environment.set(\"hubReconAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+									"        }",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "96c26230-6092-4f78-882f-c5343b363fe1",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"setTimeout(function () {",
+									"    const payerfspGetStatusRequest = {",
+									"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"payerfsp\")+'/accounts',",
+									"      method: 'GET',",
+									"      header: {",
+									"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+									"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+									"          \"Content-Type\": \"application/json\"",
+									"      }",
+									"    };",
+									"    pm.sendRequest(payerfspGetStatusRequest, function (err, response) {",
+									"        console.log('payerfsp accounts: ',response.json())",
+									"        var jsonData = response.json()",
+									"        var payerfspSettlementAccountBalanceAfterFundsIn",
+									"        for(var i in jsonData) {",
+									"            if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
+									"                payerfspSettlementAccountBalanceAfterFundsIn = jsonData[i].value",
+									"            }",
+									"        }",
+									"        var payerfspExpectedBalance = pm.environment.get('payerfspSettlementAccountBalanceBeforeFundsIn') - pm.environment.get('fundsInPrepareAmount')",
+									"        pm.test(\"Final Payerfsp Settlement Account Balance should be same as before FundsIn + fundsInPrepareAmount\", function () {",
+									"            pm.expect(payerfspSettlementAccountBalanceAfterFundsIn).to.eql(payerfspExpectedBalance);",
+									"          });    ",
+									"    ",
+									"    });",
+									"    ",
+									"    const hubGetStatusRequest = {",
+									"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
+									"      method: 'GET',",
+									"      header: {",
+									"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+									"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+									"          \"Content-Type\": \"application/json\"",
+									"      }",
+									"    };",
+									"    pm.sendRequest(hubGetStatusRequest, function (err, response) {",
+									"        console.log('hub accounts balance: ',response.json())",
+									"        var jsonData = response.json()",
+									"        var currentHubReconAccountBalance",
+									"        for(var i in jsonData) {",
+									"            if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+									"                hubReconAccountBalanceAfterFundsIn = jsonData[i].value",
+									"            }",
+									"        }",
+									"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsIn\")+pm.environment.get('fundsInPrepareAmount')",
+									"        console.log(hubExpectedBalance)",
+									"        pm.test(\"Final Hub Reconciliation Account Balance should be same as before FundsIn\", function () {",
+									"            pm.expect(hubReconAccountBalanceAfterFundsIn).to.eql(hubExpectedBalance);",
+									"          });  ",
+									"    });",
+									"}, 2000)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"type": "text",
+								"value": "{{hub_operator}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"transferId\": \"{{fundsInPrepareTransferId}}\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsIn\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": {{fundsInPrepareAmount}},\n    \"currency\": \"{{currency}}\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/accounts/4",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"{{payerfsp}}",
+								"accounts",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Record Funds In - prepare transfer status",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "1809507a-83ea-469d-8692-59e38cced96d",
+								"exec": [
+									"pm.environment.set('dateHeader', (new Date()).toUTCString());"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "db933910-0ef6-406a-bed5-76e74347f533",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"setTimeout(function () {",
+									"    ",
+									"    const getTransferResponse = {",
+									"      url: pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.environment.get(\"fundsInPrepareTransferId\"),",
+									"      method: 'GET',",
+									"      header: {",
+									"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
+									"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+									"          \"Content-Type\": \"application/json\"",
+									"      }",
+									"    };",
+									"    pm.sendRequest(getTransferResponse, function (err, response) {",
+									"        console.log(response.json())",
+									"        var jsonData = response.json()",
+									"        pm.test(\"Transfer State should be COMMITTED\", function () {",
+									"            pm.expect(jsonData.transferState).to.eql(\"COMMITTED\");",
+									"          });    ",
+									"    ",
+									"    });",
+									"}, 2000)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.transfers+json;version=1"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.interoperability.transfers+json;version=1.0"
+							},
+							{
+								"key": "Date",
+								"value": "{{dateHeader}}"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payerfsp}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{fundsInPrepareTransferId}}",
+							"host": [
+								"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+							],
+							"path": [
+								"transfers",
+								"{{fundsInPrepareTransferId}}"
+							]
+						},
+						"description": "The HTTP request GET /transfers/<ID> is used to get information regarding an earlier created or requested transfer. The <ID> in the URI should contain the transferId that was used for the creation of the transfer."
+					},
+					"response": []
+				},
+				{
+					"name": "RecordFundsIn-1127 - Invalid Transfer ID - 400",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"transferId\": \"blah\",\n\t\"externalReference\": \"abc123\",\n\t\"action\": \"recordFundsIn\",\n\t\"amount\": {\n\t\t\"amount\": 50.0000,\n\t\t\"currency\": \"USD\"\n\t\t\n\t},\n\t\"reason\": \"Reason for in flow of funds\",\n\t\"extensionList\": {\n\t\t\"extension\": [\n\t\t\t{\n\t\t\t\t\"key\": \"extKey1\",\n\t\t\t\t\"value\": \"extValue1\"\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"key\": \"extKey2\",\n\t\t\t\t\"value\": \"extValue2\"\n\t\t\t}\n\t\t]\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{fspName}}/accounts/{{settlementAccountId}}",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"{{fspName}}",
+								"accounts",
+								"{{settlementAccountId}}"
+							]
+						},
+						"description": "Author: Sridevi Miriyala\n\n\nDeposit Submitted via a Secure PostMan request \n* DFSP Settlement Ledger updated \n* DFSP Settlement Ledger matches bank Settlement Account Balance \n* Hub Reconciliation updated \n\nA DFSP cannot process a deposit"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FundsOut-API",
+			"item": [
+				{
+					"name": "Prepare&Reserve",
+					"item": [
+						{
+							"name": "Record Funds Out Prepare&Reserve- payerfsp",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "a96ad88c-c5e9-4077-b060-765ccd1e86e1",
+										"exec": [
+											"var uuid = require('uuid');",
+											"var generatedUUID = uuid.v4();",
+											"pm.environment.set('fundsOutPrepareReserveTransferId', generatedUUID);",
+											"pm.environment.set('fundsOutPrepareReserveAmount', 100);",
+											"",
+											"",
+											"const payerfspGetStatusRequest = {",
+											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"payerfsp\")+'/accounts',",
+											"  method: 'GET',",
+											"  header: {",
+											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"      \"Content-Type\": \"application/json\"",
+											"  }",
+											"};",
+											"pm.sendRequest(payerfspGetStatusRequest, function (err, response) {",
+											"    console.log(response.json())",
+											"    var jsonData = response.json()",
+											"    for(var i in jsonData) {",
+											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
+											"            pm.environment.set(\"payerfspSettlementAccountId\",jsonData[i].id)",
+											"            pm.environment.set(\"payerfspSettlementAccountBalanceBeforeFundsOutPrepare\",jsonData[i].value)",
+											"        }",
+											"    }",
+											"});",
+											"",
+											"const hubGetStatusRequest = {",
+											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
+											"  method: 'GET',",
+											"  header: {",
+											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"      \"Content-Type\": \"application/json\"",
+											"  }",
+											"};",
+											"pm.sendRequest(hubGetStatusRequest, function (err, response) {",
+											"    console.log(response.json())",
+											"    var jsonData = response.json()",
+											"    for(var i in jsonData) {",
+											"        if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"            pm.environment.set(\"hubReconAccountBalanceBeforeFundsOutPrepare\",jsonData[i].value)",
+											"        }",
+											"    }",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "96c26230-6092-4f78-882f-c5343b363fe1",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});",
+											"",
+											"setTimeout(function () {",
+											"    const payerfspGetStatusRequest = {",
+											"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"payerfsp\")+'/accounts',",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(payerfspGetStatusRequest, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        var payerfspSettlementAccountBalanceAfterFundsOutPrepare",
+											"        for(var i in jsonData) {",
+											"            if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
+											"                payerfspSettlementAccountBalanceAfterFundsOutPrepare = jsonData[i].value",
+											"            }",
+											"        }",
+											"        var payerfspExpectedBalance = pm.environment.get('payerfspSettlementAccountBalanceBeforeFundsOutPrepare')+pm.environment.get(\"fundsOutPrepareReserveAmount\")",
+											"        pm.test(\"Final Payerfsp Settlement Account Balance should increase by the transfer amount\", function () {",
+											"            pm.expect(payerfspSettlementAccountBalanceAfterFundsOutPrepare).to.eql(payerfspExpectedBalance);",
+											"          });    ",
+											"    ",
+											"    });",
+											"    ",
+											"    const hubGetStatusRequest = {",
+											"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(hubGetStatusRequest, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        var hubReconAccountBalanceAfterFundsOutPrepare",
+											"        for(var i in jsonData) {",
+											"            if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"                hubReconAccountBalanceAfterFundsOutPrepare = jsonData[i].value",
+											"            }",
+											"        }",
+											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsOutPrepare\")//-pm.environment.get(\"fundsOutPrepareReserveAmount\")",
+											"        pm.test(\"Final Hub Reconciliation Account Balance should increase by the transfer amount\", function () {",
+											"            pm.expect(hubReconAccountBalanceAfterFundsOutPrepare).to.eql(hubExpectedBalance);",
+											"          });  ",
+											"    });",
+											"}, 2000)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"type": "text",
+										"value": "{{hub_operator}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"transferId\": \"{{fundsOutPrepareReserveTransferId}}\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsOutPrepareReserve\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": {{fundsOutPrepareReserveAmount}},\n    \"currency\": \"{{currency}}\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/accounts/{{payerfspSettlementAccountId}}",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants",
+										"{{payerfsp}}",
+										"accounts",
+										"{{payerfspSettlementAccountId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Record Funds Out Prepare&Reserve - transfer status",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "1809507a-83ea-469d-8692-59e38cced96d",
+										"exec": [
+											"pm.environment.set('dateHeader', (new Date()).toUTCString());"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "db933910-0ef6-406a-bed5-76e74347f533",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});",
+											"",
+											"setTimeout(function () {",
+											"    ",
+											"    const getTransferResponse = {",
+											"      url: pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.environment.get(\"fundsOutPrepareReserveTransferId\"),",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"payerfsp\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(getTransferResponse, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        pm.test(\"Transfer State should be RESERVED\", function () {",
+											"            pm.expect(jsonData.transferState).to.eql(\"RESERVED\");",
+											"          });    ",
+											"    ",
+											"    });",
+											"}, 2000)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/vnd.interoperability.transfers+json;version=1"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+									},
+									{
+										"key": "Date",
+										"value": "{{dateHeader}}"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "{{payerfsp}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{fundsOutPrepareReserveTransferId}}",
+									"host": [
+										"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+									],
+									"path": [
+										"transfers",
+										"{{fundsOutPrepareReserveTransferId}}"
+									]
+								},
+								"description": "The HTTP request GET /transfers/<ID> is used to get information regarding an earlier created or requested transfer. The <ID> in the URI should contain the transferId that was used for the creation of the transfer."
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Commit",
+					"item": [
+						{
+							"name": "Record Funds Out Commit - payerfsp",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "a96ad88c-c5e9-4077-b060-765ccd1e86e1",
+										"exec": [
+											"var uuid = require('uuid');",
+											"var generatedUUID = uuid.v4();",
+											"pm.environment.set('fundsOutCommitTransferId', generatedUUID);",
+											"pm.environment.set('fundsOutCommitAmount', 500);",
+											"",
+											"",
+											"const payerfspGetStatusRequest = {",
+											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"payerfsp\")+'/accounts',",
+											"  method: 'GET',",
+											"  header: {",
+											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
+											"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"      \"Content-Type\": \"application/json\"",
+											"  }",
+											"};",
+											"pm.sendRequest(payerfspGetStatusRequest, function (err, response) {",
+											"    console.log(response.json())",
+											"    var jsonData = response.json()",
+											"    for(var i in jsonData) {",
+											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
+											"            pm.environment.set(\"payerfspSettlementAccountBalanceBeforeFundsOutCommit\",jsonData[i].value)",
+											"        }",
+											"    }",
+											"});",
+											"",
+											"const hubGetStatusRequest = {",
+											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
+											"  method: 'GET',",
+											"  header: {",
+											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
+											"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"      \"Content-Type\": \"application/json\"",
+											"  }",
+											"};",
+											"pm.sendRequest(hubGetStatusRequest, function (err, response) {",
+											"    console.log(response.json())",
+											"    var jsonData = response.json()",
+											"    for(var i in jsonData) {",
+											"        if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"            pm.environment.set(\"hubReconAccountBalanceBeforeFundsOutCommit\",jsonData[i].value)",
+											"        }",
+											"    }",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "96c26230-6092-4f78-882f-c5343b363fe1",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});",
+											"",
+											"setTimeout(function () {",
+											"    const payerfspGetStatusRequest = {",
+											"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"payerfsp\")+'/accounts',",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(payerfspGetStatusRequest, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        var payerfspSettlementAccountBalanceAfterFundsOutCommit",
+											"        for(var i in jsonData) {",
+											"            if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
+											"                payerfspSettlementAccountBalanceAfterFundsOutCommit = jsonData[i].value",
+											"            }",
+											"        }",
+											"        var payerfspExpectedBalance = pm.environment.get('payerfspSettlementAccountBalanceBeforeFundsOutCommit')-pm.environment.get(\"fundsOutPrepareAmount\")",
+											"        pm.test(\"Final Payerfsp Settlement Account Balance should increase by the transfer amount\", function () {",
+											"            pm.expect(payerfspSettlementAccountBalanceAfterFundsOutPrepare).to.eql(payerfspExpectedBalance);",
+											"          });    ",
+											"    ",
+											"    });",
+											"    ",
+											"    const hubGetStatusRequest = {",
+											"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(hubGetStatusRequest, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        var hubReconAccountBalanceAfterFundsOutCommit",
+											"        for(var i in jsonData) {",
+											"            if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"                hubReconAccountBalanceAfterFundsOutCommit = jsonData[i].value",
+											"            }",
+											"        }",
+											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsOutCommit\")+pm.environment.get(\"fundsOutPrepareAmount\")",
+											"        pm.test(\"Final Hub Reconciliation Account Balance should increase by the transfer amount\", function () {",
+											"            pm.expect(hubReconAccountBalanceAfterFundsOutCommit).to.eql(hubExpectedBalance);",
+											"          });  ",
+											"    });",
+											"}, 2000)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{HUBOPERATOR_BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"type": "text",
+										"value": "{{hub_operator}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"action\": \"recordFundsOutCommit\",\n  \"reason\": \"Reason for out flow of funds\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/accounts/{{payerfspSettlementAccountId}}/transfers/{{fundsOutPrepareReserveTransferId}}",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants",
+										"{{payerfsp}}",
+										"accounts",
+										"{{payerfspSettlementAccountId}}",
+										"transfers",
+										"{{fundsOutPrepareReserveTransferId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Record Funds Out Commit - transfer status",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "1809507a-83ea-469d-8692-59e38cced96d",
+										"exec": [
+											"pm.environment.set('dateHeader', (new Date()).toUTCString());"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "db933910-0ef6-406a-bed5-76e74347f533",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"setTimeout(function () {",
+											"    ",
+											"    const getTransferResponse = {",
+											"      url: pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.environment.get(\"fundsOutPrepareTransferId\"),",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(getTransferResponse, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        pm.test(\"Transfer State should be RESERVED\", function () {",
+											"            pm.expect(jsonData.transferState).to.eql(\"RESERVED\");",
+											"          });    ",
+											"    ",
+											"    });",
+											"}, 2000)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "b3d74594-fa41-3581-acf6-4909aaec8134",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/vnd.interoperability.transfers+json;version=1"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+									},
+									{
+										"key": "Date",
+										"value": "{{dateHeader}}"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "{{hub_operator}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{fundsInPrepareTransferId}}",
+									"host": [
+										"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+									],
+									"path": [
+										"transfers",
+										"{{fundsInPrepareTransferId}}"
+									]
+								},
+								"description": "The HTTP request GET /transfers/<ID> is used to get information regarding an earlier created or requested transfer. The <ID> in the URI should contain the transferId that was used for the creation of the transfer."
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Abort",
+					"item": [
+						{
+							"name": "Record Funds Out Commit - payerfsp",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "a96ad88c-c5e9-4077-b060-765ccd1e86e1",
+										"exec": [
+											"var uuid = require('uuid');",
+											"var generatedUUID = uuid.v4();",
+											"pm.environment.set('fundsOutCommitTransferId', generatedUUID);",
+											"pm.environment.set('fundsOutCommitAmount', 500);",
+											"",
+											"",
+											"const payerfspGetStatusRequest = {",
+											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"payerfsp\")+'/accounts',",
+											"  method: 'GET',",
+											"  header: {",
+											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
+											"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"      \"Content-Type\": \"application/json\"",
+											"  }",
+											"};",
+											"pm.sendRequest(payerfspGetStatusRequest, function (err, response) {",
+											"    console.log(response.json())",
+											"    var jsonData = response.json()",
+											"    for(var i in jsonData) {",
+											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
+											"            pm.environment.set(\"payerfspSettlementAccountBalanceBeforeFundsOutCommit\",jsonData[i].value)",
+											"        }",
+											"    }",
+											"});",
+											"",
+											"const hubGetStatusRequest = {",
+											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
+											"  method: 'GET',",
+											"  header: {",
+											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
+											"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"      \"Content-Type\": \"application/json\"",
+											"  }",
+											"};",
+											"pm.sendRequest(hubGetStatusRequest, function (err, response) {",
+											"    console.log(response.json())",
+											"    var jsonData = response.json()",
+											"    for(var i in jsonData) {",
+											"        if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"            pm.environment.set(\"hubReconAccountBalanceBeforeFundsOutCommit\",jsonData[i].value)",
+											"        }",
+											"    }",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "96c26230-6092-4f78-882f-c5343b363fe1",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});",
+											"",
+											"setTimeout(function () {",
+											"    const payerfspGetStatusRequest = {",
+											"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"payerfsp\")+'/accounts',",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(payerfspGetStatusRequest, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        var payerfspSettlementAccountBalanceAfterFundsOutCommit",
+											"        for(var i in jsonData) {",
+											"            if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
+											"                payerfspSettlementAccountBalanceAfterFundsOutCommit = jsonData[i].value",
+											"            }",
+											"        }",
+											"        var payerfspExpectedBalance = pm.environment.get('payerfspSettlementAccountBalanceBeforeFundsOutCommit')-pm.environment.get(\"fundsOutPrepareAmount\")",
+											"        pm.test(\"Final Payerfsp Settlement Account Balance should increase by the transfer amount\", function () {",
+											"            pm.expect(payerfspSettlementAccountBalanceAfterFundsOutPrepare).to.eql(payerfspExpectedBalance);",
+											"          });    ",
+											"    ",
+											"    });",
+											"    ",
+											"    const hubGetStatusRequest = {",
+											"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(hubGetStatusRequest, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        var hubReconAccountBalanceAfterFundsOutCommit",
+											"        for(var i in jsonData) {",
+											"            if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"                hubReconAccountBalanceAfterFundsOutCommit = jsonData[i].value",
+											"            }",
+											"        }",
+											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsOutCommit\")+pm.environment.get(\"fundsOutPrepareAmount\")",
+											"        pm.test(\"Final Hub Reconciliation Account Balance should increase by the transfer amount\", function () {",
+											"            pm.expect(hubReconAccountBalanceAfterFundsOutCommit).to.eql(hubExpectedBalance);",
+											"          });  ",
+											"    });",
+											"}, 2000)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{HUBOPERATOR_BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"type": "text",
+										"value": "{{hub_operator}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"transferId\": \"{{fundsOutCommitTransferId}}\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsOutCommit\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": {{fundsOutCommitAmount}},\n    \"currency\": \"USD\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{hub_operator}}/accounts/{{payerfspSettlementAccountId}}",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants",
+										"{{hub_operator}}",
+										"accounts",
+										"{{payerfspSettlementAccountId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Record Funds Out Commit - transfer status",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "1809507a-83ea-469d-8692-59e38cced96d",
+										"exec": [
+											"pm.environment.set('dateHeader', (new Date()).toUTCString());"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "db933910-0ef6-406a-bed5-76e74347f533",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"setTimeout(function () {",
+											"    ",
+											"    const getTransferResponse = {",
+											"      url: pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.environment.get(\"fundsOutPrepareTransferId\"),",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(getTransferResponse, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        pm.test(\"Transfer State should be RESERVED\", function () {",
+											"            pm.expect(jsonData.transferState).to.eql(\"RESERVED\");",
+											"          });    ",
+											"    ",
+											"    });",
+											"}, 2000)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "b3d74594-fa41-3581-acf6-4909aaec8134",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/vnd.interoperability.transfers+json;version=1"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+									},
+									{
+										"key": "Date",
+										"value": "{{dateHeader}}"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "{{hub_operator}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{fundsInPrepareTransferId}}",
+									"host": [
+										"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+									],
+									"path": [
+										"transfers",
+										"{{fundsInPrepareTransferId}}"
+									]
+								},
+								"description": "The HTTP request GET /transfers/<ID> is used to get information regarding an earlier created or requested transfer. The <ID> in the URI should contain the transferId that was used for the creation of the transfer."
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
 				}
 			]
 		}
