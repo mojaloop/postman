@@ -387,7 +387,51 @@
 					"name": "payerfsp (p2p transfers)",
 					"item": [
 						{
-							"name": "Add payerfsp with Currency",
+							"name": "Add payerfsp - PARTIES, QUOTES",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "b4e2e685-d724-4dad-acae-381abede26f8",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "{{payerfsp}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"fspId\":\"{{payerfsp}}\",\n  \"baseUrl\":\"{{HOST_SIMULATOR}}/payerfsp\",\n  \"connectorPort\": \"8091\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/fsp",
+									"host": [
+										"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+									],
+									"path": [
+										"fsp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payerfsp - TRANSFERS",
 							"event": [
 								{
 									"listen": "test",
@@ -414,7 +458,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"name\": \"payerfsp\",\"currency\": \"XOF\"}"
+									"raw": "{\"name\": \"payerfsp\",\"currency\": \"{{currency}}\"}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}/participants",
@@ -456,7 +500,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"currency\": \"XOF\",\n\t\"limit\": {\n\t  \"type\": \"NET_DEBIT_CAP\",\n\t  \"value\": 10000\n\t},\n\t\"initialPosition\": 0\n}"
+									"raw": "{\n\t\"currency\": \"{{currency}}\",\n\t\"limit\": {\n\t  \"type\": \"NET_DEBIT_CAP\",\n\t  \"value\": 10000\n\t},\n\t\"initialPosition\": 0\n}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/initialPositionAndLimits",
@@ -467,50 +511,6 @@
 										"participants",
 										"payerfsp",
 										"initialPositionAndLimits"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add payerfsp callback - PARTIES, QUOTES",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "b4e2e685-d724-4dad-acae-381abede26f8",
-										"exec": [
-											"pm.test(\"Status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"value": "{{payerfsp}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"fspId\":\"{{payerfsp}}\",\n  \"baseUrl\":\"{{HOST_SIMULATOR}}/payerfsp\",\n  \"connectorPort\": \"8091\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/fsp",
-									"host": [
-										"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
-									],
-									"path": [
-										"fsp"
 									]
 								}
 							},
@@ -1010,7 +1010,51 @@
 					"name": "payeefsp (p2p transfers)",
 					"item": [
 						{
-							"name": "Add payeefsp currency account",
+							"name": "Add payeefsp - PARIES, QUOTES",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "b4e2e685-d724-4dad-acae-381abede26f8",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "{{payeefsp}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"fspId\":\"{{payeefsp}}\",\n  \"baseUrl\":\"{{HOST_SIMULATOR}}/payeefsp\",\n  \"connectorPort\": \"8091\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/fsp",
+									"host": [
+										"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+									],
+									"path": [
+										"fsp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payeefsp - TRANSFERS",
 							"event": [
 								{
 									"listen": "test",
@@ -1037,7 +1081,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"name\": \"payeefsp\",\"currency\": \"XOF\"}"
+									"raw": "{\"name\": \"payeefsp\",\"currency\": \"{{currency}}\"}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}/participants",
@@ -1079,7 +1123,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"currency\": \"XOF\",\n\t\"limit\": {\n\t  \"type\": \"NET_DEBIT_CAP\",\n\t  \"value\": 10000\n\t},\n\t\"initialPosition\": 0\n}"
+									"raw": "{\n\t\"currency\": \"{{currency}}\",\n\t\"limit\": {\n\t  \"type\": \"NET_DEBIT_CAP\",\n\t  \"value\": 10000\n\t},\n\t\"initialPosition\": 0\n}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payeefsp/initialPositionAndLimits",
@@ -1090,50 +1134,6 @@
 										"participants",
 										"payeefsp",
 										"initialPositionAndLimits"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add payeefsp callback - PARIES, QUOTES",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "b4e2e685-d724-4dad-acae-381abede26f8",
-										"exec": [
-											"pm.test(\"Status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"value": "{{payeefsp}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"fspId\":\"{{payeefsp}}\",\n  \"baseUrl\":\"{{HOST_SIMULATOR}}/payeefsp\",\n  \"connectorPort\": \"8091\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/fsp",
-									"host": [
-										"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
-									],
-									"path": [
-										"fsp"
 									]
 								}
 							},
@@ -1619,95 +1619,7 @@
 					"name": "testfsp1 (Only for Settlements testing)",
 					"item": [
 						{
-							"name": "Add testfsp1",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "b4e2e685-d724-4dad-acae-381abede26f8",
-										"exec": [
-											"pm.test(\"Status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"value": "testfsp1"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"fspId\":\"testfsp1\",\n  \"baseUrl\":\"{{HOST_SIMULATOR}}/testfsp1\",\n  \"connectorPort\": \"8091\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/fsp",
-									"host": [
-										"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
-									],
-									"path": [
-										"fsp"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add initial position and limits - testfsp1",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "d767079d-a9dd-401a-8d6a-5f94654c4259",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"currency\": \"XOF\",\n\t\"limit\": {\n\t  \"type\": \"NET_DEBIT_CAP\",\n\t  \"value\": 10000\n\t},\n\t\"initialPosition\": 0\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/initialPositionAndLimits",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants",
-										"testfsp1",
-										"initialPositionAndLimits"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add testfsp1 callback - PARTIES, QUOTES",
+							"name": "Add testfsp1 - PARTIES, QUOTES",
 							"event": [
 								{
 									"listen": "test",
@@ -1745,6 +1657,92 @@
 									],
 									"path": [
 										"fsp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add testfsp1 - TRANSFERS",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76c222f4-969b-4081-b4d7-133ebe48f50f",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\": \"testfsp1\",\"currency\": \"{{currency}}\"}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add initial position and limits - testfsp1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d767079d-a9dd-401a-8d6a-5f94654c4259",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"currency\": \"{{currency}}\",\n\t\"limit\": {\n\t  \"type\": \"NET_DEBIT_CAP\",\n\t  \"value\": 10000\n\t},\n\t\"initialPosition\": 0\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/initialPositionAndLimits",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants",
+										"testfsp1",
+										"initialPositionAndLimits"
 									]
 								}
 							},
@@ -2230,94 +2228,6 @@
 					"name": "testfsp2 (Only for Settlements testing)",
 					"item": [
 						{
-							"name": "Add testfsp2",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "b4e2e685-d724-4dad-acae-381abede26f8",
-										"exec": [
-											"pm.test(\"Status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"value": "testfsp1"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"fspId\":\"testfsp2\",\n  \"baseUrl\":\"{{HOST_SIMULATOR}}/testfsp2\",\n  \"connectorPort\": \"8091\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/fsp",
-									"host": [
-										"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
-									],
-									"path": [
-										"fsp"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add initial position and limits - testfsp2",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "d767079d-a9dd-401a-8d6a-5f94654c4259",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"currency\": \"XOF\",\n\t\"limit\": {\n\t  \"type\": \"NET_DEBIT_CAP\",\n\t  \"value\": 10000\n\t},\n\t\"initialPosition\": 0\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/initialPositionAndLimits",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants",
-										"testfsp2",
-										"initialPositionAndLimits"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "Add testfsp2 callback - PARTIES, QUOTES",
 							"event": [
 								{
@@ -2356,6 +2266,92 @@
 									],
 									"path": [
 										"fsp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add testfsp2 - TRANSFERS",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76c222f4-969b-4081-b4d7-133ebe48f50f",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\": \"testfsp2\",\"currency\": \"{{currency}}\"}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add initial position and limits - testfsp2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d767079d-a9dd-401a-8d6a-5f94654c4259",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"currency\": \"{{currency}}\",\n\t\"limit\": {\n\t  \"type\": \"NET_DEBIT_CAP\",\n\t  \"value\": 10000\n\t},\n\t\"initialPosition\": 0\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/initialPositionAndLimits",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants",
+										"testfsp2",
+										"initialPositionAndLimits"
 									]
 								}
 							},
@@ -2841,94 +2837,6 @@
 					"name": "testfsp3 (Only for Settlements testing)",
 					"item": [
 						{
-							"name": "Add testfsp3",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "b4e2e685-d724-4dad-acae-381abede26f8",
-										"exec": [
-											"pm.test(\"Status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"value": "testfsp1"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"fspId\":\"testfsp3\",\n  \"baseUrl\":\"{{HOST_SIMULATOR}}/testfsp1\",\n  \"connectorPort\": \"8091\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/fsp",
-									"host": [
-										"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
-									],
-									"path": [
-										"fsp"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add initial position and limits - testfsp1",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "d767079d-a9dd-401a-8d6a-5f94654c4259",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"currency\": \"XOF\",\n\t\"limit\": {\n\t  \"type\": \"NET_DEBIT_CAP\",\n\t  \"value\": 10000\n\t},\n\t\"initialPosition\": 0\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/initialPositionAndLimits",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants",
-										"testfsp3",
-										"initialPositionAndLimits"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "Add testfsp3 callback - PARTIES, QUOTES",
 							"event": [
 								{
@@ -2967,6 +2875,92 @@
 									],
 									"path": [
 										"fsp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add testfsp3- TRANSFERS",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76c222f4-969b-4081-b4d7-133ebe48f50f",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\": \"testfsp3\",\"currency\": \"{{currency}}\"}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add initial position and limits - testfsp3",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d767079d-a9dd-401a-8d6a-5f94654c4259",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"currency\": \"{{currency}}\",\n\t\"limit\": {\n\t  \"type\": \"NET_DEBIT_CAP\",\n\t  \"value\": 10000\n\t},\n\t\"initialPosition\": 0\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/initialPositionAndLimits",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants",
+										"testfsp3",
+										"initialPositionAndLimits"
 									]
 								}
 							},
@@ -3402,7 +3396,7 @@
 							]
 						},
 						{
-							"name": "Record Funds In - payeefsp  Copy",
+							"name": "Record Funds In - testfsp3",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -3431,15 +3425,15 @@
 									"raw": "{\n  \"transferId\": \"7e6b03b1-0e9a-4267-bfa4-cfce0e5e319c\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsIn\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": 5000,\n    \"currency\": \"XOF\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
 								},
 								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payeefsp}}/accounts/{{payeefspSettlementAccountId}}",
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/testfsp3/accounts/{{testfsp3SettlementAccountId}}",
 									"host": [
 										"{{HOST_CENTRAL_LEDGER}}"
 									],
 									"path": [
 										"participants",
-										"{{payeefsp}}",
+										"testfsp3",
 										"accounts",
-										"{{payeefspSettlementAccountId}}"
+										"{{testfsp3SettlementAccountId}}"
 									]
 								}
 							},
@@ -3452,7 +3446,7 @@
 					"name": "testfsp4 (Only for Settlements testing)",
 					"item": [
 						{
-							"name": "Add testfsp4",
+							"name": "Add testfsp4 - PARTIES, QUOTES",
 							"event": [
 								{
 									"listen": "test",
@@ -3490,6 +3484,48 @@
 									],
 									"path": [
 										"fsp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add testfsp4 - TRANSFERS",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76c222f4-969b-4081-b4d7-133ebe48f50f",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\": \"testfsp4\",\"currency\": \"{{currency}}\"}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants"
 									]
 								}
 							},
@@ -3534,50 +3570,6 @@
 										"participants",
 										"testfsp4",
 										"initialPositionAndLimits"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add testfsp4 callback - PARTIES, QUOTES",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "b4e2e685-d724-4dad-acae-381abede26f8",
-										"exec": [
-											"pm.test(\"Status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"value": "testfsp4"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"fspId\":\"testfsp4\",\n  \"baseUrl\":\"{{HOST_SIMULATOR}}/testfsp4\",\n  \"connectorPort\": \"8091\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/fsp",
-									"host": [
-										"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
-									],
-									"path": [
-										"fsp"
 									]
 								}
 							},
