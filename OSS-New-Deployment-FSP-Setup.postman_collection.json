@@ -36,7 +36,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"type\": \"HUB_MULTILATERAL_SETTLEMENT\",\n  \"currency\": \"XOF\"\n}"
+							"raw": "{\n  \"type\": \"HUB_MULTILATERAL_SETTLEMENT\",\n  \"currency\": \"{{currency}}\"\n}"
 						},
 						"url": {
 							"raw": "{{HOST_CENTRAL_LEDGER}}/participants/Hub/accounts",
@@ -2178,7 +2178,62 @@
 							]
 						},
 						{
-							"name": "Record Funds In - payeefsp  Copy",
+							"name": "Record Funds In - testfsp1",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "586c0595-cc84-4e7e-879f-e670aba8afdd",
+										"exec": [
+											"var uuid = require('uuid');",
+											"var generatedUUID = uuid.v4();",
+											"pm.environment.set('fundsInPrepareTransferId', generatedUUID);",
+											"pm.environment.set('fundsInPrepareAmount', 200);",
+											"",
+											"",
+											"const payerfspGetStatusRequest = {",
+											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"testfsp1\")+'/accounts',",
+											"  method: 'GET',",
+											"  header: {",
+											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"      \"Content-Type\": \"application/json\"",
+											"  }",
+											"};",
+											"pm.sendRequest(payerfspGetStatusRequest, function (err, response) {",
+											"    console.log(response.json())",
+											"    var jsonData = response.json()",
+											"    for(var i in jsonData) {",
+											"        if((jsonData[i].ledgerAccountType === 'SETTLEMENT') && (jsonData[i].currency === 'USD')) {",
+											"            pm.environment.set(\"testfsp1SettlementAccountId\",jsonData[i].id)",
+											"            pm.environment.set(\"testfsp1SettlementAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+											"        }",
+											"    }",
+											"});",
+											"",
+											"const hubGetStatusRequest = {",
+											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
+											"  method: 'GET',",
+											"  header: {",
+											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"      \"Content-Type\": \"application/json\"",
+											"  }",
+											"};",
+											"pm.sendRequest(hubGetStatusRequest, function (err, response) {",
+											"    console.log(response.json())",
+											"    var jsonData = response.json()",
+											"    for(var i in jsonData) {",
+											"        if((jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') && (jsonData[i].currency === '{{currency}}')) {",
+											"            pm.environment.set(\"hubReconAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+											"        }",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -2204,18 +2259,18 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"7e6b03b1-0e9a-4267-bfa4-cfce0e5e319c\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsIn\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": 5000,\n    \"currency\": \"XOF\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
+									"raw": "{\n  \"transferId\": \"7e6b03b1-0e9a-4267-bfa4-cfce0e5e319c\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsIn\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": 5000,\n    \"currency\": \"{{currency}}\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
 								},
 								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payeefsp}}/accounts/{{payeefspSettlementAccountId}}",
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{testfsp1}}/accounts/{{testfsp1SettlementAccountId}}",
 									"host": [
 										"{{HOST_CENTRAL_LEDGER}}"
 									],
 									"path": [
 										"participants",
-										"{{payeefsp}}",
+										"{{testfsp1}}",
 										"accounts",
-										"{{payeefspSettlementAccountId}}"
+										"{{testfsp1SettlementAccountId}}"
 									]
 								}
 							},

@@ -8986,6 +8986,114 @@
 												}
 											},
 											"response": []
+										},
+										{
+											"name": "GET transfer - Error when FSP is not involved in the transfer",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"id": "16b4580d-74c7-44e9-952e-d40a61f9cb69",
+														"exec": [
+															"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
+															"   var uuid = require('uuid');",
+															"   var generatedUUID = uuid.v4();",
+															"   pm.variables.set('transferId', generatedUUID);",
+															"}",
+															"",
+															"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
+															"   pm.variables.set('transferDate', (new Date()).toUTCString());",
+															"}"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"id": "6c54bbb2-0b33-4301-86ae-751142923a4c",
+														"exec": [
+															"pm.test(\"Status code is 202\", function () {",
+															"    pm.response.to.have.status(202);",
+															"});",
+															"",
+															"// pm.test(\"Check that Content-Type is present\", function () {",
+															"//     pm.response.to.have.header(\"Content-Type\");",
+															"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.transfers+json;version=1.0\");",
+															"// });",
+															"",
+															"setTimeout(function () {",
+															"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/testfsp1/callbacks/\"+pm.variables.get(\"get_transfer_ID\"), function (err, response) {",
+															"          if(response !== null) {",
+															"              var jsonData = response.json().data;",
+															"              var headers = response.json().headers;",
+															"              ",
+															"              pm.test(\"Response status is COMMITTED\", function () {",
+															"                pm.expect(jsonData.transferState).to.eql('COMMITTED');",
+															"              });",
+															"              pm.test(\"fspiop-source is switch\", function () {",
+															"                pm.expect(headers['fspiop-source']).to.eql('switch');",
+															"              });",
+															"              pm.test(\"fspiop-destination is payerfsp\", function () {",
+															"                pm.expect(headers['fspiop-destination']).to.eql('payerfsp');",
+															"              });",
+															"          } else {",
+															"              pm.test(\"Transfer FAILED\", function () {",
+															"                throw new Error('Did not receive response');",
+															"              });",
+															"              postman.setNextRequest(null)",
+															"          }",
+															"   });",
+															"}, 3000)",
+															"",
+															"",
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/vnd.interoperability.transfers+json;version=1"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/vnd.interoperability.transfers+json;version=1.0"
+													},
+													{
+														"key": "Date",
+														"value": "{{transferDate}}"
+													},
+													{
+														"key": "FSPIOP-Source",
+														"value": "{{payerfsp}}"
+													},
+													{
+														"key": "FSPIOP-Destination",
+														"value": "{{testfsp1}}",
+														"disabled": true
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": ""
+												},
+												"url": {
+													"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{get_transfer_ID}}",
+													"host": [
+														"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+													],
+													"path": [
+														"transfers",
+														"{{get_transfer_ID}}"
+													]
+												}
+											},
+											"response": []
 										}
 									],
 									"_postman_isSubFolder": true
@@ -9107,6 +9215,46 @@
 														"id": "1809507a-83ea-469d-8692-59e38cced96d",
 														"exec": [
 															"pm.environment.set('dateHeader', (new Date()).toUTCString());"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"id": "33dbef40-74f8-40a2-870d-8add89fca41a",
+														"exec": [
+															"pm.test(\"Status code is 202\", function () {",
+															"    pm.response.to.have.status(202);",
+															"});",
+															"",
+															"setTimeout(function () {",
+															"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.variables.get(\"get_transfer_ID\"), function (err, response) {",
+															"          if(response !== null) {",
+															"              var jsonData = response.json().data;",
+															"              var headers = response.json().headers;",
+															"              ",
+															"              pm.test(\"Error Code is 3208\", function () {",
+															"                pm.expect(jsonData.errorInformation.errorCode).to.eql('3208');",
+															"              });",
+															"              pm.test(\"Error msg is Provided Transfer ID was not found on the server.\", function () {",
+															"                pm.expect(jsonData.errorInformation.errorDescription).to.eql('Provided Transfer ID was not found on the server.');",
+															"              });",
+															"              pm.test(\"fspiop-source is switch\", function () {",
+															"                pm.expect(headers['fspiop-source']).to.eql('switch');",
+															"              });",
+															"              pm.test(\"fspiop-destination is payerfsp\", function () {",
+															"                pm.expect(headers['fspiop-destination']).to.eql('payerfsp');",
+															"              });",
+															"          } else {",
+															"              pm.test(\"Transfer FAILED\", function () {",
+															"                throw new Error('Did not receive response');",
+															"              });",
+															"              postman.setNextRequest(null)",
+															"          }",
+															"   });",
+															"}, 3000)",
+															""
 														],
 														"type": "text/javascript"
 													}
