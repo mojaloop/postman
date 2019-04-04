@@ -1012,6 +1012,8 @@
 									"   });",
 									"}, 5000)",
 									"",
+									"pm.environment.set('transferAmount', 100);",
+									"",
 									"",
 									"",
 									""
@@ -1287,7 +1289,7 @@
 									"        }",
 									"        var hubExpectedBalance = Number(pm.environment.get(\"hubReconAccountBalanceBeforeFundsIn\"))+Number(pm.environment.get('fundsInPrepareAmount'))",
 									"        console.log(hubExpectedBalance)",
-									"        pm.test(\"Final Hub Reconciliation Account Balance should be same as before FundsIn\", function () {",
+									"        pm.test(\"Final Hub Reconciliation Account Balance should be same as before FundsIn + fundsInPrepareAmount\", function () {",
 									"            pm.expect(hubReconAccountBalanceAfterFundsIn).to.eql(hubExpectedBalance);",
 									"          });  ",
 									"    });",
@@ -1469,7 +1471,7 @@
 											"    console.log(response.json())",
 											"    var jsonData = response.json()",
 											"    for(var i in jsonData) {",
-											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
+											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT' && (jsonData[i].currency === pm.environment.get(\"currency\"))) {",
 											"            pm.environment.set(\"payerfspSettlementAccountId\",jsonData[i].id)",
 											"            pm.environment.set(\"payerfspSettlementAccountBalanceBeforeFundsOutPrepare\",jsonData[i].value)",
 											"        }",
@@ -1489,7 +1491,7 @@
 											"    console.log(response.json())",
 											"    var jsonData = response.json()",
 											"    for(var i in jsonData) {",
-											"        if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"        if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION' && (jsonData[i].currency === pm.environment.get(\"currency\"))) {",
 											"            pm.environment.set(\"hubReconAccountBalanceBeforeFundsOutPrepare\",jsonData[i].value)",
 											"        }",
 											"    }",
@@ -1523,12 +1525,12 @@
 											"        var jsonData = response.json()",
 											"        var payerfspSettlementAccountBalanceAfterFundsOutPrepare",
 											"        for(var i in jsonData) {",
-											"            if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
+											"            if(jsonData[i].ledgerAccountType === 'SETTLEMENT' && (jsonData[i].currency === pm.environment.get(\"currency\"))) {",
 											"                payerfspSettlementAccountBalanceAfterFundsOutPrepare = jsonData[i].value",
 											"            }",
 											"        }",
-											"        var payerfspExpectedBalance = pm.environment.get('payerfspSettlementAccountBalanceBeforeFundsOutPrepare')+pm.environment.get(\"fundsOutPrepareReserveAmount\")",
-											"        pm.test(\"Final Payerfsp Settlement Account Balance should increase by the transfer amount\", function () {",
+											"        var payerfspExpectedBalance = Number(pm.environment.get('payerfspSettlementAccountBalanceBeforeFundsOutPrepare'))- Number(pm.environment.get(\"fundsOutPrepareReserveAmount\"))",
+											"        pm.test(\"Final Payerfsp Settlement Account Balance should decrease by the transfer amount\", function () {",
 											"            pm.expect(payerfspSettlementAccountBalanceAfterFundsOutPrepare).to.eql(payerfspExpectedBalance);",
 											"          });    ",
 											"    ",
@@ -1548,12 +1550,12 @@
 											"        var jsonData = response.json()",
 											"        var hubReconAccountBalanceAfterFundsOutPrepare",
 											"        for(var i in jsonData) {",
-											"            if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"            if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION' && (jsonData[i].currency === pm.environment.get(\"currency\"))) {",
 											"                hubReconAccountBalanceAfterFundsOutPrepare = jsonData[i].value",
 											"            }",
 											"        }",
 											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsOutPrepare\")//-pm.environment.get(\"fundsOutPrepareReserveAmount\")",
-											"        pm.test(\"Final Hub Reconciliation Account Balance should increase by the transfer amount\", function () {",
+											"        pm.test(\"Final Hub Reconciliation Account Balance should stay the same in prepare phase\", function () {",
 											"            pm.expect(hubReconAccountBalanceAfterFundsOutPrepare).to.eql(hubExpectedBalance);",
 											"          });  ",
 											"    });",
@@ -1733,7 +1735,7 @@
 											"    console.log(response.json())",
 											"    var jsonData = response.json()",
 											"    for(var i in jsonData) {",
-											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
+											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT' && (jsonData[i].currency === pm.environment.get(\"currency\"))) {",
 											"            pm.environment.set(\"payerfspSettlementAccountBalanceBeforeFundsOutCommit\",jsonData[i].value)",
 											"        }",
 											"    }",
@@ -1752,7 +1754,7 @@
 											"    console.log(response.json())",
 											"    var jsonData = response.json()",
 											"    for(var i in jsonData) {",
-											"        if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"        if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION' && (jsonData[i].currency === pm.environment.get(\"currency\"))) {",
 											"            pm.environment.set(\"hubReconAccountBalanceBeforeFundsOutCommit\",jsonData[i].value)",
 											"        }",
 											"    }",
@@ -1786,7 +1788,7 @@
 											"        var jsonData = response.json()",
 											"        var payerfspSettlementAccountBalanceAfterFundsOutCommit",
 											"        for(var i in jsonData) {",
-											"            if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
+											"            if(jsonData[i].ledgerAccountType === 'SETTLEMENT' && (jsonData[i].currency === pm.environment.get(\"currency\"))) {",
 											"                payerfspSettlementAccountBalanceAfterFundsOutCommit = jsonData[i].value",
 											"            }",
 											"        }",
@@ -1815,8 +1817,8 @@
 											"                hubReconAccountBalanceAfterFundsOutCommit = jsonData[i].value",
 											"            }",
 											"        }",
-											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsOutCommit\")+pm.environment.get(\"fundsOutPrepareAmount\")",
-											"        pm.test(\"Final Hub Reconciliation Account Balance should increase by the transfer amount\", function () {",
+											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsOutCommit\") - pm.environment.get(\"fundsOutPrepareAmount\")",
+											"        pm.test(\"Final Hub Reconciliation Account Balance should decrease by the transfer amount\", function () {",
 											"            pm.expect(hubReconAccountBalanceAfterFundsOutCommit).to.eql(hubExpectedBalance);",
 											"          });  ",
 											"    });",
@@ -2056,7 +2058,7 @@
 											"            }",
 											"        }",
 											"        var payerfspExpectedBalance = pm.environment.get('payerfspSettlementAccountBalanceBeforeFundsOutCommit')-pm.environment.get(\"fundsOutPrepareAmount\")",
-											"        pm.test(\"Final Payerfsp Settlement Account Balance should increase by the transfer amount\", function () {",
+											"        pm.test(\"Final Payerfsp Settlement Account Balance should decrease by the transfer amount\", function () {",
 											"            pm.expect(payerfspSettlementAccountBalanceAfterFundsOutPrepare).to.eql(payerfspExpectedBalance);",
 											"          });    ",
 											"    ",
@@ -2081,7 +2083,7 @@
 											"            }",
 											"        }",
 											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsOutCommit\")+pm.environment.get(\"fundsOutPrepareAmount\")",
-											"        pm.test(\"Final Hub Reconciliation Account Balance should increase by the transfer amount\", function () {",
+											"        pm.test(\"Final Hub Reconciliation Account Balance should remain the same\", function () {",
 											"            pm.expect(hubReconAccountBalanceAfterFundsOutCommit).to.eql(hubExpectedBalance);",
 											"          });  ",
 											"    });",
@@ -8726,7 +8728,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
+													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -9191,7 +9193,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
+													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -9341,7 +9343,7 @@
 													"script": {
 														"id": "2e244cfd-ff69-448a-8b62-176d4dd0b28d",
 														"exec": [
-															"pm.environment.set(\"completedTimestamp\",new Date().toISOString());"
+															"pm.variables.set(\"updatedTimestamp\",new Date('2050-10-10').toISOString());"
 														],
 														"type": "text/javascript"
 													}
@@ -9447,7 +9449,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"fulfilment\": \"{{validFulfillment}}\",\n  \"completedTimestamp\": \"{{completedTimestamp}}\",\n  \"transferState\": \"COMMITTED\"\n}"
+													"raw": "{\n  \"fulfilment\": \"{{validFulfillment}}\",\n  \"completedTimestamp\": \"{{updatedTimestamp}}\",\n  \"transferState\": \"COMMITTED\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{transfer_ID}}",
@@ -9684,7 +9686,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
+													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -10148,7 +10150,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
+													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
