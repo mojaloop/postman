@@ -1262,7 +1262,7 @@
 									"                payerfspSettlementAccountBalanceAfterFundsIn = jsonData[i].value",
 									"            }",
 									"        }",
-									"        var payerfspExpectedBalance = Number(pm.environment.get('payerfspSettlementAccountBalanceBeforeFundsIn')) + Number(pm.environment.get('fundsInPrepareAmount'))",
+									"        var payerfspExpectedBalance = -(-Number(pm.environment.get('payerfspSettlementAccountBalanceBeforeFundsIn')) + Number(pm.environment.get('fundsInPrepareAmount')))",
 									"        pm.test(\"Final Payerfsp Settlement Account Balance should be same as before FundsIn + fundsInPrepareAmount\", function () {",
 									"            pm.expect(payerfspSettlementAccountBalanceAfterFundsIn).to.eql(payerfspExpectedBalance);",
 									"          });    ",
@@ -1366,7 +1366,7 @@
 									"setTimeout(function () {",
 									"    ",
 									"    const getTransferResponse = {",
-									"      url: pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.environment.get(\"fundsInPrepareTransferId\"),",
+									"      url: pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.environment.get(\"fundsInPrepareTransferId\"),",
 									"      method: 'GET',",
 									"      header: {",
 									"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
@@ -1375,8 +1375,7 @@
 									"      }",
 									"    };",
 									"    pm.sendRequest(getTransferResponse, function (err, response) {",
-									"        console.log(response.json())",
-									"        var jsonData = response.json()",
+									"        var jsonData = response.json().data",
 									"        pm.test(\"Transfer State should be COMMITTED\", function () {",
 									"            pm.expect(jsonData.transferState).to.eql(\"COMMITTED\");",
 									"          });    ",
@@ -1442,7 +1441,7 @@
 			"name": "funds_out",
 			"item": [
 				{
-					"name": "Prepare&Reserve",
+					"name": "Reserve&Commit",
 					"item": [
 						{
 							"name": "Record Funds Out Prepare&Reserve- payerfsp",
@@ -1455,7 +1454,7 @@
 											"var uuid = require('uuid');",
 											"var generatedUUID = uuid.v4();",
 											"pm.environment.set('fundsOutPrepareReserveTransferId', generatedUUID);",
-											"pm.environment.set('fundsOutPrepareReserveAmount', 100);",
+											"pm.environment.set('fundsOutPrepareReserveAmount', 1000);",
 											"",
 											"",
 											"const payerfspGetStatusRequest = {",
@@ -1529,7 +1528,7 @@
 											"                payerfspSettlementAccountBalanceAfterFundsOutPrepare = jsonData[i].value",
 											"            }",
 											"        }",
-											"        var payerfspExpectedBalance = Number(pm.environment.get('payerfspSettlementAccountBalanceBeforeFundsOutPrepare'))- Number(pm.environment.get(\"fundsOutPrepareReserveAmount\"))",
+											"        var payerfspExpectedBalance = -(-Number(pm.environment.get('payerfspSettlementAccountBalanceBeforeFundsOutPrepare'))- Number(pm.environment.get(\"fundsOutPrepareReserveAmount\")))",
 											"        pm.test(\"Final Payerfsp Settlement Account Balance should decrease by the transfer amount\", function () {",
 											"            pm.expect(payerfspSettlementAccountBalanceAfterFundsOutPrepare).to.eql(payerfspExpectedBalance);",
 											"          });    ",
@@ -1632,7 +1631,7 @@
 											"setTimeout(function () {",
 											"    ",
 											"    const getTransferResponse = {",
-											"      url: pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.environment.get(\"fundsOutPrepareReserveTransferId\"),",
+											"      url: pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.environment.get(\"fundsOutPrepareReserveTransferId\"),",
 											"      method: 'GET',",
 											"      header: {",
 											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"BEARER_TOKEN\"),",
@@ -1641,8 +1640,7 @@
 											"      }",
 											"    };",
 											"    pm.sendRequest(getTransferResponse, function (err, response) {",
-											"        console.log(response.json())",
-											"        var jsonData = response.json()",
+											"        var jsonData = response.json().data",
 											"        pm.test(\"Transfer State should be RESERVED\", function () {",
 											"            pm.expect(jsonData.transferState).to.eql(\"RESERVED\");",
 											"          });    ",
@@ -1701,13 +1699,7 @@
 								"description": "The HTTP request GET /transfers/<ID> is used to get information regarding an earlier created or requested transfer. The <ID> in the URI should contain the transferId that was used for the creation of the transfer."
 							},
 							"response": []
-						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "Commit",
-					"item": [
+						},
 						{
 							"name": "Record Funds Out Commit - payerfsp",
 							"event": [
@@ -1719,7 +1711,7 @@
 											"var uuid = require('uuid');",
 											"var generatedUUID = uuid.v4();",
 											"pm.environment.set('fundsOutCommitTransferId', generatedUUID);",
-											"pm.environment.set('fundsOutCommitAmount', 500);",
+											"pm.environment.set('fundsOutCommitAmount', 1000);",
 											"",
 											"",
 											"const payerfspGetStatusRequest = {",
@@ -1792,9 +1784,9 @@
 											"                payerfspSettlementAccountBalanceAfterFundsOutCommit = jsonData[i].value",
 											"            }",
 											"        }",
-											"        var payerfspExpectedBalance = pm.environment.get('payerfspSettlementAccountBalanceBeforeFundsOutCommit')-pm.environment.get(\"fundsOutPrepareAmount\")",
-											"        pm.test(\"Final Payerfsp Settlement Account Balance should decrease by the transfer amount\", function () {",
-											"            pm.expect(payerfspSettlementAccountBalanceAfterFundsOutPrepare).to.eql(payerfspExpectedBalance);",
+											"        var payerfspExpectedBalance = pm.environment.get('payerfspSettlementAccountBalanceBeforeFundsOutCommit')//-pm.environment.get(\"fundsOutPrepareAmount\")",
+											"        pm.test(\"Final Payerfsp Settlement Account Balance should not change during commit phase\", function () {",
+											"            pm.expect(payerfspSettlementAccountBalanceAfterFundsOutCommit).to.eql(payerfspExpectedBalance);",
 											"          });    ",
 											"    ",
 											"    });",
@@ -1813,11 +1805,11 @@
 											"        var jsonData = response.json()",
 											"        var hubReconAccountBalanceAfterFundsOutCommit",
 											"        for(var i in jsonData) {",
-											"            if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"            if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION' && (jsonData[i].currency === pm.environment.get(\"currency\"))) {",
 											"                hubReconAccountBalanceAfterFundsOutCommit = jsonData[i].value",
 											"            }",
 											"        }",
-											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsOutCommit\") - pm.environment.get(\"fundsOutPrepareAmount\")",
+											"        var hubExpectedBalance = Number(pm.environment.get(\"hubReconAccountBalanceBeforeFundsOutCommit\")) - Number(pm.environment.get(\"fundsOutCommitAmount\"))",
 											"        pm.test(\"Final Hub Reconciliation Account Balance should decrease by the transfer amount\", function () {",
 											"            pm.expect(hubReconAccountBalanceAfterFundsOutCommit).to.eql(hubExpectedBalance);",
 											"          });  ",
@@ -1856,7 +1848,7 @@
 									"raw": "{\n  \"action\": \"recordFundsOutCommit\",\n  \"reason\": \"Reason for out flow of funds\"\n}"
 								},
 								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/accounts/24/transfers/{{fundsOutPrepareReserveTransferId}}",
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/accounts/{{payerfspSettlementAccountId}}/transfers/{{fundsOutPrepareReserveTransferId}}",
 									"host": [
 										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
 									],
@@ -1864,7 +1856,7 @@
 										"participants",
 										"{{payerfsp}}",
 										"accounts",
-										"24",
+										"{{payerfspSettlementAccountId}}",
 										"transfers",
 										"{{fundsOutPrepareReserveTransferId}}"
 									]
@@ -1890,14 +1882,14 @@
 									"script": {
 										"id": "db933910-0ef6-406a-bed5-76e74347f533",
 										"exec": [
-											"pm.test(\"Status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
 											"});",
 											"",
 											"setTimeout(function () {",
 											"    ",
 											"    const getTransferResponse = {",
-											"      url: pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.environment.get(\"fundsOutPrepareTransferId\"),",
+											"      url: pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.environment.get(\"fundsOutPrepareReserveTransferId\"),",
 											"      method: 'GET',",
 											"      header: {",
 											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
@@ -1906,10 +1898,9 @@
 											"      }",
 											"    };",
 											"    pm.sendRequest(getTransferResponse, function (err, response) {",
-											"        console.log(response.json())",
-											"        var jsonData = response.json()",
-											"        pm.test(\"Transfer State should be RESERVED\", function () {",
-											"            pm.expect(jsonData.transferState).to.eql(\"RESERVED\");",
+											"        var jsonData = response.json().data",
+											"        pm.test(\"Transfer State should be COMMITTED\", function () {",
+											"            pm.expect(jsonData.transferState).to.eql(\"COMMITTED\");",
 											"          });    ",
 											"    ",
 											"    });",
@@ -1946,7 +1937,7 @@
 									},
 									{
 										"key": "FSPIOP-Source",
-										"value": "{{hub_operator}}"
+										"value": "{{payerfsp}}"
 									}
 								],
 								"body": {
@@ -1954,13 +1945,13 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{fundsInPrepareTransferId}}",
+									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{fundsOutPrepareReserveTransferId}}",
 									"host": [
 										"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
 									],
 									"path": [
 										"transfers",
-										"{{fundsInPrepareTransferId}}"
+										"{{fundsOutPrepareReserveTransferId}}"
 									]
 								},
 								"description": "The HTTP request GET /transfers/<ID> is used to get information regarding an earlier created or requested transfer. The <ID> in the URI should contain the transferId that was used for the creation of the transfer."
@@ -1971,10 +1962,10 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"name": "Abort",
+					"name": "Reserve&Abort",
 					"item": [
 						{
-							"name": "Record Funds Out Commit - payerfsp",
+							"name": "Record Funds Out Prepare&Reserve- payerfsp",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -1983,8 +1974,265 @@
 										"exec": [
 											"var uuid = require('uuid');",
 											"var generatedUUID = uuid.v4();",
-											"pm.environment.set('fundsOutCommitTransferId', generatedUUID);",
-											"pm.environment.set('fundsOutCommitAmount', 500);",
+											"pm.environment.set('fundsOutPrepareReserveTransferId', generatedUUID);",
+											"pm.environment.set('fundsOutPrepareReserveAmount', 1000);",
+											"",
+											"",
+											"const payerfspGetStatusRequest = {",
+											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"payerfsp\")+'/accounts',",
+											"  method: 'GET',",
+											"  header: {",
+											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"      \"Content-Type\": \"application/json\"",
+											"  }",
+											"};",
+											"pm.sendRequest(payerfspGetStatusRequest, function (err, response) {",
+											"    console.log(response.json())",
+											"    var jsonData = response.json()",
+											"    for(var i in jsonData) {",
+											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT' && (jsonData[i].currency === pm.environment.get(\"currency\"))) {",
+											"            pm.environment.set(\"payerfspSettlementAccountId\",jsonData[i].id)",
+											"            pm.environment.set(\"payerfspSettlementAccountBalanceBeforeFundsOutPrepare\",jsonData[i].value)",
+											"        }",
+											"    }",
+											"});",
+											"",
+											"const hubGetStatusRequest = {",
+											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
+											"  method: 'GET',",
+											"  header: {",
+											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"      \"Content-Type\": \"application/json\"",
+											"  }",
+											"};",
+											"pm.sendRequest(hubGetStatusRequest, function (err, response) {",
+											"    console.log(response.json())",
+											"    var jsonData = response.json()",
+											"    for(var i in jsonData) {",
+											"        if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION' && (jsonData[i].currency === pm.environment.get(\"currency\"))) {",
+											"            pm.environment.set(\"hubReconAccountBalanceBeforeFundsOutPrepare\",jsonData[i].value)",
+											"        }",
+											"    }",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "96c26230-6092-4f78-882f-c5343b363fe1",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});",
+											"",
+											"setTimeout(function () {",
+											"    const payerfspGetStatusRequest = {",
+											"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"payerfsp\")+'/accounts',",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(payerfspGetStatusRequest, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        var payerfspSettlementAccountBalanceAfterFundsOutPrepare",
+											"        for(var i in jsonData) {",
+											"            if(jsonData[i].ledgerAccountType === 'SETTLEMENT' && (jsonData[i].currency === pm.environment.get(\"currency\"))) {",
+											"                payerfspSettlementAccountBalanceAfterFundsOutPrepare = jsonData[i].value",
+											"            }",
+											"        }",
+											"        var payerfspExpectedBalance = -(-Number(pm.environment.get('payerfspSettlementAccountBalanceBeforeFundsOutPrepare'))- Number(pm.environment.get(\"fundsOutPrepareReserveAmount\")))",
+											"        pm.test(\"Final Payerfsp Settlement Account Balance should decrease by the transfer amount\", function () {",
+											"            pm.expect(payerfspSettlementAccountBalanceAfterFundsOutPrepare).to.eql(payerfspExpectedBalance);",
+											"          });    ",
+											"    ",
+											"    });",
+											"    ",
+											"    const hubGetStatusRequest = {",
+											"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(hubGetStatusRequest, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        var hubReconAccountBalanceAfterFundsOutPrepare",
+											"        for(var i in jsonData) {",
+											"            if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION' && (jsonData[i].currency === pm.environment.get(\"currency\"))) {",
+											"                hubReconAccountBalanceAfterFundsOutPrepare = jsonData[i].value",
+											"            }",
+											"        }",
+											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsOutPrepare\")//-pm.environment.get(\"fundsOutPrepareReserveAmount\")",
+											"        pm.test(\"Final Hub Reconciliation Account Balance should stay the same in prepare phase\", function () {",
+											"            pm.expect(hubReconAccountBalanceAfterFundsOutPrepare).to.eql(hubExpectedBalance);",
+											"          });  ",
+											"    });",
+											"}, 2000)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"type": "text",
+										"value": "{{hub_operator}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"transferId\": \"{{fundsOutPrepareReserveTransferId}}\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsOutPrepareReserve\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": {{fundsOutPrepareReserveAmount}},\n    \"currency\": \"{{currency}}\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/accounts/{{payerfspSettlementAccountId}}",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants",
+										"{{payerfsp}}",
+										"accounts",
+										"{{payerfspSettlementAccountId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Record Funds Out Prepare&Reserve - transfer status",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "1809507a-83ea-469d-8692-59e38cced96d",
+										"exec": [
+											"pm.environment.set('dateHeader', (new Date()).toUTCString());"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "db933910-0ef6-406a-bed5-76e74347f533",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});",
+											"",
+											"setTimeout(function () {",
+											"    ",
+											"    const getTransferResponse = {",
+											"      url: pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.environment.get(\"fundsOutPrepareReserveTransferId\"),",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"payerfsp\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(getTransferResponse, function (err, response) {",
+											"        console.log(response.json().data)",
+											"        var jsonData = response.json().data",
+											"        pm.test(\"Transfer State should be RESERVED\", function () {",
+											"            pm.expect(jsonData.transferState).to.eql(\"RESERVED\");",
+											"          });    ",
+											"    ",
+											"    });",
+											"}, 2000)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/vnd.interoperability.transfers+json;version=1"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+									},
+									{
+										"key": "Date",
+										"value": "{{dateHeader}}"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "{{payerfsp}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{fundsOutPrepareReserveTransferId}}",
+									"host": [
+										"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+									],
+									"path": [
+										"transfers",
+										"{{fundsOutPrepareReserveTransferId}}"
+									]
+								},
+								"description": "The HTTP request GET /transfers/<ID> is used to get information regarding an earlier created or requested transfer. The <ID> in the URI should contain the transferId that was used for the creation of the transfer."
+							},
+							"response": []
+						},
+						{
+							"name": "Record Funds Out Abort - payerfsp",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "a96ad88c-c5e9-4077-b060-765ccd1e86e1",
+										"exec": [
+											"var uuid = require('uuid');",
+											"var generatedUUID = uuid.v4();",
+											"pm.environment.set('fundsOutCommitAmount', 1000);",
 											"",
 											"",
 											"const payerfspGetStatusRequest = {",
@@ -2000,8 +2248,8 @@
 											"    console.log(response.json())",
 											"    var jsonData = response.json()",
 											"    for(var i in jsonData) {",
-											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-											"            pm.environment.set(\"payerfspSettlementAccountBalanceBeforeFundsOutCommit\",jsonData[i].value)",
+											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT' && (jsonData[i].currency === pm.environment.get(\"currency\"))) {",
+											"            pm.environment.set(\"payerfspSettlementAccountBalanceBeforeFundsOutAbort\",jsonData[i].value)",
 											"        }",
 											"    }",
 											"});",
@@ -2019,8 +2267,8 @@
 											"    console.log(response.json())",
 											"    var jsonData = response.json()",
 											"    for(var i in jsonData) {",
-											"        if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
-											"            pm.environment.set(\"hubReconAccountBalanceBeforeFundsOutCommit\",jsonData[i].value)",
+											"        if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION' && (jsonData[i].currency === pm.environment.get(\"currency\"))) {",
+											"            pm.environment.set(\"hubReconAccountBalanceBeforeFundsOutAbort\",jsonData[i].value)",
 											"        }",
 											"    }",
 											"});",
@@ -2051,15 +2299,15 @@
 											"    pm.sendRequest(payerfspGetStatusRequest, function (err, response) {",
 											"        console.log(response.json())",
 											"        var jsonData = response.json()",
-											"        var payerfspSettlementAccountBalanceAfterFundsOutCommit",
+											"        var payerfspSettlementAccountBalanceAfterFundsOutAbort",
 											"        for(var i in jsonData) {",
-											"            if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-											"                payerfspSettlementAccountBalanceAfterFundsOutCommit = jsonData[i].value",
+											"            if(jsonData[i].ledgerAccountType === 'SETTLEMENT' && (jsonData[i].currency === pm.environment.get(\"currency\"))) {",
+											"                payerfspSettlementAccountBalanceAfterFundsOutAbort = jsonData[i].value",
 											"            }",
 											"        }",
-											"        var payerfspExpectedBalance = pm.environment.get('payerfspSettlementAccountBalanceBeforeFundsOutCommit')-pm.environment.get(\"fundsOutPrepareAmount\")",
-											"        pm.test(\"Final Payerfsp Settlement Account Balance should decrease by the transfer amount\", function () {",
-											"            pm.expect(payerfspSettlementAccountBalanceAfterFundsOutPrepare).to.eql(payerfspExpectedBalance);",
+											"        var payerfspExpectedBalance = pm.environment.get('payerfspSettlementAccountBalanceBeforeFundsOutPrepare')//-pm.environment.get(\"fundsOutPrepareAmount\")",
+											"        pm.test(\"Final Payerfsp Settlement Account Balance should rollback to the value before Prepare\", function () {",
+											"            pm.expect(payerfspSettlementAccountBalanceAfterFundsOutAbort).to.eql(payerfspExpectedBalance);",
 											"          });    ",
 											"    ",
 											"    });",
@@ -2078,13 +2326,13 @@
 											"        var jsonData = response.json()",
 											"        var hubReconAccountBalanceAfterFundsOutCommit",
 											"        for(var i in jsonData) {",
-											"            if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
-											"                hubReconAccountBalanceAfterFundsOutCommit = jsonData[i].value",
+											"            if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION' && (jsonData[i].currency === pm.environment.get(\"currency\"))) {",
+											"                hubReconAccountBalanceAfterFundsOutAbort = jsonData[i].value",
 											"            }",
 											"        }",
-											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsOutCommit\")+pm.environment.get(\"fundsOutPrepareAmount\")",
-											"        pm.test(\"Final Hub Reconciliation Account Balance should remain the same\", function () {",
-											"            pm.expect(hubReconAccountBalanceAfterFundsOutCommit).to.eql(hubExpectedBalance);",
+											"        var hubExpectedBalance = Number(pm.environment.get(\"hubReconAccountBalanceBeforeFundsOutAbort\"))",
+											"        pm.test(\"Final Hub Reconciliation Account Balance should not change\", function () {",
+											"            pm.expect(hubReconAccountBalanceAfterFundsOutAbort).to.eql(hubExpectedBalance);",
 											"          });  ",
 											"    });",
 											"}, 2000)"
@@ -2104,7 +2352,7 @@
 										}
 									]
 								},
-								"method": "POST",
+								"method": "PUT",
 								"header": [
 									{
 										"key": "Content-Type",
@@ -2118,10 +2366,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"{{fundsOutCommitTransferId}}\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsOutCommit\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": {{fundsOutCommitAmount}},\n    \"currency\": \"USD\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
+									"raw": "{\n  \"action\": \"recordFundsOutAbort\",\n  \"reason\": \"Reason for out flow of funds\"\n}"
 								},
 								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/accounts/24",
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/accounts/{{payerfspSettlementAccountId}}/transfers/{{fundsOutPrepareReserveTransferId}}",
 									"host": [
 										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
 									],
@@ -2129,14 +2377,16 @@
 										"participants",
 										"{{payerfsp}}",
 										"accounts",
-										"24"
+										"{{payerfspSettlementAccountId}}",
+										"transfers",
+										"{{fundsOutPrepareReserveTransferId}}"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "Record Funds Out Commit - transfer status",
+							"name": "Record Funds Out Abort - transfer status",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -2153,14 +2403,14 @@
 									"script": {
 										"id": "db933910-0ef6-406a-bed5-76e74347f533",
 										"exec": [
-											"pm.test(\"Status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
 											"});",
 											"",
 											"setTimeout(function () {",
 											"    ",
 											"    const getTransferResponse = {",
-											"      url: pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.environment.get(\"fundsOutPrepareTransferId\"),",
+											"      url: pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.environment.get(\"fundsOutPrepareReserveTransferId\"),",
 											"      method: 'GET',",
 											"      header: {",
 											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
@@ -2169,10 +2419,10 @@
 											"      }",
 											"    };",
 											"    pm.sendRequest(getTransferResponse, function (err, response) {",
-											"        console.log(response.json())",
-											"        var jsonData = response.json()",
-											"        pm.test(\"Transfer State should be RESERVED\", function () {",
-											"            pm.expect(jsonData.transferState).to.eql(\"RESERVED\");",
+											"        console.log(response.json().data)",
+											"        var jsonData = response.json().data",
+											"        pm.test(\"Transfer State should be ABORTED\", function () {",
+											"            pm.expect(jsonData.transferState).to.eql(\"ABORTED\");",
 											"          });    ",
 											"    ",
 											"    });",
@@ -2209,7 +2459,7 @@
 									},
 									{
 										"key": "FSPIOP-Source",
-										"value": "{{hub_operator}}"
+										"value": "{{payerfsp}}"
 									}
 								],
 								"body": {
@@ -2217,13 +2467,13 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{fundsInPrepareTransferId}}",
+									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{fundsOutPrepareReserveTransferId}}",
 									"host": [
 										"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
 									],
 									"path": [
 										"transfers",
-										"{{fundsInPrepareTransferId}}"
+										"{{fundsOutPrepareReserveTransferId}}"
 									]
 								},
 								"description": "The HTTP request GET /transfers/<ID> is used to get information regarding an earlier created or requested transfer. The <ID> in the URI should contain the transferId that was used for the creation of the transfer."
