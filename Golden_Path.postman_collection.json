@@ -851,8 +851,8 @@
 									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
 									"          if(response.responseSize !== 0) {",
 									"              var jsonData = response.json();",
-									"              pm.test(\"Error Code should be returned\", function () {",
-									"                pm.expect(jsonData.errorInformation.errorCode).to.eql(4001);",
+									"              pm.test(\"Error Code should be returned '4001'\", function () {",
+									"                pm.expect(jsonData.errorInformation.errorCode).to.eql('4001');",
 									"              });",
 									"              pm.test(\"Error Description should be returned\", function () {",
 									"                pm.expect(jsonData.errorInformation.errorDescription).to.eql('Payer FSP has insufficient liquidity to perform the transfer');",
@@ -872,7 +872,7 @@
 									"              var jsonData = response.json().data;",
 									"              var headers = response.json().headers;",
 									"              pm.test(\"Error Code should be returned\", function () {",
-									"                pm.expect(jsonData.errorInformation.errorCode).to.eql(4001);",
+									"                pm.expect(jsonData.errorInformation.errorCode).to.eql('4001');",
 									"              });",
 									"              pm.test(\"Error Description should be returned\", function () {",
 									"                pm.expect(jsonData.errorInformation.errorDescription).to.eql('Payer FSP has insufficient liquidity to perform the transfer');",
@@ -2383,6 +2383,71 @@
 						}
 					],
 					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Close Existing Window",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5b16f7ed-2212-419d-a43b-e2b38cf2b718",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"New window State should be OPEN\", function () {",
+									"    console.log(pm.response.json());",
+									"    pm.expect(pm.response.json().state).to.eql('OPEN');",
+									"    pm.environment.set(\"newOpenWindowID\", pm.response.json().settlementWindowId);",
+									"    pm.environment.set(\"closedWindowID\",  pm.environment.get(\"openWindowID\"));",
+									"    console.log('newOpenWindowID',pm.environment.get(\"newOpenWindowID\"));",
+									"    console.log('closedWindowID',pm.environment.get(\"closedWindowID\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "payerfsp",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"state\": \"CLOSED\",\n  \"reason\": \"string\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows/{{openWindowID}}",
+							"host": [
+								"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
+							],
+							"path": [
+								"settlementWindows",
+								"{{openWindowID}}"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -2769,26 +2834,11 @@
 												}
 											],
 											"request": {
-												"auth": {
-													"type": "bearer",
-													"bearer": [
-														{
-															"key": "token",
-															"value": "{{BEARER_TOKEN}}",
-															"type": "string"
-														}
-													]
-												},
 												"method": "POST",
 												"header": [
 													{
 														"key": "Content-Type",
 														"value": "application/json"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "payerfsp",
-														"type": "text"
 													}
 												],
 												"body": {
@@ -9494,7 +9544,7 @@
 													"script": {
 														"id": "2e244cfd-ff69-448a-8b62-176d4dd0b28d",
 														"exec": [
-															"pm.variables.set(\"updatedTimestamp\",new Date('2050-10-10').toISOString());"
+															"pm.variables.set(\"updatedTimestamp\",new Date().toISOString());"
 														],
 														"type": "text/javascript"
 													}
@@ -9544,7 +9594,7 @@
 															"              var jsonData = response.json().data;",
 															"              ",
 															"              pm.test(\"Response Error Code is 3106\", function () {",
-															"                pm.expect(jsonData.errorInformation.errorCode).to.eql(3106);",
+															"                pm.expect(jsonData.errorInformation.errorCode).to.eql('3106');",
 															"              });",
 															"              ",
 															"              pm.test(\"Response Error Desription is 'Modified request'\", function () {",
@@ -10499,8 +10549,8 @@
 															"                ",
 															"              //Check data",
 															"              var jsonData = response.json().data;",
-															"              pm.test(\"Response Error Code is 3106\", function () {",
-															"                pm.expect(jsonData.errorInformation.errorCode).to.eql(3106);",
+															"              pm.test(\"Response Error Code is '3106'\", function () {",
+															"                pm.expect(jsonData.errorInformation.errorCode).to.eql('3106');",
 															"              });",
 															"              ",
 															"              pm.test(\"Response Error Desription is 'Modified request'\", function () {",
@@ -10808,8 +10858,8 @@
 									"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
 									"            });",
 									"            ",
-									"            pm.test(\"payerfsp fspiop-uri is empty\", function () {",
-									"                pm.expect(headers['fspiop-uri']).to.eql('/transfers');",
+									"            pm.test(\"payerfsp fspiop-uri is /transfers/{ID}\", function () {",
+									"                pm.expect(headers['fspiop-uri']).to.eql('undefined');",
 									"            });",
 									"            ",
 									"            // pm.test(\"payerfsp fspiop-http-method is empty\", function () {",
@@ -10818,7 +10868,7 @@
 									"            ",
 									"            var jsonData = response.json().data;",
 									"            pm.test(\"Error Code should be 3100\", function () {",
-									"                pm.expect(jsonData.errorInformation.errorCode).to.eql(3100);",
+									"                pm.expect(jsonData.errorInformation.errorCode).to.eql('3100');",
 									"              });",
 									"              pm.test(\"Error Description should be: Generic validation error: Participant payerfsp is inactive\", function () {",
 									"                pm.expect(jsonData.errorInformation.errorDescription).to.eql('Generic validation error: Participant payerfsp is inactive');",
