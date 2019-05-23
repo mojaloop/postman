@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1a8aa4ab-1035-4ea7-86c3-c0c78de6d7f2",
+		"_postman_id": "9921d90d-b46b-41fd-841c-3a6edfc2a048",
 		"name": "OSS-New-Deployment-FSP-Setup",
 		"description": "Author: Sridevi Miriyala\nPurpose: Used to add new FSP and relevant Callback Information",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -6406,6 +6406,66 @@
 								"participants",
 								"MSISDN",
 								"27720201002"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register Participant {{pathfinderMSISDN}} against MSISDN Simulator for PayeeFSP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.participants+json;version=1"
+							},
+							{
+								"key": "Connection",
+								"value": "keep-alive"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.interoperability.participants+json;version=1.0"
+							},
+							{
+								"key": "Date",
+								"value": ""
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "payeefsp"
+							},
+							{
+								"key": "Postman-Token",
+								"value": "7aa4c9f3-1738-49f0-8904-7821e2336692,4127ff87-7d17-483c-8e3e-f0b562a16d84"
+							},
+							{
+								"key": "User-Agent",
+								"value": "PostmanRuntime/7.11.0"
+							},
+							{
+								"key": "accept-encoding",
+								"value": "gzip, deflate"
+							},
+							{
+								"key": "cache-control",
+								"value": "no-cache"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fspId\": \"payeefsp\",\n    \"currency\": \"USD\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{pathfinderMSISDN}}",
+							"host": [
+								"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+							],
+							"path": [
+								"participants",
+								"MSISDN",
+								"{{pathfinderMSISDN}}"
 							]
 						}
 					},
