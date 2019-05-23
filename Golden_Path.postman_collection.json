@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "878342de-da0c-4dad-989f-9df2c2683d70",
+		"_postman_id": "f95b5e99-df5a-4b66-87c5-8945b53f84b9",
 		"name": "Golden_Path",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -51,7 +51,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"27713803912\",\n            \"fspId\": \"{{payeefsp}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+									"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"{{pathfinderMSISDN}}\",\n            \"fspId\": \"{{payeefsp}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
 								},
 								"url": {
 									"raw": "{{HOST_SIMULATOR}}/payeefsp/parties/MSISDN/{{pathfinderMSISDN}}",
@@ -128,11 +128,11 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.parties+json"
+										"value": "application/vnd.interoperability.parties+json;version=1"
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/vnd.interoperability.parties+json;version=1.0"
 									},
 									{
 										"key": "FSPIOP-Source",
@@ -148,9 +148,9 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/parties/MSISDN/{{pathfinderMSISDN}}",
+									"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/{{pathfinderMSISDN}}",
 									"host": [
-										"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+										"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
 									],
 									"path": [
 										"parties",
