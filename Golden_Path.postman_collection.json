@@ -259,9 +259,9 @@
 									"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"USD\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 								},
 								"url": {
-									"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
+									"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
 									"host": [
-										"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+										"{{HOST_QUOTING_SERVICE}}"
 									],
 									"path": [
 										"quotes"
@@ -423,7 +423,7 @@
 											"",
 											"pm.variables.set('transferDate', (new Date()).toUTCString());",
 											"",
-											"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))"
+											"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))"
 										],
 										"type": "text/javascript"
 									}
