@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f95b5e99-df5a-4b66-87c5-8945b53f84b9",
+		"_postman_id": "6565a254-eb57-4463-b31f-5e71510a8e8b",
 		"name": "Golden_Path",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -80,23 +80,162 @@
 											"    pm.response.to.have.status(202);",
 											"});",
 											"",
-											"// pm.test(\"Check that Content-Type is present\", function () {",
-											"//     pm.response.to.have.header(\"Content-Type\");",
-											"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.parties+json;version=1.0\");",
-											"// });",
-											"",
+											"//Check data on payee side",
 											"setTimeout(function () {",
-											"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"pathfinderMSISDN\"), function (err, response) {",
-											"       //console.log(response.json());",
+											"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payeefsp/requests/\"+pm.variables.get(\"pathfinderMSISDN\"), function (err, response) {",
+											"       ",
+											"       if(response.responseSize !== 0) { ",
+											"       //Checking headers",
+											"        var headers = response.json().headers;",
+											"        pm.test(\"payeefsp fspiop-source is payerfsp\", function () {",
+											"            pm.expect(headers['fspiop-source']).to.eql('payerfsp');",
+											"        });",
+											"        ",
+											"        pm.test(\"payeefsp fspiop-destination is payeefsp\", function () {",
+											"            pm.expect(headers['fspiop-destination']).to.eql('payeefsp');",
+											"        });",
+											"        ",
+											"        pm.test(\"payeefsp content-type should be application/vnd.interoperability.parties+json;version=1.0\", function () {",
+											"            pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.parties+json;version=1.0');",
+											"        });",
+											"        ",
+											"        pm.test(\"payeefsp accept should be application/vnd.interoperability.parties+json;version=1\", function () {",
+											"            pm.expect(headers['accept']).to.eql('should be application/vnd.interoperability.parties+json;version=1');",
+											"        });",
+											"        ",
+											"        ",
+											"        ",
+											"        //Validate protected header inside Signature",
+											"        var {signature,protectedHeader} = JSON.parse(headers['fspiop-signature'])",
+											"        var decodedProtectedHeaders = JSON.parse(atob(protectedHeader))",
+											"        console.log('decodedProtectedHeaders:',decodedProtectedHeaders)",
+											"        ",
+											"        // pm.test(\"FSPIOP-Signature signature is returned\", function () {",
+											"        //     pm.expect(signature).to.eql(pm.environment.get(\"payeefsp-signature\"));",
+											"        // });",
+											"        ",
+											"        pm.test(\"FSPIOP-Signature Protected Header alg to be RS256\", function () {",
+											"            pm.expect(decodedProtectedHeaders['alg']).to.eql('RS256');",
+											"        });",
+											"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-URI to be /parties\", function () {",
+											"            pm.expect(decodedProtectedHeaders['FSPIOP-URI']).to.eql('/parties');",
+											"        });",
+											"        ",
+											"",
+											"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-HTTP-Method to be GET\", function () {",
+											"            pm.expect(decodedProtectedHeaders['FSPIOP-HTTP-Method']).to.eql('GET');",
+											"        });",
+											"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Source to be Payerfsp\", function () {",
+											"            pm.expect(decodedProtectedHeaders['FSPIOP-Source']).to.eql('payerfsp');",
+											"        });",
+											"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Destination to be payeefsp\", function () {",
+											"            pm.expect(decodedProtectedHeaders['FSPIOP-Destination']).to.eql('payeefsp');",
+											"        });",
+											"        pm.test(\"FSPIOP-Signature Protected Header Date is present\", function () {",
+											"            pm.expect(decodedProtectedHeaders['Date']).to.not.eql(undefined);",
+											"        });",
+											"       ",
+											"        pm.test(\"payeefsp FSPIOP-URI to be /parties\", function () {",
+											"            pm.expect(headers['fspiop-uri']).to.eql('/parties');",
+											"        });",
+											"        ",
+											"        pm.test(\"payeefsp fspiop-http-method is GET\", function () {",
+											"            pm.expect(headers['fspiop-http-method']).to.eql('GET');",
+											"        });",
+											"        ",
+											"        ",
+											"        ",
+											"       } else {",
+											"           pm.test(\"Parties FAILED\", function () {",
+											"            throw new Error('Did not receive response');",
+											"           });",
+											"           ",
+											"       }",
+											"      ",
+											"    });",
+											"}, 4000)",
+											"",
+											"//Check data on payer side",
+											"setTimeout(function () {",
+											"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.variables.get(\"pathfinderMSISDN\"), function (err, response) {",
+											"       ",
+											"       if(response.responseSize !== 0) { ",
+											"       //Checking headers",
+											"        var headers = response.json().headers;",
+											"        pm.test(\"payerfsp fspiop-source is payeefsp\", function () {",
+											"            pm.expect(headers['fspiop-source']).to.eql('payeefsp');",
+											"        });",
+											"        ",
+											"        pm.test(\"payerfsp fspiop-destination is payerfsp\", function () {",
+											"            pm.expect(headers['fspiop-destination']).to.eql('payerfsp');",
+											"        });",
+											"        ",
+											"        pm.test(\"payerfsp content-type should be application/vnd.interoperability.quotes+json;version=1.0\", function () {",
+											"            pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.quotes+json;version=1.0');",
+											"        });",
+											"        ",
+											"        pm.test(\"payerfsp accept is empty\", function () {",
+											"            pm.expect(headers['accept']).to.eql(undefined);",
+											"        });",
+											"        ",
+											"        ",
+											"        ",
+											"        //Validate protected header inside Signature",
+											"        var {signature,protectedHeader} = JSON.parse(headers['fspiop-signature'])",
+											"        var decodedProtectedHeaders = JSON.parse(atob(protectedHeader))",
+											"        console.log('decodedProtectedHeaders:',decodedProtectedHeaders)",
+											"        ",
+											"        // pm.test(\"FSPIOP-Signature signature is returned\", function () {",
+											"        //     pm.expect(signature).to.eql(pm.environment.get(\"payeefsp-signature\"));",
+											"        // });",
+											"        ",
+											"        pm.test(\"FSPIOP-Signature Protected Header alg to be RS256\", function () {",
+											"            pm.expect(decodedProtectedHeaders['alg']).to.eql('RS256');",
+											"        });",
+											"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-URI to be /parties/\"+pm.environment.get(\"pathfinderMSISDN\"), function () {",
+											"            pm.expect(decodedProtectedHeaders['FSPIOP-URI']).to.eql('/parties/'+pm.environment.get(\"pathfinderMSISDN\"));",
+											"        });",
+											"        ",
+											"",
+											"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-HTTP-Method to be PUT\", function () {",
+											"            pm.expect(decodedProtectedHeaders['FSPIOP-HTTP-Method']).to.eql('PUT');",
+											"        });",
+											"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Source to be mojaloop-sdk\", function () {",
+											"            pm.expect(decodedProtectedHeaders['FSPIOP-Source']).to.eql('payeefsp');",
+											"        });",
+											"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Destination to be payerfsp\", function () {",
+											"            pm.expect(decodedProtectedHeaders['FSPIOP-Destination']).to.eql('payerfsp');",
+											"        });",
+											"        pm.test(\"FSPIOP-Signature Protected Header Date is present\", function () {",
+											"            pm.expect(decodedProtectedHeaders['Date']).to.not.eql(undefined);",
+											"        });",
+											"       ",
+											"        pm.test(\"payerfsp FSPIOP-URI to be /quotes/\"+pm.environment.get(\"quoteId\"), function () {",
+											"            pm.expect(headers['fspiop-uri']).to.eql('/parties/'+pm.environment.get(\"pathfinderMSISDN\"));",
+											"        });",
+											"        ",
+											"        pm.test(\"payerfsp fspiop-http-method is PUT\", function () {",
+											"            pm.expect(headers['fspiop-http-method']).to.eql('PUT');",
+											"        });",
+											"        ",
+											"        //Checking data",
+											"        var jsonData = response.json().data;",
 											"       pm.test(\"Expected receiver first name is: \"+pm.variables.get(\"expectedFirstName\"), function () {",
-											"           pm.expect(response.json().party.personalInfo.complexName.firstName).to.eql(pm.variables.get(\"expectedFirstName\"));",
+											"           pm.expect(jsonData.party.personalInfo.complexName.firstName).to.eql(pm.variables.get(\"expectedFirstName\"));",
 											"        });",
 											"        pm.test(\"Expected receiver last name is: \"+pm.variables.get(\"expectedLastName\"), function () {",
-											"          pm.expect(response.json().party.personalInfo.complexName.lastName).to.eql(pm.variables.get(\"expectedLastName\"));",
+											"          pm.expect(jsonData.party.personalInfo.complexName.lastName).to.eql(pm.variables.get(\"expectedLastName\"));",
 											"        });",
 											"        pm.test(\"Expected receiver DOB: \"+pm.variables.get(\"expectedDOB\"), function () {",
-											"          pm.expect(response.json().party.personalInfo.dateOfBirth).to.eql(pm.variables.get(\"expectedDOB\"));",
-											"        });   ",
+											"          pm.expect(jsonData.party.personalInfo.dateOfBirth).to.eql(pm.variables.get(\"expectedDOB\"));",
+											"        });  ",
+											"        ",
+											"       } else {",
+											"           pm.test(\"Quote FAILED\", function () {",
+											"            throw new Error('Did not receive response');",
+											"           });",
+											"           ",
+											"       }",
 											"      ",
 											"    });",
 											"}, 4000)",
@@ -170,15 +309,14 @@
 									"script": {
 										"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 										"exec": [
-											"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
 											"   var uuid = require('uuid');",
 											"   var generatedUUID = uuid.v4();",
-											"   pm.variables.set('quoteId', generatedUUID);",
-											"}",
+											"   pm.environment.set('quoteId', generatedUUID);",
+											"   generatedUUID = uuid.v4();",
+											"   pm.environment.set('transactionId', generatedUUID);",
 											"",
-											"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
 											"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
-											"}"
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -186,33 +324,86 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "b7ca6bc0-b58a-46d8-8881-2db1aa0703ef",
+										"id": "029f9c14-13e7-4aac-ada8-572ccf2d502c",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
 											"});",
 											"",
-											"// pm.test(\"Check that Content-Type is present\", function () {",
-											"//     pm.response.to.have.header(\"Content-Type\");",
-											"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
-											"// });",
 											"",
-											"",
+											"//Check Data on payer side",
 											"setTimeout(function () {",
-											"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
-											"      if(response !== null) {",
-											"          console.log('response: ',response.json());",
-											"       pm.test(\"Response ilpPacket is not null\", function () {",
-											"           console.log('ilpPacket: ',response.json().ilpPacket)",
-											"           pm.expect(response.json().ilpPacket).not.eql(null);",
-											"          pm.environment.set(\"ilpPacket\", response.json().ilpPacket);",
+											"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
+											"      if(response.responseSize !== 0) {",
+											"          //Checking headers",
+											"            var headers = response.json().headers;",
+											"            pm.test(\"payerfsp fspiop-source is payeefsp\", function () {",
+											"                pm.expect(headers['fspiop-source']).to.eql('payeefsp');",
+											"            });",
+											"            ",
+											"            pm.test(\"payerfsp fspiop-destination is payerfsp\", function () {",
+											"                pm.expect(headers['fspiop-destination']).to.eql('payerfsp');",
+											"            });",
+											"            ",
+											"            pm.test(\"payerfsp content-type should be application/vnd.interoperability.quotes+json;version=1.0\", function () {",
+											"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.quotes+json;version=1.0');",
+											"            });",
+											"            ",
+											"            pm.test(\"payerfsp accept is empty\", function () {",
+											"                pm.expect(headers['accept']).to.eql(undefined);",
+											"            });",
+											"            ",
+											"            ",
+											"            ",
+											"            //Validate protected header inside Signature",
+											"            var {signature,protectedHeader} = JSON.parse(headers['fspiop-signature'])",
+											"            var decodedProtectedHeaders = JSON.parse(atob(protectedHeader))",
+											"            console.log('decodedProtectedHeaders:',decodedProtectedHeaders)",
+											"            ",
+											"            // pm.test(\"FSPIOP-Signature signature is returned\", function () {",
+											"            //     pm.expect(signature).to.eql(pm.environment.get(\"payeefsp-signature\"));",
+											"            // });",
+											"            ",
+											"            pm.test(\"FSPIOP-Signature Protected Header alg to be RS256\", function () {",
+											"                pm.expect(decodedProtectedHeaders['alg']).to.eql('RS256');",
+											"            });",
+											"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-URI to be /quotes/\"+pm.environment.get(\"quoteId\"), function () {",
+											"                pm.expect(decodedProtectedHeaders['FSPIOP-URI']).to.eql('/quotes/'+pm.environment.get(\"quoteId\"));",
+											"            });",
+											"            ",
+											"",
+											"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-HTTP-Method to be PUT\", function () {",
+											"                pm.expect(decodedProtectedHeaders['FSPIOP-HTTP-Method']).to.eql('PUT');",
+											"            });",
+											"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Source to be mojaloop-sdk\", function () {",
+											"                pm.expect(decodedProtectedHeaders['FSPIOP-Source']).to.eql('payeefsp');",
+											"            });",
+											"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Destination to be payerfsp\", function () {",
+											"                pm.expect(decodedProtectedHeaders['FSPIOP-Destination']).to.eql('payerfsp');",
+											"            });",
+											"            pm.test(\"FSPIOP-Signature Protected Header Date is present\", function () {",
+											"                pm.expect(decodedProtectedHeaders['Date']).to.not.eql(undefined);",
+											"            });",
 											"           ",
-											"       });",
+											"            pm.test(\"payerfsp FSPIOP-URI to be /quotes/\"+pm.environment.get(\"quoteId\"), function () {",
+											"                pm.expect(headers['fspiop-uri']).to.eql('/quotes/'+pm.environment.get(\"quoteId\"));",
+											"            });",
+											"            ",
+											"            pm.test(\"payerfsp fspiop-http-method is PUT\", function () {",
+											"                pm.expect(headers['fspiop-http-method']).to.eql('PUT');",
+											"            });",
+											"            ",
+											"            var jsonData = response.json().data;",
+											"          ",
+											"            pm.test(\"Response ilpPacket is not null\", function () {",
+											"                pm.expect(jsonData.ilpPacket).not.equal(undefined);",
+											"                pm.environment.set(\"ilpPacket\", jsonData.ilpPacket);",
+											"            });",
 											"       ",
-											"       pm.test(\"Response condition is not null\", function () {",
-											"           pm.expect(response.json().condition).not.eql(null);",
-											"           pm.environment.set(\"condition\", response.json().condition);",
-											"       });",
+											"           pm.test(\"Response condition is not null\", function () {",
+											"               pm.expect(jsonData.condition).not.equal(undefined);",
+											"               pm.environment.set(\"condition\", jsonData.condition);",
+											"           });",
 											"      } else {",
 											"          pm.test(\"Quote FAILED\", function () {",
 											"            throw new Error('Did not receive response');",
@@ -231,11 +422,21 @@
 								}
 							],
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TESTFSP1_BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.quotes+json;version=1"
+										"value": "application/vnd.interoperability.quotes+json"
 									},
 									{
 										"key": "Content-Type",
@@ -243,20 +444,20 @@
 									},
 									{
 										"key": "Date",
-										"value": "{{quoteDate}}"
+										"value": "{{dateHeader}}"
 									},
 									{
-										"key": "FSPIOP-SOurce",
-										"value": "{{payerfsp}}"
+										"key": "FSPIOP-Source",
+										"value": "payerfsp"
 									},
 									{
 										"key": "FSPIOP-Destination",
-										"value": "{{payeefsp}}"
+										"value": "payeefsp"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"USD\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+									"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"payerfsp\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"payeefsp\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"60\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
@@ -358,7 +559,7 @@
 											"//Check the callback response that Switch forwards to payerfsp",
 											"setTimeout(function () {",
 											"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
-											"          if(response !== null) {",
+											"          if(response.responseSize !== 0) {",
 											"            //Checking headers",
 											"            var headers = response.json().headers;",
 											"            pm.test(\"payerfsp fspiop-source is payeefsp\", function () {",
@@ -377,9 +578,9 @@
 											"                pm.expect(headers['accept']).to.eql(undefined);",
 											"            });",
 											"            ",
-											"            pm.test(\"fspiop-signature is returned\", function () {",
-											"                pm.expect(headers['fspiop-signature']).to.eql(pm.environment.get(\"payeefsp_fspiop_signature\"));",
-											"            });",
+											"            // pm.test(\"fspiop-signature is returned\", function () {",
+											"            //     pm.expect(headers['fspiop-signature']).to.eql(pm.environment.get(\"payeefsp_fspiop_signature\"));",
+											"            // });",
 											"           ",
 											"            ",
 											"            pm.test(\"payerfsp fspiop-uri includes transfers\", function () {",
@@ -799,9 +1000,9 @@
 							"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"USD\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 						},
 						"url": {
-							"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
+							"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
 							"host": [
-								"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+								"{{HOST_QUOTING_SERVICE}}"
 							],
 							"path": [
 								"quotes"
@@ -861,14 +1062,14 @@
 									"              pm.test(\"Transfer FAILED\", function () {",
 									"                throw new Error('Did not receive response');",
 									"              });",
-									"              postman.setNextRequest(null)",
+									"              ",
 									"          }",
 									"   });",
 									"}, 5000)",
 									"",
 									"setTimeout(function () {",
 									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
-									"          if(response !== null) {",
+									"          if(response.responseSize !== 0) {",
 									"              var jsonData = response.json().data;",
 									"              var headers = response.json().headers;",
 									"              pm.test(\"Error Code should be returned\", function () {",
@@ -908,7 +1109,7 @@
 									"              pm.test(\"Transfer FAILED\", function () {",
 									"                throw new Error('Did not receive response');",
 									"              });",
-									"              postman.setNextRequest(null)",
+									"              ",
 									"          }",
 									"   });",
 									"}, 5000)",
@@ -2383,71 +2584,6 @@
 						}
 					],
 					"_postman_isSubFolder": true
-				},
-				{
-					"name": "Close Existing Window",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "5b16f7ed-2212-419d-a43b-e2b38cf2b718",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"New window State should be OPEN\", function () {",
-									"    console.log(pm.response.json());",
-									"    pm.expect(pm.response.json().state).to.eql('OPEN');",
-									"    pm.environment.set(\"newOpenWindowID\", pm.response.json().settlementWindowId);",
-									"    pm.environment.set(\"closedWindowID\",  pm.environment.get(\"openWindowID\"));",
-									"    console.log('newOpenWindowID',pm.environment.get(\"newOpenWindowID\"));",
-									"    console.log('closedWindowID',pm.environment.get(\"closedWindowID\"));",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{BEARER_TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "FSPIOP-Source",
-								"value": "payerfsp",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"state\": \"CLOSED\",\n  \"reason\": \"string\"\n}"
-						},
-						"url": {
-							"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows/{{openWindowID}}",
-							"host": [
-								"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
-							],
-							"path": [
-								"settlementWindows",
-								"{{openWindowID}}"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -2894,12 +3030,12 @@
 															"      if(response.responseSize !== 0) {",
 															"          console.log(response.json());",
 															"       pm.test(\"Response ilpPacket is not null\", function () {",
-															"           pm.expect(response.json().ilpPacket).not.equal(null);",
+															"           pm.expect(response.json().ilpPacket).not.equal(undefined);",
 															"           pm.environment.set(\"ilpPacket\", response.json().ilpPacket);",
 															"       });",
 															"       ",
 															"       pm.test(\"Response condition is not null\", function () {",
-															"           pm.expect(response.json().condition).not.equal(null);",
+															"           pm.expect(response.json().condition).not.equal(undefined);",
 															"           pm.environment.set(\"condition\", response.json().condition);",
 															"       });",
 															"      } else {",
@@ -2959,9 +3095,9 @@
 													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp1\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp2\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"60\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 												},
 												"url": {
-													"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
+													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
 													"host": [
-														"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+														"{{HOST_QUOTING_SERVICE}}"
 													],
 													"path": [
 														"quotes"
@@ -3180,9 +3316,9 @@
 													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp1\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp4\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"55\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 												},
 												"url": {
-													"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
+													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
 													"host": [
-														"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+														"{{HOST_QUOTING_SERVICE}}"
 													],
 													"path": [
 														"quotes"
@@ -3395,9 +3531,9 @@
 													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp3\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp1\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"35\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 												},
 												"url": {
-													"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
+													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
 													"host": [
-														"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+														"{{HOST_QUOTING_SERVICE}}"
 													],
 													"path": [
 														"quotes"
@@ -3622,9 +3758,9 @@
 													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp2\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp3\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"20\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 												},
 												"url": {
-													"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
+													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
 													"host": [
-														"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+														"{{HOST_QUOTING_SERVICE}}"
 													],
 													"path": [
 														"quotes"
@@ -3849,9 +3985,9 @@
 													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp4\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp2\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"35\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 												},
 												"url": {
-													"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
+													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
 													"host": [
-														"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+														"{{HOST_QUOTING_SERVICE}}"
 													],
 													"path": [
 														"quotes"
@@ -4011,19 +4147,19 @@
 															"      if(response.responseSize !== 0) {",
 															"          console.log(response.json());",
 															"       pm.test(\"Response ilpPacket is not null\", function () {",
-															"           pm.expect(response.json().ilpPacket).not.equal(null);",
+															"           pm.expect(response.json().ilpPacket).not.equal(undefined);",
 															"           pm.environment.set(\"ilpPacket\", response.json().ilpPacket);",
 															"       });",
 															"       ",
 															"       pm.test(\"Response condition is not null\", function () {",
-															"           pm.expect(response.json().condition).not.equal(null);",
+															"           pm.expect(response.json().condition).not.equal(undefined);",
 															"           pm.environment.set(\"condition\", response.json().condition);",
 															"       });",
 															"      } else {",
 															"          pm.test(\"Quote FAILED\", function () {",
 															"            throw new Error('Did not receive response');",
 															"           });",
-															"           postman.setNextRequest(null);",
+															"           ",
 															"      }",
 															"       ",
 															"   });",
@@ -4076,9 +4212,9 @@
 													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp4\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp3\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"25\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 												},
 												"url": {
-													"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
+													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
 													"host": [
-														"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+														"{{HOST_QUOTING_SERVICE}}"
 													],
 													"path": [
 														"quotes"
@@ -6649,7 +6785,7 @@
 											"              pm.test(\"Transfer FAILED\", function () {",
 											"                throw new Error('Did not receive response');",
 											"              });",
-											"              postman.setNextRequest(null)",
+											"              ",
 											"          }",
 											"   });",
 											"}, 5000)"
@@ -6971,7 +7107,7 @@
 											"",
 											"setTimeout(function () {",
 											"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"transfer_ID\"), function (err, response) {",
-											"          if(response !== null) {",
+											"          if(response.responseSize !== 0) {",
 											"              var jsonData = response.json();",
 											"              ",
 											"              pm.test(\"Response status is ABORTED\", function () {",
@@ -6981,7 +7117,7 @@
 											"              pm.test(\"Transfer FAILED\", function () {",
 											"                throw new Error('Did not receive response');",
 											"              });",
-											"              postman.setNextRequest(null)",
+											"              ",
 											"          }",
 											"   });",
 											"}, 3000)",
@@ -7302,9 +7438,9 @@
 									"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"XOF\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 								},
 								"url": {
-									"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
+									"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
 									"host": [
-										"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+										"{{HOST_QUOTING_SERVICE}}"
 									],
 									"path": [
 										"quotes"
@@ -7668,7 +7804,7 @@
 											"",
 											"setTimeout(function () {",
 											"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"transfer_ID\"), function (err, response) {",
-											"          if(response !== null) {",
+											"          if(response.responseSize !== 0) {",
 											"              var jsonData = response.json();",
 											"              ",
 											"              pm.test(\"Response status is RESERVED\", function () {",
@@ -7678,7 +7814,7 @@
 											"              pm.test(\"Transfer FAILED\", function () {",
 											"                throw new Error('Did not receive response');",
 											"              });",
-											"              postman.setNextRequest(null)",
+											"              ",
 											"          }",
 											"   });",
 											"}, 3000)",
@@ -8184,7 +8320,7 @@
 											"",
 											"setTimeout(function () {",
 											"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"transfer_ID\"), function (err, response) {",
-											"          if(response !== null) {",
+											"          if(response.responseSize !== 0) {",
 											"              var jsonData = response.json();",
 											"              ",
 											"              pm.test(\"Response status is ABORTED\", function () {",
@@ -8194,7 +8330,7 @@
 											"              pm.test(\"Transfer FAILED\", function () {",
 											"                throw new Error('Did not receive response');",
 											"              });",
-											"              postman.setNextRequest(null)",
+											"              ",
 											"          }",
 											"   });",
 											"}, 3000)",
@@ -8553,7 +8689,7 @@
 													"",
 													"setTimeout(function () {",
 													"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"transfer_ID\"), function (err, response) {",
-													"          if(response !== null) {",
+													"          if(response.responseSize !== 0) {",
 													"              var jsonData = response.json();",
 													"              pm.test(\"Response data does not have transferId\", function () {",
 													"               pm.expect(jsonData.transferId).to.eql(undefined);",
@@ -8565,7 +8701,7 @@
 													"              pm.test(\"Transfer FAILED\", function () {",
 													"                throw new Error('Did not receive response');",
 													"              });",
-													"              postman.setNextRequest(null)",
+													"              ",
 													"          }",
 													"   });",
 													"}, 2000)",
@@ -8652,7 +8788,7 @@
 													"",
 													"setTimeout(function () {",
 													"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.variables.get(\"transfer_ID\"), function (err, response) {",
-													"          if(response !== null) {",
+													"          if(response.responseSize !== 0) {",
 													"              var jsonData = response.json().data;",
 													"              var headers = response.json().headers",
 													"              pm.test(\"Response data does not have transferId\", function () {",
@@ -8671,7 +8807,7 @@
 													"              pm.test(\"Transfer FAILED\", function () {",
 													"                throw new Error('Did not receive response');",
 													"              });",
-													"              postman.setNextRequest(null)",
+													"              ",
 													"          }",
 													"   });",
 													"}, 2000)",
@@ -8839,9 +8975,9 @@
 													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 												},
 												"url": {
-													"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
+													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
 													"host": [
-														"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+														"{{HOST_QUOTING_SERVICE}}"
 													],
 													"path": [
 														"quotes"
@@ -9095,7 +9231,7 @@
 															"});",
 															"",
 															"setTimeout(function () {",
-															"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payeefsp/callbacks/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
+															"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/noresponsepayeefsp/callbacks/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
 															"          if(response.responseSize !== 0) {",
 															"              ",
 															"              //Check headers",
@@ -9140,7 +9276,7 @@
 															"              pm.test(\"Transfer FAILED\", function () {",
 															"                throw new Error('Did not receive response');",
 															"              });",
-															"              postman.setNextRequest(null)",
+															"              ",
 															"          }",
 															"   });",
 															"}, 5000)"
@@ -9304,9 +9440,9 @@
 													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 												},
 												"url": {
-													"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
+													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
 													"host": [
-														"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+														"{{HOST_QUOTING_SERVICE}}"
 													],
 													"path": [
 														"quotes"
@@ -9475,7 +9611,7 @@
 															"              pm.test(\"Transfer FAILED\", function () {",
 															"                throw new Error('Did not receive response');",
 															"              });",
-															"              postman.setNextRequest(null)",
+															"              ",
 															"          }",
 															"   });",
 															"}, 5000)"
@@ -9559,7 +9695,7 @@
 															"});",
 															"",
 															"setTimeout(function () {",
-															"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payeefsp/callbacks/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
+															"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/noresponsepayeefsp/callbacks/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
 															"          if(response.responseSize !== 0) {",
 															"              ",
 															"              //Check headers",
@@ -9604,7 +9740,7 @@
 															"              pm.test(\"Transfer FAILED\", function () {",
 															"                throw new Error('Did not receive response');",
 															"              });",
-															"              postman.setNextRequest(null)",
+															"              ",
 															"          }",
 															"   });",
 															"}, 5000)"
@@ -9738,24 +9874,24 @@
 															"",
 															"setTimeout(function () {",
 															"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
-															"      if(response !== null) {",
+															"     if(response.responseSize !== 0) {",
 															"          console.log('response: ',response.json());",
-															"       pm.test(\"Response ilpPacket is not null\", function () {",
+															"       pm.test(\"Response ilpPacket is not undefined\", function () {",
 															"           console.log('ilpPacket: ',response.json().ilpPacket)",
-															"           pm.expect(response.json().ilpPacket).not.eql(null);",
+															"           pm.expect(response.json().ilpPacket).not.eql(undefined);",
 															"          pm.environment.set(\"ilpPacket\", response.json().ilpPacket);",
 															"           ",
 															"       });",
 															"       ",
-															"       pm.test(\"Response condition is not null\", function () {",
-															"           pm.expect(response.json().condition).not.eql(null);",
+															"       pm.test(\"Response condition is not undefined\", function () {",
+															"           pm.expect(response.json().condition).not.eql(undefined);",
 															"           pm.environment.set(\"condition\", response.json().condition);",
 															"       });",
 															"      } else {",
 															"          pm.test(\"Quote FAILED\", function () {",
 															"            throw new Error('Did not receive response');",
 															"           });",
-															"           postman.setNextRequest(null);",
+															"        ",
 															"      }",
 															"       ",
 															"   });",
@@ -9797,9 +9933,9 @@
 													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 												},
 												"url": {
-													"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
+													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
 													"host": [
-														"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+														"{{HOST_QUOTING_SERVICE}}"
 													],
 													"path": [
 														"quotes"
@@ -10053,7 +10189,7 @@
 															"});",
 															"",
 															"setTimeout(function () {",
-															"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payeefsp/callbacks/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
+															"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/noresponsepayeefsp/callbacks/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
 															"          if(response.responseSize !== 0) {",
 															"              //Check headers",
 															"              var headers = response.json().headers;",
@@ -10261,9 +10397,9 @@
 													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 												},
 												"url": {
-													"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
+													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
 													"host": [
-														"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+														"{{HOST_QUOTING_SERVICE}}"
 													],
 													"path": [
 														"quotes"
@@ -10433,7 +10569,7 @@
 															"              pm.test(\"Transfer FAILED\", function () {",
 															"                throw new Error('Did not receive response');",
 															"              });",
-															"              postman.setNextRequest(null)",
+															"              ",
 															"          }",
 															"   });",
 															"}, 5000)"
@@ -10518,7 +10654,7 @@
 															"});",
 															"",
 															"setTimeout(function () {",
-															"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payeefsp/callbacks/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
+															"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/noresponsepayeefsp/callbacks/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
 															"          if(response.responseSize !== 0) {",
 															"              //Check headers",
 															"              var headers = response.json().headers;",
@@ -10749,24 +10885,24 @@
 									"",
 									"setTimeout(function () {",
 									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
-									"      if(response !== null) {",
+									"      if(response.responseSize !== 0) {",
 									"          console.log('response: ',response.json());",
 									"       pm.test(\"Response ilpPacket is not null\", function () {",
 									"           console.log('ilpPacket: ',response.json().ilpPacket)",
-									"           pm.expect(response.json().ilpPacket).not.eql(null);",
+									"           pm.expect(response.json().ilpPacket).not.eql(undefined);",
 									"          pm.environment.set(\"ilpPacket\", response.json().ilpPacket);",
 									"           ",
 									"       });",
 									"       ",
 									"       pm.test(\"Response condition is not null\", function () {",
-									"           pm.expect(response.json().condition).not.eql(null);",
+									"           pm.expect(response.json().condition).not.eql(undefined);",
 									"           pm.environment.set(\"condition\", response.json().condition);",
 									"       });",
 									"      } else {",
 									"          pm.test(\"Quote FAILED\", function () {",
 									"            throw new Error('Did not receive response');",
 									"           });",
-									"           postman.setNextRequest(null);",
+									"           ",
 									"      }",
 									"       ",
 									"   });",
@@ -10808,9 +10944,9 @@
 							"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"USD\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 						},
 						"url": {
-							"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
+							"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
 							"host": [
-								"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+								"{{HOST_QUOTING_SERVICE}}"
 							],
 							"path": [
 								"quotes"
@@ -10858,8 +10994,8 @@
 									"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
 									"            });",
 									"            ",
-									"            pm.test(\"payerfsp fspiop-uri is /transfers/{ID}\", function () {",
-									"                pm.expect(headers['fspiop-uri']).to.eql('undefined');",
+									"            pm.test(\"payerfsp fspiop-uri is /transfers/\"+pm.environment.get(\"transfer_ID\"), function () {",
+									"                pm.expect(headers['fspiop-uri']).to.eql('/transfers/'+pm.environment.get(\"transfer_ID\"));",
 									"            });",
 									"            ",
 									"            // pm.test(\"payerfsp fspiop-http-method is empty\", function () {",
@@ -11109,9 +11245,9 @@
 							"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"USD\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 						},
 						"url": {
-							"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
+							"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
 							"host": [
-								"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+								"{{HOST_QUOTING_SERVICE}}"
 							],
 							"path": [
 								"quotes"
@@ -11200,7 +11336,7 @@
 									"              pm.test(\"Transfer FAILED\", function () {",
 									"                throw new Error('Did not receive response');",
 									"              });",
-									"              postman.setNextRequest(null)",
+									"              ",
 									"          }",
 									"   });",
 									"}, 1100)",
@@ -11208,7 +11344,7 @@
 									"//Check the callback response that Switch forwards to payerfsp",
 									"setTimeout(function () {",
 									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
-									"          if(response !== null) {",
+									"          if(response.responseSize !== 0) {",
 									"            //Checking headers",
 									"            var headers = response.json().headers;",
 									"            pm.test(\"payerfsp fspiop-source is payeefsp\", function () {",
@@ -11251,7 +11387,7 @@
 									"              pm.test(\"Transfer FAILED\", function () {",
 									"                throw new Error('Did not receive response');",
 									"              });",
-									"              postman.setNextRequest(null)",
+									"              ",
 									"          }",
 									"   });",
 									"}, 1300)",
