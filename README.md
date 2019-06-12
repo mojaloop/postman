@@ -1,16 +1,32 @@
 # Postman collections for Mojaloop
 
 - Github [Repo link](https://github.com/mojaloop/postman)
-- Version of Postman Collection: `v0.1-draft`
-- Support Mojaloop Versions: `v1.0`
 
-## Collection
-Import the following Postman Collection into your Client:
-[Postman Collection](Mojaloop.postman_collection.json)
+## Collections
+There are 4 Postman Collections in the repository:
+- OSS-New-Deployment-FSP-Setup.postman_collection
+- Golden_Path.postman_collection
+- OSS-API-Tests.postman_collection
+- OSS-Feature-Tests.postman_collection
+
+The first collection that needs to be run, in order to set up the database after a clean install, is OSS-New-Deployment-FSP-Setup. The sequence in which you can run the other collections after that is not important, it really depends on the type of test required.
+
+The Golden_Path is an end-to-end regression test pack which does a complete test of all the deployed functionality. This test can be run manually but is actually designed to be run from the start, in an automated fashion, right through to the end, as response values are being passed from one request to the next.
+
+OSS-API-Tests is a more ad-hoc and manual test pack where any request can be run to test a particular API.
+
+OSS-Feature-Tests contains tests which isolates individual features to be tested and by implication spans one or more APIs at a time.
+
+Import the Collections into your Postman Client:
+- [OSS-New-Deployment-FSP-Setup](OSS-New-Deployment-FSP-Setup.postman_collection.json)
+- [Golden_Path](Golden_Path.postman_collection.json)
+- [OSS-API-Tests](OSS-API-Tests.postman_collection)
+- [OSS-Feature-Tests](OSS-Feature-Tests.postman_collection)
+
 
 ## Environments
-Import the desired Environment Config as required:
+Import the Environment Config and make rhe required changes to reflect the correct endpoints to the mojaloop deployment required to be tested. This environemt file contains all the required variables and placeholders needed by all the collections, but the examples for endpoints provided, point to a local mojaloop installation with the standard Ingress exposed local endpoints:
+- [Local Development](./environments/Mojaloop-Local.postman_environment.json)
 
-1. [Local Development](./environments/MojaloopLocal.postman_environment.json)
-
-2. [Local K8s Cluster on Docker](./environments/MojaloopLocalK8sonDocker.postman_environment.json)
+## Testing
+The collections can be run as they are via Postman but for a more detailed setup of a complete stand-alone test environment (QA and Regression Testing Framework) please refer to the detailed explanation in the Mojaloop documentation  [here](https://github.com/mojaloop/documentation/blob/master/contributors-guide/tools-and-technologies/automated-testing.md "Automated Testing")
