@@ -13,7 +13,7 @@
 					"name": "participants",
 					"item": [
 						{
-							"name": "MSISDN",
+							"name": "/MSISDN/ID",
 							"item": [
 								{
 									"name": "GET - ParticipantsByTypeAndID",
@@ -4171,7 +4171,7 @@
 																	"    });",
 																	"}, 4000)",
 																	"",
-																	"Check data on payer side",
+																	"//Check data on payer side",
 																	"setTimeout(function () {",
 																	"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.environment.get(\"pathfinderMSISDN\"), function (err, response) {",
 																	"       ",
@@ -4371,564 +4371,8 @@
 											"name": "Negative Test Cases",
 											"item": [
 												{
-													"name": "Server Errors",
-													"item": [
-														{
-															"name": "405 - Method Not Allowed (BUG)",
-															"event": [
-																{
-																	"listen": "prerequest",
-																	"script": {
-																		"id": "e6694f0f-466f-483f-ba4a-3ea3ee20ca95",
-																		"exec": [
-																			"pm.environment.set('dateHeader', (new Date()).toUTCString());",
-																			""
-																		],
-																		"type": "text/javascript"
-																	}
-																},
-																{
-																	"listen": "test",
-																	"script": {
-																		"id": "72bcfb4b-2963-4d6d-b756-3794c9c2eb90",
-																		"exec": [
-																			"pm.test(\"Status code is 405\", function () {",
-																			"    pm.response.to.have.status(405);",
-																			"});"
-																		],
-																		"type": "text/javascript"
-																	}
-																}
-															],
-															"request": {
-																"method": "PATCH",
-																"header": [
-																	{
-																		"key": "Accept",
-																		"value": "application/vnd.interoperability.parties+json;version=1",
-																		"type": "text"
-																	},
-																	{
-																		"key": "Content-Type",
-																		"value": "application/vnd.interoperability.parties+json;version=1.0",
-																		"type": "text"
-																	},
-																	{
-																		"key": "FSPIOP-Source",
-																		"value": "{{payerfsp}}",
-																		"type": "text"
-																	},
-																	{
-																		"key": "Date",
-																		"value": "{{dateHeader}}",
-																		"type": "text"
-																	}
-																],
-																"url": {
-																	"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/{{pathfinderMSISDN}}",
-																	"host": [
-																		"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
-																	],
-																	"path": [
-																		"participants",
-																		"{{pathfinderMSISDN}}"
-																	],
-																	"query": [
-																		{
-																			"key": "Accept",
-																			"value": "application/vnd.interoperability.participants+json;version=1",
-																			"disabled": true
-																		},
-																		{
-																			"key": "Date",
-																			"value": "",
-																			"disabled": true
-																		}
-																	]
-																},
-																"description": "Generic server error to be used in order not to disclose information that may be considered private."
-															},
-															"response": []
-														}
-													],
-													"description": "All possible errors occurring on the server in which it failed to fulfil an apparently valid request from the client should use the high-level error code 2 (error codes 2xxx). These error codes should indicate that the server is aware that it has encountered an error or is otherwise incapable of performing the requested service.",
-													"event": [
-														{
-															"listen": "prerequest",
-															"script": {
-																"id": "5b141ce7-491d-4275-a1ac-578a5551b8f5",
-																"type": "text/javascript",
-																"exec": [
-																	""
-																]
-															}
-														},
-														{
-															"listen": "test",
-															"script": {
-																"id": "e9f2605a-6239-4194-804c-2e2ac858c7be",
-																"type": "text/javascript",
-																"exec": [
-																	""
-																]
-															}
-														}
-													],
-													"_postman_isSubFolder": true
-												},
-												{
 													"name": "Client Errors",
 													"item": [
-														{
-															"name": "31xx - Validation Errors",
-															"item": [
-																{
-																	"name": "400 - 3100 - Generic Validation Error",
-																	"request": {
-																		"method": "GET",
-																		"header": [
-																			{
-																				"key": "Accept",
-																				"value": "application/vnd.interoperability.parties+json;version=1",
-																				"type": "text"
-																			},
-																			{
-																				"key": "Content-Type",
-																				"value": "application/vnd.interoperability.parties+json;version=1.0",
-																				"type": "text"
-																			},
-																			{
-																				"key": "FSPIOP-Source",
-																				"value": "{{payerfsp}}",
-																				"type": "text"
-																			},
-																			{
-																				"key": "Date",
-																				"value": "{{dateHeader}}",
-																				"type": "text"
-																			}
-																		],
-																		"url": {
-																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{pathfinderMSISDN}}",
-																			"host": [
-																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
-																			],
-																			"path": [
-																				"participants",
-																				"MSISDN",
-																				"{{pathfinderMSISDN}}"
-																			]
-																		},
-																		"description": "Generic validation error to be used in order not to disclose information that may be considered private."
-																	},
-																	"response": []
-																},
-																{
-																	"name": "400 - 3101 - Malformed MSISDN",
-																	"event": [
-																		{
-																			"listen": "prerequest",
-																			"script": {
-																				"id": "9cf7d011-ba2b-48b2-abf4-a2ed7ae0a6e8",
-																				"exec": [
-																					"pm.environment.set('dateHeader', (new Date()).toUTCString());",
-																					""
-																				],
-																				"type": "text/javascript"
-																			}
-																		},
-																		{
-																			"listen": "test",
-																			"script": {
-																				"id": "3472322e-3146-4049-a128-f281e0be340e",
-																				"exec": [
-																					"pm.test(\"Status code is 202\", function () {",
-																					"    pm.response.to.have.status(202);",
-																					"});",
-																					""
-																				],
-																				"type": "text/javascript"
-																			}
-																		}
-																	],
-																	"request": {
-																		"method": "GET",
-																		"header": [
-																			{
-																				"key": "Accept",
-																				"value": "application/vnd.interoperability.parties+json;version=1",
-																				"type": "text"
-																			},
-																			{
-																				"key": "Date",
-																				"value": "{{dateHeader}}",
-																				"type": "text"
-																			},
-																			{
-																				"key": "FSPIOP-Source",
-																				"value": "{{payerfsp}}",
-																				"type": "text"
-																			},
-																			{
-																				"key": "Content-Type",
-																				"value": "application/vnd.interoperability.parties+json;version=1.0",
-																				"type": "text"
-																			}
-																		],
-																		"url": {
-																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/@3456!",
-																			"host": [
-																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
-																			],
-																			"path": [
-																				"parties",
-																				"MSISDN",
-																				"@3456!"
-																			]
-																		},
-																		"description": "Format of the parameter is not valid. For example, amount set to 5.ABC. The error description field should specify which information element is erroneous."
-																	},
-																	"response": []
-																},
-																{
-																	"name": "400 - 3101 - Malformed Type (BUG)",
-																	"event": [
-																		{
-																			"listen": "prerequest",
-																			"script": {
-																				"id": "9cf7d011-ba2b-48b2-abf4-a2ed7ae0a6e8",
-																				"exec": [
-																					"pm.environment.set('dateHeader', (new Date()).toUTCString());",
-																					""
-																				],
-																				"type": "text/javascript"
-																			}
-																		},
-																		{
-																			"listen": "test",
-																			"script": {
-																				"id": "3472322e-3146-4049-a128-f281e0be340e",
-																				"exec": [
-																					"pm.test(\"Status code is 400\", function () {",
-																					"    pm.response.to.have.status(400);",
-																					"});",
-																					"",
-																					"setTimeout(function () {",
-																					"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"pathfinderMSISDN\"), function (err, response) {",
-																					"       //console.log(response.json());",
-																					"       pm.test(\"Error message is expected as response.\", function () {",
-																					"           pm.expect(response.json().errorCode).to.eql('3101');",
-																					"           pm.expect(response.json().errorDescription).to.eql('Malformed Type');",
-																					"        });",
-																					"    });",
-																					"}, 1000)"
-																				],
-																				"type": "text/javascript"
-																			}
-																		}
-																	],
-																	"request": {
-																		"method": "GET",
-																		"header": [
-																			{
-																				"key": "Accept",
-																				"type": "text",
-																				"value": "application/vnd.interoperability.participants+json;version=1"
-																			},
-																			{
-																				"key": "Date",
-																				"type": "text",
-																				"value": "{{dateHeader}}"
-																			},
-																			{
-																				"key": "FSPIOP-Source",
-																				"type": "text",
-																				"value": "{{payerfsp}}"
-																			},
-																			{
-																				"key": "Content-Type",
-																				"value": "application/vnd.interoperability.participants+json;version=1.0;",
-																				"type": "text"
-																			}
-																		],
-																		"url": {
-																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/XYZ/{{pathfinderMSISDN}}",
-																			"host": [
-																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
-																			],
-																			"path": [
-																				"parties",
-																				"XYZ",
-																				"{{pathfinderMSISDN}}"
-																			]
-																		},
-																		"description": "Format of the parameter is not valid. For example, amount set to 5.ABC. The error description field should specify which information element is erroneous."
-																	},
-																	"response": []
-																},
-																{
-																	"name": "400 - 3101 - Malformed Header (BUG)",
-																	"event": [
-																		{
-																			"listen": "prerequest",
-																			"script": {
-																				"id": "9cf7d011-ba2b-48b2-abf4-a2ed7ae0a6e8",
-																				"exec": [
-																					"pm.environment.set('dateHeader', (new Date()).toUTCString());",
-																					""
-																				],
-																				"type": "text/javascript"
-																			}
-																		},
-																		{
-																			"listen": "test",
-																			"script": {
-																				"id": "3472322e-3146-4049-a128-f281e0be340e",
-																				"exec": [
-																					"pm.test(\"Status code is 400\", function () {",
-																					"    pm.response.to.have.status(400);",
-																					"});",
-																					"",
-																					"setTimeout(function () {",
-																					"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"pathfinderMSISDN\"), function (err, response) {",
-																					"       //console.log(response.json());",
-																					"       pm.test(\"Error message is expected as response.\", function () {",
-																					"           pm.expect(response.json().errorCode).to.eql('3101');",
-																					"           pm.expect(response.json().errorDescription).to.eql('Malformed MSISDN');",
-																					"        });",
-																					"    });",
-																					"}, 1000)"
-																				],
-																				"type": "text/javascript"
-																			}
-																		}
-																	],
-																	"request": {
-																		"method": "GET",
-																		"header": [
-																			{
-																				"key": "Accept",
-																				"type": "text",
-																				"value": "xyz"
-																			},
-																			{
-																				"key": "Date",
-																				"type": "text",
-																				"value": "{{dateHeader}}"
-																			},
-																			{
-																				"key": "FSPIOP-Source",
-																				"type": "text",
-																				"value": "{{payerfsp}}"
-																			},
-																			{
-																				"key": "Content-Type",
-																				"value": "application/vnd.interoperability.parties+json;version=1.0;",
-																				"type": "text"
-																			}
-																		],
-																		"url": {
-																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/{{pathfinderMSISDN}}",
-																			"host": [
-																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
-																			],
-																			"path": [
-																				"parties",
-																				"MSISDN",
-																				"{{pathfinderMSISDN}}"
-																			]
-																		},
-																		"description": "Format of the parameter is not valid. For example, amount set to 5.ABC. The error description field should specify which information element is erroneous."
-																	},
-																	"response": []
-																},
-																{
-																	"name": "400 - 3102 - Missing Mandatory ID (BUG)",
-																	"event": [
-																		{
-																			"listen": "test",
-																			"script": {
-																				"id": "df53ac68-44bc-4b61-9296-8857e0fe7c8d",
-																				"exec": [
-																					"pm.test(\"Status code is 400\", function () {",
-																					"    pm.response.to.have.status(400);",
-																					"});",
-																					"",
-																					"// pm.test(\"Check that Content-Type is present\", function () {",
-																					"//     pm.response.to.have.header(\"Content-Type\");",
-																					"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.parties+json;version=1.0\");",
-																					"// });",
-																					"",
-																					"setTimeout(function () {",
-																					"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"pathfinderMSISDN\"), function (err, response) {",
-																					"       //console.log(response.json());",
-																					"       pm.test(\"Expected receiver fspId is: \"+pm.variables.get(\"expectedFspId\"), function () {",
-																					"           pm.expect(response.json().party.personalInfo.complexName.firstName).to.eql(pm.variables.get(\"expectedFspId\"));",
-																					"        });",
-																					"        ",
-																					"      ",
-																					"    });",
-																					"}, 1000)",
-																					"",
-																					""
-																				],
-																				"type": "text/javascript"
-																			}
-																		},
-																		{
-																			"listen": "prerequest",
-																			"script": {
-																				"id": "0cb60963-9178-4069-9360-82a0664a0db8",
-																				"exec": [
-																					"pm.variables.set('expectedFspId', 'payeefsp');",
-																					"pm.variables.set('participantDateHeader', (new Date()).toUTCString());",
-																					"",
-																					""
-																				],
-																				"type": "text/javascript"
-																			}
-																		}
-																	],
-																	"request": {
-																		"method": "GET",
-																		"header": [
-																			{
-																				"key": "Accept",
-																				"value": "application/vnd.interoperability.participants+json;version=1"
-																			},
-																			{
-																				"key": "Content-Type",
-																				"value": "application/vnd.interoperability.participants+json;version=1.0"
-																			},
-																			{
-																				"key": "FSPIOP-Source",
-																				"value": "{{payerfsp}}"
-																			},
-																			{
-																				"key": "Date",
-																				"value": "{{dateHeader}}"
-																			}
-																		],
-																		"url": {
-																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/",
-																			"host": [
-																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
-																			],
-																			"path": [
-																				"parties",
-																				"MSISDN",
-																				""
-																			]
-																		}
-																	},
-																	"response": []
-																},
-																{
-																	"name": "400 - 3102 - Missing Mandatory Headers (BUG)",
-																	"event": [
-																		{
-																			"listen": "test",
-																			"script": {
-																				"id": "df53ac68-44bc-4b61-9296-8857e0fe7c8d",
-																				"exec": [
-																					"pm.test(\"Status code is 400\", function () {",
-																					"    pm.response.to.have.status(400);",
-																					"});",
-																					"",
-																					"// pm.test(\"Check that Content-Type is present\", function () {",
-																					"//     pm.response.to.have.header(\"Content-Type\");",
-																					"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.parties+json;version=1.0\");",
-																					"// });",
-																					"",
-																					"setTimeout(function () {",
-																					"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"pathfinderMSISDN\"), function (err, response) {",
-																					"       //console.log(response.json());",
-																					"       pm.test(\"Error message is expected as response.\", function () {",
-																					"           pm.expect(response.json().errorCode).to.eql('3102');",
-																					"           pm.expect(response.json().errorDescription).to.eql('Missing Date Header');",
-																					"        });",
-																					"        ",
-																					"      ",
-																					"    });",
-																					"}, 1000)",
-																					"",
-																					""
-																				],
-																				"type": "text/javascript"
-																			}
-																		},
-																		{
-																			"listen": "prerequest",
-																			"script": {
-																				"id": "0cb60963-9178-4069-9360-82a0664a0db8",
-																				"exec": [
-																					"pm.variables.set('expectedFspId', 'payeefsp');",
-																					"pm.variables.set('participantDateHeader', (new Date()).toUTCString());",
-																					"",
-																					""
-																				],
-																				"type": "text/javascript"
-																			}
-																		}
-																	],
-																	"request": {
-																		"method": "GET",
-																		"header": [
-																			{
-																				"key": "Accept",
-																				"value": "application/vnd.interoperability.participants+json;version=1"
-																			},
-																			{
-																				"key": "Content-Type",
-																				"value": "application/vnd.interoperability.participants+json;version=1.0"
-																			},
-																			{
-																				"key": "FSPIOP-Source",
-																				"value": "{{payerfsp}}"
-																			},
-																			{
-																				"key": "Date",
-																				"value": "{{dateHeader}}",
-																				"disabled": true
-																			}
-																		],
-																		"url": {
-																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/{{pathfinderMSISDN}}",
-																			"host": [
-																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
-																			],
-																			"path": [
-																				"parties",
-																				"MSISDN",
-																				"{{pathfinderMSISDN}}"
-																			]
-																		}
-																	},
-																	"response": []
-																},
-																{
-																	"name": "3107 - Missing mandatory extension parameter",
-																	"request": {
-																		"method": "GET",
-																		"header": [],
-																		"url": {
-																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{receiverMSISDN}}",
-																			"host": [
-																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
-																			],
-																			"path": [
-																				"participants",
-																				"MSISDN",
-																				"{{receiverMSISDN}}"
-																			]
-																		},
-																		"description": "Scheme-mandatory extension parameter was missing."
-																	},
-																	"response": []
-																}
-															],
-															"_postman_isSubFolder": true
-														},
 														{
 															"name": "32xx - Identifier Errors",
 															"item": [
@@ -5011,47 +4455,6 @@
 																	"response": []
 																},
 																{
-																	"name": "3201 - Destination FSP Error",
-																	"request": {
-																		"method": "GET",
-																		"header": [
-																			{
-																				"key": "Accept",
-																				"value": "application/vnd.interoperability.participants+json;version=1",
-																				"type": "text"
-																			},
-																			{
-																				"key": "Content-Type",
-																				"value": "application/vnd.interoperability.participants+json;version=1.0",
-																				"type": "text"
-																			},
-																			{
-																				"key": "FSPIOP-Source",
-																				"value": "{{payerfsp}}",
-																				"type": "text"
-																			},
-																			{
-																				"key": "Date",
-																				"value": "{{dateHeader}}",
-																				"type": "text"
-																			}
-																		],
-																		"url": {
-																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{pathfinderMSISDN}}",
-																			"host": [
-																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
-																			],
-																			"path": [
-																				"participants",
-																				"MSISDN",
-																				"{{pathfinderMSISDN}}"
-																			]
-																		},
-																		"description": "Destination FSP does not exist or cannot be found."
-																	},
-																	"response": []
-																},
-																{
 																	"name": "3204 - Party Not Found (BUG)",
 																	"event": [
 																		{
@@ -5120,73 +4523,6 @@
 																}
 															],
 															"_postman_isSubFolder": true
-														},
-														{
-															"name": "33xx - Expired Errors",
-															"item": [
-																{
-																	"name": "3300 - Generic Expired Error",
-																	"event": [
-																		{
-																			"listen": "prerequest",
-																			"script": {
-																				"id": "68556769-1dc9-4fe7-a402-a08a28176ff9",
-																				"exec": [
-																					"pm.variables.set('transferDate', (new Date()).toUTCString());"
-																				],
-																				"type": "text/javascript"
-																			}
-																		},
-																		{
-																			"listen": "test",
-																			"script": {
-																				"id": "d5cf267b-b8b3-41b6-9211-1c34b33a76a2",
-																				"exec": [
-																					"pm.test(\"Status code is 202\", function () {",
-																					"    pm.response.to.have.status(202);",
-																					"});"
-																				],
-																				"type": "text/javascript"
-																			}
-																		}
-																	],
-																	"request": {
-																		"method": "GET",
-																		"header": [
-																			{
-																				"key": "Accept",
-																				"value": "application/vnd.interoperability.participants+json"
-																			},
-																			{
-																				"key": "Content-Type",
-																				"value": "application/vnd.interoperability.participants+json;version=1.0"
-																			},
-																			{
-																				"key": "FSPIOP-SOURCE",
-																				"value": "payerfsp"
-																			},
-																			{
-																				"key": "Date",
-																				"value": "{{headerDate}}"
-																			}
-																		],
-																		"url": {
-																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{pathfinderMSISDN}}",
-																			"host": [
-																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
-																			],
-																			"path": [
-																				"participants",
-																				"MSISDN",
-																				"{{pathfinderMSISDN}}"
-																			]
-																		},
-																		"description": "Generic expired object error, to be used in order not to disclose information that may be considered private."
-																	},
-																	"response": []
-																}
-															],
-															"_postman_isSubFolder": true
 														}
 													],
 													"description": "All possible errors occurring on the server in which the server reports that the client has sent one or more erroneous parameters should use the high-level error code 3 (error codes 3xxx). These error codes should indicate that the server could not perform the service according to the request from the client. The server should provide an explanation why the service could not be performed.",
@@ -5210,6 +4546,415 @@
 																	""
 																]
 															}
+														}
+													],
+													"_postman_isSubFolder": true
+												},
+												{
+													"name": "400 - Error Code",
+													"item": [
+														{
+															"name": "400 - 3101 - Malformed MSISDN",
+															"event": [
+																{
+																	"listen": "prerequest",
+																	"script": {
+																		"id": "9cf7d011-ba2b-48b2-abf4-a2ed7ae0a6e8",
+																		"exec": [
+																			"pm.environment.set('dateHeader', (new Date()).toUTCString());",
+																			""
+																		],
+																		"type": "text/javascript"
+																	}
+																},
+																{
+																	"listen": "test",
+																	"script": {
+																		"id": "3472322e-3146-4049-a128-f281e0be340e",
+																		"exec": [
+																			"pm.test(\"Status code is 202\", function () {",
+																			"    pm.response.to.have.status(202);",
+																			"});",
+																			""
+																		],
+																		"type": "text/javascript"
+																	}
+																}
+															],
+															"request": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.interoperability.parties+json;version=1",
+																		"type": "text"
+																	},
+																	{
+																		"key": "Date",
+																		"value": "{{dateHeader}}",
+																		"type": "text"
+																	},
+																	{
+																		"key": "FSPIOP-Source",
+																		"value": "{{payerfsp}}",
+																		"type": "text"
+																	},
+																	{
+																		"key": "Content-Type",
+																		"value": "application/vnd.interoperability.parties+json;version=1.0",
+																		"type": "text"
+																	}
+																],
+																"url": {
+																	"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/@3456!",
+																	"host": [
+																		"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																	],
+																	"path": [
+																		"parties",
+																		"MSISDN",
+																		"@3456!"
+																	]
+																},
+																"description": "Format of the parameter is not valid. For example, amount set to 5.ABC. The error description field should specify which information element is erroneous."
+															},
+															"response": []
+														},
+														{
+															"name": "400 - 3101 - Malformed Type (BUG)",
+															"event": [
+																{
+																	"listen": "prerequest",
+																	"script": {
+																		"id": "9cf7d011-ba2b-48b2-abf4-a2ed7ae0a6e8",
+																		"exec": [
+																			"pm.environment.set('dateHeader', (new Date()).toUTCString());",
+																			""
+																		],
+																		"type": "text/javascript"
+																	}
+																},
+																{
+																	"listen": "test",
+																	"script": {
+																		"id": "3472322e-3146-4049-a128-f281e0be340e",
+																		"exec": [
+																			"pm.test(\"Status code is 400\", function () {",
+																			"    pm.response.to.have.status(400);",
+																			"});",
+																			"",
+																			"setTimeout(function () {",
+																			"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"pathfinderMSISDN\"), function (err, response) {",
+																			"       //console.log(response.json());",
+																			"       pm.test(\"Error message is expected as response.\", function () {",
+																			"           pm.expect(response.json().errorCode).to.eql('3101');",
+																			"           pm.expect(response.json().errorDescription).to.eql('Malformed Type');",
+																			"        });",
+																			"    });",
+																			"}, 1000)"
+																		],
+																		"type": "text/javascript"
+																	}
+																}
+															],
+															"request": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"type": "text",
+																		"value": "application/vnd.interoperability.participants+json;version=1"
+																	},
+																	{
+																		"key": "Date",
+																		"type": "text",
+																		"value": "{{dateHeader}}"
+																	},
+																	{
+																		"key": "FSPIOP-Source",
+																		"type": "text",
+																		"value": "{{payerfsp}}"
+																	},
+																	{
+																		"key": "Content-Type",
+																		"value": "application/vnd.interoperability.participants+json;version=1.0;",
+																		"type": "text"
+																	}
+																],
+																"url": {
+																	"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/XYZ/{{pathfinderMSISDN}}",
+																	"host": [
+																		"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																	],
+																	"path": [
+																		"parties",
+																		"XYZ",
+																		"{{pathfinderMSISDN}}"
+																	]
+																},
+																"description": "Format of the parameter is not valid. For example, amount set to 5.ABC. The error description field should specify which information element is erroneous."
+															},
+															"response": []
+														},
+														{
+															"name": "400 - 3101 - Malformed Header (BUG)",
+															"event": [
+																{
+																	"listen": "prerequest",
+																	"script": {
+																		"id": "9cf7d011-ba2b-48b2-abf4-a2ed7ae0a6e8",
+																		"exec": [
+																			"pm.environment.set('dateHeader', (new Date()).toUTCString());",
+																			""
+																		],
+																		"type": "text/javascript"
+																	}
+																},
+																{
+																	"listen": "test",
+																	"script": {
+																		"id": "3472322e-3146-4049-a128-f281e0be340e",
+																		"exec": [
+																			"pm.test(\"Status code is 400\", function () {",
+																			"    pm.response.to.have.status(400);",
+																			"});",
+																			"",
+																			"setTimeout(function () {",
+																			"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"pathfinderMSISDN\"), function (err, response) {",
+																			"       //console.log(response.json());",
+																			"       pm.test(\"Error message is expected as response.\", function () {",
+																			"           pm.expect(response.json().errorCode).to.eql('3101');",
+																			"           pm.expect(response.json().errorDescription).to.eql('Malformed MSISDN');",
+																			"        });",
+																			"    });",
+																			"}, 1000)"
+																		],
+																		"type": "text/javascript"
+																	}
+																}
+															],
+															"request": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"type": "text",
+																		"value": "xyz"
+																	},
+																	{
+																		"key": "Date",
+																		"type": "text",
+																		"value": "{{dateHeader}}"
+																	},
+																	{
+																		"key": "FSPIOP-Source",
+																		"type": "text",
+																		"value": "{{hub_operator}}"
+																	},
+																	{
+																		"key": "Content-Type",
+																		"value": "application/vnd.interoperability.parties+json;version=1.0;",
+																		"type": "text"
+																	}
+																],
+																"url": {
+																	"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/{{pathfinderMSISDN}}",
+																	"host": [
+																		"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																	],
+																	"path": [
+																		"parties",
+																		"MSISDN",
+																		"{{pathfinderMSISDN}}"
+																	]
+																},
+																"description": "Format of the parameter is not valid. For example, amount set to 5.ABC. The error description field should specify which information element is erroneous."
+															},
+															"response": []
+														},
+														{
+															"name": "404 - 3102 - Missing Mandatory ID (BUG)",
+															"event": [
+																{
+																	"listen": "test",
+																	"script": {
+																		"id": "df53ac68-44bc-4b61-9296-8857e0fe7c8d",
+																		"exec": [
+																			"pm.test(\"Status code is 404\", function () {",
+																			"    pm.response.to.have.status(404);",
+																			"});",
+																			"",
+																			"// pm.test(\"Check that Content-Type is present\", function () {",
+																			"//     pm.response.to.have.header(\"Content-Type\");",
+																			"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.parties+json;version=1.0\");",
+																			"// });",
+																			"",
+																			"setTimeout(function () {",
+																			"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.variables.get(\"pathfinderMSISDN\"), function (err, response) {",
+																			"       //console.log(response.json());",
+																			"       pm.test(\"Expected receiver fspId is: \"+pm.variables.get(\"expectedFspId\"), function () {",
+																			"           pm.expect(response.json().party.personalInfo.complexName.firstName).to.eql(pm.variables.get(\"expectedFspId\"));",
+																			"        });",
+																			"        ",
+																			"      ",
+																			"    });",
+																			"}, 1000)",
+																			"",
+																			""
+																		],
+																		"type": "text/javascript"
+																	}
+																},
+																{
+																	"listen": "prerequest",
+																	"script": {
+																		"id": "0cb60963-9178-4069-9360-82a0664a0db8",
+																		"exec": [
+																			"pm.variables.set('expectedFspId', 'payeefsp');",
+																			"pm.variables.set('participantDateHeader', (new Date()).toUTCString());",
+																			"",
+																			""
+																		],
+																		"type": "text/javascript"
+																	}
+																}
+															],
+															"request": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.interoperability.participants+json;version=1"
+																	},
+																	{
+																		"key": "Content-Type",
+																		"value": "application/vnd.interoperability.participants+json;version=1.0"
+																	},
+																	{
+																		"key": "FSPIOP-Source",
+																		"value": "{{payerfsp}}"
+																	},
+																	{
+																		"key": "Date",
+																		"value": "{{dateHeader}}"
+																	}
+																],
+																"url": {
+																	"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/",
+																	"host": [
+																		"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																	],
+																	"path": [
+																		"parties",
+																		"MSISDN",
+																		""
+																	]
+																}
+															},
+															"response": []
+														},
+														{
+															"name": "400 - 3102 - Missing Mandatory Headers (BUG)",
+															"event": [
+																{
+																	"listen": "test",
+																	"script": {
+																		"id": "df53ac68-44bc-4b61-9296-8857e0fe7c8d",
+																		"exec": [
+																			"pm.test(\"Status code is 400\", function () {",
+																			"    pm.response.to.have.status(400);",
+																			"});",
+																			"",
+																			"// pm.test(\"Check that Content-Type is present\", function () {",
+																			"//     pm.response.to.have.header(\"Content-Type\");",
+																			"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.parties+json;version=1.0\");",
+																			"// });",
+																			"",
+																			"setTimeout(function () {",
+																			"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"pathfinderMSISDN\"), function (err, response) {",
+																			"       //console.log(response.json());",
+																			"       pm.test(\"Error message is expected as response.\", function () {",
+																			"           pm.expect(response.json().errorCode).to.eql('3102');",
+																			"           pm.expect(response.json().errorDescription).to.eql('Missing Date Header');",
+																			"        });",
+																			"        ",
+																			"      ",
+																			"    });",
+																			"}, 1000)",
+																			"",
+																			""
+																		],
+																		"type": "text/javascript"
+																	}
+																},
+																{
+																	"listen": "prerequest",
+																	"script": {
+																		"id": "0cb60963-9178-4069-9360-82a0664a0db8",
+																		"exec": [
+																			"pm.variables.set('expectedFspId', 'payeefsp');",
+																			"pm.variables.set('participantDateHeader', (new Date()).toUTCString());",
+																			"",
+																			""
+																		],
+																		"type": "text/javascript"
+																	}
+																}
+															],
+															"request": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.interoperability.participants+json;version=1"
+																	},
+																	{
+																		"key": "Content-Type",
+																		"value": "application/vnd.interoperability.participants+json;version=1.0"
+																	},
+																	{
+																		"key": "FSPIOP-Source",
+																		"value": "{{payerfsp}}"
+																	},
+																	{
+																		"key": "Date",
+																		"value": "{{dateHeader}}",
+																		"disabled": true
+																	}
+																],
+																"url": {
+																	"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/{{pathfinderMSISDN}}",
+																	"host": [
+																		"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																	],
+																	"path": [
+																		"parties",
+																		"MSISDN",
+																		"{{pathfinderMSISDN}}"
+																	]
+																}
+															},
+															"response": []
+														},
+														{
+															"name": "3107 - Missing mandatory extension parameter",
+															"request": {
+																"method": "PUT",
+																"header": [],
+																"url": {
+																	"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{receiverMSISDN}}",
+																	"host": [
+																		"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																	],
+																	"path": [
+																		"participants",
+																		"MSISDN",
+																		"{{receiverMSISDN}}"
+																	]
+																},
+																"description": "Scheme-mandatory extension parameter was missing."
+															},
+															"response": []
 														}
 													],
 													"_postman_isSubFolder": true
@@ -6616,76 +6361,445 @@
 								},
 								{
 									"name": "PUT - PartiesByTypeAndID",
-									"item": [],
+									"item": [
+										{
+											"name": "200",
+											"item": [
+												{
+													"name": "200 - Valid Request",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"id": "76d6c169-8ddc-4595-8516-b93d15ed72ec",
+																"exec": [
+																	"pm.test(\"Status code is 200\", function () {",
+																	"    pm.response.to.have.status(200);",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Accept",
+																"type": "text",
+																"value": "application/vnd.interoperability.parties+json;version=1",
+																"disabled": true
+															},
+															{
+																"key": "Date",
+																"type": "text",
+																"value": "{{dateHeader}}"
+															},
+															{
+																"key": "FSPIOP-Source",
+																"type": "text",
+																"value": "{{payeefsp}}"
+															},
+															{
+																"key": "FSPIOP-Destination",
+																"type": "text",
+																"value": "{{payerfsp}}"
+															},
+															{
+																"key": "Content-Type",
+																"type": "text",
+																"value": "application/vnd.interoperability.parties+json;version=1.0"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"{{pathfinderMSISDN}}\",\n            \"fspId\": \"{{payeefsp}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+														},
+														"url": {
+															"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/17855501914",
+															"host": [
+																"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+															],
+															"path": [
+																"parties",
+																"MSISDN",
+																"17855501914"
+															]
+														}
+													},
+													"response": []
+												}
+											],
+											"_postman_isSubFolder": true
+										},
+										{
+											"name": "400",
+											"item": [
+												{
+													"name": "Invalid Accept Header ( BUG)",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"id": "76d6c169-8ddc-4595-8516-b93d15ed72ec",
+																"exec": [
+																	"pm.test(\"Status code is 400\", function () {",
+																	"    pm.response.to.have.status(400);",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Accept",
+																"type": "text",
+																"value": "application/vnd.interoperability.parties+json;version=1"
+															},
+															{
+																"key": "Date",
+																"type": "text",
+																"value": "{{dateHeader}}"
+															},
+															{
+																"key": "FSPIOP-Source",
+																"type": "text",
+																"value": "{{payeefsp}}"
+															},
+															{
+																"key": "FSPIOP-Destination",
+																"type": "text",
+																"value": "{{payerfsp}}"
+															},
+															{
+																"key": "Content-Type",
+																"type": "text",
+																"value": "application/vnd.interoperability.parties+json;version=1.0"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"{{pathfinderMSISDN}}\",\n            \"fspId\": \"{{payeefsp}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+														},
+														"url": {
+															"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/17855501914",
+															"host": [
+																"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+															],
+															"path": [
+																"parties",
+																"MSISDN",
+																"17855501914"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "Missing Content-TYpe (BUG)",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"id": "76d6c169-8ddc-4595-8516-b93d15ed72ec",
+																"exec": [
+																	"pm.test(\"Status code is 400\", function () {",
+																	"    pm.response.to.have.status(400);",
+																	"});",
+																	"",
+																	"var jsonData = pm.response.json();",
+																	"",
+																	"pm.test(\"statusCode is 400\", function () {",
+																	"    pm.expect(jsonData.statusCode).to.eql(400);",
+																	"});",
+																	"",
+																	"pm.test(\"errorDescription is Invalid request payload input\", function () {",
+																	"    pm.expect(jsonData.message.errorInformation.errorDescription).to.eql('Invalid request payload input');",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Date",
+																"type": "text",
+																"value": "{{dateHeader}}"
+															},
+															{
+																"key": "FSPIOP-Source",
+																"type": "text",
+																"value": "{{payeefsp}}"
+															},
+															{
+																"key": "FSPIOP-Destination",
+																"type": "text",
+																"value": "{{payerfsp}}"
+															},
+															{
+																"key": "Content-Type",
+																"type": "text",
+																"value": "application/vnd.interoperability.parties+json;version=1.0",
+																"disabled": true
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"{{pathfinderMSISDN}}\",\n            \"fspId\": \"{{payeefsp}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+														},
+														"url": {
+															"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/17855501914",
+															"host": [
+																"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+															],
+															"path": [
+																"parties",
+																"MSISDN",
+																"17855501914"
+															]
+														}
+													},
+													"response": []
+												}
+											],
+											"_postman_isSubFolder": true
+										}
+									],
 									"_postman_isSubFolder": true
 								},
 								{
 									"name": "PUT - PartiesErrorByTypeAndID",
 									"item": [
 										{
-											"name": "200 - Valid Request",
-											"event": [
+											"name": "200",
+											"item": [
 												{
-													"listen": "test",
-													"script": {
-														"id": "76d6c169-8ddc-4595-8516-b93d15ed72ec",
-														"exec": [
-															"pm.test(\"Status code is 200\", function () {",
-															"    pm.response.to.have.status(200);",
-															"});"
+													"name": "200 - Valid Request (BUG)",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"id": "76d6c169-8ddc-4595-8516-b93d15ed72ec",
+																"exec": [
+																	"pm.test(\"Status code is 200\", function () {",
+																	"    pm.response.to.have.status(200);",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.interoperability.parties+json;version=1",
+																"type": "text"
+															},
+															{
+																"key": "Date",
+																"value": "{{dateHeader}}",
+																"type": "text"
+															},
+															{
+																"key": "FSPIOP-Source",
+																"value": "{{payeefsp}}",
+																"type": "text"
+															},
+															{
+																"key": "FSPIOP-Destination",
+																"value": "{{payerfsp}}",
+																"type": "text"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/vnd.interoperability.parties+json;version=1.0",
+																"type": "text"
+															}
 														],
-														"type": "text/javascript"
-													}
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"errorInformation\": {\n    \"errorCode\": \"3204\",\n    \"errorDescription\": \"Party with the provided identifier, identifier type, and optional sub id or type was not found.\",\n    \"extensionList\": [\n      {\n        \"key\": \"MSISDN\",\n        \"value\": \"17855501914\"\n      }\n    ]\n  }\n}"
+														},
+														"url": {
+															"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/17855501914/error",
+															"host": [
+																"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+															],
+															"path": [
+																"parties",
+																"MSISDN",
+																"17855501914",
+																"error"
+															]
+														}
+													},
+													"response": []
 												}
 											],
-											"request": {
-												"method": "PUT",
-												"header": [
-													{
-														"key": "Accept",
-														"value": "application/vnd.interoperability.parties+json;version=1",
-														"type": "text",
-														"disabled": true
-													},
-													{
-														"key": "Date",
-														"value": "{{dateHeader}}",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Source",
-														"value": "{{payeefsp}}",
-														"type": "text"
-													},
-													{
-														"key": "FSPIOP-Destination",
-														"value": "{{payerfsp}}",
-														"type": "text"
-													},
-													{
-														"key": "Content-Type",
-														"value": "application/vnd.interoperability.parties+json;version=1.0",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"errorInformation\": {\n    \"errorCode\": \"3204\",\n    \"errorDescription\": \"Party with the provided identifier, identifier type, and optional sub id or type was not found.\",\n    \"extensionList\": [\n      {\n        \"key\": \"MSISDN\",\n        \"value\": \"17855501914\"\n      }\n    ]\n  }\n}"
-												},
-												"url": {
-													"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/17855501914/error",
-													"host": [
-														"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+											"_postman_isSubFolder": true
+										},
+										{
+											"name": "400",
+											"item": [
+												{
+													"name": "Missing Content-Type (BUG)",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"id": "76d6c169-8ddc-4595-8516-b93d15ed72ec",
+																"exec": [
+																	"pm.test(\"Status code is 400\", function () {",
+																	"    pm.response.to.have.status(400);",
+																	"});",
+																	"",
+																	"var jsonData = pm.response.json();",
+																	"",
+																	"pm.test(\"statusCode is 400\", function () {",
+																	"    pm.expect(jsonData.statusCode).to.eql(400);",
+																	"});",
+																	"",
+																	"pm.test(\"errorDescription is Invalid request payload input\", function () {",
+																	"    pm.expect(jsonData.message.errorInformation.errorDescription).to.eql('Invalid request payload input');",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
 													],
-													"path": [
-														"parties",
-														"MSISDN",
-														"17855501914",
-														"error"
-													]
+													"request": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Accept",
+																"type": "text",
+																"value": "application/vnd.interoperability.parties+json;version=1"
+															},
+															{
+																"key": "Date",
+																"type": "text",
+																"value": "{{dateHeader}}"
+															},
+															{
+																"key": "FSPIOP-Source",
+																"type": "text",
+																"value": "{{payeefsp}}"
+															},
+															{
+																"key": "FSPIOP-Destination",
+																"type": "text",
+																"value": "{{payerfsp}}"
+															},
+															{
+																"key": "Content-Type",
+																"type": "text",
+																"value": "application/vnd.interoperability.parties+json;version=1.0",
+																"disabled": true
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"errorInformation\": {\n    \"errorCode\": \"3204\",\n    \"errorDescription\": \"Party with the provided identifier, identifier type, and optional sub id or type was not found.\",\n    \"extensionList\": [\n      {\n        \"key\": \"MSISDN\",\n        \"value\": \"17855501914\"\n      }\n    ]\n  }\n}"
+														},
+														"url": {
+															"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/17855501914/error",
+															"host": [
+																"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+															],
+															"path": [
+																"parties",
+																"MSISDN",
+																"17855501914",
+																"error"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "Invalid Accept Header",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"id": "76d6c169-8ddc-4595-8516-b93d15ed72ec",
+																"exec": [
+																	"pm.test(\"Status code is 400\", function () {",
+																	"    pm.response.to.have.status(400);",
+																	"});",
+																	"",
+																	"var jsonData = pm.response.json();",
+																	"",
+																	"pm.test(\"statusCode is 400\", function () {",
+																	"    pm.expect(jsonData.statusCode).to.eql(400);",
+																	"});",
+																	"",
+																	"pm.test(\"errorDescription is Invalid request payload input\", function () {",
+																	"    pm.expect(jsonData.message.errorInformation.errorDescription).to.eql('Invalid request payload input');",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Accept",
+																"type": "text",
+																"value": "application/vnd.interoperability.parties+json;version=1"
+															},
+															{
+																"key": "Date",
+																"type": "text",
+																"value": "{{dateHeader}}"
+															},
+															{
+																"key": "FSPIOP-Source",
+																"type": "text",
+																"value": "{{payeefsp}}"
+															},
+															{
+																"key": "FSPIOP-Destination",
+																"type": "text",
+																"value": "{{payerfsp}}"
+															},
+															{
+																"key": "Content-Type",
+																"type": "text",
+																"value": "application/vnd.interoperability.parties+json;version=1.0"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"errorInformation\": {\n    \"errorCode\": \"3204\",\n    \"errorDescription\": \"Party with the provided identifier, identifier type, and optional sub id or type was not found.\",\n    \"extensionList\": [\n      {\n        \"key\": \"MSISDN\",\n        \"value\": \"17855501914\"\n      }\n    ]\n  }\n}"
+														},
+														"url": {
+															"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/17855501914/error",
+															"host": [
+																"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+															],
+															"path": [
+																"parties",
+																"MSISDN",
+																"17855501914",
+																"error"
+															]
+														}
+													},
+													"response": []
 												}
-											},
-											"response": []
+											],
+											"_postman_isSubFolder": true
 										}
 									],
 									"_postman_isSubFolder": true
@@ -6695,6 +6809,2734 @@
 						},
 						{
 							"name": "/BUSINESS/ID",
+							"item": [
+								{
+									"name": "GET - PartiesByTypeAndID",
+									"item": [
+										{
+											"name": "Positive Test Cases",
+											"item": [
+												{
+													"name": "202 - Accepted (BUG)",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"id": "fdb13fdb-0720-4c9d-8ff1-d28765c9fa5d",
+																"exec": [
+																	"pm.test(\"Status code is 202\", function () {",
+																	"    pm.response.to.have.status(202);",
+																	"});",
+																	"",
+																	"//Check data on payee side",
+																	"setTimeout(function () {",
+																	"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payeefsp/requests/\"+pm.environment.get(\"merchantId\"), function (err, response) {",
+																	"       ",
+																	"       if(response.responseSize !== 0) { ",
+																	"       //Checking headers",
+																	"        // var headers = response.json().headers;",
+																	"        // pm.test(\"payeefsp fspiop-source is payerfsp\", function () {",
+																	"        //     pm.expect(headers['fspiop-source']).to.eql('payerfsp');",
+																	"        // });",
+																	"        ",
+																	"        // pm.test(\"payeefsp fspiop-destination is payeefsp\", function () {",
+																	"        //     pm.expect(headers['fspiop-destination']).to.eql('payeefsp');",
+																	"        // });",
+																	"        ",
+																	"        // pm.test(\"payeefsp content-type should be application/vnd.interoperability.parties+json;version=1.0\", function () {",
+																	"        //     pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.parties+json;version=1.0');",
+																	"        // });",
+																	"        ",
+																	"        // //pm.test(\"payeefsp accept should be application/vnd.interoperability.parties+json;version=1\", function () {",
+																	"        // //    pm.expect(headers['accept']).to.eql('should be application/vnd.interoperability.parties+json;version=1');",
+																	"        // //});",
+																	"        ",
+																	"        ",
+																	"        ",
+																	"        // //Validate protected header inside Signature",
+																	"        // var {signature,protectedHeader} = JSON.parse(headers['fspiop-signature'])",
+																	"        // var decodedProtectedHeaders = JSON.parse(atob(protectedHeader))",
+																	"        // console.log('decodedProtectedHeaders:',decodedProtectedHeaders)",
+																	"        ",
+																	"        // pm.test(\"FSPIOP-Signature Protected Header alg to be RS256\", function () {",
+																	"        //     pm.expect(decodedProtectedHeaders['alg']).to.eql('RS256');",
+																	"        // });",
+																	"        // pm.test(\"FSPIOP-Signature Protected Header FSPIOP-URI to be /parties\", function () {",
+																	"        //     pm.expect(decodedProtectedHeaders['FSPIOP-URI']).to.eql('/parties');",
+																	"        // });",
+																	"        ",
+																	"",
+																	"        // pm.test(\"FSPIOP-Signature Protected Header FSPIOP-HTTP-Method to be GET\", function () {",
+																	"        //     pm.expect(decodedProtectedHeaders['FSPIOP-HTTP-Method']).to.eql('GET');",
+																	"        // });",
+																	"        // pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Source to be Payerfsp\", function () {",
+																	"        //     pm.expect(decodedProtectedHeaders['FSPIOP-Source']).to.eql('payerfsp');",
+																	"        // });",
+																	"        // pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Destination to be payeefsp\", function () {",
+																	"        //     pm.expect(decodedProtectedHeaders['FSPIOP-Destination']).to.eql('payeefsp');",
+																	"        // });",
+																	"        // pm.test(\"FSPIOP-Signature Protected Header Date is present\", function () {",
+																	"        //     pm.expect(decodedProtectedHeaders['Date']).to.not.eql(undefined);",
+																	"        // });",
+																	"       ",
+																	"        // pm.test(\"payeefsp FSPIOP-URI to be /parties\", function () {",
+																	"        //     pm.expect(headers['fspiop-uri']).to.eql('/parties');",
+																	"        // });",
+																	"        ",
+																	"        // pm.test(\"payeefsp fspiop-http-method is GET\", function () {",
+																	"        //     pm.expect(headers['fspiop-http-method']).to.eql('GET');",
+																	"        // });",
+																	"        ",
+																	"        ",
+																	"        ",
+																	"       } else {",
+																	"           pm.test(\"Parties FAILED - payeeFSP\", function () {",
+																	"            throw new Error('Did not receive response');",
+																	"           });",
+																	"           ",
+																	"       }",
+																	"      ",
+																	"    });",
+																	"}, 4000)",
+																	"",
+																	"//Check data on payer side",
+																	"setTimeout(function () {",
+																	"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.environment.get(\"pathfinderMSISDN\"), function (err, response) {",
+																	"       ",
+																	"      if(response.responseSize !== 0) { ",
+																	"      //Checking headers",
+																	"        var headers = response.json().headers;",
+																	"        pm.test(\"payerfsp fspiop-source is payeefsp\", function () {",
+																	"            pm.expect(headers['fspiop-source']).to.eql('payeefsp');",
+																	"        });",
+																	"        ",
+																	"        pm.test(\"payerfsp fspiop-destination is payerfsp\", function () {",
+																	"            pm.expect(headers['fspiop-destination']).to.eql('payerfsp');",
+																	"        });",
+																	"        ",
+																	"        pm.test(\"payerfsp content-type should be application/vnd.interoperability.parties+json;version=1.0\", function () {",
+																	"            pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.parties+json;version=1.0');",
+																	"        });",
+																	"        ",
+																	"        pm.test(\"payerfsp accept is empty\", function () {",
+																	"            pm.expect(headers['accept']).to.eql(undefined);",
+																	"        });",
+																	"        ",
+																	"        ",
+																	"        ",
+																	"        //Validate protected header inside Signature",
+																	"        var {signature,protectedHeader} = JSON.parse(headers['fspiop-signature'])",
+																	"        var decodedProtectedHeaders = JSON.parse(atob(protectedHeader))",
+																	"        console.log('decodedProtectedHeaders:',decodedProtectedHeaders)",
+																	"        ",
+																	"        // pm.test(\"FSPIOP-Signature signature is returned\", function () {",
+																	"        //     pm.expect(signature).to.eql(pm.environment.get(\"payeefsp-signature\"));",
+																	"        // });",
+																	"        ",
+																	"        pm.test(\"FSPIOP-Signature Protected Header alg to be RS256\", function () {",
+																	"            pm.expect(decodedProtectedHeaders['alg']).to.eql('RS256');",
+																	"        });",
+																	"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-URI to be /parties/MSISDN/\"+pm.environment.get(\"pathfinderMSISDN\"), function () {",
+																	"            pm.expect(decodedProtectedHeaders['FSPIOP-URI']).to.eql('/parties/MSISDN/'+pm.environment.get(\"pathfinderMSISDN\"));",
+																	"        });",
+																	"        ",
+																	"",
+																	"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-HTTP-Method to be PUT\", function () {",
+																	"            pm.expect(decodedProtectedHeaders['FSPIOP-HTTP-Method']).to.eql('PUT');",
+																	"        });",
+																	"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Source to be mojaloop-sdk\", function () {",
+																	"            pm.expect(decodedProtectedHeaders['FSPIOP-Source']).to.eql('payeefsp');",
+																	"        });",
+																	"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Destination to be payerfsp\", function () {",
+																	"            pm.expect(decodedProtectedHeaders['FSPIOP-Destination']).to.eql('payerfsp');",
+																	"        });",
+																	"        pm.test(\"FSPIOP-Signature Protected Header Date is present\", function () {",
+																	"            pm.expect(decodedProtectedHeaders['Date']).to.not.eql(undefined);",
+																	"        });",
+																	"       ",
+																	"        //pm.test(\"payerfsp FSPIOP-URI to be /parties/MSISDN/\"+pm.environment.get(\"pathfinderMSISDN\"), function () {",
+																	"        //    pm.expect(headers['fspiop-uri']).to.eql('/parties/MSISDN/'+pm.environment.get(\"pathfinderMSISDN\"));",
+																	"        //});",
+																	"        ",
+																	"        pm.test(\"payerfsp fspiop-http-method is PUT\", function () {",
+																	"            pm.expect(headers['fspiop-http-method']).to.eql('PUT');",
+																	"        });",
+																	"        ",
+																	"        //Checking data",
+																	"        var jsonData = response.json().data;",
+																	"      pm.test(\"Expected receiver first name is: \"+pm.variables.get(\"expectedFirstName\"), function () {",
+																	"          pm.expect(jsonData.party.personalInfo.complexName.firstName).to.eql(pm.variables.get(\"expectedFirstName\"));",
+																	"        });",
+																	"        pm.test(\"Expected receiver last name is: \"+pm.variables.get(\"expectedLastName\"), function () {",
+																	"          pm.expect(jsonData.party.personalInfo.complexName.lastName).to.eql(pm.variables.get(\"expectedLastName\"));",
+																	"        });",
+																	"        pm.test(\"Expected receiver DOB: \"+pm.variables.get(\"expectedDOB\"), function () {",
+																	"          pm.expect(jsonData.party.personalInfo.dateOfBirth).to.eql(pm.variables.get(\"expectedDOB\"));",
+																	"        });  ",
+																	"        ",
+																	"      } else {",
+																	"          pm.test(\"Parties FAILED - payerFSP\", function () {",
+																	"            throw new Error('Did not receive response');",
+																	"          });",
+																	"           ",
+																	"      }",
+																	"      ",
+																	"    });",
+																	"}, 4000)",
+																	"",
+																	""
+																],
+																"type": "text/javascript"
+															}
+														},
+														{
+															"listen": "prerequest",
+															"script": {
+																"id": "857a50b8-ed16-412f-9798-dd568bfd5a71",
+																"exec": [
+																	"pm.variables.set('expectedFspId', 'payeefsp');",
+																	"pm.variables.set('expectedFullName', 'MerchantFirst MerchantLast');",
+																	"pm.variables.set('expectedFirstName', 'MerchantFirst');",
+																	"pm.variables.set('expectedLastName', 'MerchantLast');",
+																	"pm.variables.set('expectedDOB', '2010-10-10');",
+																	"",
+																	"var requestData = {",
+																	"    \"party\": {",
+																	"        \"partyIdInfo\": {",
+																	"            \"partyIdType\": \"BUSINESS\",",
+																	"            \"partyIdentifier\": \"{{merchantID}}\",",
+																	"            \"fspId\": \"payeefsp\"",
+																	"        },",
+																	"        \"name\": \"MerchantFirst MerchantLast\",",
+																	"        \"personalInfo\": {",
+																	"            \"complexName\": {",
+																	"                \"firstName\": \"MerchantFirst\",",
+																	"                \"lastName\": \"MerchantLast\"",
+																	"            },",
+																	"            \"dateOfBirth\": \"2010-10-10\"",
+																	"        }",
+																	"    }",
+																	"}",
+																	"",
+																	"const addUserRequest = {",
+																	"  url: pm.environment.get(\"HOST_SIMULATOR\")+\"/payeefsp/parties/BUSINESS/\"+pm.environment.get(\"merchantId\"),",
+																	"  method: 'POST',",
+																	"  headers: {",
+																	"        \"content-type\": \"application/json\",",
+																	"        },",
+																	"  body: JSON.stringify(requestData)",
+																	"};",
+																	"pm.sendRequest(addUserRequest, function (err, res) {",
+																	"  console.log(err ? err : res);",
+																	"});",
+																	"",
+																	""
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.interoperability.parties+json;version=1"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/vnd.interoperability.parties+json;version=1.0"
+															},
+															{
+																"key": "FSPIOP-Source",
+																"value": "{{payerfsp}}"
+															},
+															{
+																"key": "Date",
+																"value": "{{dateHeader}}"
+															}
+														],
+														"url": {
+															"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/BUSINESS/{{merchantId}}",
+															"host": [
+																"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+															],
+															"path": [
+																"parties",
+																"BUSINESS",
+																"{{merchantId}}"
+															]
+														}
+													},
+													"response": []
+												}
+											],
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"id": "59d00a46-f669-47be-8c27-243b98cb3cf1",
+														"type": "text/javascript",
+														"exec": [
+															""
+														]
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"id": "f1a48c3d-fb96-484b-b59b-b673e1286dd0",
+														"type": "text/javascript",
+														"exec": [
+															""
+														]
+													}
+												}
+											],
+											"_postman_isSubFolder": true
+										},
+										{
+											"name": "Negative Test Cases",
+											"item": [
+												{
+													"name": "Client Errors",
+													"item": [
+														{
+															"name": "32xx - Identifier Errors",
+															"item": [
+																{
+																	"name": "202 - 3200 - Generic ID Not Found (BUG)",
+																	"event": [
+																		{
+																			"listen": "prerequest",
+																			"script": {
+																				"id": "239058ed-5271-425d-8aa4-5259d1a3b185",
+																				"exec": [
+																					"pm.environment.set('dateHeader', (new Date()).toUTCString());",
+																					""
+																				],
+																				"type": "text/javascript"
+																			}
+																		},
+																		{
+																			"listen": "test",
+																			"script": {
+																				"id": "87f10c97-f0e7-45cb-a9b3-f95e189874a2",
+																				"exec": [
+																					"pm.test(\"Status code is 202\", function () {",
+																					"    pm.response.to.have.status(202);",
+																					"});",
+																					"",
+																					"setTimeout(function () {",
+																					"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/10000000\", function (err, response) {",
+																					"       //console.log(response.json());",
+																					"       pm.test(\"Error message is expected as response.\", function () {",
+																					"           pm.expect(response.json().errorCode).to.eql('3200');",
+																					"           pm.expect(response.json().errorDescription).to.eql('ID Not Found');",
+																					"        });",
+																					"        ",
+																					"      ",
+																					"    });",
+																					"}, 1000)"
+																				],
+																				"type": "text/javascript"
+																			}
+																		}
+																	],
+																	"request": {
+																		"method": "GET",
+																		"header": [
+																			{
+																				"key": "Accept",
+																				"value": "application/vnd.interoperability.parties+json;version=1",
+																				"type": "text"
+																			},
+																			{
+																				"key": "Date",
+																				"value": "{{dateHeader}}",
+																				"type": "text"
+																			},
+																			{
+																				"key": "FSPIOP-Source",
+																				"value": "{{payerfsp}}",
+																				"type": "text"
+																			},
+																			{
+																				"key": "Content-Type",
+																				"value": "application/vnd.interoperability.parties+json;version=1.0",
+																				"type": "text"
+																			}
+																		],
+																		"url": {
+																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/BUSINESS/10000000",
+																			"host": [
+																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																			],
+																			"path": [
+																				"parties",
+																				"BUSINESS",
+																				"10000000"
+																			]
+																		},
+																		"description": "Generic ID error provided by the client."
+																	},
+																	"response": []
+																},
+																{
+																	"name": "3204 - Party Not Found (BUG)",
+																	"event": [
+																		{
+																			"listen": "test",
+																			"script": {
+																				"id": "351febfe-c7a5-4997-b2fb-768c905c652d",
+																				"exec": [
+																					"pm.test(\"Status code is 202\", function () {",
+																					"    pm.response.to.have.status(202);",
+																					"});",
+																					"",
+																					"setTimeout(function () {",
+																					"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/10000000\", function (err, response) {",
+																					"       //console.log(response.json());",
+																					"       pm.test(\"Error message is expected as response.\", function () {",
+																					"           pm.expect(response.json().errorCode).to.eql('3200');",
+																					"           pm.expect(response.json().errorDescription).to.eql('ID Not Found');",
+																					"        });",
+																					"        ",
+																					"      ",
+																					"    });",
+																					"}, 1000)"
+																				],
+																				"type": "text/javascript"
+																			}
+																		}
+																	],
+																	"request": {
+																		"method": "GET",
+																		"header": [
+																			{
+																				"key": "Accept",
+																				"value": "application/vnd.interoperability.parties+json;version=1",
+																				"type": "text"
+																			},
+																			{
+																				"key": "Date",
+																				"value": "{{dateHeader}}",
+																				"type": "text"
+																			},
+																			{
+																				"key": "FSPIOP-Source",
+																				"value": "{{payerfsp}}",
+																				"type": "text"
+																			},
+																			{
+																				"key": "Content-Type",
+																				"value": "application/vnd.interoperability.parties+json;version=1.0",
+																				"type": "text"
+																			}
+																		],
+																		"url": {
+																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/BUSINESS/17855501914",
+																			"host": [
+																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																			],
+																			"path": [
+																				"parties",
+																				"BUSINESS",
+																				"17855501914"
+																			]
+																		},
+																		"description": "Party with the provided identifier, identifier type, and optional sub id or type was not found."
+																	},
+																	"response": []
+																}
+															],
+															"_postman_isSubFolder": true
+														}
+													],
+													"description": "All possible errors occurring on the server in which the server reports that the client has sent one or more erroneous parameters should use the high-level error code 3 (error codes 3xxx). These error codes should indicate that the server could not perform the service according to the request from the client. The server should provide an explanation why the service could not be performed.",
+													"event": [
+														{
+															"listen": "prerequest",
+															"script": {
+																"id": "53dc229b-8fd8-4f53-9fed-df2898d7969e",
+																"type": "text/javascript",
+																"exec": [
+																	""
+																]
+															}
+														},
+														{
+															"listen": "test",
+															"script": {
+																"id": "07feae10-c923-4652-ace8-14c9a2f9a51e",
+																"type": "text/javascript",
+																"exec": [
+																	""
+																]
+															}
+														}
+													],
+													"_postman_isSubFolder": true
+												},
+												{
+													"name": "400 - Error Code",
+													"item": [
+														{
+															"name": "400 - 3101 - Malformed MSISDN",
+															"event": [
+																{
+																	"listen": "prerequest",
+																	"script": {
+																		"id": "9cf7d011-ba2b-48b2-abf4-a2ed7ae0a6e8",
+																		"exec": [
+																			"pm.environment.set('dateHeader', (new Date()).toUTCString());",
+																			""
+																		],
+																		"type": "text/javascript"
+																	}
+																},
+																{
+																	"listen": "test",
+																	"script": {
+																		"id": "3472322e-3146-4049-a128-f281e0be340e",
+																		"exec": [
+																			"pm.test(\"Status code is 202\", function () {",
+																			"    pm.response.to.have.status(202);",
+																			"});",
+																			""
+																		],
+																		"type": "text/javascript"
+																	}
+																}
+															],
+															"request": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.interoperability.parties+json;version=1",
+																		"type": "text"
+																	},
+																	{
+																		"key": "Date",
+																		"value": "{{dateHeader}}",
+																		"type": "text"
+																	},
+																	{
+																		"key": "FSPIOP-Source",
+																		"value": "{{payerfsp}}",
+																		"type": "text"
+																	},
+																	{
+																		"key": "Content-Type",
+																		"value": "application/vnd.interoperability.parties+json;version=1.0",
+																		"type": "text"
+																	}
+																],
+																"url": {
+																	"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/BUSINESS/@3456!",
+																	"host": [
+																		"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																	],
+																	"path": [
+																		"parties",
+																		"BUSINESS",
+																		"@3456!"
+																	]
+																},
+																"description": "Format of the parameter is not valid. For example, amount set to 5.ABC. The error description field should specify which information element is erroneous."
+															},
+															"response": []
+														},
+														{
+															"name": "400 - 3101 - Malformed Type (BUG)",
+															"event": [
+																{
+																	"listen": "prerequest",
+																	"script": {
+																		"id": "9cf7d011-ba2b-48b2-abf4-a2ed7ae0a6e8",
+																		"exec": [
+																			"pm.environment.set('dateHeader', (new Date()).toUTCString());",
+																			""
+																		],
+																		"type": "text/javascript"
+																	}
+																},
+																{
+																	"listen": "test",
+																	"script": {
+																		"id": "3472322e-3146-4049-a128-f281e0be340e",
+																		"exec": [
+																			"pm.test(\"Status code is 400\", function () {",
+																			"    pm.response.to.have.status(400);",
+																			"});",
+																			"",
+																			"setTimeout(function () {",
+																			"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"pathfinderMSISDN\"), function (err, response) {",
+																			"       //console.log(response.json());",
+																			"       pm.test(\"Error message is expected as response.\", function () {",
+																			"           pm.expect(response.json().errorCode).to.eql('3101');",
+																			"           pm.expect(response.json().errorDescription).to.eql('Malformed Type');",
+																			"        });",
+																			"    });",
+																			"}, 1000)"
+																		],
+																		"type": "text/javascript"
+																	}
+																}
+															],
+															"request": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"type": "text",
+																		"value": "application/vnd.interoperability.participants+json;version=1"
+																	},
+																	{
+																		"key": "Date",
+																		"type": "text",
+																		"value": "{{dateHeader}}"
+																	},
+																	{
+																		"key": "FSPIOP-Source",
+																		"type": "text",
+																		"value": "{{payerfsp}}"
+																	},
+																	{
+																		"key": "Content-Type",
+																		"value": "application/vnd.interoperability.participants+json;version=1.0;",
+																		"type": "text"
+																	}
+																],
+																"url": {
+																	"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/XYZ/{{pathfinderMSISDN}}",
+																	"host": [
+																		"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																	],
+																	"path": [
+																		"parties",
+																		"XYZ",
+																		"{{pathfinderMSISDN}}"
+																	]
+																},
+																"description": "Format of the parameter is not valid. For example, amount set to 5.ABC. The error description field should specify which information element is erroneous."
+															},
+															"response": []
+														},
+														{
+															"name": "400 - 3101 - Malformed Header (BUG)",
+															"event": [
+																{
+																	"listen": "prerequest",
+																	"script": {
+																		"id": "9cf7d011-ba2b-48b2-abf4-a2ed7ae0a6e8",
+																		"exec": [
+																			"pm.environment.set('dateHeader', (new Date()).toUTCString());",
+																			""
+																		],
+																		"type": "text/javascript"
+																	}
+																},
+																{
+																	"listen": "test",
+																	"script": {
+																		"id": "3472322e-3146-4049-a128-f281e0be340e",
+																		"exec": [
+																			"pm.test(\"Status code is 400\", function () {",
+																			"    pm.response.to.have.status(400);",
+																			"});",
+																			"",
+																			"setTimeout(function () {",
+																			"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"pathfinderMSISDN\"), function (err, response) {",
+																			"       //console.log(response.json());",
+																			"       pm.test(\"Error message is expected as response.\", function () {",
+																			"           pm.expect(response.json().errorCode).to.eql('3101');",
+																			"           pm.expect(response.json().errorDescription).to.eql('Malformed MSISDN');",
+																			"        });",
+																			"    });",
+																			"}, 1000)"
+																		],
+																		"type": "text/javascript"
+																	}
+																}
+															],
+															"request": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"type": "text",
+																		"value": "xyz"
+																	},
+																	{
+																		"key": "Date",
+																		"type": "text",
+																		"value": "{{dateHeader}}"
+																	},
+																	{
+																		"key": "FSPIOP-Source",
+																		"type": "text",
+																		"value": "{{payerfsp}}"
+																	},
+																	{
+																		"key": "Content-Type",
+																		"value": "application/vnd.interoperability.parties+json;version=1.0;",
+																		"type": "text"
+																	}
+																],
+																"url": {
+																	"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/BUSINESS/{{pathfinderMSISDN}}",
+																	"host": [
+																		"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																	],
+																	"path": [
+																		"parties",
+																		"BUSINESS",
+																		"{{pathfinderMSISDN}}"
+																	]
+																},
+																"description": "Format of the parameter is not valid. For example, amount set to 5.ABC. The error description field should specify which information element is erroneous."
+															},
+															"response": []
+														},
+														{
+															"name": "404 - 3102 - Missing Mandatory ID (BUG)",
+															"event": [
+																{
+																	"listen": "test",
+																	"script": {
+																		"id": "df53ac68-44bc-4b61-9296-8857e0fe7c8d",
+																		"exec": [
+																			"pm.test(\"Status code is 404\", function () {",
+																			"    pm.response.to.have.status(404);",
+																			"});",
+																			"",
+																			"// pm.test(\"Check that Content-Type is present\", function () {",
+																			"//     pm.response.to.have.header(\"Content-Type\");",
+																			"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.parties+json;version=1.0\");",
+																			"// });",
+																			"",
+																			"setTimeout(function () {",
+																			"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.variables.get(\"pathfinderMSISDN\"), function (err, response) {",
+																			"       //console.log(response.json());",
+																			"       pm.test(\"Expected receiver fspId is: \"+pm.variables.get(\"expectedFspId\"), function () {",
+																			"           pm.expect(response.json().party.personalInfo.complexName.firstName).to.eql(pm.variables.get(\"expectedFspId\"));",
+																			"        });",
+																			"        ",
+																			"      ",
+																			"    });",
+																			"}, 1000)",
+																			"",
+																			""
+																		],
+																		"type": "text/javascript"
+																	}
+																},
+																{
+																	"listen": "prerequest",
+																	"script": {
+																		"id": "0cb60963-9178-4069-9360-82a0664a0db8",
+																		"exec": [
+																			"pm.variables.set('expectedFspId', 'payeefsp');",
+																			"pm.variables.set('participantDateHeader', (new Date()).toUTCString());",
+																			"",
+																			""
+																		],
+																		"type": "text/javascript"
+																	}
+																}
+															],
+															"request": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.interoperability.participants+json;version=1"
+																	},
+																	{
+																		"key": "Content-Type",
+																		"value": "application/vnd.interoperability.participants+json;version=1.0"
+																	},
+																	{
+																		"key": "FSPIOP-Source",
+																		"value": "{{payerfsp}}"
+																	},
+																	{
+																		"key": "Date",
+																		"value": "{{dateHeader}}"
+																	}
+																],
+																"url": {
+																	"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/BUSINESS/",
+																	"host": [
+																		"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																	],
+																	"path": [
+																		"parties",
+																		"BUSINESS",
+																		""
+																	]
+																}
+															},
+															"response": []
+														},
+														{
+															"name": "400 - 3102 - Missing Mandatory Headers (BUG)",
+															"event": [
+																{
+																	"listen": "test",
+																	"script": {
+																		"id": "df53ac68-44bc-4b61-9296-8857e0fe7c8d",
+																		"exec": [
+																			"pm.test(\"Status code is 400\", function () {",
+																			"    pm.response.to.have.status(400);",
+																			"});",
+																			"",
+																			"// pm.test(\"Check that Content-Type is present\", function () {",
+																			"//     pm.response.to.have.header(\"Content-Type\");",
+																			"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.parties+json;version=1.0\");",
+																			"// });",
+																			"",
+																			"setTimeout(function () {",
+																			"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"pathfinderMSISDN\"), function (err, response) {",
+																			"       //console.log(response.json());",
+																			"       pm.test(\"Error message is expected as response.\", function () {",
+																			"           pm.expect(response.json().errorCode).to.eql('3102');",
+																			"           pm.expect(response.json().errorDescription).to.eql('Missing Date Header');",
+																			"        });",
+																			"        ",
+																			"      ",
+																			"    });",
+																			"}, 1000)",
+																			"",
+																			""
+																		],
+																		"type": "text/javascript"
+																	}
+																},
+																{
+																	"listen": "prerequest",
+																	"script": {
+																		"id": "0cb60963-9178-4069-9360-82a0664a0db8",
+																		"exec": [
+																			"pm.variables.set('expectedFspId', 'payeefsp');",
+																			"pm.variables.set('participantDateHeader', (new Date()).toUTCString());",
+																			"",
+																			""
+																		],
+																		"type": "text/javascript"
+																	}
+																}
+															],
+															"request": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.interoperability.participants+json;version=1"
+																	},
+																	{
+																		"key": "Content-Type",
+																		"value": "application/vnd.interoperability.participants+json;version=1.0"
+																	},
+																	{
+																		"key": "FSPIOP-Source",
+																		"value": "{{payerfsp}}"
+																	},
+																	{
+																		"key": "Date",
+																		"value": "{{dateHeader}}",
+																		"disabled": true
+																	}
+																],
+																"url": {
+																	"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/BUSINESS/{{pathfinderMSISDN}}",
+																	"host": [
+																		"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																	],
+																	"path": [
+																		"parties",
+																		"BUSINESS",
+																		"{{pathfinderMSISDN}}"
+																	]
+																}
+															},
+															"response": []
+														},
+														{
+															"name": "3107 - Missing mandatory extension parameter",
+															"request": {
+																"method": "GET",
+																"header": [],
+																"url": {
+																	"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/BUSINESS/{{receiverMSISDN}}",
+																	"host": [
+																		"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																	],
+																	"path": [
+																		"participants",
+																		"BUSINESS",
+																		"{{receiverMSISDN}}"
+																	]
+																},
+																"description": "Scheme-mandatory extension parameter was missing."
+															},
+															"response": []
+														}
+													],
+													"_postman_isSubFolder": true
+												}
+											],
+											"_postman_isSubFolder": true
+										},
+										{
+											"name": "Negative Test Cases (Not Implemented)",
+											"item": [
+												{
+													"name": "Server Errors",
+													"item": [
+														{
+															"name": "202 - 2000 - Generic Server Error",
+															"request": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.interoperability.parties+json;version=1",
+																		"type": "text"
+																	},
+																	{
+																		"key": "Content-Type",
+																		"value": "application/vnd.interoperability.parties+json;version=1.0",
+																		"type": "text"
+																	},
+																	{
+																		"key": "FSPIOP-Source",
+																		"value": "{{payerfsp}}",
+																		"type": "text"
+																	},
+																	{
+																		"key": "Date",
+																		"value": "{{dateHeader}}",
+																		"type": "text"
+																	}
+																],
+																"url": {
+																	"raw": "{{HOST_WS02}}{{BASE_PATH_WS02}}/participants/MSISDN/{{receiverMSISDN}}",
+																	"host": [
+																		"{{HOST_WS02}}{{BASE_PATH_WS02}}"
+																	],
+																	"path": [
+																		"participants",
+																		"MSISDN",
+																		"{{receiverMSISDN}}"
+																	]
+																},
+																"description": "Generic server error to be used in order not to disclose information that may be considered private."
+															},
+															"response": []
+														},
+														{
+															"name": "401 - Unauthorized",
+															"request": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.interoperability.parties+json;version=1",
+																		"type": "text"
+																	},
+																	{
+																		"key": "Content-Type",
+																		"value": "application/vnd.interoperability.parties+json;version=1.0",
+																		"type": "text"
+																	},
+																	{
+																		"key": "FSPIOP-Source",
+																		"value": "{{payerfsp}}",
+																		"type": "text"
+																	},
+																	{
+																		"key": "Date",
+																		"value": "{{dateHeader}}",
+																		"type": "text"
+																	}
+																],
+																"url": {
+																	"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{receiverMSISDN}}",
+																	"host": [
+																		"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																	],
+																	"path": [
+																		"participants",
+																		"MSISDN",
+																		"{{receiverMSISDN}}"
+																	]
+																},
+																"description": "Generic server error to be used in order not to disclose information that may be considered private."
+															},
+															"response": []
+														},
+														{
+															"name": "405 - Method Not Allowed (BUG)",
+															"event": [
+																{
+																	"listen": "prerequest",
+																	"script": {
+																		"id": "e6694f0f-466f-483f-ba4a-3ea3ee20ca95",
+																		"exec": [
+																			"pm.environment.set('dateHeader', (new Date()).toUTCString());",
+																			""
+																		],
+																		"type": "text/javascript"
+																	}
+																},
+																{
+																	"listen": "test",
+																	"script": {
+																		"id": "72bcfb4b-2963-4d6d-b756-3794c9c2eb90",
+																		"exec": [
+																			"pm.test(\"Status code is 405\", function () {",
+																			"    pm.response.to.have.status(405);",
+																			"});"
+																		],
+																		"type": "text/javascript"
+																	}
+																}
+															],
+															"request": {
+																"method": "PATCH",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.interoperability.parties+json;version=1",
+																		"type": "text"
+																	},
+																	{
+																		"key": "Content-Type",
+																		"value": "application/vnd.interoperability.parties+json;version=1.0",
+																		"type": "text"
+																	},
+																	{
+																		"key": "FSPIOP-Source",
+																		"value": "{{payerfsp}}",
+																		"type": "text"
+																	},
+																	{
+																		"key": "Date",
+																		"value": "{{dateHeader}}",
+																		"type": "text"
+																	}
+																],
+																"url": {
+																	"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/{{pathfinderMSISDN}}",
+																	"host": [
+																		"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																	],
+																	"path": [
+																		"participants",
+																		"{{pathfinderMSISDN}}"
+																	],
+																	"query": [
+																		{
+																			"key": "Accept",
+																			"value": "application/vnd.interoperability.participants+json;version=1",
+																			"disabled": true
+																		},
+																		{
+																			"key": "Date",
+																			"value": "",
+																			"disabled": true
+																		}
+																	]
+																},
+																"description": "Generic server error to be used in order not to disclose information that may be considered private."
+															},
+															"response": []
+														},
+														{
+															"name": "2001 - Internal Server Error (NOT ABLE TO TEST)",
+															"request": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.interoperability.parties+json;version=1",
+																		"type": "text"
+																	},
+																	{
+																		"key": "Content-Type",
+																		"value": "application/vnd.interoperability.parties+json;version=1.0",
+																		"type": "text"
+																	},
+																	{
+																		"key": "FSPIOP-Source",
+																		"value": "{{payerfsp}}",
+																		"type": "text"
+																	},
+																	{
+																		"key": "Date",
+																		"value": "{{dateHeader}}",
+																		"type": "text"
+																	}
+																],
+																"url": {
+																	"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{receiverMSISDN}}",
+																	"host": [
+																		"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																	],
+																	"path": [
+																		"participants",
+																		"MSISDN",
+																		"{{receiverMSISDN}}"
+																	]
+																},
+																"description": "Generic unexpected exception. This usually indicates a bug or unhandled error case"
+															},
+															"response": []
+														},
+														{
+															"name": "2002 - Not Implemented (NOT ABLE TO TEST)",
+															"request": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.interoperability.parties+json;version=1",
+																		"type": "text"
+																	},
+																	{
+																		"key": "Content-Type",
+																		"value": "application/vnd.interoperability.parties+json;version=1.0",
+																		"type": "text"
+																	},
+																	{
+																		"key": "FSPIOP-Source",
+																		"value": "{{payerfsp}}",
+																		"type": "text"
+																	},
+																	{
+																		"key": "Date",
+																		"value": "{{dateHeader}}",
+																		"type": "text"
+																	}
+																],
+																"url": {
+																	"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{receiverMSISDN}}",
+																	"host": [
+																		"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																	],
+																	"path": [
+																		"participants",
+																		"MSISDN",
+																		"{{receiverMSISDN}}"
+																	]
+																},
+																"description": "Service requested is not supported by the server."
+															},
+															"response": []
+														},
+														{
+															"name": "2003 - Service Currently Unavailable (NOT ABLE TO TEST)",
+															"request": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.interoperability.parties+json;version=1",
+																		"type": "text"
+																	},
+																	{
+																		"key": "Content-Type",
+																		"value": "application/vnd.interoperability.parties+json;version=1.0",
+																		"type": "text"
+																	},
+																	{
+																		"key": "FSPIOP-Source",
+																		"value": "{{payerfsp}}",
+																		"type": "text"
+																	},
+																	{
+																		"key": "Date",
+																		"value": "{{dateHeader}}",
+																		"type": "text"
+																	}
+																],
+																"url": {
+																	"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{receiverMSISDN}}",
+																	"host": [
+																		"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																	],
+																	"path": [
+																		"participants",
+																		"MSISDN",
+																		"{{receiverMSISDN}}"
+																	]
+																},
+																"description": "Service requested is currently unavailable on the server. This could be because maintenance is taking place, or because of a temporary failure."
+															},
+															"response": []
+														},
+														{
+															"name": "2004 - Server Timedout (NOT ABLE TO TEST)",
+															"request": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.interoperability.parties+json;version=1",
+																		"type": "text"
+																	},
+																	{
+																		"key": "Content-Type",
+																		"value": "application/vnd.interoperability.parties+json;version=1.0",
+																		"type": "text"
+																	},
+																	{
+																		"key": "FSPIOP-Source",
+																		"value": "{{payerfsp}}",
+																		"type": "text"
+																	},
+																	{
+																		"key": "Date",
+																		"value": "{{dateHeader}}",
+																		"type": "text"
+																	}
+																],
+																"url": {
+																	"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{receiverMSISDN}}",
+																	"host": [
+																		"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																	],
+																	"path": [
+																		"participants",
+																		"MSISDN",
+																		"{{receiverMSISDN}}"
+																	]
+																},
+																"description": "Timeout has occurred, meaning the next Party in the chain did not send a callback in time. This could be because a timeout is set too low or because something took longer than expected"
+															},
+															"response": []
+														},
+														{
+															"name": "2005 - Server Busy (NOT ABLE TO TEST)",
+															"request": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/vnd.interoperability.parties+json;version=1",
+																		"type": "text"
+																	},
+																	{
+																		"key": "Content-Type",
+																		"value": "application/vnd.interoperability.parties+json;version=1.0",
+																		"type": "text"
+																	},
+																	{
+																		"key": "FSPIOP-Source",
+																		"value": "{{payerfsp}}",
+																		"type": "text"
+																	},
+																	{
+																		"key": "Date",
+																		"value": "{{dateHeader}}",
+																		"type": "text"
+																	}
+																],
+																"url": {
+																	"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{receiverMSISDN}}",
+																	"host": [
+																		"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																	],
+																	"path": [
+																		"participants",
+																		"MSISDN",
+																		"{{receiverMSISDN}}"
+																	]
+																},
+																"description": "Server is rejecting requests due to overloading. Try again later."
+															},
+															"response": []
+														}
+													],
+													"description": "All possible errors occurring on the server in which it failed to fulfil an apparently valid request from the client should use the high-level error code 2 (error codes 2xxx). These error codes should indicate that the server is aware that it has encountered an error or is otherwise incapable of performing the requested service.",
+													"event": [
+														{
+															"listen": "prerequest",
+															"script": {
+																"id": "5b141ce7-491d-4275-a1ac-578a5551b8f5",
+																"type": "text/javascript",
+																"exec": [
+																	""
+																]
+															}
+														},
+														{
+															"listen": "test",
+															"script": {
+																"id": "e9f2605a-6239-4194-804c-2e2ac858c7be",
+																"type": "text/javascript",
+																"exec": [
+																	""
+																]
+															}
+														}
+													],
+													"_postman_isSubFolder": true
+												},
+												{
+													"name": "Client Errors",
+													"item": [
+														{
+															"name": "30xx - Generic Client Errors",
+															"item": [
+																{
+																	"name": "3000 - Generic Client Error",
+																	"request": {
+																		"method": "GET",
+																		"header": [
+																			{
+																				"key": "Accept",
+																				"value": "application/vnd.interoperability.parties+json;version=1",
+																				"type": "text"
+																			},
+																			{
+																				"key": "Content-Type",
+																				"value": "application/vnd.interoperability.parties+json;version=1.0",
+																				"type": "text"
+																			},
+																			{
+																				"key": "FSPIOP-Source",
+																				"value": "{{payerfsp}}",
+																				"type": "text"
+																			},
+																			{
+																				"key": "Date",
+																				"value": "{{dateHeader}}",
+																				"type": "text"
+																			}
+																		],
+																		"url": {
+																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{receiverMSISDN}}",
+																			"host": [
+																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																			],
+																			"path": [
+																				"participants",
+																				"MSISDN",
+																				"{{receiverMSISDN}}"
+																			]
+																		},
+																		"description": "Generic client error, used in order not to disclose information that may be considered private."
+																	},
+																	"response": []
+																},
+																{
+																	"name": "406 - 3001 - Unacceptable Version Requested",
+																	"event": [
+																		{
+																			"listen": "test",
+																			"script": {
+																				"id": "166b6fc0-4c32-4440-a48d-32c235493d5b",
+																				"exec": [
+																					"pm.test(\"Status code is 202\", function () {",
+																					"    pm.response.to.have.status(202);",
+																					"});",
+																					"",
+																					"// pm.test(\"Check that Content-Type is present\", function () {",
+																					"//     pm.response.to.have.header(\"Content-Type\");",
+																					"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.parties+json;version=1.0\");",
+																					"// });",
+																					"",
+																					"setTimeout(function () {",
+																					"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"pathfinderMSISDN\"), function (err, response) {",
+																					"       //console.log(response.json());",
+																					"       pm.test(\"Expected receiver fspId is: \"+pm.variables.get(\"expectedFspId\"), function () {",
+																					"           pm.expect(response.json().party.personalInfo.complexName.firstName).to.eql(pm.variables.get(\"expectedFspId\"));",
+																					"        });",
+																					"        ",
+																					"      ",
+																					"    });",
+																					"}, 1000)",
+																					"",
+																					""
+																				],
+																				"type": "text/javascript"
+																			}
+																		},
+																		{
+																			"listen": "prerequest",
+																			"script": {
+																				"id": "ad1cde37-711e-4ce7-839d-1b023399fb23",
+																				"exec": [
+																					"pm.variables.set('participantDateHeader', (new Date()).toUTCString());"
+																				],
+																				"type": "text/javascript"
+																			}
+																		}
+																	],
+																	"request": {
+																		"method": "GET",
+																		"header": [
+																			{
+																				"key": "Accept",
+																				"value": "application/vnd.interoperability.parties+json;version=100",
+																				"type": "text"
+																			},
+																			{
+																				"key": "Content-Type",
+																				"value": "application/vnd.interoperability.parties+json;version=1.0;",
+																				"type": "text"
+																			},
+																			{
+																				"key": "FSPIOP-Source",
+																				"value": "{{payerfsp}}",
+																				"type": "text"
+																			},
+																			{
+																				"key": "Date",
+																				"value": "{{dateHeader}}",
+																				"type": "text"
+																			},
+																			{
+																				"key": "FSPIOP-Destination",
+																				"value": "",
+																				"type": "text",
+																				"disabled": true
+																			}
+																		],
+																		"url": {
+																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{pathfinderMSISDN}}",
+																			"host": [
+																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																			],
+																			"path": [
+																				"participants",
+																				"MSISDN",
+																				"{{pathfinderMSISDN}}"
+																			]
+																		},
+																		"description": "Client requested to use a protocol version which is not supported by the server."
+																	},
+																	"response": []
+																}
+															],
+															"_postman_isSubFolder": true
+														},
+														{
+															"name": "31xx - Validation Errors",
+															"item": [
+																{
+																	"name": "400 - 3100 - Generic Validation Error",
+																	"request": {
+																		"method": "GET",
+																		"header": [
+																			{
+																				"key": "Accept",
+																				"value": "application/vnd.interoperability.parties+json;version=1",
+																				"type": "text"
+																			},
+																			{
+																				"key": "Content-Type",
+																				"value": "application/vnd.interoperability.parties+json;version=1.0",
+																				"type": "text"
+																			},
+																			{
+																				"key": "FSPIOP-Source",
+																				"value": "{{payerfsp}}",
+																				"type": "text"
+																			},
+																			{
+																				"key": "Date",
+																				"value": "{{dateHeader}}",
+																				"type": "text"
+																			}
+																		],
+																		"url": {
+																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{pathfinderMSISDN}}",
+																			"host": [
+																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																			],
+																			"path": [
+																				"participants",
+																				"MSISDN",
+																				"{{pathfinderMSISDN}}"
+																			]
+																		},
+																		"description": "Generic validation error to be used in order not to disclose information that may be considered private."
+																	},
+																	"response": []
+																},
+																{
+																	"name": "400 - 3101 - Malformed MSISDN (BUG)",
+																	"event": [
+																		{
+																			"listen": "prerequest",
+																			"script": {
+																				"id": "9cf7d011-ba2b-48b2-abf4-a2ed7ae0a6e8",
+																				"exec": [
+																					"pm.environment.set('dateHeader', (new Date()).toUTCString());",
+																					""
+																				],
+																				"type": "text/javascript"
+																			}
+																		},
+																		{
+																			"listen": "test",
+																			"script": {
+																				"id": "3472322e-3146-4049-a128-f281e0be340e",
+																				"exec": [
+																					"pm.test(\"Status code is 400\", function () {",
+																					"    pm.response.to.have.status(400);",
+																					"});",
+																					""
+																				],
+																				"type": "text/javascript"
+																			}
+																		}
+																	],
+																	"request": {
+																		"method": "GET",
+																		"header": [
+																			{
+																				"key": "Accept",
+																				"value": "application/vnd.interoperability.parties+json;version=1",
+																				"type": "text"
+																			},
+																			{
+																				"key": "Date",
+																				"value": "{{dateHeader}}",
+																				"type": "text"
+																			},
+																			{
+																				"key": "FSPIOP-Source",
+																				"value": "{{payerfsp}}",
+																				"type": "text"
+																			},
+																			{
+																				"key": "Content-Type",
+																				"value": "application/vnd.interoperability.parties+json;version=1.0",
+																				"type": "text"
+																			}
+																		],
+																		"url": {
+																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/@3456!",
+																			"host": [
+																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																			],
+																			"path": [
+																				"parties",
+																				"MSISDN",
+																				"@3456!"
+																			]
+																		},
+																		"description": "Format of the parameter is not valid. For example, amount set to 5.ABC. The error description field should specify which information element is erroneous."
+																	},
+																	"response": []
+																},
+																{
+																	"name": "400 - 3101 - Malformed Type (BUG)",
+																	"event": [
+																		{
+																			"listen": "prerequest",
+																			"script": {
+																				"id": "9cf7d011-ba2b-48b2-abf4-a2ed7ae0a6e8",
+																				"exec": [
+																					"pm.environment.set('dateHeader', (new Date()).toUTCString());",
+																					""
+																				],
+																				"type": "text/javascript"
+																			}
+																		},
+																		{
+																			"listen": "test",
+																			"script": {
+																				"id": "3472322e-3146-4049-a128-f281e0be340e",
+																				"exec": [
+																					"pm.test(\"Status code is 400\", function () {",
+																					"    pm.response.to.have.status(400);",
+																					"});",
+																					"",
+																					"setTimeout(function () {",
+																					"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"pathfinderMSISDN\"), function (err, response) {",
+																					"       //console.log(response.json());",
+																					"       pm.test(\"Error message is expected as response.\", function () {",
+																					"           pm.expect(response.json().errorCode).to.eql('3101');",
+																					"           pm.expect(response.json().errorDescription).to.eql('Malformed Type');",
+																					"        });",
+																					"    });",
+																					"}, 1000)"
+																				],
+																				"type": "text/javascript"
+																			}
+																		}
+																	],
+																	"request": {
+																		"method": "GET",
+																		"header": [
+																			{
+																				"key": "Accept",
+																				"type": "text",
+																				"value": "application/vnd.interoperability.participants+json;version=1"
+																			},
+																			{
+																				"key": "Date",
+																				"type": "text",
+																				"value": "{{dateHeader}}"
+																			},
+																			{
+																				"key": "FSPIOP-Source",
+																				"type": "text",
+																				"value": "{{payerfsp}}"
+																			},
+																			{
+																				"key": "Content-Type",
+																				"value": "application/vnd.interoperability.participants+json;version=1.0;",
+																				"type": "text"
+																			}
+																		],
+																		"url": {
+																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/XYZ/{{pathfinderMSISDN}}",
+																			"host": [
+																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																			],
+																			"path": [
+																				"parties",
+																				"XYZ",
+																				"{{pathfinderMSISDN}}"
+																			]
+																		},
+																		"description": "Format of the parameter is not valid. For example, amount set to 5.ABC. The error description field should specify which information element is erroneous."
+																	},
+																	"response": []
+																},
+																{
+																	"name": "400 - 3101 - Malformed Header (BUG)",
+																	"event": [
+																		{
+																			"listen": "prerequest",
+																			"script": {
+																				"id": "9cf7d011-ba2b-48b2-abf4-a2ed7ae0a6e8",
+																				"exec": [
+																					"pm.environment.set('dateHeader', (new Date()).toUTCString());",
+																					""
+																				],
+																				"type": "text/javascript"
+																			}
+																		},
+																		{
+																			"listen": "test",
+																			"script": {
+																				"id": "3472322e-3146-4049-a128-f281e0be340e",
+																				"exec": [
+																					"pm.test(\"Status code is 400\", function () {",
+																					"    pm.response.to.have.status(400);",
+																					"});",
+																					"",
+																					"setTimeout(function () {",
+																					"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"pathfinderMSISDN\"), function (err, response) {",
+																					"       //console.log(response.json());",
+																					"       pm.test(\"Error message is expected as response.\", function () {",
+																					"           pm.expect(response.json().errorCode).to.eql('3101');",
+																					"           pm.expect(response.json().errorDescription).to.eql('Malformed MSISDN');",
+																					"        });",
+																					"    });",
+																					"}, 1000)"
+																				],
+																				"type": "text/javascript"
+																			}
+																		}
+																	],
+																	"request": {
+																		"method": "GET",
+																		"header": [
+																			{
+																				"key": "Accept",
+																				"type": "text",
+																				"value": "xyz"
+																			},
+																			{
+																				"key": "Date",
+																				"type": "text",
+																				"value": "{{dateHeader}}"
+																			},
+																			{
+																				"key": "FSPIOP-Source",
+																				"type": "text",
+																				"value": "{{payerfsp}}"
+																			},
+																			{
+																				"key": "Content-Type",
+																				"value": "application/vnd.interoperability.parties+json;version=1.0;",
+																				"type": "text"
+																			}
+																		],
+																		"url": {
+																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/{{pathfinderMSISDN}}",
+																			"host": [
+																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																			],
+																			"path": [
+																				"parties",
+																				"MSISDN",
+																				"{{pathfinderMSISDN}}"
+																			]
+																		},
+																		"description": "Format of the parameter is not valid. For example, amount set to 5.ABC. The error description field should specify which information element is erroneous."
+																	},
+																	"response": []
+																},
+																{
+																	"name": "400 - 3102 - Missing Mandatory ID (BUG)",
+																	"event": [
+																		{
+																			"listen": "test",
+																			"script": {
+																				"id": "df53ac68-44bc-4b61-9296-8857e0fe7c8d",
+																				"exec": [
+																					"pm.test(\"Status code is 400\", function () {",
+																					"    pm.response.to.have.status(400);",
+																					"});",
+																					"",
+																					"// pm.test(\"Check that Content-Type is present\", function () {",
+																					"//     pm.response.to.have.header(\"Content-Type\");",
+																					"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.parties+json;version=1.0\");",
+																					"// });",
+																					"",
+																					"setTimeout(function () {",
+																					"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"pathfinderMSISDN\"), function (err, response) {",
+																					"       //console.log(response.json());",
+																					"       pm.test(\"Expected receiver fspId is: \"+pm.variables.get(\"expectedFspId\"), function () {",
+																					"           pm.expect(response.json().party.personalInfo.complexName.firstName).to.eql(pm.variables.get(\"expectedFspId\"));",
+																					"        });",
+																					"        ",
+																					"      ",
+																					"    });",
+																					"}, 1000)",
+																					"",
+																					""
+																				],
+																				"type": "text/javascript"
+																			}
+																		},
+																		{
+																			"listen": "prerequest",
+																			"script": {
+																				"id": "0cb60963-9178-4069-9360-82a0664a0db8",
+																				"exec": [
+																					"pm.variables.set('expectedFspId', 'payeefsp');",
+																					"pm.variables.set('participantDateHeader', (new Date()).toUTCString());",
+																					"",
+																					""
+																				],
+																				"type": "text/javascript"
+																			}
+																		}
+																	],
+																	"request": {
+																		"method": "GET",
+																		"header": [
+																			{
+																				"key": "Accept",
+																				"value": "application/vnd.interoperability.participants+json;version=1"
+																			},
+																			{
+																				"key": "Content-Type",
+																				"value": "application/vnd.interoperability.participants+json;version=1.0"
+																			},
+																			{
+																				"key": "FSPIOP-Source",
+																				"value": "{{payerfsp}}"
+																			},
+																			{
+																				"key": "Date",
+																				"value": "{{dateHeader}}"
+																			}
+																		],
+																		"url": {
+																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/",
+																			"host": [
+																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																			],
+																			"path": [
+																				"parties",
+																				"MSISDN",
+																				""
+																			]
+																		}
+																	},
+																	"response": []
+																},
+																{
+																	"name": "400 - 3102 - Missing Mandatory Headers (BUG)",
+																	"event": [
+																		{
+																			"listen": "test",
+																			"script": {
+																				"id": "df53ac68-44bc-4b61-9296-8857e0fe7c8d",
+																				"exec": [
+																					"pm.test(\"Status code is 400\", function () {",
+																					"    pm.response.to.have.status(400);",
+																					"});",
+																					"",
+																					"// pm.test(\"Check that Content-Type is present\", function () {",
+																					"//     pm.response.to.have.header(\"Content-Type\");",
+																					"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.parties+json;version=1.0\");",
+																					"// });",
+																					"",
+																					"setTimeout(function () {",
+																					"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"pathfinderMSISDN\"), function (err, response) {",
+																					"       //console.log(response.json());",
+																					"       pm.test(\"Error message is expected as response.\", function () {",
+																					"           pm.expect(response.json().errorCode).to.eql('3102');",
+																					"           pm.expect(response.json().errorDescription).to.eql('Missing Date Header');",
+																					"        });",
+																					"        ",
+																					"      ",
+																					"    });",
+																					"}, 1000)",
+																					"",
+																					""
+																				],
+																				"type": "text/javascript"
+																			}
+																		},
+																		{
+																			"listen": "prerequest",
+																			"script": {
+																				"id": "0cb60963-9178-4069-9360-82a0664a0db8",
+																				"exec": [
+																					"pm.variables.set('expectedFspId', 'payeefsp');",
+																					"pm.variables.set('participantDateHeader', (new Date()).toUTCString());",
+																					"",
+																					""
+																				],
+																				"type": "text/javascript"
+																			}
+																		}
+																	],
+																	"request": {
+																		"method": "GET",
+																		"header": [
+																			{
+																				"key": "Accept",
+																				"value": "application/vnd.interoperability.participants+json;version=1"
+																			},
+																			{
+																				"key": "Content-Type",
+																				"value": "application/vnd.interoperability.participants+json;version=1.0"
+																			},
+																			{
+																				"key": "FSPIOP-Source",
+																				"value": "{{payerfsp}}"
+																			},
+																			{
+																				"key": "Date",
+																				"value": "{{dateHeader}}",
+																				"disabled": true
+																			}
+																		],
+																		"url": {
+																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/{{pathfinderMSISDN}}",
+																			"host": [
+																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																			],
+																			"path": [
+																				"parties",
+																				"MSISDN",
+																				"{{pathfinderMSISDN}}"
+																			]
+																		}
+																	},
+																	"response": []
+																},
+																{
+																	"name": "3103 - Too many Elements",
+																	"request": {
+																		"method": "GET",
+																		"header": [],
+																		"url": {
+																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{receiverMSISDN}}",
+																			"host": [
+																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																			],
+																			"path": [
+																				"participants",
+																				"MSISDN",
+																				"{{receiverMSISDN}}"
+																			]
+																		},
+																		"description": "Number of elements of an array exceeds the maximum number allowed."
+																	},
+																	"response": []
+																},
+																{
+																	"name": "3104 - Too Large PayLoad",
+																	"request": {
+																		"method": "GET",
+																		"header": [],
+																		"url": {
+																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{receiverMSISDN}}",
+																			"host": [
+																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																			],
+																			"path": [
+																				"participants",
+																				"MSISDN",
+																				"{{receiverMSISDN}}"
+																			]
+																		},
+																		"description": "Size of the payload exceeds the maximum size."
+																	},
+																	"response": []
+																},
+																{
+																	"name": "3105 - Invalid Signature",
+																	"request": {
+																		"method": "GET",
+																		"header": [],
+																		"url": {
+																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{pathfinderMSISDN}}",
+																			"host": [
+																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																			],
+																			"path": [
+																				"participants",
+																				"MSISDN",
+																				"{{pathfinderMSISDN}}"
+																			]
+																		},
+																		"description": "Some parameters have changed in the message, making the signature invalid. This may indicate that the message may have been modified maliciously."
+																	},
+																	"response": []
+																},
+																{
+																	"name": "3106 - Modified Request",
+																	"event": [
+																		{
+																			"listen": "test",
+																			"script": {
+																				"id": "926486cd-5a12-4245-a0e4-16f8c06bee99",
+																				"exec": [
+																					"pm.test(\"Status code is 202\", function () {",
+																					"    pm.response.to.have.status(202);",
+																					"});"
+																				],
+																				"type": "text/javascript"
+																			}
+																		},
+																		{
+																			"listen": "prerequest",
+																			"script": {
+																				"id": "0e364366-6b34-4f0b-a352-98a53c1d4bef",
+																				"exec": [
+																					"pm.variables.set('headerDate', (new Date()).toUTCString());"
+																				],
+																				"type": "text/javascript"
+																			}
+																		}
+																	],
+																	"request": {
+																		"method": "GET",
+																		"header": [
+																			{
+																				"key": "Accept",
+																				"value": "application/vnd.interoperability.parties+json;"
+																			},
+																			{
+																				"key": "Content-Type",
+																				"value": "application/vnd.interoperability.parties+json;version=1.0"
+																			},
+																			{
+																				"key": "FSPIOP-Source",
+																				"value": "payerfsp"
+																			},
+																			{
+																				"key": "Date",
+																				"value": "Tue, 16 Oct 2018 17:58:51 GMT"
+																			}
+																		],
+																		"url": {
+																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{pathfinderMSISDN}}",
+																			"host": [
+																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																			],
+																			"path": [
+																				"participants",
+																				"MSISDN",
+																				"{{pathfinderMSISDN}}"
+																			]
+																		},
+																		"description": "Request with the same ID has previously been processed in which the parameters are not the same."
+																	},
+																	"response": []
+																},
+																{
+																	"name": "3107 - Missing mandatory extension parameter",
+																	"request": {
+																		"method": "GET",
+																		"header": [],
+																		"url": {
+																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{receiverMSISDN}}",
+																			"host": [
+																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																			],
+																			"path": [
+																				"participants",
+																				"MSISDN",
+																				"{{receiverMSISDN}}"
+																			]
+																		},
+																		"description": "Scheme-mandatory extension parameter was missing."
+																	},
+																	"response": []
+																}
+															],
+															"_postman_isSubFolder": true
+														},
+														{
+															"name": "32xx - Identifier Errors",
+															"item": [
+																{
+																	"name": "202 - 3200 - Generic ID Not Found (BUG)",
+																	"event": [
+																		{
+																			"listen": "prerequest",
+																			"script": {
+																				"id": "239058ed-5271-425d-8aa4-5259d1a3b185",
+																				"exec": [
+																					"pm.environment.set('dateHeader', (new Date()).toUTCString());",
+																					""
+																				],
+																				"type": "text/javascript"
+																			}
+																		},
+																		{
+																			"listen": "test",
+																			"script": {
+																				"id": "87f10c97-f0e7-45cb-a9b3-f95e189874a2",
+																				"exec": [
+																					"pm.test(\"Status code is 202\", function () {",
+																					"    pm.response.to.have.status(202);",
+																					"});",
+																					"",
+																					"setTimeout(function () {",
+																					"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/10000000\", function (err, response) {",
+																					"       //console.log(response.json());",
+																					"       pm.test(\"Error message is expected as response.\", function () {",
+																					"           pm.expect(response.json().errorCode).to.eql('3200');",
+																					"           pm.expect(response.json().errorDescription).to.eql('ID Not Found');",
+																					"        });",
+																					"        ",
+																					"      ",
+																					"    });",
+																					"}, 1000)"
+																				],
+																				"type": "text/javascript"
+																			}
+																		}
+																	],
+																	"request": {
+																		"method": "GET",
+																		"header": [
+																			{
+																				"key": "Accept",
+																				"value": "application/vnd.interoperability.parties+json;version=1",
+																				"type": "text"
+																			},
+																			{
+																				"key": "Date",
+																				"value": "{{dateHeader}}",
+																				"type": "text"
+																			},
+																			{
+																				"key": "FSPIOP-Source",
+																				"value": "{{payerfsp}}",
+																				"type": "text"
+																			},
+																			{
+																				"key": "Content-Type",
+																				"value": "application/vnd.interoperability.parties+json;version=1.0",
+																				"type": "text"
+																			}
+																		],
+																		"url": {
+																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/10000000",
+																			"host": [
+																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																			],
+																			"path": [
+																				"parties",
+																				"MSISDN",
+																				"10000000"
+																			]
+																		},
+																		"description": "Generic ID error provided by the client."
+																	},
+																	"response": []
+																},
+																{
+																	"name": "3201 - Destination FSP Error",
+																	"request": {
+																		"method": "GET",
+																		"header": [
+																			{
+																				"key": "Accept",
+																				"value": "application/vnd.interoperability.participants+json;version=1",
+																				"type": "text"
+																			},
+																			{
+																				"key": "Content-Type",
+																				"value": "application/vnd.interoperability.participants+json;version=1.0",
+																				"type": "text"
+																			},
+																			{
+																				"key": "FSPIOP-Source",
+																				"value": "{{payerfsp}}",
+																				"type": "text"
+																			},
+																			{
+																				"key": "Date",
+																				"value": "{{dateHeader}}",
+																				"type": "text"
+																			}
+																		],
+																		"url": {
+																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{pathfinderMSISDN}}",
+																			"host": [
+																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																			],
+																			"path": [
+																				"participants",
+																				"MSISDN",
+																				"{{pathfinderMSISDN}}"
+																			]
+																		},
+																		"description": "Destination FSP does not exist or cannot be found."
+																	},
+																	"response": []
+																},
+																{
+																	"name": "3204 - Party Not Found (BUG)",
+																	"event": [
+																		{
+																			"listen": "test",
+																			"script": {
+																				"id": "351febfe-c7a5-4997-b2fb-768c905c652d",
+																				"exec": [
+																					"pm.test(\"Status code is 202\", function () {",
+																					"    pm.response.to.have.status(202);",
+																					"});",
+																					"",
+																					"setTimeout(function () {",
+																					"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/10000000\", function (err, response) {",
+																					"       //console.log(response.json());",
+																					"       pm.test(\"Error message is expected as response.\", function () {",
+																					"           pm.expect(response.json().errorCode).to.eql('3200');",
+																					"           pm.expect(response.json().errorDescription).to.eql('ID Not Found');",
+																					"        });",
+																					"        ",
+																					"      ",
+																					"    });",
+																					"}, 1000)"
+																				],
+																				"type": "text/javascript"
+																			}
+																		}
+																	],
+																	"request": {
+																		"method": "GET",
+																		"header": [
+																			{
+																				"key": "Accept",
+																				"value": "application/vnd.interoperability.parties+json;version=1",
+																				"type": "text"
+																			},
+																			{
+																				"key": "Date",
+																				"value": "{{dateHeader}}",
+																				"type": "text"
+																			},
+																			{
+																				"key": "FSPIOP-Source",
+																				"value": "{{payerfsp}}",
+																				"type": "text"
+																			},
+																			{
+																				"key": "Content-Type",
+																				"value": "application/vnd.interoperability.parties+json;version=1.0",
+																				"type": "text"
+																			}
+																		],
+																		"url": {
+																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/17855501914",
+																			"host": [
+																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																			],
+																			"path": [
+																				"parties",
+																				"MSISDN",
+																				"17855501914"
+																			]
+																		},
+																		"description": "Party with the provided identifier, identifier type, and optional sub id or type was not found."
+																	},
+																	"response": []
+																}
+															],
+															"_postman_isSubFolder": true
+														},
+														{
+															"name": "33xx - Expired Errors",
+															"item": [
+																{
+																	"name": "3300 - Generic Expired Error",
+																	"event": [
+																		{
+																			"listen": "prerequest",
+																			"script": {
+																				"id": "68556769-1dc9-4fe7-a402-a08a28176ff9",
+																				"exec": [
+																					"pm.variables.set('transferDate', (new Date()).toUTCString());"
+																				],
+																				"type": "text/javascript"
+																			}
+																		},
+																		{
+																			"listen": "test",
+																			"script": {
+																				"id": "d5cf267b-b8b3-41b6-9211-1c34b33a76a2",
+																				"exec": [
+																					"pm.test(\"Status code is 202\", function () {",
+																					"    pm.response.to.have.status(202);",
+																					"});"
+																				],
+																				"type": "text/javascript"
+																			}
+																		}
+																	],
+																	"request": {
+																		"method": "GET",
+																		"header": [
+																			{
+																				"key": "Accept",
+																				"value": "application/vnd.interoperability.participants+json"
+																			},
+																			{
+																				"key": "Content-Type",
+																				"value": "application/vnd.interoperability.participants+json;version=1.0"
+																			},
+																			{
+																				"key": "FSPIOP-SOURCE",
+																				"value": "payerfsp"
+																			},
+																			{
+																				"key": "Date",
+																				"value": "{{headerDate}}"
+																			}
+																		],
+																		"url": {
+																			"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{pathfinderMSISDN}}",
+																			"host": [
+																				"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+																			],
+																			"path": [
+																				"participants",
+																				"MSISDN",
+																				"{{pathfinderMSISDN}}"
+																			]
+																		},
+																		"description": "Generic expired object error, to be used in order not to disclose information that may be considered private."
+																	},
+																	"response": []
+																}
+															],
+															"_postman_isSubFolder": true
+														}
+													],
+													"description": "All possible errors occurring on the server in which the server reports that the client has sent one or more erroneous parameters should use the high-level error code 3 (error codes 3xxx). These error codes should indicate that the server could not perform the service according to the request from the client. The server should provide an explanation why the service could not be performed.",
+													"event": [
+														{
+															"listen": "prerequest",
+															"script": {
+																"id": "53dc229b-8fd8-4f53-9fed-df2898d7969e",
+																"type": "text/javascript",
+																"exec": [
+																	""
+																]
+															}
+														},
+														{
+															"listen": "test",
+															"script": {
+																"id": "07feae10-c923-4652-ace8-14c9a2f9a51e",
+																"type": "text/javascript",
+																"exec": [
+																	""
+																]
+															}
+														}
+													],
+													"_postman_isSubFolder": true
+												}
+											],
+											"_postman_isSubFolder": true
+										}
+									],
+									"_postman_isSubFolder": true
+								},
+								{
+									"name": "PUT - PartiesByTypeAndID",
+									"item": [
+										{
+											"name": "200",
+											"item": [
+												{
+													"name": "200 - Valid Request",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"id": "76d6c169-8ddc-4595-8516-b93d15ed72ec",
+																"exec": [
+																	"pm.test(\"Status code is 200\", function () {",
+																	"    pm.response.to.have.status(200);",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Accept",
+																"type": "text",
+																"value": "application/vnd.interoperability.parties+json;version=1",
+																"disabled": true
+															},
+															{
+																"key": "Date",
+																"type": "text",
+																"value": "{{dateHeader}}"
+															},
+															{
+																"key": "FSPIOP-Source",
+																"type": "text",
+																"value": "{{payeefsp}}"
+															},
+															{
+																"key": "FSPIOP-Destination",
+																"type": "text",
+																"value": "{{payerfsp}}"
+															},
+															{
+																"key": "Content-Type",
+																"type": "text",
+																"value": "application/vnd.interoperability.parties+json;version=1.0"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"{{pathfinderMSISDN}}\",\n            \"fspId\": \"{{payeefsp}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+														},
+														"url": {
+															"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/BUSINESS/17855501914",
+															"host": [
+																"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+															],
+															"path": [
+																"parties",
+																"BUSINESS",
+																"17855501914"
+															]
+														}
+													},
+													"response": []
+												}
+											],
+											"_postman_isSubFolder": true
+										},
+										{
+											"name": "400",
+											"item": [
+												{
+													"name": "Invalid Accept Header ( BUG)",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"id": "76d6c169-8ddc-4595-8516-b93d15ed72ec",
+																"exec": [
+																	"pm.test(\"Status code is 400\", function () {",
+																	"    pm.response.to.have.status(400);",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Accept",
+																"type": "text",
+																"value": "application/vnd.interoperability.parties+json;version=1"
+															},
+															{
+																"key": "Date",
+																"type": "text",
+																"value": "{{dateHeader}}"
+															},
+															{
+																"key": "FSPIOP-Source",
+																"type": "text",
+																"value": "{{payeefsp}}"
+															},
+															{
+																"key": "FSPIOP-Destination",
+																"type": "text",
+																"value": "{{payerfsp}}"
+															},
+															{
+																"key": "Content-Type",
+																"type": "text",
+																"value": "application/vnd.interoperability.parties+json;version=1.0"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"{{pathfinderMSISDN}}\",\n            \"fspId\": \"{{payeefsp}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+														},
+														"url": {
+															"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/BUSINESS/17855501914",
+															"host": [
+																"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+															],
+															"path": [
+																"parties",
+																"BUSINESS",
+																"17855501914"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "Missing Content-TYpe (BUG)",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"id": "76d6c169-8ddc-4595-8516-b93d15ed72ec",
+																"exec": [
+																	"pm.test(\"Status code is 400\", function () {",
+																	"    pm.response.to.have.status(400);",
+																	"});",
+																	"",
+																	"var jsonData = pm.response.json();",
+																	"",
+																	"pm.test(\"statusCode is 400\", function () {",
+																	"    pm.expect(jsonData.statusCode).to.eql(400);",
+																	"});",
+																	"",
+																	"pm.test(\"errorDescription is Invalid request payload input\", function () {",
+																	"    pm.expect(jsonData.message.errorInformation.errorDescription).to.eql('Invalid request payload input');",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Date",
+																"type": "text",
+																"value": "{{dateHeader}}"
+															},
+															{
+																"key": "FSPIOP-Source",
+																"type": "text",
+																"value": "{{payeefsp}}"
+															},
+															{
+																"key": "FSPIOP-Destination",
+																"type": "text",
+																"value": "{{payerfsp}}"
+															},
+															{
+																"key": "Content-Type",
+																"type": "text",
+																"value": "application/vnd.interoperability.parties+json;version=1.0",
+																"disabled": true
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"{{pathfinderMSISDN}}\",\n            \"fspId\": \"{{payeefsp}}\"\n        },\n        \"name\": \"{{fullName}}\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"{{firstName}}\",\n                \"lastName\": \"{{lastName}}\"\n            },\n            \"dateOfBirth\": \"{{dob}}\"\n        }\n    }\n}"
+														},
+														"url": {
+															"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/BUSINESS/17855501914",
+															"host": [
+																"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+															],
+															"path": [
+																"parties",
+																"BUSINESS",
+																"17855501914"
+															]
+														}
+													},
+													"response": []
+												}
+											],
+											"_postman_isSubFolder": true
+										}
+									],
+									"_postman_isSubFolder": true
+								},
+								{
+									"name": "PUT - PartiesErrorByTypeAndID",
+									"item": [
+										{
+											"name": "200",
+											"item": [
+												{
+													"name": "200 - Valid Request (BUG)",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"id": "76d6c169-8ddc-4595-8516-b93d15ed72ec",
+																"exec": [
+																	"pm.test(\"Status code is 200\", function () {",
+																	"    pm.response.to.have.status(200);",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/vnd.interoperability.parties+json;version=1",
+																"type": "text"
+															},
+															{
+																"key": "Date",
+																"value": "{{dateHeader}}",
+																"type": "text"
+															},
+															{
+																"key": "FSPIOP-Source",
+																"value": "{{payeefsp}}",
+																"type": "text"
+															},
+															{
+																"key": "FSPIOP-Destination",
+																"value": "{{payerfsp}}",
+																"type": "text"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/vnd.interoperability.parties+json;version=1.0",
+																"type": "text"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"errorInformation\": {\n    \"errorCode\": \"3204\",\n    \"errorDescription\": \"Party with the provided identifier, identifier type, and optional sub id or type was not found.\",\n    \"extensionList\": [\n      {\n        \"key\": \"MSISDN\",\n        \"value\": \"17855501914\"\n      }\n    ]\n  }\n}"
+														},
+														"url": {
+															"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/BUSINESS/17855501914/error",
+															"host": [
+																"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+															],
+															"path": [
+																"parties",
+																"BUSINESS",
+																"17855501914",
+																"error"
+															]
+														}
+													},
+													"response": []
+												}
+											],
+											"_postman_isSubFolder": true
+										},
+										{
+											"name": "400",
+											"item": [
+												{
+													"name": "Missing Content-Type (BUG)",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"id": "76d6c169-8ddc-4595-8516-b93d15ed72ec",
+																"exec": [
+																	"pm.test(\"Status code is 400\", function () {",
+																	"    pm.response.to.have.status(400);",
+																	"});",
+																	"",
+																	"var jsonData = pm.response.json();",
+																	"",
+																	"pm.test(\"statusCode is 400\", function () {",
+																	"    pm.expect(jsonData.statusCode).to.eql(400);",
+																	"});",
+																	"",
+																	"pm.test(\"errorDescription is Invalid request payload input\", function () {",
+																	"    pm.expect(jsonData.message.errorInformation.errorDescription).to.eql('Invalid request payload input');",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Accept",
+																"type": "text",
+																"value": "application/vnd.interoperability.parties+json;version=1"
+															},
+															{
+																"key": "Date",
+																"type": "text",
+																"value": "{{dateHeader}}"
+															},
+															{
+																"key": "FSPIOP-Source",
+																"type": "text",
+																"value": "{{payeefsp}}"
+															},
+															{
+																"key": "FSPIOP-Destination",
+																"type": "text",
+																"value": "{{payerfsp}}"
+															},
+															{
+																"key": "Content-Type",
+																"type": "text",
+																"value": "application/vnd.interoperability.parties+json;version=1.0",
+																"disabled": true
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"errorInformation\": {\n    \"errorCode\": \"3204\",\n    \"errorDescription\": \"Party with the provided identifier, identifier type, and optional sub id or type was not found.\",\n    \"extensionList\": [\n      {\n        \"key\": \"MSISDN\",\n        \"value\": \"17855501914\"\n      }\n    ]\n  }\n}"
+														},
+														"url": {
+															"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/BUSINESS/17855501914/error",
+															"host": [
+																"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+															],
+															"path": [
+																"parties",
+																"BUSINESS",
+																"17855501914",
+																"error"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "Invalid Accept Header",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"id": "76d6c169-8ddc-4595-8516-b93d15ed72ec",
+																"exec": [
+																	"pm.test(\"Status code is 400\", function () {",
+																	"    pm.response.to.have.status(400);",
+																	"});",
+																	"",
+																	"var jsonData = pm.response.json();",
+																	"",
+																	"pm.test(\"statusCode is 400\", function () {",
+																	"    pm.expect(jsonData.statusCode).to.eql(400);",
+																	"});",
+																	"",
+																	"pm.test(\"errorDescription is Invalid request payload input\", function () {",
+																	"    pm.expect(jsonData.message.errorInformation.errorDescription).to.eql('Invalid request payload input');",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Accept",
+																"type": "text",
+																"value": "application/vnd.interoperability.parties+json;version=1"
+															},
+															{
+																"key": "Date",
+																"type": "text",
+																"value": "{{dateHeader}}"
+															},
+															{
+																"key": "FSPIOP-Source",
+																"type": "text",
+																"value": "{{payeefsp}}"
+															},
+															{
+																"key": "FSPIOP-Destination",
+																"type": "text",
+																"value": "{{payerfsp}}"
+															},
+															{
+																"key": "Content-Type",
+																"type": "text",
+																"value": "application/vnd.interoperability.parties+json;version=1.0"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"errorInformation\": {\n    \"errorCode\": \"3204\",\n    \"errorDescription\": \"Party with the provided identifier, identifier type, and optional sub id or type was not found.\",\n    \"extensionList\": [\n      {\n        \"key\": \"MSISDN\",\n        \"value\": \"17855501914\"\n      }\n    ]\n  }\n}"
+														},
+														"url": {
+															"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/BUSINESS/17855501914/error",
+															"host": [
+																"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+															],
+															"path": [
+																"parties",
+																"BUSINESS",
+																"17855501914",
+																"error"
+															]
+														}
+													},
+													"response": []
+												}
+											],
+											"_postman_isSubFolder": true
+										}
+									],
+									"_postman_isSubFolder": true
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "/BUSINESS/ID (OLD)",
 							"item": [
 								{
 									"name": "GET - PartiesByTypeAndID",
@@ -7994,385 +10836,6 @@
 								}
 							],
 							"_postman_isSubFolder": true
-						},
-						{
-							"name": "/type/ID/SubID ( NOT IMPLEMENTED )",
-							"item": [],
-							"_postman_isSubFolder": true
-						},
-						{
-							"name": "PartiesByTypeAndID",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Accept",
-										"value": "{{Accept}}"
-									}
-								],
-								"url": {
-									"raw": "http://fsp/parties/:Type/:ID",
-									"protocol": "http",
-									"host": [
-										"fsp"
-									],
-									"path": [
-										"parties",
-										":Type",
-										":ID"
-									],
-									"variable": [
-										{
-											"key": "Type",
-											"type": "any"
-										},
-										{
-											"key": "ID",
-											"type": "any"
-										}
-									]
-								},
-								"description": "The HTTP request GET /parties/<Type>/<ID> (or GET /parties/<Type>/<ID>/<SubId>) is used to lookup information regarding the requested Party, defined by <Type>, <ID> and optionally <SubId> (for example, GET /parties/MSISDN/123456789, or GET /parties/BUSINESS/shoecompany/employee1)."
-							},
-							"response": []
-						},
-						{
-							"name": "PartiesByTypeAndID2",
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Content-Length",
-										"value": "{{Content-Length}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "http://fsp/parties/:Type/:ID",
-									"protocol": "http",
-									"host": [
-										"fsp"
-									],
-									"path": [
-										"parties",
-										":Type",
-										":ID"
-									],
-									"variable": [
-										{
-											"key": "Type",
-											"type": "any"
-										},
-										{
-											"key": "ID",
-											"type": "any"
-										}
-									]
-								},
-								"description": "The callback PUT /parties/<Type>/<ID> (or PUT /parties/<Type>/<ID>/<SubId>) is used to inform the client of a successful result of the Party information lookup."
-							},
-							"response": []
-						},
-						{
-							"name": "PartiesErrorByTypeAndID",
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Content-Length",
-										"value": "{{Content-Length}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "{{Content-Type}}"
-									},
-									{
-										"key": "Date",
-										"value": "{{Date}}"
-									},
-									{
-										"key": "X-Forwarded-For",
-										"value": "{{X-Forwarded-For}}"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"value": "{{FSPIOP-Source}}"
-									},
-									{
-										"key": "FSPIOP-Destination",
-										"value": "{{FSPIOP-Destination}}"
-									},
-									{
-										"key": "FSPIOP-Encryption",
-										"value": "{{FSPIOP-Encryption}}"
-									},
-									{
-										"key": "FSPIOP-Signature",
-										"value": "{{FSPIOP-Signature}}"
-									},
-									{
-										"key": "FSPIOP-URI",
-										"value": "{{FSPIOP-URI}}"
-									},
-									{
-										"key": "FSPIOP-HTTP-Method",
-										"value": "{{FSPIOP-HTTP-Method}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "http://fsp/parties/:Type/:ID/error",
-									"protocol": "http",
-									"host": [
-										"fsp"
-									],
-									"path": [
-										"parties",
-										":Type",
-										":ID",
-										"error"
-									],
-									"variable": [
-										{
-											"key": "Type",
-											"value": "{{Type}}",
-											"type": "string"
-										},
-										{
-											"key": "ID",
-											"value": "{{ID}}",
-											"type": "string"
-										}
-									]
-								},
-								"description": "If the server is unable to find Party information of the provided identity, or another processing error occurred, the error callback PUT /parties/<Type>/<ID>/error (or PUT /parties/<Type>/<ID>/<SubId>/error) is used."
-							},
-							"response": []
-						},
-						{
-							"name": "PartiesSubIdByTypeAndID",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Accept",
-										"value": "{{Accept}}"
-									}
-								],
-								"url": {
-									"raw": "http://fsp/parties/:Type/:ID/:SubId",
-									"protocol": "http",
-									"host": [
-										"fsp"
-									],
-									"path": [
-										"parties",
-										":Type",
-										":ID",
-										":SubId"
-									],
-									"variable": [
-										{
-											"key": "Type",
-											"type": "any"
-										},
-										{
-											"key": "ID",
-											"type": "any"
-										},
-										{
-											"key": "SubId",
-											"type": "any"
-										}
-									]
-								},
-								"description": "The HTTP request GET /parties/<Type>/<ID> (or GET /parties/<Type>/<ID>/<SubId>) is used to lookup information regarding the requested Party, defined by <Type>, <ID> and optionally <SubId> (for example, GET /parties/MSISDN/123456789, or GET /parties/BUSINESS/shoecompany/employee1)."
-							},
-							"response": []
-						},
-						{
-							"name": "PartiesSubIdByTypeAndID",
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Content-Length",
-										"value": "{{Content-Length}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "http://fsp/parties/:Type/:ID/:SubId",
-									"protocol": "http",
-									"host": [
-										"fsp"
-									],
-									"path": [
-										"parties",
-										":Type",
-										":ID",
-										":SubId"
-									],
-									"variable": [
-										{
-											"key": "Type",
-											"type": "any"
-										},
-										{
-											"key": "ID",
-											"type": "any"
-										},
-										{
-											"key": "SubId",
-											"type": "any"
-										}
-									]
-								},
-								"description": "The callback PUT /parties/<Type>/<ID> (or PUT /parties/<Type>/<ID>/<SubId>) is used to inform the client of a successful result of the Party information lookup."
-							},
-							"response": []
-						},
-						{
-							"name": "PartiesSubIdErrorByTypeAndID",
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Content-Length",
-										"value": "{{Content-Length}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "{{Content-Type}}"
-									},
-									{
-										"key": "Date",
-										"value": "{{Date}}"
-									},
-									{
-										"key": "X-Forwarded-For",
-										"value": "{{X-Forwarded-For}}"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"value": "{{FSPIOP-Source}}"
-									},
-									{
-										"key": "FSPIOP-Destination",
-										"value": "{{FSPIOP-Destination}}"
-									},
-									{
-										"key": "FSPIOP-Encryption",
-										"value": "{{FSPIOP-Encryption}}"
-									},
-									{
-										"key": "FSPIOP-Signature",
-										"value": "{{FSPIOP-Signature}}"
-									},
-									{
-										"key": "FSPIOP-URI",
-										"value": "{{FSPIOP-URI}}"
-									},
-									{
-										"key": "FSPIOP-HTTP-Method",
-										"value": "{{FSPIOP-HTTP-Method}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "http://fsp/parties/:Type/:ID/:SubId/error",
-									"protocol": "http",
-									"host": [
-										"fsp"
-									],
-									"path": [
-										"parties",
-										":Type",
-										":ID",
-										":SubId",
-										"error"
-									],
-									"variable": [
-										{
-											"key": "Type",
-											"value": "{{Type}}",
-											"type": "string"
-										},
-										{
-											"key": "ID",
-											"value": "{{ID}}",
-											"type": "string"
-										},
-										{
-											"key": "SubId",
-											"value": "{{SubId}}",
-											"type": "string"
-										}
-									]
-								},
-								"description": "If the server is unable to find Party information of the provided identity, or another processing error occurred, the error callback PUT /parties/<Type>/<ID>/error (or PUT /parties/<Type>/<ID>/<SubId>/error) is used."
-							},
-							"response": []
 						}
 					],
 					"description": "Folder for parties",
@@ -18800,13 +21263,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}}/accounts",
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/testfsp4/accounts",
 									"host": [
 										"{{HOST_CENTRAL_LEDGER}}"
 									],
 									"path": [
 										"participants",
-										"{{payerfsp}}",
+										"testfsp4",
 										"accounts"
 									]
 								}
