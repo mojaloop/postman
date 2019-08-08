@@ -81,26 +81,98 @@
 											"    pm.response.to.have.status(202);",
 											"});",
 											"",
-											"// pm.test(\"Check that Content-Type is present\", function () {",
-											"//     pm.response.to.have.header(\"Content-Type\");",
-											"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.parties+json;version=1.0\");",
-											"// });",
-											"",
+											"//Check the request that Switch forwards to payeefsp",
 											"setTimeout(function () {",
-											"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"pathfinderMSISDN\"), function (err, response) {",
-											"       //console.log(response.json());",
-											"       pm.test(\"Expected receiver first name is: \"+pm.variables.get(\"expectedFirstName\"), function () {",
-											"           pm.expect(response.json().party.personalInfo.complexName.firstName).to.eql(pm.variables.get(\"expectedFirstName\"));",
-											"        });",
-											"        pm.test(\"Expected receiver last name is: \"+pm.variables.get(\"expectedLastName\"), function () {",
-											"          pm.expect(response.json().party.personalInfo.complexName.lastName).to.eql(pm.variables.get(\"expectedLastName\"));",
-											"        });",
-											"        pm.test(\"Expected receiver DOB: \"+pm.variables.get(\"expectedDOB\"), function () {",
-											"          pm.expect(response.json().party.personalInfo.dateOfBirth).to.eql(pm.variables.get(\"expectedDOB\"));",
-											"        });   ",
-											"      ",
-											"    });",
-											"}, 4000)",
+											"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payeefsp/requests/\"+pm.environment.get(\"pathfinderMSISDN\"), function (err, response) {",
+											"          if(response.responseSize !== 0) {",
+											"              ",
+											"              //Check the Headers",
+											"              var headers = response.json().headers;",
+											"              ",
+											"                pm.test(\"payeefsp fspiop-source is payerfsp\", function () {",
+											"                    pm.expect(headers['fspiop-source']).to.eql('payerfsp');",
+											"                });",
+											"                ",
+											"                pm.test(\"payeefsp fspiop-destination is payerfsp\", function () {",
+											"                    pm.expect(headers['fspiop-destination']).to.eql('payeefsp');",
+											"                });",
+											"                ",
+											"                pm.test(\"payeefsp fspiop-signature is same as sent in the request\", function () {",
+											"                    pm.expect(headers['fspiop-signature']).to.eql(pm.environment.get(\"fspiop-signature\"));",
+											"                });",
+											"                ",
+											"                pm.test(\"payeefsp accept is same as sent in the request\", function () {",
+											"                    pm.expect(headers['accept']).to.eql('application/vnd.interoperability.parties+json;version=1');",
+											"                });",
+											"                ",
+											"                pm.test(\"payeefsp content-typeis same as sent in the request\", function () {",
+											"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.parties+json;version=1.0');",
+											"                });",
+											"                ",
+											"                ",
+											"                ",
+											"          } else {",
+											"              pm.test(\"Transfer FAILED\", function () {",
+											"                throw new Error('Did not receive request on payee side');",
+											"              });",
+											"              postman.setNextRequest(null)",
+											"          }",
+											"   });",
+											"}, 1100)",
+											"",
+											"//Check the callback response that Switch forwards to payeefsp",
+											"setTimeout(function () {",
+											"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.environment.get(\"pathfinderMSISDN\"), function (err, response) {",
+											"          if(response !== null) {",
+											"            //Checking headers",
+											"            var headers = response.json().headers;",
+											"            pm.test(\"payerfsp fspiop-source is payeefsp\", function () {",
+											"                pm.expect(headers['fspiop-source']).to.eql('payeefsp');",
+											"            });",
+											"            ",
+											"            pm.test(\"payerfsp fspiop-destination is payerfsp\", function () {",
+											"                pm.expect(headers['fspiop-destination']).to.eql('payerfsp');",
+											"            });",
+											"            ",
+											"            //Uncomment this once Simulators are able to forward Signature",
+											"            // pm.test(\"fspiop-signature is empty\", function () {",
+											"            //     pm.expect(pm.response.json().headers['fspiop-signature']).to.eql(undefined);",
+											"            // });",
+											"            ",
+											"            pm.test(\"payerfsp accept is empty\", function () {",
+											"                pm.expect(headers['accept']).to.eql(undefined);",
+											"            });",
+											"            ",
+											"            pm.test(\"payerfsp content-type should be application/vnd.interoperability.parties+json;version=1.0\", function () {",
+											"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.parties+json;version=1.0');",
+											"            });",
+											"            ",
+											"            pm.test(\"payerfsp fspiop-uri is empty\", function () {",
+											"                pm.expect(headers['fspiop-uri']).to.eql('/parties/MSISDN'+pm.environment.get(\"pathfinderMSISDN\"));",
+											"            });",
+											"            ",
+											"            pm.test(\"payerfsp fspiop-http-method is empty\", function () {",
+											"                pm.expect(headers['fspiop-http-method']).to.eql('GET');",
+											"            });",
+											"            ",
+											"            var jsonData = response.json().data;",
+											"            pm.test(\"Expected receiver first name is: \"+pm.variables.get(\"expectedFirstName\"), function () {",
+											"           pm.expect(jsonData.party.personalInfo.complexName.firstName).to.eql(pm.variables.get(\"expectedFirstName\"));",
+											"            });",
+											"            pm.test(\"Expected receiver last name is: \"+pm.variables.get(\"expectedLastName\"), function () {",
+											"              pm.expect(jsonData.party.personalInfo.complexName.lastName).to.eql(pm.variables.get(\"expectedLastName\"));",
+											"            });",
+											"            pm.test(\"Expected receiver DOB: \"+pm.variables.get(\"expectedDOB\"), function () {",
+											"              pm.expect(jsonData.party.personalInfo.dateOfBirth).to.eql(pm.variables.get(\"expectedDOB\"));",
+											"            });   ",
+											"          } else {",
+											"              pm.test(\"Transfer FAILED\", function () {",
+											"                throw new Error('Did not receive response');",
+											"              });",
+											"              postman.setNextRequest(null)",
+											"          }",
+											"   });",
+											"}, 1100)",
 											"",
 											""
 										],
@@ -133,7 +205,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/vnd.interoperability.parties+json;version=1.0"
 									},
 									{
 										"key": "FSPIOP-Source",
@@ -142,16 +214,27 @@
 									{
 										"key": "Date",
 										"value": "{{dateHeader}}"
+									},
+									{
+										"key": "FSPIOP-URI",
+										"value": "/parties/MSISDN/{{pathfinderMSISDN}}",
+										"type": "text"
+									},
+									{
+										"key": "FSPIOP-Signature",
+										"value": "{{fspiop-signature}}",
+										"type": "text"
+									},
+									{
+										"key": "FSPIOP-HTTP-Method",
+										"value": "GET",
+										"type": "text"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
-									"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/parties/MSISDN/{{pathfinderMSISDN}}",
+									"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/{{pathfinderMSISDN}}",
 									"host": [
-										"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+										"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
 									],
 									"path": [
 										"parties",
@@ -171,15 +254,14 @@
 									"script": {
 										"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 										"exec": [
-											"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
+											"",
 											"   var uuid = require('uuid');",
 											"   var generatedUUID = uuid.v4();",
 											"   pm.variables.set('quoteId', generatedUUID);",
-											"}",
 											"",
-											"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
+											"",
 											"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
-											"}"
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -193,16 +275,79 @@
 											"    pm.response.to.have.status(202);",
 											"});",
 											"",
-											"// pm.test(\"Check that Content-Type is present\", function () {",
-											"//     pm.response.to.have.header(\"Content-Type\");",
-											"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
-											"// });",
+											"//Check the request that Switch forwards to payeefsp",
+											"setTimeout(function () {",
+											"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payeefsp/requests/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
+											"          if(response.responseSize !== 0) {",
+											"              ",
+											"              //Check the Headers",
+											"              var headers = response.json().headers;",
+											"              ",
+											"                pm.test(\"payeefsp fspiop-source is payerfsp\", function () {",
+											"                    pm.expect(headers['fspiop-source']).to.eql('payerfsp');",
+											"                });",
+											"                ",
+											"                pm.test(\"payeefsp fspiop-destination is payerfsp\", function () {",
+											"                    pm.expect(headers['fspiop-destination']).to.eql('payeefsp');",
+											"                });",
+											"                ",
+											"                pm.test(\"payeefsp fspiop-signature is same as sent in the request\", function () {",
+											"                    pm.expect(headers['fspiop-signature']).to.eql(pm.environment.get(\"fspiop-signature\"));",
+											"                });",
+											"                ",
+											"                pm.test(\"payeefsp accept is same as sent in the request\", function () {",
+											"                    pm.expect(headers['accept']).to.eql('application/vnd.interoperability.quotes+json;version=1');",
+											"                });",
+											"                ",
+											"                pm.test(\"payeefsp content-typeis same as sent in the request\", function () {",
+											"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.quotes+json;version=1.0');",
+											"                });",
+											"                ",
+											"          } else {",
+											"              pm.test(\"Quote FAILED\", function () {",
+											"                throw new Error('Did not receive request on payee side');",
+											"              });",
+											"              postman.setNextRequest(null)",
+											"          }",
+											"   });",
+											"}, 1100)",
 											"",
 											"",
 											"setTimeout(function () {",
-											"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
-											"      if(response !== null) {",
-											"          console.log('response: ',response.json());",
+											"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
+											"      if(response.responseSize !== 0) {",
+											"          ",
+											"       //Checking headers",
+											"        var headers = response.json().headers;",
+											"        pm.test(\"payerfsp fspiop-source is payeefsp\", function () {",
+											"            pm.expect(headers['fspiop-source']).to.eql('payeefsp');",
+											"        });",
+											"        ",
+											"        pm.test(\"payerfsp fspiop-destination is payerfsp\", function () {",
+											"            pm.expect(headers['fspiop-destination']).to.eql('payerfsp');",
+											"        });",
+											"        ",
+											"        //Uncomment this once Simulators are able to forward Signature",
+											"        // pm.test(\"fspiop-signature is empty\", function () {",
+											"        //     pm.expect(pm.response.json().headers['fspiop-signature']).to.eql(undefined);",
+											"        // });",
+											"        ",
+											"        pm.test(\"payerfsp accept is empty\", function () {",
+											"            pm.expect(headers['accept']).to.eql(undefined);",
+											"        });",
+											"        ",
+											"        pm.test(\"payerfsp content-type should be application/vnd.interoperability.quotes+json;version=1.0\", function () {",
+											"            pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.quotes+json;version=1.0');",
+											"        });",
+											"        ",
+											"        pm.test(\"payerfsp fspiop-uri is empty\", function () {",
+											"            pm.expect(headers['fspiop-uri']).to.eql('/parties/MSISDN'+pm.variables.get(\"quoteId\"));",
+											"        });",
+											"        ",
+											"        pm.test(\"payerfsp fspiop-http-method is empty\", function () {",
+											"            pm.expect(headers['fspiop-http-method']).to.eql('GET');",
+											"        });",
+											"        ",
 											"       pm.test(\"Response ilpPacket is not null\", function () {",
 											"           console.log('ilpPacket: ',response.json().ilpPacket)",
 											"           pm.expect(response.json().ilpPacket).not.eql(null);",
@@ -247,12 +392,27 @@
 										"value": "{{quoteDate}}"
 									},
 									{
-										"key": "FSPIOP-SOurce",
+										"key": "FSPIOP-Source",
 										"value": "{{payerfsp}}"
 									},
 									{
 										"key": "FSPIOP-Destination",
 										"value": "{{payeefsp}}"
+									},
+									{
+										"key": "FSPIOP-Signature",
+										"value": "{{fspiop-signature}}",
+										"type": "text"
+									},
+									{
+										"key": "FSPIOP-HTTP-Method",
+										"value": "POST",
+										"type": "text"
+									},
+									{
+										"key": "FSPIOP-URI",
+										"value": "/quotes",
+										"type": "text"
 									}
 								],
 								"body": {
@@ -520,10 +680,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/limits",
 							"host": [
@@ -562,10 +718,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payeefsp}}/limits",
 							"host": [
@@ -609,10 +761,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}}/positions",
 							"host": [
@@ -656,10 +804,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payeefsp}}/positions",
 							"host": [
@@ -914,10 +1058,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}}/positions",
 							"host": [
@@ -957,10 +1097,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payeefsp}}/positions",
 							"host": [
@@ -1029,10 +1165,6 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/payerfsp/limits",
 									"host": [
@@ -1071,10 +1203,6 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payeefsp}}/limits",
 									"host": [
@@ -1119,10 +1247,6 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/positions",
 									"host": [
@@ -1166,10 +1290,6 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payeefsp}}/positions",
 									"host": [
@@ -1428,10 +1548,6 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/positions",
 									"host": [
@@ -1472,10 +1588,6 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payeefsp}}/positions",
 									"host": [
@@ -1552,10 +1664,6 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/positions",
 									"host": [
@@ -1693,10 +1801,6 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/positions",
 									"host": [
@@ -1821,10 +1925,6 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/positions",
 									"host": [
@@ -3365,10 +3465,6 @@
 														"type": "text"
 													}
 												],
-												"body": {
-													"mode": "raw",
-													"raw": ""
-												},
 												"url": {
 													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/accounts",
 													"host": [
@@ -3432,10 +3528,6 @@
 														"type": "text"
 													}
 												],
-												"body": {
-													"mode": "raw",
-													"raw": ""
-												},
 												"url": {
 													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/accounts",
 													"host": [
@@ -3499,10 +3591,6 @@
 														"type": "text"
 													}
 												],
-												"body": {
-													"mode": "raw",
-													"raw": ""
-												},
 												"url": {
 													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/accounts",
 													"host": [
@@ -3566,10 +3654,6 @@
 														"type": "text"
 													}
 												],
-												"body": {
-													"mode": "raw",
-													"raw": ""
-												},
 												"url": {
 													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4/accounts",
 													"host": [
@@ -3639,10 +3723,6 @@
 														"type": "text"
 													}
 												],
-												"body": {
-													"mode": "raw",
-													"raw": ""
-												},
 												"url": {
 													"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows?state=OPEN",
 													"host": [
@@ -5120,10 +5200,6 @@
 														"type": "text"
 													}
 												],
-												"body": {
-													"mode": "raw",
-													"raw": ""
-												},
 												"url": {
 													"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows?state=OPEN",
 													"host": [
@@ -5326,10 +5402,6 @@
 														"type": "text"
 													}
 												],
-												"body": {
-													"mode": "raw",
-													"raw": ""
-												},
 												"url": {
 													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/accounts",
 													"host": [
@@ -5393,10 +5465,6 @@
 														"type": "text"
 													}
 												],
-												"body": {
-													"mode": "raw",
-													"raw": ""
-												},
 												"url": {
 													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/accounts",
 													"host": [
@@ -5460,10 +5528,6 @@
 														"type": "text"
 													}
 												],
-												"body": {
-													"mode": "raw",
-													"raw": ""
-												},
 												"url": {
 													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/accounts",
 													"host": [
@@ -5527,10 +5591,6 @@
 														"type": "text"
 													}
 												],
-												"body": {
-													"mode": "raw",
-													"raw": ""
-												},
 												"url": {
 													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4/accounts",
 													"host": [
@@ -5625,10 +5685,6 @@
 												"type": "text"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
 											"host": [
@@ -5690,10 +5746,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
 											"host": [
@@ -5747,10 +5799,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/accounts",
 											"host": [
@@ -5804,10 +5852,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/accounts",
 											"host": [
@@ -5861,10 +5905,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/accounts",
 											"host": [
@@ -5918,10 +5958,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4/accounts",
 											"host": [
@@ -6013,10 +6049,6 @@
 												"value": "payerfsp"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
 											"host": [
@@ -6078,10 +6110,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
 											"host": [
@@ -6134,10 +6162,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/accounts",
 											"host": [
@@ -6191,10 +6215,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/accounts",
 											"host": [
@@ -6249,10 +6269,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/accounts",
 											"host": [
@@ -6306,10 +6322,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4/accounts",
 											"host": [
@@ -6401,10 +6413,6 @@
 												"value": "payerfsp"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
 											"host": [
@@ -6466,10 +6474,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
 											"host": [
@@ -6522,10 +6526,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/accounts",
 											"host": [
@@ -6579,10 +6579,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/accounts",
 											"host": [
@@ -6636,10 +6632,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/accounts",
 											"host": [
@@ -6693,10 +6685,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4/accounts",
 											"host": [
@@ -6788,10 +6776,6 @@
 												"value": "payerfsp"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
 											"host": [
@@ -6869,10 +6853,6 @@
 												"type": "text"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
 											"host": [
@@ -6925,10 +6905,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/accounts",
 											"host": [
@@ -6982,10 +6958,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/accounts",
 											"host": [
@@ -7039,10 +7011,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/accounts",
 											"host": [
@@ -7096,10 +7064,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4/accounts",
 											"host": [
@@ -7129,10 +7093,6 @@
 										},
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/hub/accounts",
 											"host": [
@@ -7211,10 +7171,6 @@
 														"type": "text"
 													}
 												],
-												"body": {
-													"mode": "raw",
-													"raw": ""
-												},
 												"url": {
 													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/accounts",
 													"host": [
@@ -7278,10 +7234,6 @@
 														"type": "text"
 													}
 												],
-												"body": {
-													"mode": "raw",
-													"raw": ""
-												},
 												"url": {
 													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/accounts",
 													"host": [
@@ -7345,10 +7297,6 @@
 														"type": "text"
 													}
 												],
-												"body": {
-													"mode": "raw",
-													"raw": ""
-												},
 												"url": {
 													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/accounts",
 													"host": [
@@ -7412,10 +7360,6 @@
 														"type": "text"
 													}
 												],
-												"body": {
-													"mode": "raw",
-													"raw": ""
-												},
 												"url": {
 													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4/accounts",
 													"host": [
@@ -7485,10 +7429,6 @@
 														"type": "text"
 													}
 												],
-												"body": {
-													"mode": "raw",
-													"raw": ""
-												},
 												"url": {
 													"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows?state=OPEN",
 													"host": [
@@ -8966,10 +8906,6 @@
 														"type": "text"
 													}
 												],
-												"body": {
-													"mode": "raw",
-													"raw": ""
-												},
 												"url": {
 													"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows?state=OPEN",
 													"host": [
@@ -9172,10 +9108,6 @@
 														"type": "text"
 													}
 												],
-												"body": {
-													"mode": "raw",
-													"raw": ""
-												},
 												"url": {
 													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/accounts",
 													"host": [
@@ -9239,10 +9171,6 @@
 														"type": "text"
 													}
 												],
-												"body": {
-													"mode": "raw",
-													"raw": ""
-												},
 												"url": {
 													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/accounts",
 													"host": [
@@ -9306,10 +9234,6 @@
 														"type": "text"
 													}
 												],
-												"body": {
-													"mode": "raw",
-													"raw": ""
-												},
 												"url": {
 													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/accounts",
 													"host": [
@@ -9373,10 +9297,6 @@
 														"type": "text"
 													}
 												],
-												"body": {
-													"mode": "raw",
-													"raw": ""
-												},
 												"url": {
 													"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4/accounts",
 													"host": [
@@ -9471,10 +9391,6 @@
 												"type": "text"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
 											"host": [
@@ -9536,10 +9452,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
 											"host": [
@@ -9593,10 +9505,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/accounts",
 											"host": [
@@ -9650,10 +9558,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/accounts",
 											"host": [
@@ -9707,10 +9611,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/accounts",
 											"host": [
@@ -9764,10 +9664,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4/accounts",
 											"host": [
@@ -9859,10 +9755,6 @@
 												"value": "payerfsp"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
 											"host": [
@@ -9924,10 +9816,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
 											"host": [
@@ -9980,10 +9868,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/accounts",
 											"host": [
@@ -10037,10 +9921,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/accounts",
 											"host": [
@@ -10095,10 +9975,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/accounts",
 											"host": [
@@ -10152,10 +10028,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4/accounts",
 											"host": [
@@ -10247,10 +10119,6 @@
 												"value": "payerfsp"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
 											"host": [
@@ -10312,10 +10180,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
 											"host": [
@@ -10368,10 +10232,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/accounts",
 											"host": [
@@ -10425,10 +10285,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/accounts",
 											"host": [
@@ -10482,10 +10338,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/accounts",
 											"host": [
@@ -10539,10 +10391,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4/accounts",
 											"host": [
@@ -10721,10 +10569,6 @@
 												"type": "text"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
 											"host": [
@@ -10777,10 +10621,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/accounts",
 											"host": [
@@ -10834,10 +10674,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/accounts",
 											"host": [
@@ -10891,10 +10727,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/accounts",
 											"host": [
@@ -10948,10 +10780,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4/accounts",
 											"host": [
@@ -10981,10 +10809,6 @@
 										},
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/hub/accounts",
 											"host": [
@@ -11210,10 +11034,6 @@
 										"value": "{{payerfsp}}"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/positions",
 									"host": [
@@ -11280,10 +11100,6 @@
 										"value": "{{payerfsp}}"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payeefsp}}/positions",
 									"host": [
@@ -11440,10 +11256,6 @@
 										"value": "{{payerfsp}}"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/positions",
 									"host": [
@@ -11633,10 +11445,6 @@
 										"disabled": true
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_SIMULATOR}}/{{payerfsp}}/correlationid/transfers/{{transfer_ID}}",
 									"host": [
@@ -11746,10 +11554,6 @@
 										"disabled": true
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{transfer_ID}}",
 									"host": [
@@ -11820,10 +11624,6 @@
 										"value": "{{payerfsp}}"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/positions",
 									"host": [
@@ -11895,10 +11695,6 @@
 										"value": "{{payerfsp}}"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payeefsp}}/positions",
 									"host": [
@@ -12178,10 +11974,6 @@
 										"type": "text"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/positions",
 									"host": [
@@ -12251,10 +12043,6 @@
 										"value": "{{payerfsp}}"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payeefsp}}/positions",
 									"host": [
@@ -12443,10 +12231,6 @@
 										"disabled": true
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{transfer_ID}}",
 									"host": [
@@ -12517,10 +12301,6 @@
 										"type": "text"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/positions",
 									"host": [
@@ -12593,10 +12373,6 @@
 										"value": "{{payerfsp}}"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/positions",
 									"host": [
@@ -12771,10 +12547,6 @@
 										"value": "{{payerfsp}}"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/positions",
 									"host": [
@@ -12847,10 +12619,6 @@
 										"value": "{{payerfsp}}"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{payerfsp}}/positions",
 									"host": [
@@ -12959,10 +12727,6 @@
 										"disabled": true
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{transfer_ID}}",
 									"host": [
@@ -13057,10 +12821,6 @@
 										"disabled": true
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_SIMULATOR}}/{{payerfsp}}/correlationid/{{transfer_ID}}",
 									"host": [
@@ -13177,10 +12937,6 @@
 										"disabled": true
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_SIMULATOR}}/{{payerfsp}}/callbacks/{{transfer_ID}}",
 									"host": [
@@ -14091,10 +13847,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": ""
 										}
@@ -14106,10 +13858,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": ""
 										}
@@ -14121,10 +13869,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": ""
 										},
@@ -14166,10 +13910,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": ""
 										}
@@ -14181,10 +13921,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": ""
 										}
@@ -14196,10 +13932,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": ""
 										},
@@ -14212,10 +13944,6 @@
 									"request": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": ""
 										},
@@ -16320,6 +16048,215 @@
 								}
 							],
 							"_postman_isSubFolder": true
+						},
+						{
+							"name": "modified_request",
+							"item": [
+								{
+									"name": "Send Transfer",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "900142b0-e4d7-43a4-a751-38202b600661",
+												"exec": [
+													"pm.test(\"Status code is 202\", function () {",
+													"    pm.response.to.have.status(202);",
+													"});",
+													"",
+													"// pm.test(\"Check that Content-Type is present\", function () {",
+													"//     pm.response.to.have.header(\"Content-Type\");",
+													"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.transfers+json;version=1.0\");",
+													"// });",
+													"",
+													"setTimeout(function () {",
+													"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"transfer_ID\"), function (err, response) {",
+													"          if(response !== null) {",
+													"              var jsonData = response.json();",
+													"              pm.test(\"Response data does not have transferId\", function () {",
+													"               pm.expect(jsonData.transferId).to.eql(undefined);",
+													"             });",
+													"              pm.test(\"Response status is COMMITTED\", function () {",
+													"                pm.expect(jsonData.transferState).to.eql('COMMITTED');",
+													"              });",
+													"          } else {",
+													"              pm.test(\"Transfer FAILED\", function () {",
+													"                throw new Error('Did not receive response');",
+													"              });",
+													"              postman.setNextRequest(null)",
+													"          }",
+													"   });",
+													"}, 2000)",
+													"",
+													"",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "20820c95-0a24-4906-a6ba-708d6ecf4a61",
+												"exec": [
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"pm.environment.set('transfer_ID', generatedUUID);",
+													"",
+													"pm.variables.set('transferDate', (new Date()).toUTCString());",
+													"",
+													"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transfers+json;version=1"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+											},
+											{
+												"key": "Date",
+												"value": "{{transferDate}}"
+											},
+											{
+												"key": "FSPIOP-Source",
+												"value": "{{payerfsp}}"
+											},
+											{
+												"key": "FSPIOP-Destination",
+												"value": "{{payeefsp}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"1\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+										},
+										"url": {
+											"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+											"host": [
+												"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+											],
+											"path": [
+												"transfers"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Send Modified Transfer",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "900142b0-e4d7-43a4-a751-38202b600661",
+												"exec": [
+													"pm.test(\"Status code is 202\", function () {",
+													"    pm.response.to.have.status(202);",
+													"});",
+													"",
+													"// pm.test(\"Check that Content-Type is present\", function () {",
+													"//     pm.response.to.have.header(\"Content-Type\");",
+													"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.transfers+json;version=1.0\");",
+													"// });",
+													"",
+													"setTimeout(function () {",
+													"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"transfer_ID\"), function (err, response) {",
+													"          if(response !== null) {",
+													"              var jsonData = response.json();",
+													"              pm.test(\"Response data does not have transferId\", function () {",
+													"               pm.expect(jsonData.transferId).to.eql(undefined);",
+													"             });",
+													"              pm.test(\"Response status is COMMITTED\", function () {",
+													"                pm.expect(jsonData.transferState).to.eql('COMMITTED');",
+													"              });",
+													"          } else {",
+													"              pm.test(\"Transfer FAILED\", function () {",
+													"                throw new Error('Did not receive response');",
+													"              });",
+													"              postman.setNextRequest(null)",
+													"          }",
+													"   });",
+													"}, 2000)",
+													"",
+													"",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "20820c95-0a24-4906-a6ba-708d6ecf4a61",
+												"exec": [
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"pm.environment.set('transfer_ID', generatedUUID);",
+													"",
+													"pm.variables.set('transferDate', (new Date()).toUTCString());",
+													"",
+													"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transfers+json;version=1"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+											},
+											{
+												"key": "Date",
+												"value": "{{transferDate}}"
+											},
+											{
+												"key": "FSPIOP-Source",
+												"value": "{{payerfsp}}"
+											},
+											{
+												"key": "FSPIOP-Destination",
+												"value": "{{payeefsp}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"10\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+										},
+										"url": {
+											"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+											"host": [
+												"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+											],
+											"path": [
+												"transfers"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "reject",
+							"item": [],
+							"_postman_isSubFolder": true
 						}
 					],
 					"_postman_isSubFolder": true
@@ -16606,10 +16543,6 @@
 										"disabled": true
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{fundsOutPrepareReserveTransferId}}",
 									"host": [
@@ -16661,10 +16594,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "{{HOST_CENTRAL_LEDGER}}/metrics?Date={{dateHeader}}",
 							"host": [
@@ -16684,6 +16613,10 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "quotes_negative_scenarios",
+			"item": []
 		}
 	],
 	"event": [

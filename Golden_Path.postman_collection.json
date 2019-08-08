@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "c11fcaf8-dd31-48e5-ad27-3fbf985e4cb0",
+		"_postman_id": "11f906f0-412d-40f7-8d02-99da9d597fdb",
 		"name": "Golden_Path",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -335,6 +335,42 @@
 											"    pm.response.to.have.status(202);",
 											"});",
 											"",
+											"//Check the request that Switch forwards to payeefsp",
+											"setTimeout(function () {",
+											"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payeefsp/requests/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
+											"          if(response.responseSize !== 0) {",
+											"              ",
+											"              //Check the Headers",
+											"              var headers = response.json().headers;",
+											"              ",
+											"                pm.test(\"payeefsp fspiop-source is payerfsp\", function () {",
+											"                    pm.expect(headers['fspiop-source']).to.eql('payerfsp');",
+											"                });",
+											"                ",
+											"                pm.test(\"payeefsp fspiop-destination is payerfsp\", function () {",
+											"                    pm.expect(headers['fspiop-destination']).to.eql('payeefsp');",
+											"                });",
+											"                ",
+											"                pm.test(\"payeefsp fspiop-signature is same as sent in the request\", function () {",
+											"                    pm.expect(headers['fspiop-signature']).to.eql(pm.environment.get(\"fspiop-signature\"));",
+											"                });",
+											"                ",
+											"                pm.test(\"payeefsp accept is same as sent in the request\", function () {",
+											"                    pm.expect(headers['accept']).to.eql('application/vnd.interoperability.quotes+json;version=1');",
+											"                });",
+											"                ",
+											"                pm.test(\"payeefsp content-typeis same as sent in the request\", function () {",
+											"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.quotes+json;version=1.0');",
+											"                });",
+											"                ",
+											"          } else {",
+											"              pm.test(\"Quote FAILED\", function () {",
+											"                throw new Error('Did not receive request on payee side');",
+											"              });",
+											"              postman.setNextRequest(null)",
+											"          }",
+											"   });",
+											"}, 1100)",
 											"",
 											"//Check Data on payer side",
 											"setTimeout(function () {",
@@ -458,6 +494,11 @@
 									{
 										"key": "FSPIOP-Destination",
 										"value": "payeefsp"
+									},
+									{
+										"key": "FSPIOP-Signature",
+										"value": "{{fspiop-signature}}",
+										"type": "text"
 									}
 								],
 								"body": {
