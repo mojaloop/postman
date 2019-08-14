@@ -8604,15 +8604,12 @@
 													"script": {
 														"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 														"exec": [
-															"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
-															"   var uuid = require('uuid');",
-															"   var generatedUUID = uuid.v4();",
-															"   pm.variables.set('quoteId', generatedUUID);",
-															"}",
+															"var uuid = require('uuid');",
+															"var generatedUUID = uuid.v4();",
+															"pm.variables.set('quoteId', generatedUUID);",
 															"",
-															"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-															"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
-															"}"
+															"",
+															"pm.variables.set('quoteDate', (new Date()).toUTCString());"
 														],
 														"type": "text/javascript"
 													}
@@ -8640,7 +8637,6 @@
 															"           console.log('ilpPacket: ',response.json().ilpPacket)",
 															"           pm.expect(response.json().ilpPacket).not.eql(undefined);",
 															"          pm.environment.set(\"ilpPacket\", response.json().ilpPacket);",
-															"           ",
 															"       });",
 															"       ",
 															"       pm.test(\"Response condition is not undefined\", function () {",
@@ -8655,7 +8651,7 @@
 															"      }",
 															"       ",
 															"   });",
-															"}, 1000)",
+															"}, 2000)",
 															"",
 															"",
 															""
@@ -9069,15 +9065,12 @@
 													"script": {
 														"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 														"exec": [
-															"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
 															"   var uuid = require('uuid');",
 															"   var generatedUUID = uuid.v4();",
 															"   pm.variables.set('quoteId', generatedUUID);",
-															"}",
 															"",
-															"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
 															"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
-															"}"
+															""
 														],
 														"type": "text/javascript"
 													}
@@ -9120,7 +9113,7 @@
 															"      }",
 															"       ",
 															"   });",
-															"}, 1000)",
+															"}, 2000)",
 															"",
 															"",
 															""
@@ -9562,15 +9555,12 @@
 													"script": {
 														"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 														"exec": [
-															"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
 															"   var uuid = require('uuid');",
 															"   var generatedUUID = uuid.v4();",
 															"   pm.variables.set('quoteId', generatedUUID);",
-															"}",
 															"",
-															"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
 															"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
-															"}"
+															""
 														],
 														"type": "text/javascript"
 													}
@@ -9613,7 +9603,7 @@
 															"      }",
 															"       ",
 															"   });",
-															"}, 1000)",
+															"}, 2000)",
 															"",
 															"",
 															""
@@ -10029,15 +10019,11 @@
 													"script": {
 														"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 														"exec": [
-															"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
 															"   var uuid = require('uuid');",
 															"   var generatedUUID = uuid.v4();",
 															"   pm.variables.set('quoteId', generatedUUID);",
-															"}",
 															"",
-															"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-															"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
-															"}"
+															"   pm.variables.set('quoteDate', (new Date()).toUTCString());"
 														],
 														"type": "text/javascript"
 													}
@@ -10080,7 +10066,7 @@
 															"      }",
 															"       ",
 															"   });",
-															"}, 1000)",
+															"}, 2000)",
 															"",
 															"",
 															""
@@ -10528,7 +10514,15 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
-									"});"
+									"});",
+									"",
+									"setTimeout(function(){}, [1500]);",
+									"",
+									"pm.test(\"FSP is inactive\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isActive).to.eql(0);",
+									"});",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -10577,15 +10571,15 @@
 							"script": {
 								"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 								"exec": [
-									"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
-									"   var uuid = require('uuid');",
-									"   var generatedUUID = uuid.v4();",
-									"   pm.variables.set('quoteId', generatedUUID);",
-									"}",
+									"var uuid = require('uuid');",
+									"var generatedUUID = uuid.v4();",
+									"pm.environment.set('quoteId', generatedUUID);",
+									"generatedUUID = uuid.v4();",
+									"pm.environment.set('transactionId', generatedUUID);",
 									"",
-									"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-									"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
-									"}"
+									"pm.variables.set('quoteDate', (new Date()).toUTCString());",
+									"",
+									"setTimeout(function(){}, [1500]);"
 								],
 								"type": "text/javascript"
 							}
@@ -10609,26 +10603,22 @@
 									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
 									"      if(response.responseSize !== 0) {",
 									"          console.log('response: ',response.json());",
-									"       pm.test(\"Response ilpPacket is not undefined\", function () {",
-									"           console.log('ilpPacket: ',response.json().ilpPacket)",
-									"           pm.expect(response.json().ilpPacket).not.eql(undefined);",
-									"          pm.environment.set(\"ilpPacket\", response.json().ilpPacket);",
-									"           ",
-									"       });",
 									"       ",
-									"       pm.test(\"Response condition is not undefined\", function () {",
-									"           pm.expect(response.json().condition).not.eql(undefined);",
-									"           pm.environment.set(\"condition\", response.json().condition);",
-									"       });",
+									"       var jsonData = response.json();",
+									"        pm.test(\"Error Code should be returned '2001'\", function () {",
+									"            pm.expect(jsonData.errorInformation.errorCode).to.eql('2001');",
+									"        });",
+									"        pm.test(\"Error Description should be returned\", function () {",
+									"            pm.expect(jsonData.errorInformation.errorDescription).to.eql('Internal server error - Unsupported participant \\'payerfsp\\'');",
+									"        });",
+									"        ",
 									"      } else {",
-									"          pm.test(\"Quote FAILED\", function () {",
+									"          pm.test(\"Quote FAILURE not as expected\", function () {",
 									"            throw new Error('Did not receive response');",
 									"           });",
-									"           ",
 									"      }",
-									"       ",
 									"   });",
-									"}, 1000)",
+									"}, 2000)",
 									"",
 									"",
 									""
@@ -10728,8 +10718,8 @@
 									"            pm.test(\"Error Code should be 3100\", function () {",
 									"                pm.expect(jsonData.errorInformation.errorCode).to.eql('3100');",
 									"              });",
-									"              pm.test(\"Error Description should contain: Generic validation error: Participant payerfsp is inactive\", function () {",
-									"                pm.expect(jsonData.errorInformation.errorDescription).to.eql('Generic validation error: Participant payerfsp is inactive');",
+									"              pm.test(\"Error Description should contain: Validation error\", function () {",
+									"                pm.expect(jsonData.errorInformation.errorDescription).to.include('Validation error');",
 									"              });",
 									"              ",
 									"          } else {",
@@ -10829,6 +10819,13 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"setTimeout(function(){}, [1500]);",
+									"",
+									"pm.test(\"FSP is active\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isActive).to.eql(1);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -10878,15 +10875,11 @@
 							"script": {
 								"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 								"exec": [
-									"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
 									"   var uuid = require('uuid');",
 									"   var generatedUUID = uuid.v4();",
 									"   pm.variables.set('quoteId', generatedUUID);",
-									"}",
 									"",
-									"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-									"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
-									"}"
+									"   pm.variables.set('quoteDate', (new Date()).toUTCString());"
 								],
 								"type": "text/javascript"
 							}
