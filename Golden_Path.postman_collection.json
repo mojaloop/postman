@@ -10516,7 +10516,7 @@
 									"    pm.response.to.have.status(200);",
 									"});",
 									"",
-									"setTimeout(function(){}, [1500]);",
+									"setTimeout(function(){}, [2000]);",
 									"",
 									"pm.test(\"FSP is inactive\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -10564,6 +10564,47 @@
 					"response": []
 				},
 				{
+					"name": "GET participant status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3a62820d-2130-47d9-8ca8-413d57e3b80c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FSP is inactive\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isActive).to.eql(0);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}}",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}"
+							],
+							"path": [
+								"participants",
+								"{{payerfsp}}"
+							]
+						},
+						"description": "Check whether participant is Inactive or not"
+					},
+					"response": []
+				},
+				{
 					"name": "Send Quote",
 					"event": [
 						{
@@ -10577,9 +10618,7 @@
 									"generatedUUID = uuid.v4();",
 									"pm.environment.set('transactionId', generatedUUID);",
 									"",
-									"pm.variables.set('quoteDate', (new Date()).toUTCString());",
-									"",
-									"setTimeout(function(){}, [1500]);"
+									"pm.variables.set('quoteDate', (new Date()).toUTCString());"
 								],
 								"type": "text/javascript"
 							}
@@ -10868,6 +10907,47 @@
 					"response": []
 				},
 				{
+					"name": "GET participant status - Reset",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3a62820d-2130-47d9-8ca8-413d57e3b80c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FSP is inactive\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isActive).to.eql(1);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}}",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}"
+							],
+							"path": [
+								"participants",
+								"{{payerfsp}}"
+							]
+						},
+						"description": "Check whether participant is Inactive or not"
+					},
+					"response": []
+				},
+				{
 					"name": "Send Quote",
 					"event": [
 						{
@@ -10922,7 +11002,7 @@
 									"      }",
 									"       ",
 									"   });",
-									"}, 1000)",
+									"}, 1500)",
 									"",
 									"",
 									""
