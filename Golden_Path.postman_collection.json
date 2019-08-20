@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "c11fcaf8-dd31-48e5-ad27-3fbf985e4cb0",
+		"_postman_id": "85236c52-0cd6-4842-83aa-c3cd309af39f",
 		"name": "Golden_Path",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1045,7 +1045,7 @@
 									"                pm.expect(jsonData.errorInformation.errorCode).to.eql('4001');",
 									"              });",
 									"              pm.test(\"Error Description should be returned\", function () {",
-									"                pm.expect(jsonData.errorInformation.errorDescription).to.eql('Payer FSP has insufficient liquidity to perform the transfer');",
+									"                pm.expect(jsonData.errorInformation.errorDescription).to.include('Payer FSP insufficient liquidity');",
 									"              });",
 									"          } else {",
 									"              pm.test(\"Transfer FAILED\", function () {",
@@ -1065,7 +1065,7 @@
 									"                pm.expect(jsonData.errorInformation.errorCode).to.eql('4001');",
 									"              });",
 									"              pm.test(\"Error Description should be returned\", function () {",
-									"                pm.expect(jsonData.errorInformation.errorDescription).to.eql('Payer FSP has insufficient liquidity to perform the transfer');",
+									"                pm.expect(jsonData.errorInformation.errorDescription).to.include('Payer FSP insufficient liquidity');",
 									"              });",
 									"              pm.test(\"fspiop-source is switch\", function () {",
 									"                pm.expect(headers['fspiop-source']).to.eql('switch');",
@@ -8604,15 +8604,12 @@
 													"script": {
 														"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 														"exec": [
-															"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
-															"   var uuid = require('uuid');",
-															"   var generatedUUID = uuid.v4();",
-															"   pm.variables.set('quoteId', generatedUUID);",
-															"}",
+															"var uuid = require('uuid');",
+															"var generatedUUID = uuid.v4();",
+															"pm.variables.set('quoteId', generatedUUID);",
 															"",
-															"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-															"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
-															"}"
+															"",
+															"pm.variables.set('quoteDate', (new Date()).toUTCString());"
 														],
 														"type": "text/javascript"
 													}
@@ -8640,7 +8637,6 @@
 															"           console.log('ilpPacket: ',response.json().ilpPacket)",
 															"           pm.expect(response.json().ilpPacket).not.eql(undefined);",
 															"          pm.environment.set(\"ilpPacket\", response.json().ilpPacket);",
-															"           ",
 															"       });",
 															"       ",
 															"       pm.test(\"Response condition is not undefined\", function () {",
@@ -8655,7 +8651,7 @@
 															"      }",
 															"       ",
 															"   });",
-															"}, 1000)",
+															"}, 2000)",
 															"",
 															"",
 															""
@@ -9069,15 +9065,12 @@
 													"script": {
 														"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 														"exec": [
-															"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
 															"   var uuid = require('uuid');",
 															"   var generatedUUID = uuid.v4();",
 															"   pm.variables.set('quoteId', generatedUUID);",
-															"}",
 															"",
-															"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
 															"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
-															"}"
+															""
 														],
 														"type": "text/javascript"
 													}
@@ -9120,7 +9113,7 @@
 															"      }",
 															"       ",
 															"   });",
-															"}, 1000)",
+															"}, 2000)",
 															"",
 															"",
 															""
@@ -9562,15 +9555,12 @@
 													"script": {
 														"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 														"exec": [
-															"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
 															"   var uuid = require('uuid');",
 															"   var generatedUUID = uuid.v4();",
 															"   pm.variables.set('quoteId', generatedUUID);",
-															"}",
 															"",
-															"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
 															"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
-															"}"
+															""
 														],
 														"type": "text/javascript"
 													}
@@ -9613,7 +9603,7 @@
 															"      }",
 															"       ",
 															"   });",
-															"}, 1000)",
+															"}, 2000)",
 															"",
 															"",
 															""
@@ -9815,7 +9805,8 @@
 															"              });",
 															"              ",
 															"              pm.test(\"Response Error Desription is 'Payee transaction limit reached'\", function () {",
-															"                pm.expect(jsonData.errorInformation.errorDescription).to.eql('Payee transaction limit reached');",
+															"                pm.expect(jsonData.errorInformation.errorDescription).to.include('Payee transaction limit reached');",
+															"                //pm.expect(jsonData.errorInformation.errorDescription).to.eql('Payee transaction limit reached');",
 															"              });",
 															"              ",
 															"          } else {",
@@ -10028,15 +10019,11 @@
 													"script": {
 														"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 														"exec": [
-															"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
 															"   var uuid = require('uuid');",
 															"   var generatedUUID = uuid.v4();",
 															"   pm.variables.set('quoteId', generatedUUID);",
-															"}",
 															"",
-															"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-															"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
-															"}"
+															"   pm.variables.set('quoteDate', (new Date()).toUTCString());"
 														],
 														"type": "text/javascript"
 													}
@@ -10079,7 +10066,7 @@
 															"      }",
 															"       ",
 															"   });",
-															"}, 1000)",
+															"}, 2000)",
 															"",
 															"",
 															""
@@ -10282,7 +10269,8 @@
 															"              });",
 															"              ",
 															"              pm.test(\"Response Error Desription is 'Payee transaction limit reached'\", function () {",
-															"                pm.expect(jsonData.errorInformation.errorDescription).to.eql('Payee transaction limit reached');",
+															"                pm.expect(jsonData.errorInformation.errorDescription).to.include('Payee transaction limit reached');",
+															"                //pm.expect(jsonData.errorInformation.errorDescription).to.eql('Payee transaction limit reached');",
 															"              });",
 															"              ",
 															"          } else {",
@@ -10526,7 +10514,15 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
-									"});"
+									"});",
+									"",
+									"setTimeout(function(){}, [2000]);",
+									"",
+									"pm.test(\"FSP is inactive\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isActive).to.eql(0);",
+									"});",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -10568,6 +10564,47 @@
 					"response": []
 				},
 				{
+					"name": "GET participant status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3a62820d-2130-47d9-8ca8-413d57e3b80c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FSP is inactive\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isActive).to.eql(0);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}}",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}"
+							],
+							"path": [
+								"participants",
+								"{{payerfsp}}"
+							]
+						},
+						"description": "Check whether participant is Inactive or not"
+					},
+					"response": []
+				},
+				{
 					"name": "Send Quote",
 					"event": [
 						{
@@ -10575,15 +10612,13 @@
 							"script": {
 								"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 								"exec": [
-									"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
-									"   var uuid = require('uuid');",
-									"   var generatedUUID = uuid.v4();",
-									"   pm.variables.set('quoteId', generatedUUID);",
-									"}",
+									"var uuid = require('uuid');",
+									"var generatedUUID = uuid.v4();",
+									"pm.environment.set('quoteId', generatedUUID);",
+									"generatedUUID = uuid.v4();",
+									"pm.environment.set('transactionId', generatedUUID);",
 									"",
-									"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-									"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
-									"}"
+									"pm.variables.set('quoteDate', (new Date()).toUTCString());"
 								],
 								"type": "text/javascript"
 							}
@@ -10607,26 +10642,22 @@
 									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
 									"      if(response.responseSize !== 0) {",
 									"          console.log('response: ',response.json());",
-									"       pm.test(\"Response ilpPacket is not undefined\", function () {",
-									"           console.log('ilpPacket: ',response.json().ilpPacket)",
-									"           pm.expect(response.json().ilpPacket).not.eql(undefined);",
-									"          pm.environment.set(\"ilpPacket\", response.json().ilpPacket);",
-									"           ",
-									"       });",
 									"       ",
-									"       pm.test(\"Response condition is not undefined\", function () {",
-									"           pm.expect(response.json().condition).not.eql(undefined);",
-									"           pm.environment.set(\"condition\", response.json().condition);",
-									"       });",
+									"       var jsonData = response.json();",
+									"        pm.test(\"Error Code should be returned '2001'\", function () {",
+									"            pm.expect(jsonData.errorInformation.errorCode).to.eql('2001');",
+									"        });",
+									"        pm.test(\"Error Description should be returned\", function () {",
+									"            pm.expect(jsonData.errorInformation.errorDescription).to.eql('Internal server error - Unsupported participant \\'payerfsp\\'');",
+									"        });",
+									"        ",
 									"      } else {",
-									"          pm.test(\"Quote FAILED\", function () {",
+									"          pm.test(\"Quote FAILURE not as expected\", function () {",
 									"            throw new Error('Did not receive response');",
 									"           });",
-									"           ",
 									"      }",
-									"       ",
 									"   });",
-									"}, 1000)",
+									"}, 2000)",
 									"",
 									"",
 									""
@@ -10726,8 +10757,8 @@
 									"            pm.test(\"Error Code should be 3100\", function () {",
 									"                pm.expect(jsonData.errorInformation.errorCode).to.eql('3100');",
 									"              });",
-									"              pm.test(\"Error Description should be: Generic validation error: Participant payerfsp is inactive\", function () {",
-									"                pm.expect(jsonData.errorInformation.errorDescription).to.eql('Generic validation error: Participant payerfsp is inactive');",
+									"              pm.test(\"Error Description should contain: Validation error\", function () {",
+									"                pm.expect(jsonData.errorInformation.errorDescription).to.include('Validation error');",
 									"              });",
 									"              ",
 									"          } else {",
@@ -10827,6 +10858,13 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"setTimeout(function(){}, [1500]);",
+									"",
+									"pm.test(\"FSP is active\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isActive).to.eql(1);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -10869,6 +10907,47 @@
 					"response": []
 				},
 				{
+					"name": "GET participant status - Reset",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3a62820d-2130-47d9-8ca8-413d57e3b80c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FSP is inactive\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isActive).to.eql(1);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}}",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}"
+							],
+							"path": [
+								"participants",
+								"{{payerfsp}}"
+							]
+						},
+						"description": "Check whether participant is Inactive or not"
+					},
+					"response": []
+				},
+				{
 					"name": "Send Quote",
 					"event": [
 						{
@@ -10876,15 +10955,11 @@
 							"script": {
 								"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 								"exec": [
-									"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
 									"   var uuid = require('uuid');",
 									"   var generatedUUID = uuid.v4();",
 									"   pm.variables.set('quoteId', generatedUUID);",
-									"}",
 									"",
-									"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-									"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
-									"}"
+									"   pm.variables.set('quoteDate', (new Date()).toUTCString());"
 								],
 								"type": "text/javascript"
 							}
@@ -10927,7 +11002,7 @@
 									"      }",
 									"       ",
 									"   });",
-									"}, 1000)",
+									"}, 1500)",
 									"",
 									"",
 									""
