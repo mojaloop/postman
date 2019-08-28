@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1d1dde3a-7cc5-4231-9779-b0dc61093036",
+		"_postman_id": "8682383b-09ea-486e-a414-53c1821830e2",
 		"name": "Golden_Path",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -9478,6 +9478,101 @@
 									""
 								]
 							}
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Bug Fixes",
+					"item": [
+						{
+							"name": "Check Missing Payee ID #849",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "2e244cfd-ff69-448a-8b62-176d4dd0b28d",
+										"exec": [
+											"pm.environment.set(\"completedTimestamp\",new Date().toISOString());",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "358f8ed8-6882-4c54-8dfd-177607c9e07b",
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"",
+											"pm.test(\"Status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Check ID missing\", function () {",
+											"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Unknown URI');",
+											"});",
+											"",
+											"pm.test(\"Check Error code 3002\", function () {",
+											"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3002');",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/vnd.interoperability.transfers+json;version=1"
+									},
+									{
+										"key": "Date",
+										"type": "text",
+										"value": "{{dateHeader}}"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"type": "text",
+										"value": "noresponsepayeefsp"
+									},
+									{
+										"key": "FSPIOP-Destination",
+										"type": "text",
+										"value": "{{payeefsp}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"fulfilment\": \"{{validFulfillment}}\",\n  \"completedTimestamp\": \"{{completedTimestamp}}\",\n  \"transferState\": \"COMMITTED\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+									"host": [
+										"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+									],
+									"path": [
+										"transfers"
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"_postman_isSubFolder": true
