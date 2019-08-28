@@ -48,10 +48,10 @@ npm install -g newman
 ### 4.2 Pre-loading Test Data
 
 >Note: Ensure that you execute the following commands in your project folder after running `npm install`.
-
 >Note: Ensure that you are in the project root folder
 
 #### 4.2.1 Hub Account
+
 ```bash
 sh scripts/setupDockerCompose-HubAccount.sh
 ```
@@ -61,8 +61,11 @@ Or alternatively use newman directly...
 ```bash
 # Newman command to pre-load the default Hub Account
 newman run --delay-request=2000 --folder='Hub Account' --environment=environments/Mojaloop-Local-Docker-Compose.postman_environment.json OSS-New-Deployment-FSP-Setup.postman_collection.json
+```
 
-# Expected output:
+Example output:
+
+```bash
 OSS-New-Deployment-FSP-Setup
 
 ❏ Hub Account
@@ -83,8 +86,11 @@ Or alternatively use newman directly...
 ```bash
 # Newman command to pre-load payerfsp data
 newman run --delay-request=2000 --folder='payerfsp (p2p transfers)' --environment=environments/Mojaloop-Local-Docker-Compose.postman_environment.json OSS-New-Deployment-FSP-Setup.postman_collection.json
+```
 
-# Expected output:
+Example output:
+
+```bash
 OSS-New-Deployment-FSP-Setup
 
 ❏ FSP Onboarding / payerfsp (p2p transfers)
@@ -95,7 +101,7 @@ OSS-New-Deployment-FSP-Setup
   ...continued...
 ```
 
-#### 4.2.3 Onboard PayerFSP
+#### 4.2.3 Onboard PayeeFSP
 
 ```bash
 sh scripts/setupDockerCompose-PayeeFSP.sh
@@ -106,8 +112,10 @@ Or alternatively use newman directly...
 ```bash
 # Newman command to pre-load payeefsp data
 newman run --delay-request=2000 --folder='payeefsp (p2p transfers)' --environment=environments/Mojaloop-Local-Docker-Compose.postman_environment.json OSS-New-Deployment-FSP-Setup.postman_collection.json
+```
 
-# Expected output:
+Example output:
+```bash
 OSS-New-Deployment-FSP-Setup
 
 ❏ FSP Onboarding / payeefsp (p2p transfers)
