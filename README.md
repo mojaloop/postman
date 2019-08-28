@@ -2,6 +2,7 @@
 
 - Github [Repo link](https://github.com/mojaloop/postman)
 
+
 ## 1. Collections
 There are 4 Postman Collections in the repository:
 - OSS-New-Deployment-FSP-Setup.postman_collection
@@ -23,12 +24,15 @@ Import the Collections into your Postman Client:
 - [OSS-API-Tests](OSS-API-Tests.postman_collection)
 - [OSS-Feature-Tests](OSS-Feature-Tests.postman_collection)
 
+
 ## 2. Environments
 Import the Environment Config and make rhe required changes to reflect the correct endpoints to the mojaloop deployment required to be tested. This environemt file contains all the required variables and placeholders needed by all the collections, but the examples for endpoints provided, point to a local mojaloop installation with the standard Ingress exposed local endpoints:
 - [Local Development](./environments/Mojaloop-Local.postman_environment.json)
 
+
 ## 3. Testing
 The collections can be run as they are via Postman but for a more detailed setup of a complete stand-alone test environment (QA and Regression Testing Framework) please refer to the detailed explanation in the Mojaloop documentation  [here](https://github.com/mojaloop/documentation/blob/master/contributors-guide/tools-and-technologies/automated-testing.md "Automated Testing")
+
 
 ## 4. Support Scripts for Docker-compose
 Script folder contains support docker-compose scripts that are to be used in conjunction with the Mojaloop Components (e.g. [ml-api-adapter](https://github.com/mojaloop/central-ledger), [central-ledger](https://github.com/mojaloop/central-ledger)).
