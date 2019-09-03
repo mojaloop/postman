@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f39bca5a-e649-4af6-b067-a61f1af5ab25",
+		"_postman_id": "fa9b610c-70eb-4d5c-9640-dbab4af45ec6",
 		"name": "OSS-New-Deployment-FSP-Setup",
 		"description": "Author: Sridevi Miriyala\nPurpose: Used to add new FSP and relevant Callback Information",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -5128,14 +5128,6 @@
 						"id": "a29d64a2-7a89-4cc9-ac33-2a630283471d",
 						"type": "text/javascript",
 						"exec": [
-							"",
-							"// Ensure that the following variables are not set in the environment",
-							"// This is a fix for the following issue: https://github.com/mojaloop/project/issues/903",
-							"// This will ensure that templates are not replaced in the endpoint configs:",
-							"pm.environment.unset('partyIdType')",
-							"pm.environment.unset('partyIdentifier')",
-							"pm.environment.unset('requestId')",
-							"pm.environment.unset('transferId')",
 							""
 						]
 					}
@@ -6742,6 +6734,40 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "402cb439-04ee-4add-9a65-f4b3f9dafa58",
+				"type": "text/javascript",
+				"exec": [
+					"",
+					"// Ensure that the following variables are not set in the environment",
+					"// This is a fix for the following issue: https://github.com/mojaloop/project/issues/903",
+					"// This will ensure that templates are not replaced in the endpoint configs:",
+					"pm.environment.unset('partyIdType')",
+					"pm.environment.unset('partyIdentifier')",
+					"pm.environment.unset('requestId')",
+					"pm.environment.unset('transferId')",
+					"",
+					"pm.globals.unset('partyIdType')",
+					"pm.globals.unset('partyIdentifier')",
+					"pm.globals.unset('requestId')",
+					"pm.globals.unset('transferId')"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "e73fb24a-c94a-4551-ac31-fb7ceb250579",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
