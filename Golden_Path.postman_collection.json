@@ -25,7 +25,7 @@
 											"   generatedUUID = uuid.v4();",
 											"   pm.environment.set('transactionId', generatedUUID);",
 											"",
-											"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+											"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
 											""
 										],
 										"type": "text/javascript"
@@ -118,7 +118,7 @@
 											"var generatedUUID = uuid.v4();",
 											"pm.environment.set('transfer_ID', generatedUUID);",
 											"",
-											"pm.variables.set('transferDate', (new Date()).toUTCString());",
+											"pm.environment.set('transferDate', (new Date()).toUTCString());",
 											"",
 											"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))"
 										],
@@ -606,7 +606,7 @@
 											"   generatedUUID = uuid.v4();",
 											"   pm.environment.set('transactionId', generatedUUID);",
 											"",
-											"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+											"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
 											""
 										],
 										"type": "text/javascript"
@@ -963,7 +963,7 @@
 											"var generatedUUID = uuid.v4();",
 											"pm.environment.set('transfer_ID', generatedUUID);",
 											"",
-											"pm.variables.set('transferDate', (new Date()).toUTCString());",
+											"pm.environment.set('transferDate', (new Date()).toUTCString());",
 											"",
 											"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))"
 										],
@@ -1341,7 +1341,7 @@
 											"   generatedUUID = uuid.v4();",
 											"   pm.environment.set('transactionId', generatedUUID);",
 											"",
-											"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+											"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
 											""
 										],
 										"type": "text/javascript"
@@ -1689,7 +1689,7 @@
 											"var generatedUUID = uuid.v4();",
 											"pm.environment.set('transfer_ID', generatedUUID);",
 											"",
-											"pm.variables.set('transferDate', (new Date()).toUTCString());",
+											"pm.environment.set('transferDate', (new Date()).toUTCString());",
 											"",
 											"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))"
 										],
@@ -1986,13 +1986,13 @@
 									"",
 									"   var uuid = require('uuid');",
 									"   var generatedUUID = uuid.v4();",
-									"   pm.variables.set('quoteId', generatedUUID);",
+									"   pm.environment.set('quoteId', generatedUUID);",
 									"",
-									"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+									"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
 									"",
 									"",
 									"var amount = Number(pm.variables.get(\"payerNDC\"))-Number( pm.variables.get(\"payerfspPositionBeforeTransfer\"))+100",
-									"pm.variables.set('transferAmount',amount)"
+									"pm.environment.set('transferAmount',amount)"
 								],
 								"type": "text/javascript"
 							}
@@ -4073,11 +4073,11 @@
 														"exec": [
 															"   var uuid = require('uuid');",
 															"   var generatedUUID = uuid.v4();",
-															"   pm.variables.set('quoteId', generatedUUID);",
+															"   pm.environment.set('quoteId', generatedUUID);",
 															"   generatedUUID = uuid.v4();",
 															"   pm.environment.set('transactionId', generatedUUID);",
 															"",
-															"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+															"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
 															""
 														],
 														"type": "text/javascript"
@@ -4265,11 +4265,11 @@
 														"exec": [
 															"   var uuid = require('uuid');",
 															"   var generatedUUID = uuid.v4();",
-															"   pm.variables.set('quoteId', generatedUUID);",
+															"   pm.environment.set('quoteId', generatedUUID);",
 															"   generatedUUID = uuid.v4();",
 															"   pm.environment.set('transactionId', generatedUUID);",
 															"",
-															"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+															"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
 															""
 														],
 														"type": "text/javascript"
@@ -4480,11 +4480,11 @@
 														"exec": [
 															"   var uuid = require('uuid');",
 															"   var generatedUUID = uuid.v4();",
-															"   pm.variables.set('quoteId', generatedUUID);",
+															"   pm.environment.set('quoteId', generatedUUID);",
 															"   generatedUUID = uuid.v4();",
 															"   pm.environment.set('transactionId', generatedUUID);",
 															"",
-															"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+															"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
 															""
 														],
 														"type": "text/javascript"
@@ -4707,11 +4707,11 @@
 														"exec": [
 															"   var uuid = require('uuid');",
 															"   var generatedUUID = uuid.v4();",
-															"   pm.variables.set('quoteId', generatedUUID);",
+															"   pm.environment.set('quoteId', generatedUUID);",
 															"   generatedUUID = uuid.v4();",
 															"   pm.environment.set('transactionId', generatedUUID);",
 															"",
-															"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+															"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
 															""
 														],
 														"type": "text/javascript"
@@ -4934,11 +4934,11 @@
 														"exec": [
 															"   var uuid = require('uuid');",
 															"   var generatedUUID = uuid.v4();",
-															"   pm.variables.set('quoteId', generatedUUID);",
+															"   pm.environment.set('quoteId', generatedUUID);",
 															"   generatedUUID = uuid.v4();",
 															"   pm.environment.set('transactionId', generatedUUID);",
 															"",
-															"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+															"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
 															""
 														],
 														"type": "text/javascript"
@@ -5161,11 +5161,11 @@
 														"exec": [
 															"   var uuid = require('uuid');",
 															"   var generatedUUID = uuid.v4();",
-															"   pm.variables.set('quoteId', generatedUUID);",
+															"   pm.environment.set('quoteId', generatedUUID);",
 															"   generatedUUID = uuid.v4();",
 															"   pm.environment.set('transactionId', generatedUUID);",
 															"",
-															"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+															"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
 															""
 														],
 														"type": "text/javascript"
@@ -7666,7 +7666,7 @@
 									"script": {
 										"id": "2e244cfd-ff69-448a-8b62-176d4dd0b28d",
 										"exec": [
-											"pm.variables.set(\"completedTimestamp\",new Date().toISOString());"
+											"pm.environment.set(\"completedTimestamp\",new Date().toISOString());"
 										],
 										"type": "text/javascript"
 									}
@@ -7768,11 +7768,11 @@
 											"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
 											"   var uuid = require('uuid');",
 											"   var generatedUUID = uuid.v4();",
-											"   pm.variables.set('transferId', generatedUUID);",
+											"   pm.environment.set('transferId', generatedUUID);",
 											"}",
 											"",
 											"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-											"   pm.variables.set('transferDate', (new Date()).toUTCString());",
+											"   pm.environment.set('transferDate', (new Date()).toUTCString());",
 											"}"
 										],
 										"type": "text/javascript"
@@ -7863,11 +7863,11 @@
 											"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
 											"   var uuid = require('uuid');",
 											"   var generatedUUID = uuid.v4();",
-											"   pm.variables.set('transferId', generatedUUID);",
+											"   pm.environment.set('transferId', generatedUUID);",
 											"}",
 											"",
 											"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-											"   pm.variables.set('transferDate', (new Date()).toUTCString());",
+											"   pm.environment.set('transferDate', (new Date()).toUTCString());",
 											"}"
 										],
 										"type": "text/javascript"
@@ -7979,11 +7979,11 @@
 											"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
 											"   var uuid = require('uuid');",
 											"   var generatedUUID = uuid.v4();",
-											"   pm.variables.set('transferId', generatedUUID);",
+											"   pm.environment.set('transferId', generatedUUID);",
 											"}",
 											"",
 											"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-											"   pm.variables.set('transferDate', (new Date()).toUTCString());",
+											"   pm.environment.set('transferDate', (new Date()).toUTCString());",
 											"}"
 										],
 										"type": "text/javascript"
@@ -8233,11 +8233,11 @@
 										"exec": [
 											"   var uuid = require('uuid');",
 											"   var generatedUUID = uuid.v4();",
-											"   pm.variables.set('quoteId', generatedUUID);",
+											"   pm.environment.set('quoteId', generatedUUID);",
 											"   generatedUUID = uuid.v4();",
 											"   pm.environment.set('transactionId', generatedUUID);",
 											"",
-											"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+											"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
 											""
 										],
 										"type": "text/javascript"
@@ -8348,7 +8348,7 @@
 											"pm.environment.set('transfer_ID', generatedUUID);",
 											"",
 											"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-											"   pm.variables.set('transferDate', (new Date()).toUTCString());",
+											"   pm.environment.set('transferDate', (new Date()).toUTCString());",
 											"}",
 											"",
 											"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 1200000))",
@@ -8656,11 +8656,11 @@
 											"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
 											"   var uuid = require('uuid');",
 											"   var generatedUUID = uuid.v4();",
-											"   pm.variables.set('transferId', generatedUUID);",
+											"   pm.environment.set('transferId', generatedUUID);",
 											"}",
 											"",
 											"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-											"   pm.variables.set('transferDate', (new Date()).toUTCString());",
+											"   pm.environment.set('transferDate', (new Date()).toUTCString());",
 											"}"
 										],
 										"type": "text/javascript"
@@ -9152,11 +9152,11 @@
 											"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
 											"   var uuid = require('uuid');",
 											"   var generatedUUID = uuid.v4();",
-											"   pm.variables.set('transferId', generatedUUID);",
+											"   pm.environment.set('transferId', generatedUUID);",
 											"}",
 											"",
 											"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-											"   pm.variables.set('transferDate', (new Date()).toUTCString());",
+											"   pm.environment.set('transferDate', (new Date()).toUTCString());",
 											"}"
 										],
 										"type": "text/javascript"
@@ -9259,11 +9259,11 @@
 											"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
 											"   var uuid = require('uuid');",
 											"   var generatedUUID = uuid.v4();",
-											"   pm.variables.set('transferId', generatedUUID);",
+											"   pm.environment.set('transferId', generatedUUID);",
 											"}",
 											"",
 											"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-											"   pm.variables.set('transferDate', (new Date()).toUTCString());",
+											"   pm.environment.set('transferDate', (new Date()).toUTCString());",
 											"}"
 										],
 										"type": "text/javascript"
@@ -9351,11 +9351,11 @@
 											"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
 											"   var uuid = require('uuid');",
 											"   var generatedUUID = uuid.v4();",
-											"   pm.variables.set('transferId', generatedUUID);",
+											"   pm.environment.set('transferId', generatedUUID);",
 											"}",
 											"",
 											"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-											"   pm.variables.set('transferDate', (new Date()).toUTCString());",
+											"   pm.environment.set('transferDate', (new Date()).toUTCString());",
 											"}"
 										],
 										"type": "text/javascript"
@@ -9567,7 +9567,7 @@
 													"var generatedUUID = uuid.v4();",
 													"pm.environment.set('transfer_ID', generatedUUID);",
 													"",
-													"pm.variables.set('transferDate', (new Date()).toUTCString());",
+													"pm.environment.set('transferDate', (new Date()).toUTCString());",
 													"",
 													"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))"
 												],
@@ -9734,10 +9734,10 @@
 														"exec": [
 															"var uuid = require('uuid');",
 															"var generatedUUID = uuid.v4();",
-															"pm.variables.set('quoteId', generatedUUID);",
+															"pm.environment.set('quoteId', generatedUUID);",
 															"",
 															"",
-															"pm.variables.set('quoteDate', (new Date()).toUTCString());"
+															"pm.environment.set('quoteDate', (new Date()).toUTCString());"
 														],
 														"type": "text/javascript"
 													}
@@ -10195,9 +10195,9 @@
 														"exec": [
 															"   var uuid = require('uuid');",
 															"   var generatedUUID = uuid.v4();",
-															"   pm.variables.set('quoteId', generatedUUID);",
+															"   pm.environment.set('quoteId', generatedUUID);",
 															"",
-															"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+															"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
 															""
 														],
 														"type": "text/javascript"
@@ -10685,9 +10685,9 @@
 														"exec": [
 															"   var uuid = require('uuid');",
 															"   var generatedUUID = uuid.v4();",
-															"   pm.variables.set('quoteId', generatedUUID);",
+															"   pm.environment.set('quoteId', generatedUUID);",
 															"",
-															"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+															"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
 															""
 														],
 														"type": "text/javascript"
@@ -11149,9 +11149,9 @@
 														"exec": [
 															"   var uuid = require('uuid');",
 															"   var generatedUUID = uuid.v4();",
-															"   pm.variables.set('quoteId', generatedUUID);",
+															"   pm.environment.set('quoteId', generatedUUID);",
 															"",
-															"   pm.variables.set('quoteDate', (new Date()).toUTCString());"
+															"   pm.environment.set('quoteDate', (new Date()).toUTCString());"
 														],
 														"type": "text/javascript"
 													}
@@ -11767,7 +11767,7 @@
 									"generatedUUID = uuid.v4();",
 									"pm.environment.set('transactionId', generatedUUID);",
 									"",
-									"pm.variables.set('quoteDate', (new Date()).toUTCString());"
+									"pm.environment.set('quoteDate', (new Date()).toUTCString());"
 								],
 								"type": "text/javascript"
 							}
@@ -11934,7 +11934,7 @@
 									"var generatedUUID = uuid.v4();",
 									"pm.environment.set('transfer_ID', generatedUUID);",
 									"",
-									"pm.variables.set('transferDate', (new Date()).toUTCString());",
+									"pm.environment.set('transferDate', (new Date()).toUTCString());",
 									"",
 									"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))"
 								],
@@ -12104,9 +12104,9 @@
 								"exec": [
 									"   var uuid = require('uuid');",
 									"   var generatedUUID = uuid.v4();",
-									"   pm.variables.set('quoteId', generatedUUID);",
+									"   pm.environment.set('quoteId', generatedUUID);",
 									"",
-									"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+									"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
 									"   "
 								],
 								"type": "text/javascript"
@@ -12350,7 +12350,7 @@
 									"var generatedUUID = uuid.v4();",
 									"pm.environment.set('transfer_ID', generatedUUID);",
 									"",
-									"pm.variables.set('transferDate', (new Date()).toUTCString());",
+									"pm.environment.set('transferDate', (new Date()).toUTCString());",
 									"",
 									"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))"
 								],
@@ -13107,7 +13107,7 @@
 									"var generatedUUID = uuid.v4();",
 									"pm.environment.set('transfer_ID', generatedUUID);",
 									"",
-									"pm.variables.set('transferDate', (new Date()).toUTCString());",
+									"pm.environment.set('transferDate', (new Date()).toUTCString());",
 									"",
 									"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))"
 								],
@@ -13220,7 +13220,7 @@
 									"   generatedUUID = uuid.v4();",
 									"   pm.environment.set('transactionId', generatedUUID);",
 									"",
-									"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+									"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
 									""
 								],
 								"type": "text/javascript"
