@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4c153ecc-cf7b-4524-bd47-c41562843abd",
+		"_postman_id": "87a31885-f97a-40c5-9373-957a1f0d104c",
 		"name": "Golden_Path",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -13050,6 +13050,460 @@
 							],
 							"path": [
 								"transfers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Send Transfer 2 Decimal #949",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "900142b0-e4d7-43a4-a751-38202b600661",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"//Check the request that Switch forwards to payeefsp",
+									"setTimeout(function () {",
+									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payeefsp/requests/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
+									"          if(response.responseSize !== 0) {",
+									"                ",
+									"                ",
+									"                //Check the data",
+									"                var jsonData = response.json().data;",
+									"",
+									"                pm.test(\"payeefsp data should have the same amount as request and 2 decimal checked\", function () {",
+									"                   pm.expect(jsonData.amount.amount).to.eql('1.01');",
+									"                });",
+									"",
+									"                ",
+									"          } else {",
+									"              pm.test(\"Transfer FAILED\", function () {",
+									"                throw new Error('Did not receive response');",
+									"              });",
+									"",
+									"          }",
+									"   });",
+									"}, 1100)",
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "20820c95-0a24-4906-a6ba-708d6ecf4a61",
+								"exec": [
+									"var uuid = require('uuid');",
+									"var generatedUUID = uuid.v4();",
+									"pm.environment.set('transfer_ID', generatedUUID);",
+									"",
+									"pm.variables.set('transferDate', (new Date()).toUTCString());",
+									"",
+									"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.transfers+json;version=1"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.interoperability.transfers+json;version=1.0"
+							},
+							{
+								"key": "Date",
+								"value": "{{transferDate}}"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payerfsp}}"
+							},
+							{
+								"key": "FSPIOP-Destination",
+								"value": "{{payeefsp}}"
+							},
+							{
+								"key": "FSPIOP-Signature",
+								"value": "{{fspiop-signature}}",
+								"type": "text"
+							},
+							{
+								"key": "FSPIOP-URI",
+								"value": "/transfers",
+								"type": "text"
+							},
+							{
+								"key": "FSPIOP-HTTP-Method",
+								"value": "POST",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"1.01\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+							"host": [
+								"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+							],
+							"path": [
+								"transfers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Send Transfer 4 Decimal #949",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "900142b0-e4d7-43a4-a751-38202b600661",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"//Check the request that Switch forwards to payeefsp",
+									"setTimeout(function () {",
+									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payeefsp/requests/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
+									"          if(response.responseSize !== 0) {",
+									"                ",
+									"                ",
+									"                //Check the data",
+									"                var jsonData = response.json().data;",
+									"",
+									"                pm.test(\"payeefsp data should have the same amount as request and 4 decimal checked\", function () {",
+									"                   pm.expect(jsonData.amount.amount).to.eql('1.9999');",
+									"                });",
+									"",
+									"                ",
+									"          } else {",
+									"              pm.test(\"Transfer FAILED\", function () {",
+									"                throw new Error('Did not receive response');",
+									"              });",
+									"",
+									"          }",
+									"   });",
+									"}, 1100)",
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "20820c95-0a24-4906-a6ba-708d6ecf4a61",
+								"exec": [
+									"var uuid = require('uuid');",
+									"var generatedUUID = uuid.v4();",
+									"pm.environment.set('transfer_ID', generatedUUID);",
+									"",
+									"pm.variables.set('transferDate', (new Date()).toUTCString());",
+									"",
+									"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.transfers+json;version=1"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.interoperability.transfers+json;version=1.0"
+							},
+							{
+								"key": "Date",
+								"value": "{{transferDate}}"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payerfsp}}"
+							},
+							{
+								"key": "FSPIOP-Destination",
+								"value": "{{payeefsp}}"
+							},
+							{
+								"key": "FSPIOP-Signature",
+								"value": "{{fspiop-signature}}",
+								"type": "text"
+							},
+							{
+								"key": "FSPIOP-URI",
+								"value": "/transfers",
+								"type": "text"
+							},
+							{
+								"key": "FSPIOP-HTTP-Method",
+								"value": "POST",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"1.9999\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+							"host": [
+								"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+							],
+							"path": [
+								"transfers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Send Quote 4 Decimal #949",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4376c794-71a8-474c-9b25-a0714ca62df8",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"//Check Data on payer side",
+									"setTimeout(function () {",
+									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
+									"      if(response.responseSize !== 0) {",
+									"            ",
+									"            var jsonData = response.json().data;",
+									"            ",
+									"            pm.test(\"Send Quote Amount in 4 decimal returned\", function () {",
+									"            pm.expect(jsonData.transferAmount.amount).equal(\"60.1234\");",
+									"            });",
+									"            ",
+									"      } else {",
+									"          pm.test(\"Quote FAILED\", function () {",
+									"            throw new Error('Did not receive response');",
+									"           });",
+									"",
+									"      }",
+									"       ",
+									"   });",
+									"}, 1000)",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a2b75bc4-ffe4-4a22-8fbf-d806b0f3a2d7",
+								"exec": [
+									"   var uuid = require('uuid');",
+									"   var generatedUUID = uuid.v4();",
+									"   pm.environment.set('quoteId', generatedUUID);",
+									"   generatedUUID = uuid.v4();",
+									"   pm.environment.set('transactionId', generatedUUID);",
+									"",
+									"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TESTFSP1_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.quotes+json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.interoperability.quotes+json;version=1.0"
+							},
+							{
+								"key": "Date",
+								"value": "{{dateHeader}}"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "payerfsp"
+							},
+							{
+								"key": "FSPIOP-Destination",
+								"value": "payeefsp"
+							},
+							{
+								"key": "FSPIOP-Signature",
+								"type": "text",
+								"value": "{{fspiop-signature}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{payerMSISDN}}\",\n      \"fspId\": \"payerfsp\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"payeefsp\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"60.1234\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
+							"host": [
+								"{{HOST_QUOTING_SERVICE}}"
+							],
+							"path": [
+								"quotes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Send Quote 2 Decimal #949",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4376c794-71a8-474c-9b25-a0714ca62df8",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"//Check Data on payer side",
+									"setTimeout(function () {",
+									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
+									"      if(response.responseSize !== 0) {",
+									"            ",
+									"            var jsonData = response.json().data;",
+									"            ",
+									"            pm.test(\"Send Quote Amount in 2 decimal returned\", function () {",
+									"            pm.expect(jsonData.transferAmount.amount).equal(\"60.96\");",
+									"            });",
+									"            ",
+									"      } else {",
+									"          pm.test(\"Quote FAILED\", function () {",
+									"            throw new Error('Did not receive response');",
+									"           });",
+									"",
+									"      }",
+									"       ",
+									"   });",
+									"}, 1000)",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a2b75bc4-ffe4-4a22-8fbf-d806b0f3a2d7",
+								"exec": [
+									"   var uuid = require('uuid');",
+									"   var generatedUUID = uuid.v4();",
+									"   pm.environment.set('quoteId', generatedUUID);",
+									"   generatedUUID = uuid.v4();",
+									"   pm.environment.set('transactionId', generatedUUID);",
+									"",
+									"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TESTFSP1_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.quotes+json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.interoperability.quotes+json;version=1.0"
+							},
+							{
+								"key": "Date",
+								"value": "{{dateHeader}}"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "payerfsp"
+							},
+							{
+								"key": "FSPIOP-Destination",
+								"value": "payeefsp"
+							},
+							{
+								"key": "FSPIOP-Signature",
+								"type": "text",
+								"value": "{{fspiop-signature}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{payerMSISDN}}\",\n      \"fspId\": \"payerfsp\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"payeefsp\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"60.96\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
+							"host": [
+								"{{HOST_QUOTING_SERVICE}}"
+							],
+							"path": [
+								"quotes"
 							]
 						}
 					},
