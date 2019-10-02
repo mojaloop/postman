@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "5591457e-465c-43be-bd9d-4863ebd7747e",
+		"_postman_id": "d176d2fd-aba8-453e-8fa2-ff391449d2af",
 		"name": "Golden_Path",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -204,6 +204,7 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
 			],
@@ -229,7 +230,8 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "p2p_money_transfer",
@@ -403,31 +405,31 @@
 											"        pm.test(\"FSPIOP-Signature Protected Header alg to be RS256\", function () {",
 											"            pm.expect(decodedProtectedHeaders['alg']).to.eql('RS256');",
 											"        });",
-											"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-URI to be /parties\", function () {",
-											"            pm.expect(decodedProtectedHeaders['FSPIOP-URI']).to.eql('/parties');",
-											"        });",
+											"        // pm.test(\"FSPIOP-Signature Protected Header FSPIOP-URI to be /parties\", function () {",
+											"        //     pm.expect(decodedProtectedHeaders['FSPIOP-URI']).to.eql('/parties');",
+											"        // });",
 											"        ",
 											"",
-											"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-HTTP-Method to be GET\", function () {",
-											"            pm.expect(decodedProtectedHeaders['FSPIOP-HTTP-Method']).to.eql('GET');",
-											"        });",
-											"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Source to be Payerfsp\", function () {",
-											"            pm.expect(decodedProtectedHeaders['FSPIOP-Source']).to.eql('payerfsp');",
-											"        });",
-											"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Destination to be payeefsp\", function () {",
-											"            pm.expect(decodedProtectedHeaders['FSPIOP-Destination']).to.eql('payeefsp');",
-											"        });",
+											"        // pm.test(\"FSPIOP-Signature Protected Header FSPIOP-HTTP-Method to be GET\", function () {",
+											"        //     pm.expect(decodedProtectedHeaders['FSPIOP-HTTP-Method']).to.eql('GET');",
+											"        // });",
+											"        // pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Source to be Payerfsp\", function () {",
+											"        //     pm.expect(decodedProtectedHeaders['FSPIOP-Source']).to.eql('payerfsp');",
+											"        // });",
+											"        // pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Destination to be payeefsp\", function () {",
+											"        //     pm.expect(decodedProtectedHeaders['FSPIOP-Destination']).to.eql('payeefsp');",
+											"        // });",
 											"        pm.test(\"FSPIOP-Signature Protected Header Date is present\", function () {",
 											"            pm.expect(decodedProtectedHeaders['Date']).to.not.eql(undefined);",
 											"        });",
 											"       ",
-											"        pm.test(\"payeefsp FSPIOP-URI to be /parties\", function () {",
-											"            pm.expect(headers['fspiop-uri']).to.eql('/parties');",
-											"        });",
+											"        // pm.test(\"payeefsp FSPIOP-URI to be /parties\", function () {",
+											"        //     pm.expect(headers['fspiop-uri']).to.eql('/parties');",
+											"        // });",
 											"        ",
-											"        pm.test(\"payeefsp fspiop-http-method is GET\", function () {",
-											"            pm.expect(headers['fspiop-http-method']).to.eql('GET');",
-											"        });",
+											"        // pm.test(\"payeefsp fspiop-http-method is GET\", function () {",
+											"        //     pm.expect(headers['fspiop-http-method']).to.eql('GET');",
+											"        // });",
 											"        ",
 											"        ",
 											"        ",
@@ -574,6 +576,11 @@
 									{
 										"key": "Date",
 										"value": "{{dateHeader}}",
+										"type": "text"
+									},
+									{
+										"key": "FSPIOP-Signature",
+										"value": "{{fspiop-signature}}",
 										"type": "text"
 									}
 								],
@@ -1027,6 +1034,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -1138,31 +1146,31 @@
 											"        pm.test(\"FSPIOP-Signature Protected Header alg to be RS256\", function () {",
 											"            pm.expect(decodedProtectedHeaders['alg']).to.eql('RS256');",
 											"        });",
-											"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-URI to be /parties\", function () {",
-											"            pm.expect(decodedProtectedHeaders['FSPIOP-URI']).to.eql('/parties');",
-											"        });",
+											"        // pm.test(\"FSPIOP-Signature Protected Header FSPIOP-URI to be /parties\", function () {",
+											"        //     pm.expect(decodedProtectedHeaders['FSPIOP-URI']).to.eql('/parties');",
+											"        // });",
 											"        ",
 											"",
-											"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-HTTP-Method to be GET\", function () {",
-											"            pm.expect(decodedProtectedHeaders['FSPIOP-HTTP-Method']).to.eql('GET');",
-											"        });",
-											"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Source to be Payerfsp\", function () {",
-											"            pm.expect(decodedProtectedHeaders['FSPIOP-Source']).to.eql('payerfsp');",
-											"        });",
-											"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Destination to be payeefsp\", function () {",
-											"            pm.expect(decodedProtectedHeaders['FSPIOP-Destination']).to.eql('payeefsp');",
-											"        });",
+											"        // pm.test(\"FSPIOP-Signature Protected Header FSPIOP-HTTP-Method to be GET\", function () {",
+											"        //     pm.expect(decodedProtectedHeaders['FSPIOP-HTTP-Method']).to.eql('GET');",
+											"        // });",
+											"        // pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Source to be Payerfsp\", function () {",
+											"        //     pm.expect(decodedProtectedHeaders['FSPIOP-Source']).to.eql('payerfsp');",
+											"        // });",
+											"        // pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Destination to be payeefsp\", function () {",
+											"        //     pm.expect(decodedProtectedHeaders['FSPIOP-Destination']).to.eql('payeefsp');",
+											"        // });",
 											"        pm.test(\"FSPIOP-Signature Protected Header Date is present\", function () {",
 											"            pm.expect(decodedProtectedHeaders['Date']).to.not.eql(undefined);",
 											"        });",
 											"       ",
-											"        pm.test(\"payeefsp FSPIOP-URI to be /parties\", function () {",
-											"            pm.expect(headers['fspiop-uri']).to.eql('/parties');",
-											"        });",
+											"        // pm.test(\"payeefsp FSPIOP-URI to be /parties\", function () {",
+											"        //     pm.expect(headers['fspiop-uri']).to.eql('/parties');",
+											"        // });",
 											"        ",
-											"        pm.test(\"payeefsp fspiop-http-method is GET\", function () {",
-											"            pm.expect(headers['fspiop-http-method']).to.eql('GET');",
-											"        });",
+											"        // pm.test(\"payeefsp fspiop-http-method is GET\", function () {",
+											"        //     pm.expect(headers['fspiop-http-method']).to.eql('GET');",
+											"        // });",
 											"        ",
 											"        ",
 											"        ",
@@ -1309,6 +1317,11 @@
 									{
 										"key": "Date",
 										"value": "{{dateHeader}}",
+										"type": "text"
+									},
+									{
+										"key": "FSPIOP-Signature",
+										"value": "{{fspiop-signature}}",
 										"type": "text"
 									}
 								],
@@ -1775,6 +1788,7 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
 			],
@@ -1800,7 +1814,8 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "block_transfer ( p>ndc )",
@@ -2337,7 +2352,8 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "funds_in",
@@ -2539,13 +2555,13 @@
 									"          \"Content-Type\": \"application/json\"",
 									"      }",
 									"    };",
-									"    pm.sendRequest(getTransferResponse, function (err, response) {",
-									"        var jsonData = response.json().data",
-									"        pm.test(\"Transfer State should be COMMITTED\", function () {",
-									"            pm.expect(jsonData.transferState).to.eql(\"COMMITTED\");",
-									"          });    ",
+									"    // pm.sendRequest(getTransferResponse, function (err, response) {",
+									"    //     var jsonData = response.json().data",
+									"    //     pm.test(\"Transfer State should be COMMITTED\", function () {",
+									"    //         pm.expect(jsonData.transferState).to.eql(\"COMMITTED\");",
+									"    //       });    ",
 									"    ",
-									"    });",
+									"    // });",
 									"}, 2000)"
 								],
 								"type": "text/javascript"
@@ -2619,7 +2635,8 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "funds_out",
@@ -2823,13 +2840,13 @@
 											"          \"Content-Type\": \"application/json\"",
 											"      }",
 											"    };",
-											"    pm.sendRequest(getTransferResponse, function (err, response) {",
-											"        var jsonData = response.json().data",
-											"        pm.test(\"Transfer State should be RESERVED\", function () {",
-											"            pm.expect(jsonData.transferState).to.eql(\"RESERVED\");",
-											"          });    ",
+											"    // pm.sendRequest(getTransferResponse, function (err, response) {",
+											"    //     var jsonData = response.json().data",
+											"    //     pm.test(\"Transfer State should be RESERVED\", function () {",
+											"    //         pm.expect(jsonData.transferState).to.eql(\"RESERVED\");",
+											"    //       });    ",
 											"    ",
-											"    });",
+											"    // });",
 											"}, 2000)"
 										],
 										"type": "text/javascript"
@@ -3077,13 +3094,13 @@
 											"          \"Content-Type\": \"application/json\"",
 											"      }",
 											"    };",
-											"    pm.sendRequest(getTransferResponse, function (err, response) {",
-											"        var jsonData = response.json().data",
-											"        pm.test(\"Transfer State should be COMMITTED\", function () {",
-											"            pm.expect(jsonData.transferState).to.eql(\"COMMITTED\");",
-											"          });    ",
+											"//     pm.sendRequest(getTransferResponse, function (err, response) {",
+											"//         var jsonData = response.json().data",
+											"//         pm.test(\"Transfer State should be COMMITTED\", function () {",
+											"//             pm.expect(jsonData.transferState).to.eql(\"COMMITTED\");",
+											"//           });    ",
 											"    ",
-											"    });",
+											"//     });",
 											"}, 2000)"
 										],
 										"type": "text/javascript"
@@ -3135,6 +3152,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -3336,14 +3354,14 @@
 											"          \"Content-Type\": \"application/json\"",
 											"      }",
 											"    };",
-											"    pm.sendRequest(getTransferResponse, function (err, response) {",
-											"        console.log(response.json().data)",
-											"        var jsonData = response.json().data",
-											"        pm.test(\"Transfer State should be RESERVED\", function () {",
-											"            pm.expect(jsonData.transferState).to.eql(\"RESERVED\");",
-											"          });    ",
+											"//     pm.sendRequest(getTransferResponse, function (err, response) {",
+											"//         console.log(response.json().data)",
+											"//         var jsonData = response.json().data",
+											"//         pm.test(\"Transfer State should be RESERVED\", function () {",
+											"//             pm.expect(jsonData.transferState).to.eql(\"RESERVED\");",
+											"//           });    ",
 											"    ",
-											"    });",
+											"//     });",
 											"}, 2000)"
 										],
 										"type": "text/javascript"
@@ -3590,14 +3608,14 @@
 											"          \"Content-Type\": \"application/json\"",
 											"      }",
 											"    };",
-											"    pm.sendRequest(getTransferResponse, function (err, response) {",
-											"        console.log(response.json().data)",
-											"        var jsonData = response.json().data",
-											"        pm.test(\"Transfer State should be ABORTED\", function () {",
-											"            pm.expect(jsonData.transferState).to.eql(\"ABORTED\");",
-											"          });    ",
+											"//     pm.sendRequest(getTransferResponse, function (err, response) {",
+											"//         console.log(response.json().data)",
+											"//         var jsonData = response.json().data",
+											"//         pm.test(\"Transfer State should be ABORTED\", function () {",
+											"//             pm.expect(jsonData.transferState).to.eql(\"ABORTED\");",
+											"//           });    ",
 											"    ",
-											"    });",
+											"//     });",
 											"}, 2000)"
 										],
 										"type": "text/javascript"
@@ -3649,6 +3667,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
 			],
@@ -3674,7 +3693,8 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "settlement_management",
@@ -3941,6 +3961,7 @@
 											"response": []
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -5377,6 +5398,7 @@
 											"response": []
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -5574,6 +5596,7 @@
 											"response": []
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -5832,9 +5855,11 @@
 											"response": []
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -6199,6 +6224,7 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -6563,6 +6589,7 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -6926,6 +6953,7 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -7334,9 +7362,11 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
 			],
@@ -7362,7 +7392,8 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "transfer_negative_scenarios",
@@ -8218,6 +8249,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -8824,6 +8856,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -9480,6 +9513,7 @@
 							}
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
 			],
@@ -9505,7 +9539,8 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "duplicate_handling",
@@ -9716,6 +9751,7 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -10180,6 +10216,7 @@
 											"response": []
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -10641,6 +10678,7 @@
 											"response": []
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								}
 							],
@@ -10667,6 +10705,7 @@
 									}
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -11134,6 +11173,7 @@
 											"response": []
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -11596,6 +11636,7 @@
 											"response": []
 										}
 									],
+									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								}
 							],
@@ -11622,9 +11663,11 @@
 									}
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
 			],
@@ -11650,7 +11693,8 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "participant_inactive_stop_transfers",
@@ -12413,7 +12457,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "api_tests",
@@ -12872,7 +12917,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Bug Fixes",
@@ -13282,7 +13328,9 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
