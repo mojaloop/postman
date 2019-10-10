@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "5dc8ba63-6a3f-4675-a5a3-5c1769b548b4",
+		"_postman_id": "2d53e5ac-2abd-4b1f-a908-dccba7e84225",
 		"name": "Golden_Path",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -13268,7 +13268,7 @@
 									"});",
 									"",
 									"pm.test(\"Check Generic validation error\", function () {",
-									"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Validation error');",
+									"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Generic validation error');",
 									"});",
 									"",
 									"pm.test(\"Check Error code 3100\", function () {",
@@ -13689,12 +13689,12 @@
 									"    pm.response.to.have.status(400);",
 									"});",
 									"",
-									"pm.test(\"Check Validation error\", function () {",
-									"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Validation error');",
+									"pm.test(\"Check Malformed syntax\", function () {",
+									"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Malformed syntax');",
 									"});",
 									"",
-									"pm.test(\"Check Error code xxxx\", function () {",
-									"    pm.expect(jsonData.errorInformation.errorCode).to.eql('xxxx');",
+									"pm.test(\"Check Error code 3101\", function () {",
+									"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3101');",
 									"});",
 									"",
 									""
