@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "5dc8ba63-6a3f-4675-a5a3-5c1769b548b4",
+		"_postman_id": "2d53e5ac-2abd-4b1f-a908-dccba7e84225",
 		"name": "Golden_Path",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -13121,6 +13121,632 @@
 								"transfers"
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Error 2001 Internal server error #742",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1c520a36-9ea1-4a2f-bcdc-e3872824b08d",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Check Internal server error\", function () {",
+									"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Internal server error');",
+									"});",
+									"",
+									"pm.test(\"Check Error code 2001\", function () {",
+									"    pm.expect(jsonData.errorInformation.errorCode).to.eql('2001');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payerfsp}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"payer10\",\n  \"currency\": \"A#\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}/participants",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}"
+							],
+							"path": [
+								"participants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Error 3003 Add Party information error #742",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b153965b-4892-41b1-9ff7-dc54ad6ef262",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Check ID missing\", function () {",
+									"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Add Party information error');",
+									"});",
+									"",
+									"pm.test(\"Check Error code 3003\", function () {",
+									"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3003');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payerfsp}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"{{payerfsp}}\",\n  \"currency\": \"XOF\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Error 3100  validation error#742",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "900142b0-e4d7-43a4-a751-38202b600661",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Check Generic validation error\", function () {",
+									"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Generic validation error');",
+									"});",
+									"",
+									"pm.test(\"Check Error code 3100\", function () {",
+									"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3100');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "20820c95-0a24-4906-a6ba-708d6ecf4a61",
+								"exec": [
+									"var uuid = require('uuid');",
+									"var generatedUUID = uuid.v4();",
+									"pm.environment.set('transfer_ID', generatedUUID);",
+									"",
+									"pm.environment.set('transferDate', (new Date()).toUTCString());",
+									"",
+									"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.transfers+json;version=1"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.interoperability.transfers+json;version=1.0"
+							},
+							{
+								"key": "Date",
+								"value": "{{transferDate}}"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payerfsp}}"
+							},
+							{
+								"key": "FSPIOP-Destination",
+								"value": "{{payeefsp}}"
+							},
+							{
+								"key": "FSPIOP-Signature",
+								"value": "{{fspiop-signature}}",
+								"type": "text"
+							},
+							{
+								"key": "FSPIOP-URI",
+								"value": "/transfers",
+								"type": "text"
+							},
+							{
+								"key": "FSPIOP-HTTP-Method",
+								"value": "POST",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payerFsp1\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"1.11\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+							"host": [
+								"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+							],
+							"path": [
+								"transfers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Error 3101 Malformed syntax #742",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "900142b0-e4d7-43a4-a751-38202b600661",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Check Malformed syntax\", function () {",
+									"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Malformed syntax');",
+									"});",
+									"",
+									"pm.test(\"Check Error code 3101\", function () {",
+									"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3101');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "20820c95-0a24-4906-a6ba-708d6ecf4a61",
+								"exec": [
+									"var uuid = require('uuid');",
+									"var generatedUUID = uuid.v4();",
+									"pm.environment.set('transfer_ID', generatedUUID);",
+									"",
+									"pm.environment.set('transferDate', (new Date()).toUTCString());",
+									"",
+									"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.transfers+json;version=1"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.interoperability.transfers+json;version=1.0"
+							},
+							{
+								"key": "Date",
+								"value": "{{transferDate}}"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payerfsp}}"
+							},
+							{
+								"key": "FSPIOP-Destination",
+								"value": "{{payeefsp}}"
+							},
+							{
+								"key": "FSPIOP-Signature",
+								"type": "text",
+								"value": "{{fspiop-signature}}"
+							},
+							{
+								"key": "FSPIOP-URI",
+								"type": "text",
+								"value": "/transfers"
+							},
+							{
+								"key": "FSPIOP-HTTP-Method",
+								"type": "text",
+								"value": "POST"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"transferId\": \"{{transfer_ID}}+1\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"1.11\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+							"host": [
+								"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+							],
+							"path": [
+								"transfers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Error 3102  Missing mandatory element#742",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "900142b0-e4d7-43a4-a751-38202b600661",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Check Missing mandatory element\", function () {",
+									"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Missing mandatory element');",
+									"});",
+									"",
+									"pm.test(\"Check Error code 3102\", function () {",
+									"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3102');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "20820c95-0a24-4906-a6ba-708d6ecf4a61",
+								"exec": [
+									"var uuid = require('uuid');",
+									"var generatedUUID = uuid.v4();",
+									"pm.environment.set('transfer_ID', generatedUUID);",
+									"",
+									"pm.environment.set('transferDate', (new Date()).toUTCString());",
+									"",
+									"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.transfers+json;version=1"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.interoperability.transfers+json;version=1.0"
+							},
+							{
+								"key": "Date",
+								"value": "{{transferDate}}"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payerfsp}}"
+							},
+							{
+								"key": "FSPIOP-Destination",
+								"value": "{{payeefsp}}"
+							},
+							{
+								"key": "FSPIOP-Signature",
+								"value": "{{fspiop-signature}}",
+								"type": "text"
+							},
+							{
+								"key": "FSPIOP-URI",
+								"value": "/transfers",
+								"type": "text"
+							},
+							{
+								"key": "FSPIOP-HTTP-Method",
+								"value": "POST",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \n  \"amount\": {\n    \"amount\": \"1.11\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+							"host": [
+								"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+							],
+							"path": [
+								"transfers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check FSPIOP-URI header #733",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "900142b0-e4d7-43a4-a751-38202b600661",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"//Check the request that Switch forwards to payeefsp",
+									"setTimeout(function () {",
+									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payeefsp/requests/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
+									"          if(response.responseSize !== 0) {",
+									"              ",
+									"              //Check the Headers",
+									"              var headers = response.json().headers;",
+									"                ",
+									"                pm.test(\"payeefsp fspiop-uri is /transfers\", function () {",
+									"                    pm.expect(headers['fspiop-uri']).to.eql('/transfers');",
+									"                });",
+									"                ",
+									"          } else {",
+									"              pm.test(\"Transfer FAILED\", function () {",
+									"                throw new Error('Did not receive response');",
+									"              });",
+									"",
+									"          }",
+									"   });",
+									"}, 1100)",
+									"",
+									"//Check the callback response that Switch forwards to payerfsp",
+									"setTimeout(function () {",
+									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
+									"          if(response.responseSize !== 0) {",
+									"            //Checking headers",
+									"            var headers = response.json().headers;",
+									"           ",
+									"            pm.test(\"payerfsp fspiop-uri includes transfers\", function () {",
+									"                pm.expect(headers['fspiop-uri']).to.include('/transfers');",
+									"            });",
+									"            ",
+									"          } else {",
+									"              pm.test(\"Transfer FAILED\", function () {",
+									"                throw new Error('Did not receive response');",
+									"              });",
+									"",
+									"          }",
+									"   });",
+									"}, 1300)",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "20820c95-0a24-4906-a6ba-708d6ecf4a61",
+								"exec": [
+									"var uuid = require('uuid');",
+									"var generatedUUID = uuid.v4();",
+									"pm.environment.set('transfer_ID', generatedUUID);",
+									"",
+									"pm.environment.set('transferDate', (new Date()).toUTCString());",
+									"",
+									"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.transfers+json;version=1"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.interoperability.transfers+json;version=1.0"
+							},
+							{
+								"key": "Date",
+								"value": "{{transferDate}}"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payerfsp}}"
+							},
+							{
+								"key": "FSPIOP-Destination",
+								"value": "{{payeefsp}}"
+							},
+							{
+								"key": "FSPIOP-Signature",
+								"type": "text",
+								"value": "{{fspiop-signature}}"
+							},
+							{
+								"key": "FSPIOP-URI",
+								"type": "text",
+								"value": "/transfers"
+							},
+							{
+								"key": "FSPIOP-HTTP-Method",
+								"type": "text",
+								"value": "POST"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"1.11\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+							"host": [
+								"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+							],
+							"path": [
+								"transfers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Settlements Error #956",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e95e6fee-60b9-4cee-90bc-e6db2244dc10",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Check Malformed syntax\", function () {",
+									"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Malformed syntax');",
+									"});",
+									"",
+									"pm.test(\"Check Error code 3101\", function () {",
+									"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3101');",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows?participantId=0&state=open",
+							"host": [
+								"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
+							],
+							"path": [
+								"settlementWindows"
+							],
+							"query": [
+								{
+									"key": "participantId",
+									"value": "0"
+								},
+								{
+									"key": "state",
+									"value": "open",
+									"description": "Available values : OPEN, CLOSED, PENDING_SETTLEMENT, SETTLED, NOT_SETTLED"
+								},
+								{
+									"key": "fromDateTime",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "toDateTime",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "State, OPEN is case sensitive.\nTocheck invalid request I have provided state = \"open\""
 					},
 					"response": []
 				}
