@@ -13112,9 +13112,9 @@
 											"    pm.test(\"Expected body to have services array\", function () {",
 											"       pm.expect(jsonData.services).to.be.an('array');",
 											"       ",
-											"        pm.test(\"Expected services to have broker and status is OK\", function () {",
+											"        pm.test(\"Expected services to have datastore and status is OK\", function () {",
 											"            const brokerOk = jsonData.services.find(item => {",
-											"               return item.name=='broker' && item.status=='OK'; ",
+											"               return item.name=='datastore' && item.status=='OK'; ",
 											"            });",
 											"            pm.expect(brokerOk).to.be.an('object');",
 											"   ",
@@ -13134,9 +13134,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/health",
+									"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/health",
 									"host": [
-										"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+										"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
 									],
 									"path": [
 										"health"
