@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "fa9b610c-70eb-4d5c-9640-dbab4af45ec6",
+		"_postman_id": "de6d5726-c1c8-443d-9ff4-090d4cabec9d",
 		"name": "OSS-New-Deployment-FSP-Setup",
 		"description": "Author: Sridevi Miriyala\nPurpose: Used to add new FSP and relevant Callback Information",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -6286,7 +6286,7 @@
 			"name": "Add Users to ALS / mock-pathfinder",
 			"item": [
 				{
-					"name": "Add 27713803910 to payerfsp",
+					"name": "Add 27713803915 to payeefsp",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -6318,136 +6318,13 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "Content-Type",
-								"value": "application/json"
+								"key": "Accept",
+								"value": "application/vnd.interoperability.participants+json;version=1.0",
+								"type": "text"
 							},
-							{
-								"key": "Date",
-								"value": "{{transferDate}}"
-							},
-							{
-								"key": "FSPIOP-Source",
-								"value": "{{payerfsp}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n \"fspId\": \"{{payerfsp}}\",\n \"currency\": \"USD\"\n}\n"
-						},
-						"url": {
-							"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/27713803910",
-							"host": [
-								"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
-							],
-							"path": [
-								"participants",
-								"MSISDN",
-								"27713803910"
-							]
-						},
-						"description": "Set the Proxy URIs for a specific FSP. This will allow the switch to re-direct the incoming Quote requests to the respective FSP.\n\n*Note: connectorPort has been deprecated and is no longer used, but still required in the request."
-					},
-					"response": []
-				},
-				{
-					"name": "Add 27713803911 to payerfsp",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "6dc73d30-cd0b-495f-ab1f-0d0679a43f2f",
-								"exec": [
-									"if (!pm.environment.get('participant')) {",
-									"    pm.environment.set('participant', 'testfsp');   ",
-									"}",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "9a37f448-b328-4f61-a481-f5502c463a69",
-								"exec": [
-									"pm.test(\"Status code is 202 or 200\", function () {",
-									"    pm.response.to.be.success;",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Date",
-								"value": "{{transferDate}}"
-							},
-							{
-								"key": "FSPIOP-Source",
-								"value": "{{payerfsp}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n \"fspId\": \"{{payerfsp}}\",\n \"currency\": \"USD\"\n}\n"
-						},
-						"url": {
-							"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/27713803911",
-							"host": [
-								"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
-							],
-							"path": [
-								"participants",
-								"MSISDN",
-								"27713803911"
-							]
-						},
-						"description": "Set the Proxy URIs for a specific FSP. This will allow the switch to re-direct the incoming Quote requests to the respective FSP.\n\n*Note: connectorPort has been deprecated and is no longer used, but still required in the request."
-					},
-					"response": []
-				},
-				{
-					"name": "Add 27713803912 to payeefsp",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "6dc73d30-cd0b-495f-ab1f-0d0679a43f2f",
-								"exec": [
-									"if (!pm.environment.get('participant')) {",
-									"    pm.environment.set('participant', 'testfsp');   ",
-									"}",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "9a37f448-b328-4f61-a481-f5502c463a69",
-								"exec": [
-									"pm.test(\"Status code is 202\", function () {",
-									"    pm.response.to.be.success;",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/vnd.interoperability.participants+json;version=1.0"
 							},
 							{
 								"key": "Date",
@@ -6463,145 +6340,16 @@
 							"raw": "{\n \"fspId\": \"{{payeefsp}}\",\n \"currency\": \"USD\"\n}\n"
 						},
 						"url": {
-							"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/27713803912",
+							"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/27713803915",
 							"host": [
 								"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
 							],
 							"path": [
 								"participants",
 								"MSISDN",
-								"27713803912"
+								"27713803915"
 							]
-						},
-						"description": "Set the Proxy URIs for a specific FSP. This will allow the switch to re-direct the incoming Quote requests to the respective FSP.\n\n*Note: connectorPort has been deprecated and is no longer used, but still required in the request."
-					},
-					"response": []
-				},
-				{
-					"name": "Add {{pathfinderMSISDN}} to payeefsp",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "6dc73d30-cd0b-495f-ab1f-0d0679a43f2f",
-								"exec": [
-									"if (!pm.environment.get('participant')) {",
-									"    pm.environment.set('participant', 'testfsp');   ",
-									"}",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "9a37f448-b328-4f61-a481-f5502c463a69",
-								"exec": [
-									"pm.test(\"Status code is 202\", function () {",
-									"    pm.response.to.be.success;",
-									"});"
-								],
-								"type": "text/javascript"
-							}
 						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Date",
-								"value": "{{transferDate}}"
-							},
-							{
-								"key": "FSPIOP-Source",
-								"value": "{{payeefsp}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n \"fspId\": \"{{payeefsp}}\",\n \"currency\": \"USD\"\n}\n"
-						},
-						"url": {
-							"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{pathfinderMSISDN}}",
-							"host": [
-								"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
-							],
-							"path": [
-								"participants",
-								"MSISDN",
-								"{{pathfinderMSISDN}}"
-							]
-						},
-						"description": "Set the Proxy URIs for a specific FSP. This will allow the switch to re-direct the incoming Quote requests to the respective FSP.\n\n*Note: connectorPort has been deprecated and is no longer used, but still required in the request."
-					},
-					"response": []
-				},
-				{
-					"name": "Add 27713803913 to payeefsp",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "6dc73d30-cd0b-495f-ab1f-0d0679a43f2f",
-								"exec": [
-									"if (!pm.environment.get('participant')) {",
-									"    pm.environment.set('participant', 'testfsp');   ",
-									"}",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "9a37f448-b328-4f61-a481-f5502c463a69",
-								"exec": [
-									"pm.test(\"Status code is 202\", function () {",
-									"    pm.response.to.be.success;",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Date",
-								"value": "{{transferDate}}"
-							},
-							{
-								"key": "FSPIOP-Source",
-								"value": "{{payeefsp}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n \"fspId\": \"{{payeefsp}}\",\n \"currency\": \"USD\"\n}\n"
-						},
-						"url": {
-							"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/27713803913",
-							"host": [
-								"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
-							],
-							"path": [
-								"participants",
-								"MSISDN",
-								"27713803913"
-							]
-						},
-						"description": "Set the Proxy URIs for a specific FSP. This will allow the switch to re-direct the incoming Quote requests to the respective FSP.\n\n*Note: connectorPort has been deprecated and is no longer used, but still required in the request."
 					},
 					"response": []
 				},
@@ -6638,8 +6386,13 @@
 						"method": "POST",
 						"header": [
 							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.participants+json;version=1.0",
+								"type": "text"
+							},
+							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/vnd.interoperability.participants+json;version=1.0"
 							},
 							{
 								"key": "Date",
@@ -6664,13 +6417,12 @@
 								"MSISDN",
 								"27713803914"
 							]
-						},
-						"description": "Set the Proxy URIs for a specific FSP. This will allow the switch to re-direct the incoming Quote requests to the respective FSP.\n\n*Note: connectorPort has been deprecated and is no longer used, but still required in the request."
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "Add 27713803915 to payeefsp",
+					"name": "Add 27713803913 to payeefsp",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -6702,8 +6454,13 @@
 						"method": "POST",
 						"header": [
 							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.participants+json;version=1.0",
+								"type": "text"
+							},
+							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/vnd.interoperability.participants+json;version=1.0"
 							},
 							{
 								"key": "Date",
@@ -6719,17 +6476,288 @@
 							"raw": "{\n \"fspId\": \"{{payeefsp}}\",\n \"currency\": \"USD\"\n}\n"
 						},
 						"url": {
-							"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/27713803915",
+							"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/27713803913",
 							"host": [
 								"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
 							],
 							"path": [
 								"participants",
 								"MSISDN",
-								"27713803915"
+								"27713803913"
 							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add {{pathfinderMSISDN}} to payeefsp",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6dc73d30-cd0b-495f-ab1f-0d0679a43f2f",
+								"exec": [
+									"if (!pm.environment.get('participant')) {",
+									"    pm.environment.set('participant', 'testfsp');   ",
+									"}",
+									""
+								],
+								"type": "text/javascript"
+							}
 						},
-						"description": "Set the Proxy URIs for a specific FSP. This will allow the switch to re-direct the incoming Quote requests to the respective FSP.\n\n*Note: connectorPort has been deprecated and is no longer used, but still required in the request."
+						{
+							"listen": "test",
+							"script": {
+								"id": "9a37f448-b328-4f61-a481-f5502c463a69",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.be.success;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.participants+json;version=1.0",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.interoperability.participants+json;version=1.0"
+							},
+							{
+								"key": "Date",
+								"value": "{{transferDate}}"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payeefsp}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"fspId\": \"{{payeefsp}}\",\n \"currency\": \"USD\"\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/{{pathfinderMSISDN}}",
+							"host": [
+								"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+							],
+							"path": [
+								"participants",
+								"MSISDN",
+								"{{pathfinderMSISDN}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add 27713803912 to payeefsp",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6dc73d30-cd0b-495f-ab1f-0d0679a43f2f",
+								"exec": [
+									"if (!pm.environment.get('participant')) {",
+									"    pm.environment.set('participant', 'testfsp');   ",
+									"}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "9a37f448-b328-4f61-a481-f5502c463a69",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.be.success;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.participants+json;version=1.0",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.interoperability.participants+json;version=1.0"
+							},
+							{
+								"key": "Date",
+								"value": "{{transferDate}}"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payeefsp}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"fspId\": \"{{payeefsp}}\",\n \"currency\": \"USD\"\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/27713803912",
+							"host": [
+								"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+							],
+							"path": [
+								"participants",
+								"MSISDN",
+								"27713803912"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add 27713803911 to payerfsp",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6dc73d30-cd0b-495f-ab1f-0d0679a43f2f",
+								"exec": [
+									"if (!pm.environment.get('participant')) {",
+									"    pm.environment.set('participant', 'testfsp');   ",
+									"}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "9a37f448-b328-4f61-a481-f5502c463a69",
+								"exec": [
+									"pm.test(\"Status code is 202 or 200\", function () {",
+									"    pm.response.to.be.success;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.participants+json;version=1.0",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.interoperability.participants+json;version=1.0"
+							},
+							{
+								"key": "Date",
+								"value": "{{transferDate}}"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payerfsp}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"fspId\": \"{{payerfsp}}\",\n \"currency\": \"USD\"\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/27713803911",
+							"host": [
+								"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+							],
+							"path": [
+								"participants",
+								"MSISDN",
+								"27713803911"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add 27713803910 to payerfsp",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6dc73d30-cd0b-495f-ab1f-0d0679a43f2f",
+								"exec": [
+									"if (!pm.environment.get('participant')) {",
+									"    pm.environment.set('participant', 'testfsp');   ",
+									"}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "9a37f448-b328-4f61-a481-f5502c463a69",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.be.success;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.participants+json;version=1.0",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.interoperability.participants+json;version=1.0"
+							},
+							{
+								"key": "Date",
+								"value": "{{transferDate}}"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payerfsp}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"fspId\": \"{{payerfsp}}\",\n \"currency\": \"USD\"\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/27713803910",
+							"host": [
+								"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+							],
+							"path": [
+								"participants",
+								"MSISDN",
+								"27713803910"
+							]
+						}
 					},
 					"response": []
 				}
