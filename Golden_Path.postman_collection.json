@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e2410119-9633-49ca-a0ce-3d140caaaeef",
+		"_postman_id": "70fe9927-46ae-43f1-94d1-500fc6a636d3",
 		"name": "Golden_Path",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -13681,6 +13681,126 @@
 							]
 						},
 						"description": "State, OPEN is case sensitive.\nTocheck invalid request I have provided state = \"open\""
+					},
+					"response": []
+				},
+				{
+					"name": "Check health endpoint on ml-api-adapter #980",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_ML_API_ADAPTER}}/health",
+							"host": [
+								"{{HOST_ML_API_ADAPTER}}"
+							],
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check health endpoint on central-ledger #980",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}/health",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}"
+							],
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check FSPIOP-URI and FSPIOP-HTTP-Method headers are sent from Switch #883",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "91dac134-b7ce-400b-9565-638885baf8f8",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"",
+									"setTimeout(function () {",
+									"  partyId = pm.variables.get(\"InexistentPartyId\");",
+									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\") + `/payerfsp/callbacks/${partyId}`, function (err, response) {",
+									"      responseBody = response.json();",
+									"      pm.test(\"Expect simulator to return response\", () => {",
+									"          pm.expect(response.responseSize).to.be.above(0);",
+									"      })",
+									"      pm.test(`Expect FSPIO-URI header to be /parties/MSISDN/${partyId}/error`, function () {",
+									"          pm.expect(responseBody.headers).to.have.property(\"fspiop-uri\");",
+									"          pm.expect(responseBody.headers[\"fspiop-uri\"]).to.equal(`/parties/MSISDN/${partyId}/error`);",
+									"        });",
+									"        pm.test(\"Expected FSPIO-HTTP-Method header to be PUT\", function () {",
+									"            pm.expect(responseBody.headers).to.have.property(\"fspiop-http-method\");",
+									"            pm.expect(responseBody.headers[\"fspiop-http-method\"]).to.equal(\"PUT\");",
+									"        });",
+									"    });",
+									"}, 6000)",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "40093898-31d3-4474-b6d1-70d1604ee160",
+								"exec": [
+									"pm.environment.set('dateHeader', (new Date()).toUTCString());",
+									"pm.variables.set('InexistentPartyId', 1999999)",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/vnd.interoperability.parties+json;version=1"
+							},
+							{
+								"key": "Date",
+								"type": "text",
+								"value": "{{dateHeader}}"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"type": "text",
+								"value": "{{payerfsp}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/vnd.interoperability.parties+json;version=1.0"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/{{InexistentPartyId}}",
+							"host": [
+								"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+							],
+							"path": [
+								"parties",
+								"MSISDN",
+								"{{InexistentPartyId}}"
+							]
+						}
 					},
 					"response": []
 				}
