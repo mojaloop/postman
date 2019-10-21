@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b334b6f4-b338-45aa-b570-612df181fe66",
+		"_postman_id": "e2410119-9633-49ca-a0ce-3d140caaaeef",
 		"name": "Golden_Path",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -19,13 +19,14 @@
 									"script": {
 										"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 										"exec": [
-											"   var uuid = require('uuid');",
-											"   var generatedUUID = uuid.v4();",
-											"   pm.environment.set('quoteId', generatedUUID);",
-											"   generatedUUID = uuid.v4();",
-											"   pm.environment.set('transactionId', generatedUUID);",
+											"var uuid = require('uuid');",
+											"var generatedUUID = uuid.v4();",
 											"",
-											"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
+											"pm.environment.set('quoteId', generatedUUID);",
+											"generatedUUID = uuid.v4();",
+											"pm.environment.set('transactionId', generatedUUID);",
+											"pm.environment.set('quoteDate', (new Date()).toUTCString());",
+											"pm.environment.set('transferAmount', 60);",
 											""
 										],
 										"type": "text/javascript"
@@ -80,7 +81,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"payerfsp\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"payeefsp\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"60\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+									"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"payerfsp\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"payeefsp\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
@@ -116,11 +117,11 @@
 										"exec": [
 											"var uuid = require('uuid');",
 											"var generatedUUID = uuid.v4();",
+											"",
 											"pm.environment.set('transfer_ID', generatedUUID);",
-											"",
 											"pm.environment.set('transferDate', (new Date()).toUTCString());",
-											"",
-											"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))"
+											"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))",
+											"pm.environment.set('transferAmount', 1);"
 										],
 										"type": "text/javascript"
 									}
@@ -167,7 +168,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"1\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+									"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -204,7 +205,6 @@
 							}
 						}
 					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
 			],
@@ -230,8 +230,7 @@
 						]
 					}
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "p2p_money_transfer",
@@ -4982,13 +4981,14 @@
 									"script": {
 										"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 										"exec": [
-											"   var uuid = require('uuid');",
-											"   var generatedUUID = uuid.v4();",
-											"   pm.environment.set('quoteId', generatedUUID);",
-											"   generatedUUID = uuid.v4();",
-											"   pm.environment.set('transactionId', generatedUUID);",
+											"var uuid = require('uuid');",
+											"var generatedUUID = uuid.v4();",
 											"",
-											"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
+											"pm.environment.set('quoteId', generatedUUID);",
+											"generatedUUID = uuid.v4();",
+											"pm.environment.set('transactionId', generatedUUID);",
+											"pm.environment.set('quoteDate', (new Date()).toUTCString());",
+											"pm.environment.set('transferAmount', 60.11);",
 											""
 										],
 										"type": "text/javascript"
@@ -5062,16 +5062,10 @@
 											"                pm.expect(headers['accept']).to.eql(undefined);",
 											"            });",
 											"            ",
-											"            ",
-											"            ",
 											"            //Validate protected header inside Signature",
 											"            var {signature,protectedHeader} = JSON.parse(headers['fspiop-signature'])",
 											"            var decodedProtectedHeaders = JSON.parse(atob(protectedHeader))",
 											"            console.log('decodedProtectedHeaders:',decodedProtectedHeaders)",
-											"            ",
-											"            // pm.test(\"FSPIOP-Signature signature is returned\", function () {",
-											"            //     pm.expect(signature).to.eql(pm.environment.get(\"payeefsp-signature\"));",
-											"            // });",
 											"            ",
 											"            pm.test(\"FSPIOP-Signature Protected Header alg to be RS256\", function () {",
 											"                pm.expect(decodedProtectedHeaders['alg']).to.eql('RS256');",
@@ -5180,7 +5174,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{payerMSISDN}}\",\n      \"fspId\": \"payerfsp\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"payeefsp\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"60.11\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+									"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{payerMSISDN}}\",\n      \"fspId\": \"payerfsp\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"payeefsp\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
@@ -5255,7 +5249,7 @@
 											"                   pm.expect(jsonData.payeeFsp).to.eql(pm.environment.get(\"payeefsp\"));",
 											"                });",
 											"                pm.test(\"payeefsp data should have the same amount as request\", function () {",
-											"                   pm.expect(jsonData.amount.amount).to.eql('1.11');",
+											"                   pm.expect(+jsonData.amount.amount).to.eql(pm.environment.get(\"transferAmount\"));",
 											"                });",
 											"                pm.test(\"payeefsp data should have the same currency as request\", function () {",
 											"                   pm.expect(jsonData.amount.currency).to.eql(pm.environment.get(\"currency\"));",
@@ -5301,11 +5295,6 @@
 											"                pm.expect(headers['accept']).to.eql(undefined);",
 											"            });",
 											"            ",
-											"            // pm.test(\"fspiop-signature is returned\", function () {",
-											"            //     pm.expect(headers['fspiop-signature']).to.eql(pm.environment.get(\"payeefsp_fspiop_signature\"));",
-											"            // });",
-											"           ",
-											"            ",
 											"            pm.test(\"payerfsp fspiop-uri includes transfers\", function () {",
 											"                pm.expect(headers['fspiop-uri']).to.include('/transfers');",
 											"            });",
@@ -5343,11 +5332,11 @@
 										"exec": [
 											"var uuid = require('uuid');",
 											"var generatedUUID = uuid.v4();",
+											"",
 											"pm.environment.set('transfer_ID', generatedUUID);",
-											"",
 											"pm.environment.set('transferDate', (new Date()).toUTCString());",
-											"",
-											"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))"
+											"pm.environment.set('transferExpiration', new Date(new Date().getTime() + 600000));",
+											"pm.environment.set('transferAmount', 1.11);"
 										],
 										"type": "text/javascript"
 									}
@@ -5394,7 +5383,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"1.11\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+									"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -5409,7 +5398,6 @@
 							"response": []
 						}
 					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -5648,13 +5636,14 @@
 									"script": {
 										"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 										"exec": [
-											"   var uuid = require('uuid');",
-											"   var generatedUUID = uuid.v4();",
-											"   pm.environment.set('quoteId', generatedUUID);",
-											"   generatedUUID = uuid.v4();",
-											"   pm.environment.set('transactionId', generatedUUID);",
+											"var uuid = require('uuid');",
+											"var generatedUUID = uuid.v4();",
 											"",
-											"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
+											"pm.environment.set('quoteId', generatedUUID);",
+											"generatedUUID = uuid.v4();",
+											"pm.environment.set('transactionId', generatedUUID);",
+											"pm.environment.set('quoteDate', (new Date()).toUTCString());",
+											"pm.environment.set('transferAmount', 60);",
 											""
 										],
 										"type": "text/javascript"
@@ -5800,7 +5789,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"payerfsp\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"payeefsp\"\n    }\n  },\n  \"amountType\": \"RECEIVE\",\n  \"amount\": {\n    \"amount\": \"60\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+									"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"payerfsp\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"payeefsp\"\n    }\n  },\n  \"amountType\": \"RECEIVE\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
@@ -5875,7 +5864,7 @@
 											"                   pm.expect(jsonData.payeeFsp).to.eql(pm.environment.get(\"payeefsp\"));",
 											"                });",
 											"                pm.test(\"payeefsp data should have the same amount as request\", function () {",
-											"                   pm.expect(jsonData.amount.amount).to.eql('1');",
+											"                   pm.expect(+jsonData.amount.amount).to.eql(pm.environment.get(\"transferAmount\"));",
 											"                });",
 											"                pm.test(\"payeefsp data should have the same currency as request\", function () {",
 											"                   pm.expect(jsonData.amount.currency).to.eql(pm.environment.get(\"currency\"));",
@@ -5963,11 +5952,11 @@
 										"exec": [
 											"var uuid = require('uuid');",
 											"var generatedUUID = uuid.v4();",
+											"",
 											"pm.environment.set('transfer_ID', generatedUUID);",
-											"",
 											"pm.environment.set('transferDate', (new Date()).toUTCString());",
-											"",
-											"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))"
+											"pm.environment.set('transferExpiration', new Date(new Date().getTime() + 600000));",
+											"pm.environment.set('transferAmount', 1);"
 										],
 										"type": "text/javascript"
 									}
@@ -6014,7 +6003,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"1\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+									"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -6051,7 +6040,6 @@
 							}
 						}
 					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
 			],
@@ -6077,8 +6065,7 @@
 						]
 					}
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "block_transfer ( p>ndc )",
@@ -6261,16 +6248,14 @@
 							"script": {
 								"id": "87b53856-d305-4f6e-8fd5-3a5243ae8e4a",
 								"exec": [
+									"var uuid = require('uuid');",
+									"var generatedUUID = uuid.v4();",
+									"   ",
+									"pm.environment.set('quoteId', generatedUUID);",
+									"pm.environment.set('quoteDate', (new Date()).toUTCString());",
 									"",
-									"   var uuid = require('uuid');",
-									"   var generatedUUID = uuid.v4();",
-									"   pm.environment.set('quoteId', generatedUUID);",
-									"",
-									"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
-									"",
-									"",
-									"var amount = Number(pm.variables.get(\"payerNDC\"))-Number( pm.variables.get(\"payerfspPositionBeforeTransfer\"))+100",
-									"pm.environment.set('transferAmount',amount)"
+									"var amount = Number(pm.variables.get(\"payerNDC\")) - Number( pm.variables.get(\"payerfspPositionBeforeTransfer\")) + 100",
+									"pm.environment.set('transferAmount', amount)"
 								],
 								"type": "text/javascript"
 							}
@@ -6283,11 +6268,6 @@
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
 									"});",
-									"",
-									"// pm.test(\"Check that Content-Type is present\", function () {",
-									"//     pm.response.to.have.header(\"Content-Type\");",
-									"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.quotes+json;version=1.0\");",
-									"// });",
 									"",
 									"",
 									"setTimeout(function () {",
@@ -6346,7 +6326,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"USD\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+							"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 						},
 						"url": {
 							"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
@@ -6369,16 +6349,15 @@
 							"script": {
 								"id": "373ce4bd-e96f-49df-a8e4-e2bd6e8490ab",
 								"exec": [
-									"",
 									"var uuid = require('uuid');",
 									"var generatedUUID = uuid.v4();",
+									"",
 									"pm.environment.set('transfer_ID', generatedUUID);",
 									"pm.environment.set('transferDate', (new Date()).toUTCString());",
-									"",
 									"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))",
 									"",
-									"var amount = Number(pm.environment.get(\"payerNDC\"))-Number( pm.variables.get(\"payerfspPositionBeforeTransfer\"))+100",
-									"pm.environment.set('transferAmount',amount)"
+									"var amount = Number(pm.environment.get(\"payerNDC\")) - Number( pm.variables.get(\"payerfspPositionBeforeTransfer\")) + 100",
+									"pm.environment.set('transferAmount', amount)"
 								],
 								"type": "text/javascript"
 							}
@@ -6392,10 +6371,6 @@
 									"    pm.response.to.have.status(202);",
 									"});",
 									"",
-									"// pm.test(\"Check that Content-Type is present\", function () {",
-									"//     pm.response.to.have.header(\"Content-Type\");",
-									"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.transfers+json;version=1.0\");",
-									"// });",
 									"",
 									"setTimeout(function () {",
 									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/correlationid/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
@@ -6499,7 +6474,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"USD\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+							"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
 						},
 						"url": {
 							"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -6615,8 +6590,7 @@
 						]
 					}
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "funds_in",
@@ -6898,8 +6872,7 @@
 						]
 					}
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "funds_out",
@@ -6917,9 +6890,9 @@
 										"exec": [
 											"var uuid = require('uuid');",
 											"var generatedUUID = uuid.v4();",
+											"",
 											"pm.environment.set('fundsOutPrepareReserveTransferId', generatedUUID);",
 											"pm.environment.set('fundsOutPrepareReserveAmount', 1000);",
-											"",
 											"",
 											"const payerfspGetStatusRequest = {",
 											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"payerfsp\")+'/accounts',",
@@ -6930,6 +6903,7 @@
 											"      \"Content-Type\": \"application/json\"",
 											"  }",
 											"};",
+											"",
 											"pm.sendRequest(payerfspGetStatusRequest, function (err, response) {",
 											"    console.log(response.json())",
 											"    var jsonData = response.json()",
@@ -7017,7 +6991,7 @@
 											"                hubReconAccountBalanceAfterFundsOutPrepare = jsonData[i].value",
 											"            }",
 											"        }",
-											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsOutPrepare\")//-pm.environment.get(\"fundsOutPrepareReserveAmount\")",
+											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsOutPrepare\")",
 											"        pm.test(\"Final Hub Reconciliation Account Balance should stay the same in prepare phase\", function () {",
 											"            pm.expect(hubReconAccountBalanceAfterFundsOutPrepare).to.eql(hubExpectedBalance);",
 											"          });  ",
@@ -7415,7 +7389,6 @@
 							"response": []
 						}
 					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -7431,9 +7404,9 @@
 										"exec": [
 											"var uuid = require('uuid');",
 											"var generatedUUID = uuid.v4();",
+											"",
 											"pm.environment.set('fundsOutPrepareReserveTransferId', generatedUUID);",
 											"pm.environment.set('fundsOutPrepareReserveAmount', 1000);",
-											"",
 											"",
 											"const payerfspGetStatusRequest = {",
 											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"payerfsp\")+'/accounts',",
@@ -7444,6 +7417,7 @@
 											"      \"Content-Type\": \"application/json\"",
 											"  }",
 											"};",
+											"",
 											"pm.sendRequest(payerfspGetStatusRequest, function (err, response) {",
 											"    console.log(response.json())",
 											"    var jsonData = response.json()",
@@ -7930,7 +7904,6 @@
 							"response": []
 						}
 					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
 			],
@@ -7956,8 +7929,7 @@
 						]
 					}
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "settlement_management",
@@ -8224,7 +8196,6 @@
 											"response": []
 										}
 									],
-									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -8357,11 +8328,12 @@
 														"exec": [
 															"   var uuid = require('uuid');",
 															"   var generatedUUID = uuid.v4();",
+															"   ",
 															"   pm.environment.set('quoteId', generatedUUID);",
 															"   generatedUUID = uuid.v4();",
 															"   pm.environment.set('transactionId', generatedUUID);",
-															"",
 															"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
+															"   pm.environment.set('transferAmount', 60);",
 															""
 														],
 														"type": "text/javascript"
@@ -8416,7 +8388,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp1\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp2\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"60\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp1\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp2\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
@@ -8440,11 +8412,11 @@
 														"exec": [
 															"var uuid = require('uuid');",
 															"var generatedUUID = uuid.v4();",
+															"",
 															"pm.environment.set('transfer_ID', generatedUUID);",
-															"",
 															"pm.environment.set('transferDate', (new Date()).toUTCString());",
-															"",
-															"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 120000))"
+															"pm.environment.set('transferExpiration', new Date(new Date().getTime() + 120000))",
+															"pm.environment.set('transferAmount', 60);"
 														],
 														"type": "text/javascript"
 													}
@@ -8457,11 +8429,6 @@
 															"pm.test(\"Status code is 202\", function () {",
 															"    pm.response.to.have.status(202);",
 															"});",
-															"",
-															"// pm.test(\"Check that Content-Type is present\", function () {",
-															"//     pm.response.to.have.header(\"Content-Type\");",
-															"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.transfers+json;version=1.0\");",
-															"// });",
 															"",
 															"setTimeout(function () {",
 															"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/testfsp1/correlationid/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
@@ -8525,7 +8492,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"testfsp1\",\n  \"payeeFsp\": \"testfsp2\",\n  \"amount\": {\n    \"amount\": \"60\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"testfsp1\",\n  \"payeeFsp\": \"testfsp2\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -8547,14 +8514,14 @@
 													"script": {
 														"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 														"exec": [
-															"   var uuid = require('uuid');",
-															"   var generatedUUID = uuid.v4();",
-															"   pm.environment.set('quoteId', generatedUUID);",
-															"   generatedUUID = uuid.v4();",
-															"   pm.environment.set('transactionId', generatedUUID);",
+															"var uuid = require('uuid');",
+															"var generatedUUID = uuid.v4();",
 															"",
-															"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
-															""
+															"pm.environment.set('quoteId', generatedUUID);",
+															"generatedUUID = uuid.v4();",
+															"pm.environment.set('transactionId', generatedUUID);",
+															"pm.environment.set('quoteDate', (new Date()).toUTCString());",
+															"pm.environment.set('transferAmount', 55.12);"
 														],
 														"type": "text/javascript"
 													}
@@ -8637,7 +8604,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp1\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp4\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"55.12\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp1\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp4\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
@@ -8661,11 +8628,11 @@
 														"exec": [
 															"var uuid = require('uuid');",
 															"var generatedUUID = uuid.v4();",
+															"",
 															"pm.environment.set('transfer_ID', generatedUUID);",
-															"",
 															"pm.environment.set('transferDate', (new Date()).toUTCString());",
-															"",
-															"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 120000))"
+															"pm.environment.set('transferExpiration', new Date(new Date().getTime() + 120000));",
+															"pm.environment.set('transferAmount', 55.99);"
 														],
 														"type": "text/javascript"
 													}
@@ -8740,7 +8707,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"testfsp1\",\n  \"payeeFsp\": \"testfsp4\",\n  \"amount\": {\n    \"amount\": \"55.99\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"testfsp1\",\n  \"payeeFsp\": \"testfsp4\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -8762,13 +8729,14 @@
 													"script": {
 														"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 														"exec": [
-															"   var uuid = require('uuid');",
-															"   var generatedUUID = uuid.v4();",
-															"   pm.environment.set('quoteId', generatedUUID);",
-															"   generatedUUID = uuid.v4();",
-															"   pm.environment.set('transactionId', generatedUUID);",
+															"var uuid = require('uuid');",
+															"var generatedUUID = uuid.v4();",
 															"",
-															"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
+															"pm.environment.set('quoteId', generatedUUID);",
+															"generatedUUID = uuid.v4();",
+															"pm.environment.set('transactionId', generatedUUID);",
+															"pm.environment.set('quoteDate', (new Date()).toUTCString());",
+															"pm.environment.set('transferAmount', 35.1);",
 															""
 														],
 														"type": "text/javascript"
@@ -8852,7 +8820,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp3\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp1\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"35.1\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp3\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp1\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
@@ -8886,7 +8854,8 @@
 															"   pm.environment.set('transferDate', (new Date()).toUTCString());",
 															"}",
 															"",
-															"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))"
+															"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))",
+															"pm.environment.set('transferAmount', 35.9);"
 														],
 														"type": "text/javascript"
 													}
@@ -8967,7 +8936,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"testfsp3\",\n  \"payeeFsp\": \"testfsp1\",\n  \"amount\": {\n    \"amount\": \"35.9\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"testfsp3\",\n  \"payeeFsp\": \"testfsp1\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -8991,11 +8960,12 @@
 														"exec": [
 															"   var uuid = require('uuid');",
 															"   var generatedUUID = uuid.v4();",
+															"   ",
 															"   pm.environment.set('quoteId', generatedUUID);",
 															"   generatedUUID = uuid.v4();",
 															"   pm.environment.set('transactionId', generatedUUID);",
-															"",
 															"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
+															"   pm.environment.set('transferAmount', 20.11);",
 															""
 														],
 														"type": "text/javascript"
@@ -9079,7 +9049,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp2\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp3\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"20.11\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp2\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp3\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
@@ -9113,7 +9083,8 @@
 															"   pm.environment.set('transferDate', (new Date()).toUTCString());",
 															"}",
 															"",
-															"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 120000))"
+															"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 120000))",
+															"pm.environment.set(\"transferAmount\", 20.32);"
 														],
 														"type": "text/javascript"
 													}
@@ -9194,7 +9165,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"testfsp2\",\n  \"payeeFsp\": \"testfsp3\",\n  \"amount\": {\n    \"amount\": \"20.32\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"testfsp2\",\n  \"payeeFsp\": \"testfsp3\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -9216,13 +9187,14 @@
 													"script": {
 														"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 														"exec": [
-															"   var uuid = require('uuid');",
-															"   var generatedUUID = uuid.v4();",
-															"   pm.environment.set('quoteId', generatedUUID);",
-															"   generatedUUID = uuid.v4();",
-															"   pm.environment.set('transactionId', generatedUUID);",
+															"var uuid = require('uuid');",
+															"var generatedUUID = uuid.v4();",
 															"",
-															"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
+															"pm.environment.set('quoteId', generatedUUID);",
+															"generatedUUID = uuid.v4();",
+															"pm.environment.set('transactionId', generatedUUID);",
+															"pm.environment.set('quoteDate', (new Date()).toUTCString());",
+															"pm.environment.set('transferAmount', 35.124);",
 															""
 														],
 														"type": "text/javascript"
@@ -9306,7 +9278,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp4\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp2\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"35.124\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp4\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp2\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
@@ -9340,7 +9312,8 @@
 															"   pm.environment.set('transferDate', (new Date()).toUTCString());",
 															"}",
 															"",
-															"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 120000))"
+															"pm.environment.set('transferExpiration', new Date(new Date().getTime() + 120000));",
+															"pm.environment.set('transferAmount', 35.987);"
 														],
 														"type": "text/javascript"
 													}
@@ -9421,7 +9394,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"testfsp4\",\n  \"payeeFsp\": \"testfsp2\",\n  \"amount\": {\n    \"amount\": \"35.987\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"testfsp4\",\n  \"payeeFsp\": \"testfsp2\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -9443,13 +9416,14 @@
 													"script": {
 														"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 														"exec": [
-															"   var uuid = require('uuid');",
-															"   var generatedUUID = uuid.v4();",
-															"   pm.environment.set('quoteId', generatedUUID);",
-															"   generatedUUID = uuid.v4();",
-															"   pm.environment.set('transactionId', generatedUUID);",
+															"var uuid = require('uuid');",
+															"var generatedUUID = uuid.v4();",
 															"",
-															"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
+															"pm.environment.set('quoteId', generatedUUID);",
+															"generatedUUID = uuid.v4();",
+															"pm.environment.set('transactionId', generatedUUID);",
+															"pm.environment.set('quoteDate', (new Date()).toUTCString());",
+															"pm.environment.set('transferAmount', 25.1234);",
 															""
 														],
 														"type": "text/javascript"
@@ -9531,7 +9505,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp4\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp3\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"25.1234\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp4\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp3\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
@@ -9565,7 +9539,8 @@
 															"   pm.environment.set('transferDate', (new Date()).toUTCString());",
 															"}",
 															"",
-															"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 120000))"
+															"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 120000));",
+															"pm.environment.set('transferAmount', 25.7657);"
 														],
 														"type": "text/javascript"
 													}
@@ -9646,7 +9621,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"testfsp4\",\n  \"payeeFsp\": \"testfsp3\",\n  \"amount\": {\n    \"amount\": \"25.7657\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"testfsp4\",\n  \"payeeFsp\": \"testfsp3\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -9661,7 +9636,6 @@
 											"response": []
 										}
 									],
-									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -9859,7 +9833,6 @@
 											"response": []
 										}
 									],
-									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -10118,11 +10091,9 @@
 											"response": []
 										}
 									],
-									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								}
 							],
-							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -10487,7 +10458,6 @@
 									"response": []
 								}
 							],
-							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -10852,7 +10822,6 @@
 									"response": []
 								}
 							],
-							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -11216,7 +11185,6 @@
 									"response": []
 								}
 							],
-							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -11625,11 +11593,9 @@
 									"response": []
 								}
 							],
-							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						}
 					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
 			],
@@ -11655,8 +11621,7 @@
 						]
 					}
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "transfer_negative_scenarios",
@@ -11804,13 +11769,13 @@
 									"script": {
 										"id": "16b4580d-74c7-44e9-952e-d40a61f9cb69",
 										"exec": [
-											"",
 											"var uuid = require('uuid');",
 											"var generatedUUID = uuid.v4();",
+											"",
 											"pm.environment.set('transfer_ID', generatedUUID);",
 											"pm.environment.set('transferDate', (new Date()).toUTCString());",
-											"",
-											"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))"
+											"pm.environment.set('transferExpiration', new Date(new Date().getTime() + 600000));",
+											"pm.environment.set('transferAmount', 99);"
 										],
 										"type": "text/javascript"
 									}
@@ -11869,7 +11834,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"99\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
+									"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -12512,7 +12477,6 @@
 							"response": []
 						}
 					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -12526,13 +12490,14 @@
 									"script": {
 										"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 										"exec": [
-											"   var uuid = require('uuid');",
-											"   var generatedUUID = uuid.v4();",
-											"   pm.environment.set('quoteId', generatedUUID);",
-											"   generatedUUID = uuid.v4();",
-											"   pm.environment.set('transactionId', generatedUUID);",
+											"var uuid = require('uuid');",
+											"var generatedUUID = uuid.v4();",
 											"",
-											"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
+											"pm.environment.set('quoteId', generatedUUID);",
+											"generatedUUID = uuid.v4();",
+											"pm.environment.set('transactionId', generatedUUID);",
+											"pm.environment.set('quoteDate', (new Date()).toUTCString());",
+											"pm.environment.set('transferAmount', 100);",
 											""
 										],
 										"type": "text/javascript"
@@ -12616,7 +12581,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"XOF\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+									"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"XOF\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
@@ -12640,6 +12605,7 @@
 										"exec": [
 											"var uuid = require('uuid');",
 											"var generatedUUID = uuid.v4();",
+											"",
 											"pm.environment.set('transfer_ID', generatedUUID);",
 											"",
 											"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
@@ -12647,6 +12613,7 @@
 											"}",
 											"",
 											"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 1200000))",
+											"pm.environment.set(\"transferAmount\", 10);",
 											""
 										],
 										"type": "text/javascript"
@@ -12707,7 +12674,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"10\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
+									"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -13119,7 +13086,6 @@
 							"response": []
 						}
 					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -13206,13 +13172,12 @@
 									"script": {
 										"id": "16b4580d-74c7-44e9-952e-d40a61f9cb69",
 										"exec": [
-											"",
 											"var uuid = require('uuid');",
 											"var generatedUUID = uuid.v4();",
+											"",
 											"pm.environment.set('transfer_ID', generatedUUID);",
 											"pm.environment.set('transferDate', (new Date()).toUTCString());",
-											"//pm.environment.set('transferAmount', 100);",
-											"",
+											"pm.environment.set('transferAmount', 10);",
 											"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 30000))"
 										],
 										"type": "text/javascript"
@@ -13272,7 +13237,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"10\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"nMel-FDPpp3T77jfC11fUXdcy935hy089AJ9v2OTXBI\"\n}"
+									"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"nMel-FDPpp3T77jfC11fUXdcy935hy089AJ9v2OTXBI\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -13776,7 +13741,6 @@
 							}
 						}
 					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
 			],
@@ -13802,8 +13766,7 @@
 						]
 					}
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "duplicate_handling",
@@ -13863,11 +13826,11 @@
 												"exec": [
 													"var uuid = require('uuid');",
 													"var generatedUUID = uuid.v4();",
+													"",
 													"pm.environment.set('transfer_ID', generatedUUID);",
-													"",
 													"pm.environment.set('transferDate', (new Date()).toUTCString());",
-													"",
-													"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))"
+													"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))",
+													"pm.environment.set('transferAmount', 1);"
 												],
 												"type": "text/javascript"
 											}
@@ -13899,7 +13862,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"1\",\n    \"currency\": \"USD\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+											"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"USD\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
 										},
 										"url": {
 											"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -13924,11 +13887,6 @@
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
 													"});",
-													"",
-													"// pm.test(\"Check that Content-Type is present\", function () {",
-													"//     pm.response.to.have.header(\"Content-Type\");",
-													"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.transfers+json;version=1.0\");",
-													"// });",
 													"",
 													"setTimeout(function () {",
 													"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.variables.get(\"transfer_ID\"), function (err, response) {",
@@ -13967,7 +13925,7 @@
 											"script": {
 												"id": "20820c95-0a24-4906-a6ba-708d6ecf4a61",
 												"exec": [
-													""
+													"pm.environment.set('transferAmount', 1)"
 												],
 												"type": "text/javascript"
 											}
@@ -13999,7 +13957,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"1\",\n    \"currency\": \"USD\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+											"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
 										},
 										"url": {
 											"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -14014,7 +13972,6 @@
 									"response": []
 								}
 							],
-							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -14033,10 +13990,10 @@
 														"exec": [
 															"var uuid = require('uuid');",
 															"var generatedUUID = uuid.v4();",
+															"",
 															"pm.environment.set('quoteId', generatedUUID);",
-															"",
-															"",
-															"pm.environment.set('quoteDate', (new Date()).toUTCString());"
+															"pm.environment.set('quoteDate', (new Date()).toUTCString());",
+															"pm.environment.set('transferAmount', 100);"
 														],
 														"type": "text/javascript"
 													}
@@ -14113,7 +14070,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
@@ -14138,10 +14095,10 @@
 															"",
 															"var uuid = require('uuid');",
 															"var generatedUUID = uuid.v4();",
+															"",
 															"pm.environment.set('transfer_ID', generatedUUID);",
 															"pm.environment.set('transferDate', (new Date()).toUTCString());",
 															"pm.environment.set('transferAmount', 100);",
-															"",
 															"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))"
 														],
 														"type": "text/javascript"
@@ -14206,7 +14163,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
+													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -14479,7 +14436,6 @@
 											"response": []
 										}
 									],
-									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -14493,11 +14449,12 @@
 													"script": {
 														"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 														"exec": [
-															"   var uuid = require('uuid');",
-															"   var generatedUUID = uuid.v4();",
-															"   pm.environment.set('quoteId', generatedUUID);",
-															"",
-															"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
+															"var uuid = require('uuid');",
+															"var generatedUUID = uuid.v4();",
+															"   ",
+															"pm.environment.set('quoteId', generatedUUID);",
+															"pm.environment.set('quoteDate', (new Date()).toUTCString());",
+															"pm.environment.set('transferAmount', 100);",
 															""
 														],
 														"type": "text/javascript"
@@ -14576,7 +14533,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
@@ -14601,11 +14558,11 @@
 															"",
 															"var uuid = require('uuid');",
 															"var generatedUUID = uuid.v4();",
+															"",
 															"pm.environment.set('transfer_ID', generatedUUID);",
 															"pm.environment.set('transferDate', (new Date()).toUTCString());",
 															"pm.environment.set('transferAmount', 100);",
-															"",
-															"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))"
+															"pm.environment.set(\"transferExpiration\", new Date(new Date().getTime() + 60000))"
 														],
 														"type": "text/javascript"
 													}
@@ -14669,7 +14626,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
+													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -14941,7 +14898,6 @@
 											"response": []
 										}
 									],
-									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								}
 							],
@@ -14968,7 +14924,6 @@
 									}
 								}
 							],
-							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -14985,11 +14940,12 @@
 													"script": {
 														"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 														"exec": [
-															"   var uuid = require('uuid');",
-															"   var generatedUUID = uuid.v4();",
-															"   pm.environment.set('quoteId', generatedUUID);",
+															"var uuid = require('uuid');",
+															"var generatedUUID = uuid.v4();",
 															"",
-															"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
+															"pm.environment.set('quoteId', generatedUUID);",
+															"pm.environment.set('quoteDate', (new Date()).toUTCString());",
+															"pm.environment.set('transferAmount', 100);",
 															""
 														],
 														"type": "text/javascript"
@@ -15068,7 +15024,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
@@ -15093,10 +15049,10 @@
 															"",
 															"var uuid = require('uuid');",
 															"var generatedUUID = uuid.v4();",
+															"",
 															"pm.environment.set('transfer_ID', generatedUUID);",
 															"pm.environment.set('transferDate', (new Date()).toUTCString());",
 															"pm.environment.set('transferAmount', 100);",
-															"",
 															"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 120000))"
 														],
 														"type": "text/javascript"
@@ -15161,7 +15117,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
+													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -15436,7 +15392,6 @@
 											"response": []
 										}
 									],
-									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								},
 								{
@@ -15452,9 +15407,10 @@
 														"exec": [
 															"   var uuid = require('uuid');",
 															"   var generatedUUID = uuid.v4();",
+															"   ",
 															"   pm.environment.set('quoteId', generatedUUID);",
-															"",
-															"   pm.environment.set('quoteDate', (new Date()).toUTCString());"
+															"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
+															"   pm.environment.set('transferAmount', 100);"
 														],
 														"type": "text/javascript"
 													}
@@ -15532,7 +15488,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+													"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
@@ -15554,14 +15510,13 @@
 													"script": {
 														"id": "16b4580d-74c7-44e9-952e-d40a61f9cb69",
 														"exec": [
-															"",
 															"var uuid = require('uuid');",
 															"var generatedUUID = uuid.v4();",
+															"",
 															"pm.environment.set('transfer_ID', generatedUUID);",
 															"pm.environment.set('transferDate', (new Date()).toUTCString());",
 															"pm.environment.set('transferAmount', 100);",
-															"",
-															"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 120000))"
+															"pm.environment.set(\"transferExpiration\", new Date(new Date().getTime() + 120000))"
 														],
 														"type": "text/javascript"
 													}
@@ -15625,7 +15580,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
+													"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
 												},
 												"url": {
 													"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -15899,7 +15854,6 @@
 											"response": []
 										}
 									],
-									"protocolProfileBehavior": {},
 									"_postman_isSubFolder": true
 								}
 							],
@@ -15926,11 +15880,9 @@
 									}
 								}
 							],
-							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						}
 					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
 			],
@@ -15956,8 +15908,7 @@
 						]
 					}
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "participant_inactive_stop_transfers",
@@ -16070,11 +16021,12 @@
 								"exec": [
 									"var uuid = require('uuid');",
 									"var generatedUUID = uuid.v4();",
+									"",
 									"pm.environment.set('quoteId', generatedUUID);",
 									"generatedUUID = uuid.v4();",
 									"pm.environment.set('transactionId', generatedUUID);",
-									"",
-									"pm.environment.set('quoteDate', (new Date()).toUTCString());"
+									"pm.environment.set('quoteDate', (new Date()).toUTCString());",
+									"pm.environment.set('transferAmount', 100);"
 								],
 								"type": "text/javascript"
 							}
@@ -16148,7 +16100,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"USD\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+							"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"USD\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 						},
 						"url": {
 							"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
@@ -16409,11 +16361,12 @@
 							"script": {
 								"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 								"exec": [
-									"   var uuid = require('uuid');",
-									"   var generatedUUID = uuid.v4();",
-									"   pm.environment.set('quoteId', generatedUUID);",
+									"var uuid = require('uuid');",
+									"var generatedUUID = uuid.v4();",
 									"",
-									"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
+									"pm.environment.set('quoteId', generatedUUID);",
+									"pm.environment.set('quoteDate', (new Date()).toUTCString());",
+									"pm.environment.set('transferAmount', 100);",
 									"   "
 								],
 								"type": "text/javascript"
@@ -16492,7 +16445,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"100\",\n    \"currency\": \"USD\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+							"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{quoteId}}\",\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{receiverMSISDN}}\",\n      \"fspId\": \"{{payeefsp}}\"\n    }\n  },\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"27713803905\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"USD\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 						},
 						"url": {
 							"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
@@ -16567,7 +16520,7 @@
 									"                   pm.expect(jsonData.payeeFsp).to.eql(pm.environment.get(\"payeefsp\"));",
 									"                });",
 									"                pm.test(\"payeefsp data should have the same amount as request\", function () {",
-									"                   pm.expect(jsonData.amount.amount).to.eql('1');",
+									"                   pm.expect(+jsonData.amount.amount).to.eql(pm.environment.get(\"transferAmount\"));",
 									"                });",
 									"                pm.test(\"payeefsp data should have the same currency as request\", function () {",
 									"                   pm.expect(jsonData.amount.currency).to.eql(pm.environment.get(\"currency\"));",
@@ -16613,11 +16566,6 @@
 									"                pm.expect(headers['accept']).to.eql(undefined);",
 									"            });",
 									"            ",
-									"            //pm.test(\"fspiop-signature is returned\", function () {",
-									"            //    pm.expect(headers['fspiop-signature']).to.eql(pm.environment.get(\"payeefsp_fspiop_signature\"));",
-									"            //});",
-									"           ",
-									"            ",
 									"            pm.test(\"payerfsp fspiop-uri includes transfers\", function () {",
 									"                pm.expect(headers['fspiop-uri']).to.include('/transfers');",
 									"            });",
@@ -16655,11 +16603,12 @@
 								"exec": [
 									"var uuid = require('uuid');",
 									"var generatedUUID = uuid.v4();",
+									"",
 									"pm.environment.set('transfer_ID', generatedUUID);",
-									"",
 									"pm.environment.set('transferDate', (new Date()).toUTCString());",
-									"",
-									"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))"
+									"pm.environment.set('transferExpiration', new Date(new Date().getTime() + 60000));",
+									"pm.environment.set('transferAmount', 1);",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -16706,7 +16655,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"1\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+							"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
 						},
 						"url": {
 							"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -16720,8 +16669,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "api_tests",
@@ -17180,8 +17128,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Bug Fixes",
@@ -17380,18 +17327,15 @@
 									"setTimeout(function () {",
 									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
 									"      if(response.responseSize !== 0) {",
-									"            ",
 									"            var jsonData = response.json().data;",
-									"            ",
 									"            pm.test(\"Send Quote Amount in 4 decimal returned\", function () {",
-									"            pm.expect(jsonData.transferAmount.amount).equal(\"60.1234\");",
+									"                pm.expect(+jsonData.transferAmount.amount).equal(pm.environment.get(\"transferAmount\"));",
 									"            });",
 									"            ",
 									"      } else {",
 									"          pm.test(\"Quote FAILED\", function () {",
 									"            throw new Error('Did not receive response');",
 									"           });",
-									"",
 									"      }",
 									"       ",
 									"   });",
@@ -17408,13 +17352,14 @@
 							"script": {
 								"id": "a2b75bc4-ffe4-4a22-8fbf-d806b0f3a2d7",
 								"exec": [
-									"   var uuid = require('uuid');",
-									"   var generatedUUID = uuid.v4();",
-									"   pm.environment.set('quoteId', generatedUUID);",
-									"   generatedUUID = uuid.v4();",
-									"   pm.environment.set('transactionId', generatedUUID);",
+									"var uuid = require('uuid');",
+									"var generatedUUID = uuid.v4();",
 									"",
-									"   pm.environment.set('quoteDate', (new Date()).toUTCString());",
+									"pm.environment.set('quoteId', generatedUUID);",
+									"generatedUUID = uuid.v4();",
+									"pm.environment.set('transactionId', generatedUUID);",
+									"pm.environment.set('transferAmount', 60.1234);",
+									"pm.environment.set('quoteDate', (new Date()).toUTCString());",
 									""
 								],
 								"type": "text/javascript"
@@ -17462,7 +17407,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{payerMSISDN}}\",\n      \"fspId\": \"payerfsp\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"payeefsp\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"60.1234\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+							"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{payerMSISDN}}\",\n      \"fspId\": \"payerfsp\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"payeefsp\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 						},
 						"url": {
 							"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
@@ -17492,21 +17437,15 @@
 									"setTimeout(function () {",
 									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payeefsp/requests/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
 									"          if(response.responseSize !== 0) {",
-									"                ",
-									"                ",
-									"                //Check the data",
 									"                var jsonData = response.json().data;",
-									"",
 									"                pm.test(\"payeefsp data should have the same amount as request and 4 decimal checked\", function () {",
-									"                   pm.expect(jsonData.amount.amount).to.eql('1.9999');",
+									"                   pm.expect(+jsonData.amount.amount).to.eql(pm.environment.get(\"transferAmount\"));",
 									"                });",
-									"",
 									"                ",
 									"          } else {",
 									"              pm.test(\"Transfer FAILED\", function () {",
 									"                throw new Error('Did not receive response');",
 									"              });",
-									"",
 									"          }",
 									"   });",
 									"}, 1100)",
@@ -17526,11 +17465,11 @@
 								"exec": [
 									"var uuid = require('uuid');",
 									"var generatedUUID = uuid.v4();",
+									"",
 									"pm.environment.set('transfer_ID', generatedUUID);",
-									"",
 									"pm.environment.set('transferDate', (new Date()).toUTCString());",
-									"",
-									"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))"
+									"pm.environment.set('transferExpiration',new Date(new Date().getTime() + 600000));",
+									"pm.environment.set('transferAmount', 1.9999);"
 								],
 								"type": "text/javascript"
 							}
@@ -17577,7 +17516,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"1.9999\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+							"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
 						},
 						"url": {
 							"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -17640,12 +17579,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"payer10\",\n  \"currency\": \"A#\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							"raw": "{\n  \"name\": \"payer10\",\n  \"currency\": \"A#\"\n}"
 						},
 						"url": {
 							"raw": "{{HOST_CENTRAL_LEDGER}}/participants",
@@ -17752,11 +17686,11 @@
 								"exec": [
 									"var uuid = require('uuid');",
 									"var generatedUUID = uuid.v4();",
+									"",
 									"pm.environment.set('transfer_ID', generatedUUID);",
-									"",
 									"pm.environment.set('transferDate', (new Date()).toUTCString());",
-									"",
-									"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))"
+									"pm.environment.set('transferExpiration', new Date(new Date().getTime() + 600000));",
+									"pm.environment.set('transferAmount', 1.11);"
 								],
 								"type": "text/javascript"
 							}
@@ -17803,7 +17737,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payerFsp1\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"1.11\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+							"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payerFsp1\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
 						},
 						"url": {
 							"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -17849,11 +17783,11 @@
 								"exec": [
 									"var uuid = require('uuid');",
 									"var generatedUUID = uuid.v4();",
+									"",
 									"pm.environment.set('transfer_ID', generatedUUID);",
-									"",
 									"pm.environment.set('transferDate', (new Date()).toUTCString());",
-									"",
-									"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))"
+									"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000));",
+									"pm.environment.set(\"transderAmount\", 1.11);"
 								],
 								"type": "text/javascript"
 							}
@@ -17900,7 +17834,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"transferId\": \"{{transfer_ID}}+1\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"1.11\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+							"raw": "{\n  \"transferId\": \"{{transfer_ID}}+1\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
 						},
 						"url": {
 							"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -17946,11 +17880,11 @@
 								"exec": [
 									"var uuid = require('uuid');",
 									"var generatedUUID = uuid.v4();",
+									"",
 									"pm.environment.set('transfer_ID', generatedUUID);",
-									"",
 									"pm.environment.set('transferDate', (new Date()).toUTCString());",
-									"",
-									"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))"
+									"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000));",
+									"pm.environment.set('transferAmount', 1.11);"
 								],
 								"type": "text/javascript"
 							}
@@ -17997,7 +17931,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \n  \"amount\": {\n    \"amount\": \"1.11\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+							"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
 						},
 						"url": {
 							"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -18077,11 +18011,11 @@
 								"exec": [
 									"var uuid = require('uuid');",
 									"var generatedUUID = uuid.v4();",
+									"",
 									"pm.environment.set('transfer_ID', generatedUUID);",
-									"",
 									"pm.environment.set('transferDate', (new Date()).toUTCString());",
-									"",
-									"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))"
+									"pm.environment.set('transferExpiration', new Date(new Date().getTime() + 600000));",
+									"pm.environment.set('transferAmount', 1.11);"
 								],
 								"type": "text/javascript"
 							}
@@ -18128,7 +18062,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"1.11\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+							"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
 						},
 						"url": {
 							"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
@@ -18217,9 +18151,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
