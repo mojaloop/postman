@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "0ab9186e-c6e0-447d-bb94-8cee7cdb7179",
+		"_postman_id": "30dd970c-f120-43f5-b7ab-aa4704f91029",
 		"name": "OSS-New-Deployment-FSP-Setup",
 		"description": "Author: Sridevi Miriyala\nPurpose: Used to add new FSP and relevant Callback Information",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -5057,7 +5057,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/transfers/{{transferId}}\"\n}"
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/noresponsepayeefsp/transfers/{{transferId}}\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/noresponsepayeefsp/endpoints",
@@ -5101,7 +5101,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/transfers/{{transferId}}/error\"\n}"
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/noresponsepayeefsp/transfers/{{transferId}}/error\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/noresponsepayeefsp/endpoints",
