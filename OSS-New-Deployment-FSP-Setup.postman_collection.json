@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "fa9b610c-70eb-4d5c-9640-dbab4af45ec6",
+		"_postman_id": "30dd970c-f120-43f5-b7ab-aa4704f91029",
 		"name": "OSS-New-Deployment-FSP-Setup",
 		"description": "Author: Sridevi Miriyala\nPurpose: Used to add new FSP and relevant Callback Information",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -5057,7 +5057,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/transfers/{{transferId}}\"\n}"
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/noresponsepayeefsp/transfers/{{transferId}}\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/noresponsepayeefsp/endpoints",
@@ -5101,7 +5101,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/transfers/{{transferId}}/error\"\n}"
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/noresponsepayeefsp/transfers/{{transferId}}/error\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/noresponsepayeefsp/endpoints",
@@ -6318,8 +6318,13 @@
 						"method": "POST",
 						"header": [
 							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.participants+json;version=1",
+								"type": "text"
+							},
+							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/vnd.interoperability.participants+json;version=1.0"
 							},
 							{
 								"key": "Date",
@@ -6382,8 +6387,13 @@
 						"method": "POST",
 						"header": [
 							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.participants+json;version=1",
+								"type": "text"
+							},
+							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/vnd.interoperability.participants+json;version=1.0"
 							},
 							{
 								"key": "Date",
@@ -6446,8 +6456,13 @@
 						"method": "POST",
 						"header": [
 							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.participants+json;version=1",
+								"type": "text"
+							},
+							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/vnd.interoperability.participants+json;version=1.0"
 							},
 							{
 								"key": "Date",
@@ -6510,8 +6525,13 @@
 						"method": "POST",
 						"header": [
 							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.participants+json;version=1",
+								"type": "text"
+							},
+							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/vnd.interoperability.participants+json;version=1.0"
 							},
 							{
 								"key": "Date",
@@ -6574,8 +6594,13 @@
 						"method": "POST",
 						"header": [
 							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.participants+json;version=1",
+								"type": "text"
+							},
+							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/vnd.interoperability.participants+json;version=1.0"
 							},
 							{
 								"key": "Date",
@@ -6638,8 +6663,13 @@
 						"method": "POST",
 						"header": [
 							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.participants+json;version=1",
+								"type": "text"
+							},
+							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/vnd.interoperability.participants+json;version=1.0"
 							},
 							{
 								"key": "Date",
@@ -6702,8 +6732,13 @@
 						"method": "POST",
 						"header": [
 							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.participants+json;version=1",
+								"type": "text"
+							},
+							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/vnd.interoperability.participants+json;version=1.0"
 							},
 							{
 								"key": "Date",
