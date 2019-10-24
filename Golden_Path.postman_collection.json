@@ -1,7 +1,8 @@
 {
 	"info": {
-		"_postman_id": "e2410119-9633-49ca-a0ce-3d140caaaeef",
+		"_postman_id": "86c682cb-b9f1-4beb-891e-cd62940a677b",
 		"name": "Golden_Path",
+		"description": "Purpose: To setup a newly deployed Mojaloop Switch and add test FSPs along with their callback and other Information needed for end-to-end testing.\n\nContributors:\n- Mowali\n- Amar Ramachandran <amarnath.ramachandran@modusbox.com>\n- Georgi Georgiev <georgi.georgiev@modusbox.com>\n- Juan Correa <juan.correa@modusbox.com>\n- Miguel deBarros <miguel.debarros@modusbox.com>\n- Nico Duvenage <nico.duvenage@modusbox.com>\n- Sam Kummary <sam@modusbox.com>\n- Sri Miryala <sridevi.miriyala@modusbox.com>\n- Steven Oderayi <steven.oderayi@modusbox.com>\n- valentin genev <valentin.genev@modusbox.com>\n- Vijay Guthi <vijaya.guthi@modusbox.com>",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -8725,7 +8726,44 @@
 											"    pm.response.to.have.status(202);",
 											"});",
 											"",
-											"",
+											"// setTimeout(() => {",
+											"//     pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.variables.get(\"transfer_ID\"), function (err, response) {",
+											"//         pm.test('Status code is 200', function () {",
+											"//           response.to.have.status(200);",
+											"//         });",
+											"        ",
+											"//         const body = response.json();",
+											"        ",
+											"//         pm.test('fspiop-source is switch', function () {",
+											"//             pm.expect(body.headers['fspiop-source']).to.eql('switch');",
+											"//         });",
+											"        ",
+											"//         pm.test('fspiop-destination is payerfsp', function () {",
+											"//             pm.expect(body.headers['fspiop-destination']).to.eql('payerfsp');",
+											"//         });",
+											"        ",
+											"//         pm.test('fspiop-signature is not empty', function () {",
+											"//             pm.expect(body.headers['fspiop-signature'].length).to.be.above(1);",
+											"//         });",
+											"        ",
+											"//         pm.test('accept is empty', function () {",
+											"//             pm.expect(body.headers['accept']).to.eql(undefined);",
+											"//         });",
+											"        ",
+											"//         pm.test('content-type should be application/vnd.interoperability.transfers+json;version=1.0', function () {",
+											"//             pm.expect(body.headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
+											"//         });",
+											"        ",
+											"//         pm.test(`fspiop-uri is /transfers/${pm.environment.get('transfer_ID')}`, function () {",
+											"//             pm.expect(body.headers['fspiop-uri']).to.eql('/transfers/'+pm.environment.get('transfer_ID'));",
+											"//         });",
+											"        ",
+											"//         pm.test('fspiop-http-method is PUT', function () {",
+											"//             pm.expect(body.headers['fspiop-http-method']).to.eql('PUT');",
+											"//         });",
+											"//     });",
+											"    ",
+											"// }, 45000)",
 											"",
 											"",
 											""
@@ -9142,12 +9180,6 @@
 									"script": {
 										"id": "16b4580d-74c7-44e9-952e-d40a61f9cb69",
 										"exec": [
-											"if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
-											"   var uuid = require('uuid');",
-											"   var generatedUUID = uuid.v4();",
-											"   pm.environment.set('transferId', generatedUUID);",
-											"}",
-											"",
 											"if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
 											"   pm.environment.set('transferDate', (new Date()).toUTCString());",
 											"}"
@@ -9160,41 +9192,38 @@
 									"script": {
 										"id": "6c54bbb2-0b33-4301-86ae-751142923a4c",
 										"exec": [
-											"pm.test(\"Status code is 200\", function () {",
+											"pm.test('Status code is 200', function () {",
 											"    pm.response.to.have.status(200);",
 											"});",
 											"",
-											"// pm.test(\"Check that Content-Type is present\", function () {",
-											"//     pm.response.to.have.header(\"Content-Type\");",
-											"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.transfers+json;version=1.0\");",
-											"// });",
+											"const body = pm.response.json();",
 											"",
-											"pm.test(\"fspiop-source is switch\", function () {",
-											"    pm.expect(pm.response.json().headers['fspiop-source']).to.eql('switch');",
+											"pm.test('fspiop-source is switch', function () {",
+											"    pm.expect(body.headers['fspiop-source']).to.eql('switch');",
 											"});",
 											"",
-											"pm.test(\"fspiop-destination is payerfsp\", function () {",
-											"    pm.expect(pm.response.json().headers['fspiop-destination']).to.eql('payerfsp');",
+											"pm.test('fspiop-destination is payerfsp', function () {",
+											"    pm.expect(body.headers['fspiop-destination']).to.eql('payerfsp');",
 											"});",
 											"",
-											"pm.test(\"fspiop-signature is empty\", function () {",
-											"    pm.expect(pm.response.json().headers['fspiop-signature']).to.eql(undefined);",
+											"pm.test('fspiop-signature is not empty', function () {",
+											"    pm.expect(body.headers['fspiop-signature'].length).to.be.above(1);",
 											"});",
 											"",
-											"pm.test(\"accept is empty\", function () {",
-											"    pm.expect(pm.response.json().headers['accept']).to.eql(undefined);",
+											"pm.test('accept is empty', function () {",
+											"    pm.expect(body.headers['accept']).to.eql(undefined);",
 											"});",
 											"",
-											"pm.test(\"content-type should be application/vnd.interoperability.transfers+json;version=1.0\", function () {",
-											"    pm.expect(pm.response.json().headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
+											"pm.test('content-type should be application/vnd.interoperability.transfers+json;version=1.0', function () {",
+											"    pm.expect(body.headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
 											"});",
 											"",
-											"pm.test(\"fspiop-uri is empty\", function () {",
-											"    pm.expect(pm.response.json().headers['fspiop-uri']).to.eql(undefined);",
+											"pm.test(`fspiop-uri is /transfers/${pm.environment.get('transfer_ID')}`, function () {",
+											"    pm.expect(body.headers['fspiop-uri']).to.eql('/transfers/'+pm.environment.get('transfer_ID'));",
 											"});",
 											"",
-											"pm.test(\"fspiop-http-method is empty\", function () {",
-											"    pm.expect(pm.response.json().headers['fspiop-http-method']).to.eql(undefined);",
+											"pm.test('fspiop-http-method is PUT', function () {",
+											"    pm.expect(body.headers['fspiop-http-method']).to.eql('PUT');",
 											"});"
 										],
 										"type": "text/javascript"
@@ -13683,8 +13712,239 @@
 						"description": "State, OPEN is case sensitive.\nTocheck invalid request I have provided state = \"open\""
 					},
 					"response": []
+				},
+				{
+					"name": "Check Bulk Transfers - prepare headers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cf6e4f01-008c-4b28-a1fc-7d9c2c5bb9b1",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"//Check the request that Switch forwards to payeefsp",
+									"// setTimeout(function () {",
+									"//   pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payeefsp/requests/\"+pm.globals.get(\"bulkTransferId\"), function (err, response) {",
+									"//           if(response.responseSize !== 0) {",
+									"              ",
+									"//               //Check the Headers",
+									"//               var headers = response.json().headers;",
+									"              ",
+									"//                 pm.test(\"payeefsp fspiop-source is payerfsp\", function () {",
+									"//                     pm.expect(headers['fspiop-source']).to.eql('payerfsp');",
+									"//                 });",
+									"                ",
+									"//                 pm.test(\"payeefsp fspiop-destination is payeefsp\", function () {",
+									"//                     pm.expect(headers['fspiop-destination']).to.eql('payeefsp');",
+									"//                 });",
+									"                ",
+									"//                 pm.test(\"payeefsp content-typeis same as sent in the request\", function () {",
+									"//                     pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
+									"//                 });",
+									"                ",
+									"//                 pm.test(\"payeefsp accept is same as sent in the request\", function () {",
+									"//                     pm.expect(headers['accept']).to.eql('application/vnd.interoperability.transfers+json;version=1');",
+									"//                 });",
+									"                ",
+									"//                 pm.test(\"payeefsp fspiop-signature is same as sent in the request\", function () {",
+									"//                     pm.expect(headers['fspiop-signature']).to.eql(pm.environment.get(\"fspiop-signature\"));",
+									"//                 });",
+									"                ",
+									"//                 pm.test(\"payeefsp fspiop-http-method is POST\", function () {",
+									"//                     pm.expect(headers['fspiop-http-method']).to.eql('POST');",
+									"//                 });",
+									"                ",
+									"//                 pm.test(\"payeefsp fspiop-uri is /transfers\", function () {",
+									"//                     pm.expect(headers['fspiop-uri']).to.eql('/transfers');",
+									"//                 });",
+									"                ",
+									"                ",
+									"//                 //Check the data",
+									"//                 var jsonData = response.json().data;",
+									"//                 pm.test(\"payeefsp data should have the same transferId as request\", function () {",
+									"//                   pm.expect(jsonData.transferId).to.eql(pm.environment.get(\"transfer_ID\"));",
+									"//                 });",
+									"//                 pm.test(\"payeefsp data should have the same payerfspId as request\", function () {",
+									"//                   pm.expect(jsonData.payerFsp).to.eql(pm.environment.get(\"payerfsp\"));",
+									"//                 });",
+									"//                 pm.test(\"payeefsp data should have the same payeefspId as request\", function () {",
+									"//                   pm.expect(jsonData.payeeFsp).to.eql(pm.environment.get(\"payeefsp\"));",
+									"//                 });",
+									"//                 pm.test(\"payeefsp data should have the same amount as request\", function () {",
+									"//                   pm.expect(+jsonData.amount.amount).to.eql(pm.environment.get(\"transferAmount\"));",
+									"//                 });",
+									"//                 pm.test(\"payeefsp data should have the same currency as request\", function () {",
+									"//                   pm.expect(jsonData.amount.currency).to.eql(pm.environment.get(\"currency\"));",
+									"//                 });",
+									"//                 pm.test(\"payeefsp data should have the same expiration as request\", function () {",
+									"//                   pm.expect(jsonData.expiration).to.eql(pm.environment.get(\"transferExpiration\"));",
+									"//                 });",
+									"//                 pm.test(\"payeefsp data should have the same ilpPacket as request\", function () {",
+									"//                   pm.expect(jsonData.ilpPacket).to.eql(pm.environment.get(\"ilpPacket\"));",
+									"//                 });",
+									"//                 pm.test(\"payeefsp data should have the same condition as request\", function () {",
+									"//                   pm.expect(jsonData.condition).to.eql(pm.environment.get(\"condition\"));",
+									"//                 });",
+									"                ",
+									"//           } else {",
+									"//               pm.test(\"Transfer FAILED\", function () {",
+									"//                 throw new Error('Did not receive response');",
+									"//               });",
+									"",
+									"//           }",
+									"//   });",
+									"// }, 1100)",
+									"",
+									"// //Check the callback response that Switch forwards to payerfsp",
+									"// setTimeout(function () {",
+									"//   pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.globals.get(\"bulkTransferId\"), function (err, response) {",
+									"//           if(response.responseSize !== 0) {",
+									"//             //Checking headers",
+									"//             var headers = response.json().headers;",
+									"//             pm.test(\"payerfsp fspiop-source is payeefsp\", function () {",
+									"//                 pm.expect(headers['fspiop-source']).to.eql('payeefsp');",
+									"//             });",
+									"            ",
+									"//             pm.test(\"payerfsp fspiop-destination is payerfsp\", function () {",
+									"//                 pm.expect(headers['fspiop-destination']).to.eql('payerfsp');",
+									"//             });",
+									"            ",
+									"//             pm.test(\"payerfsp content-type should be application/vnd.interoperability.transfers+json;version=1.0\", function () {",
+									"//                 pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
+									"//             });",
+									"            ",
+									"//             pm.test(\"payerfsp accept is empty\", function () {",
+									"//                 pm.expect(headers['accept']).to.eql(undefined);",
+									"//             });",
+									"            ",
+									"//             pm.test(\"payerfsp fspiop-uri includes transfers\", function () {",
+									"//                 pm.expect(headers['fspiop-uri']).to.include('/transfers');",
+									"//             });",
+									"            ",
+									"//             pm.test(\"payerfsp fspiop-http-method is PUT\", function () {",
+									"//                 pm.expect(headers['fspiop-http-method']).to.eql('PUT');",
+									"//             });",
+									"            ",
+									"//             var jsonData = response.json().data;",
+									"//             pm.test(\"Response data does not have transferId\", function () {",
+									"//               pm.expect(jsonData.transferId).to.eql(undefined);",
+									"//             });",
+									"//             pm.test(\"Response status is COMMITTED\", function () {",
+									"//                 pm.expect(jsonData.transferState).to.eql('COMMITTED');",
+									"//             });",
+									"//           } else {",
+									"//               pm.test(\"Transfer FAILED\", function () {",
+									"//                 throw new Error('Did not receive response');",
+									"//               });",
+									"",
+									"//           }",
+									"//   });",
+									"// }, 1300)",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5c823adb-d795-49e6-a72e-cd488811a34c",
+								"exec": [
+									"const uuid = require('uuid');",
+									"",
+									"const delay = 1000 * 3600 * 24",
+									"const bulkTransferId = uuid.v4();",
+									"const bulkQuoteId = uuid.v4();",
+									"const transferId = uuid.v4();",
+									"const transferId2 = uuid.v4();",
+									"const now = new Date();",
+									"const headerDate = now.toUTCString();",
+									"const expirationDate = new Date(now.getTime() + delay).toISOString();",
+									"const completedTimestamp = now.toISOString();",
+									"",
+									"pm.globals.set(\"bulkTransferId\", bulkTransferId);",
+									"pm.globals.set(\"bulkQuoteId\", bulkQuoteId);",
+									"pm.globals.set(\"transferId\", transferId);",
+									"pm.globals.set(\"transferId2\", transferId2);",
+									"pm.globals.set(\"headerDate\", headerDate);",
+									"pm.globals.set(\"expirationDate\", expirationDate);",
+									"pm.globals.set(\"completedTimestamp\", completedTimestamp);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "{{contentType}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{contentType}}"
+							},
+							{
+								"key": "Date",
+								"value": "{{headerDate}}"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{payerFsp}}"
+							},
+							{
+								"key": "FSPIOP-Destination",
+								"value": "{{payeeFsp}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \n    \"bulkTransferId\": \"{{bulkTransferId}}\",\n    \"bulkQuoteId\": \"{{bulkQuoteId}}\",\n    \"payeeFsp\": \"{{payeeFsp}}\",\n    \"payerFsp\": \"{{payerFsp}}\",\n    \"individualTransfers\":\n    [ {\n        \"transferId\": \"{{transferId}}\",\n        \"transferAmount\": {\n            \"currency\": \"{{currency}}\",\n            \"amount\": \"{{transferAmount}}\"\n        },\n        \"ilpPacket\": \"{{ilpPacket}}\",\n        \"condition\": \"{{condition}}\",\n        \"extensionList\": { \"extension\": [\n            { \"key\": \"{{extKey1}}t1\", \"value\": \"{{extValue1}}t1\"},\n            { \"key\": \"{{extKey2}}t1\", \"value\": \"{{extValue2}}t1\"}\n        ] }\n      },\n      {\n        \"transferId\": \"{{transferId2}}\",\n        \"transferAmount\": {\n            \"currency\": \"{{currency2}}\",\n            \"amount\": \"{{amount2}}\"\n        },\n        \"ilpPacket\": \"{{ilpPacket2}}\",\n        \"condition\": \"{{condition2}}\"\n    } ],\n    \"expiration\": \"{{expirationDate}}\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_BULK_API_ADAPTER}}/bulkTransfers",
+							"host": [
+								"{{HOST_BULK_API_ADAPTER}}"
+							],
+							"path": [
+								"bulkTransfers"
+							]
+						}
+					},
+					"response": []
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "43827839-7d65-4522-8bd8-3a347a80c857",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "4f1188c8-3b1e-4ec4-9df0-f859c8e27a38",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
