@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e2410119-9633-49ca-a0ce-3d140caaaeef",
+		"_postman_id": "000853e8-4ae9-45d6-bc35-a5a01bd08fed",
 		"name": "Golden_Path",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -13109,12 +13109,12 @@
 								"exec": [
 									"const jsonData = pm.response.json();",
 									"",
-									"pm.test(\"Check Internal server error\", function () {",
-									"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Internal server error');",
+									"pm.test(\"Check Malformed syntax error\", function () {",
+									"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Malformed syntax');",
 									"});",
 									"",
-									"pm.test(\"Check Error code 2001\", function () {",
-									"    pm.expect(jsonData.errorInformation.errorCode).to.eql('2001');",
+									"pm.test(\"Check Error code 3101\", function () {",
+									"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3101');",
 									"});"
 								],
 								"type": "text/javascript"
