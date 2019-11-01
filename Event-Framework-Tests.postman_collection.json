@@ -22,8 +22,6 @@
 							"",
 							"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000));",
 							"",
-							"pm.variables.set('efk_url', 'http://dev1-elasticsearch.mojaloop.live/_all/_search?pretty');",
-							"",
 							"",
 							"",
 							""
@@ -183,7 +181,7 @@
 							"}",
 							"",
 							"//EFK Test : Elasticsearch, Fluentd and Kibana(EFK) stack",
-							"setTimeout(() => CommonTests.EFKTest(pm, pm.variables.get('efk_url'), transferId, pm.response, expectations), pm.variables.get('TIMEOUT_EFK_TESTS'))",
+							"setTimeout(() => CommonTests.EFKTest(pm, pm.environment.get('HOST_EFK_SEARCH'), transferId, pm.response, expectations), pm.variables.get('TIMEOUT_EFK_TESTS'))",
 							"",
 							"",
 							""
@@ -263,8 +261,6 @@
 							"pm.variables.set('transferDate', (new Date()).toUTCString());",
 							"",
 							"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000));",
-							"",
-							"pm.variables.set('efk_url', 'http://dev1-elasticsearch.mojaloop.live/_all/_search?pretty');",
 							"",
 							"",
 							"",
@@ -362,7 +358,7 @@
 							"}",
 							"",
 							"//EFK Test : Elasticsearch, Fluentd and Kibana(EFK) stack",
-							"setTimeout(() => CommonTests.EFKTest(pm, pm.variables.get('efk_url'), transferId, pm.response, expectations), pm.variables.get('TIMEOUT_EFK_TESTS'))",
+							"setTimeout(() => CommonTests.EFKTest(pm, pm.variables.get('HOST_EFK_SEARCH'), transferId, pm.response, expectations), pm.variables.get('TIMEOUT_EFK_TESTS'))",
 							"",
 							"",
 							""
@@ -443,7 +439,7 @@
 							"",
 							"var amount = Number(pm.environment.get(\"payerNDC\")) - Number( pm.variables.get(\"payerfspPositionBeforeTransfer\")) + 100",
 							"pm.environment.set('transferAmount', amount)",
-							"pm.variables.set('efk_url', 'http://dev1-elasticsearch.mojaloop.live/_all/_search?pretty');"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -552,7 +548,7 @@
 							"}",
 							"",
 							"//EFK Test : Elasticsearch, Fluentd and Kibana(EFK) stack",
-							"setTimeout(() => CommonTests.EFKTest(pm, pm.variables.get('efk_url'), transferId, pm.response, expectations), pm.variables.get('TIMEOUT_EFK_TESTS'))",
+							"setTimeout(() => CommonTests.EFKTest(pm, pm.variables.get('HOST_EFK_SEARCH'), transferId, pm.response, expectations), pm.variables.get('TIMEOUT_EFK_TESTS'))",
 							"",
 							"pm.environment.set('transferAmount', 100);",
 							"",
@@ -703,8 +699,7 @@
 						"id": "2e244cfd-ff69-448a-8b62-176d4dd0b28d",
 						"exec": [
 							"pm.environment.set(\"completedTimestamp\",new Date().toISOString());",
-							"",
-							"pm.variables.set('efk_url', 'http://dev1-elasticsearch.mojaloop.live/_all/_search?pretty');"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -848,7 +843,7 @@
 							"}",
 							"",
 							"//EFK Test : Elasticsearch, Fluentd and Kibana(EFK) stack",
-							"setTimeout(() => CommonTests.EFKTest(pm, pm.variables.get('efk_url'), transferId, pm.response, expectations), pm.variables.get('TIMEOUT_EFK_TESTS'))"
+							"setTimeout(() => CommonTests.EFKTest(pm, pm.variables.get('HOST_EFK_SEARCH'), transferId, pm.response, expectations), pm.variables.get('TIMEOUT_EFK_TESTS'))"
 						],
 						"type": "text/javascript"
 					}
@@ -926,8 +921,6 @@
 							"pm.environment.set('transferDate', (new Date()).toUTCString());",
 							"pm.environment.set('transferAmount', 10);",
 							"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 30000))",
-							"",
-							"pm.variables.set('efk_url', 'http://dev1-elasticsearch.mojaloop.live/_all/_search?pretty');",
 							""
 						],
 						"type": "text/javascript"
@@ -1037,7 +1030,7 @@
 							"}",
 							"",
 							"//EFK Test : Elasticsearch, Fluentd and Kibana(EFK) stack",
-							"setTimeout(() => CommonTests.EFKTest(pm, pm.variables.get('efk_url'), transferId, pm.response, expectations), pm.variables.get('TIMEOUT_EFK_TESTS'))",
+							"setTimeout(() => CommonTests.EFKTest(pm, pm.variables.get('HOST_EFK_SEARCH'), transferId, pm.response, expectations), pm.variables.get('TIMEOUT_EFK_TESTS'))",
 							"",
 							"",
 							"",
@@ -1209,14 +1202,14 @@
 	],
 	"variable": [
 		{
-			"id": "bb42303a-eb66-401a-bda3-ef7cd097f713",
+			"id": "c4bd526e-1d2f-4dd1-a405-ec2a1f30fda2",
 			"key": "RUN_EFK_TESTS",
 			"value": "true",
 			"type": "string",
 			"disabled": true
 		},
 		{
-			"id": "3b21bf62-f303-4dbf-be4d-8734834d15f0",
+			"id": "c471d5e5-f4ca-4c2f-a640-ed5a05b3100d",
 			"key": "TIMEOUT_EFK_TESTS",
 			"value": "20000",
 			"type": "string"
