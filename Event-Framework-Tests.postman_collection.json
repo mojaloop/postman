@@ -1,0 +1,1219 @@
+{
+	"info": {
+		"_postman_id": "bff76225-eed7-4fca-b827-7b7e9d4b5586",
+		"name": "Event-Framework-Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Transfer Prepare Fulfil Commit",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "9d58aca2-4bdc-4c4b-b12b-b70c76f3c36d",
+						"exec": [
+							"var uuid = require('uuid');",
+							"var generatedUUID = uuid.v4();",
+							"",
+							"pm.environment.set('transfer_ID', generatedUUID);",
+							"",
+							"pm.variables.set('transferDate', (new Date()).toUTCString());",
+							"",
+							"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000));",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "b1bac429-8eba-409d-accc-49fe7038a3ef",
+						"exec": [
+							"pm.test(\"Send Transfer Status code is 202\", function () {",
+							"    pm.response.to.have.status(202);",
+							"});",
+							"",
+							"const { payeeFsp, payerFsp, transferId } = JSON.parse(request.data)",
+							"const destination = request.headers['fspiop-destination']",
+							"const source = request.headers['fspiop-source']",
+							"",
+							"/* ",
+							"  https://mojaloop.io/documentation/mojaloop-technical-overview/event-framework/",
+							"  ",
+							"  Mojaloop map - this indicates all metadata action, type, transacationAction and transactionType events",
+							"  ",
+							"  APM Map - This indicates all the label transaction such as transactionType, transactionAction, transactionId, source, destination",
+							"  ",
+							"  Transfer prepare fulfil commit - Following expectations confirms all the expected events and transaction labels for the transfer, prepare, fulfil and commit scenario.",
+							"  ",
+							"  All these can be manually verified in http://dev1-efk.mojaloop.live/app/kibana#/dashboards?_g=()",
+							"  ",
+							"  For mojaloop events, In Discover, choose *mojaloop and search the transferId",
+							"  Choose transaction.name, metadata.event.action, metadata.event.type, metadata.trace.tags.transactionAction and metadata.trace.tags.transactionType as selected fields",
+							"  ",
+							"  For apm events, In Discover, choose * and search for labels.transactionId: \"transferId\"",
+							"  Choose transaction.name,labels.transactionType, labels.transactionAction, labels.source, labels.destination as selected fields",
+							"*/",
+							"const expectations = {",
+							"    mojaloop: new Map([",
+							"    ['cl_transfer_prepare',",
+							"        [{ action: 'egress', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'},",
+							"        { action: 'start', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer' },",
+							"        { action: 'span', type: 'trace' ,transactionAction: 'prepare', transactionType: 'transfer'}]",
+							"    ],",
+							"    ['ml_transfer_prepare',",
+							"        [{ action: 'start', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer' },",
+							"        { action: 'span', type: 'trace' ,transactionAction: 'prepare', transactionType: 'transfer'}]",
+							"    ],",
+							"    ['cl_transfer_position',",
+							"        [{ action: 'egress', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'  },",
+							"        { action: 'start', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'  },",
+							"        { action: 'span', type: 'trace',transactionAction: 'prepare', transactionType: 'transfer'  },",
+							"        { action: 'start', type: 'audit',transactionAction: 'fulfil', transactionType: 'transfer'  },",
+							"        { action: 'egress', type: 'audit',transactionAction: 'fulfil', transactionType: 'transfer'  },",
+							"        { action: 'span', type: 'trace',transactionAction: 'fulfil', transactionType: 'transfer'  }]",
+							"    ],",
+							"    ['ml_notification_event',",
+							"        [{ action: 'egress', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'  } ,",
+							"        { action: 'start', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'  } ,",
+							"        { action: 'span', type: 'trace' ,transactionAction: 'prepare', transactionType: 'transfer'  },",
+							"        { action: 'egress', type: 'audit',transactionAction: 'fulfil', transactionType: 'transfer'  } ,",
+							"        { action: 'start', type: 'audit' ,transactionAction: 'fulfil', transactionType: 'transfer'  },",
+							"        { action: 'span', type: 'trace' ,transactionAction: 'fulfil', transactionType: 'transfer'  }]",
+							"    ],",
+							"    ['cl_transfer_fulfil',",
+							"        [{ action: 'egress', type: 'audit' ,transactionAction: 'fulfil', transactionType: 'transfer'  },",
+							"        { action: 'start', type: 'audit',transactionAction: 'fulfil', transactionType: 'transfer'   },",
+							"        { action: 'span', type: 'trace' ,transactionAction: 'fulfil', transactionType: 'transfer'  }]",
+							"    ],",
+							"    ['ml_transfer_fulfil',",
+							"        [{ action: 'start', type: 'audit' ,transactionAction: 'fulfil', transactionType: 'transfer' },",
+							"        { action: 'span', type: 'trace' ,transactionAction: 'fulfil', transactionType: 'transfer' },",
+							"        { action: 'debug', type: 'log' ,transactionAction: 'fulfil', transactionType: 'transfer' }]]",
+							"    ]),",
+							"    apm: new Map([",
+							"        ['cl_transfer_prepare', [{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'prepare',",
+							"                transactionId: transferId,",
+							"                source,",
+							"                destination,",
+							"                payerFsp,",
+							"                payeeFsp",
+							"            }",
+							"        }]],",
+							"        ['cl_transfer_position', [{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'prepare',",
+							"                transactionId: transferId,",
+							"                source,",
+							"                destination,",
+							"                payerFsp,",
+							"                payeeFsp",
+							"            }",
+							"        },{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'fulfil',",
+							"                transactionId: transferId,",
+							"                source:destination,",
+							"                destination:source",
+							"            }",
+							"        }]",
+							"        ],",
+							"        ['ml_notification_event', [{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'prepare', ",
+							"                transactionId: transferId,",
+							"                source,",
+							"                destination,",
+							"                payerFsp,",
+							"                payeeFsp",
+							"            }",
+							"        },{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'fulfil', ",
+							"                transactionId: transferId,",
+							"                source:destination,",
+							"                destination:source",
+							"            }}]",
+							"        ],",
+							"        ['cl_transfer_fulfil', [{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'fulfil', ",
+							"                transactionId: transferId,",
+							"                source:destination,",
+							"                destination:source",
+							"            }",
+							"        }]],",
+							"",
+							"        ['ml_transfer_fulfil', [{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'fulfil',",
+							"                transactionId: transferId,",
+							"                source:destination,",
+							"                destination:source",
+							"            }",
+							"        }]],",
+							"        ['ml_transfer_prepare', [{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'prepare', ",
+							"                transactionId: transferId,",
+							"                source,",
+							"                destination,",
+							"                payerFsp,",
+							"                payeeFsp",
+							"            }",
+							"        }]]",
+							"    ])",
+							"}",
+							"",
+							"//EFK Test : Elasticsearch, Fluentd and Kibana(EFK) stack",
+							"setTimeout(() => CommonTests.EFKTest(pm, pm.environment.get('HOST_EFK_SEARCH'), transferId, pm.response, expectations), pm.variables.get('TIMEOUT_EFK_TESTS'))",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.interoperability.transfers+json;version=1"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/vnd.interoperability.transfers+json;version=1.0"
+					},
+					{
+						"key": "Date",
+						"value": "{{transferDate}}"
+					},
+					{
+						"key": "FSPIOP-Source",
+						"value": "{{payerfsp}}"
+					},
+					{
+						"key": "FSPIOP-Destination",
+						"value": "{{payeefsp}}"
+					},
+					{
+						"key": "FSPIOP-Signature",
+						"value": "{{fspiop-signature}}",
+						"type": "text"
+					},
+					{
+						"key": "FSPIOP-URI",
+						"value": "/transfers",
+						"type": "text"
+					},
+					{
+						"key": "FSPIOP-HTTP-Method",
+						"value": "POST",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"1\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}\n"
+				},
+				"url": {
+					"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+					"host": [
+						"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+					],
+					"path": [
+						"transfers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer Prepare Error - Invalid FSP",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "9d58aca2-4bdc-4c4b-b12b-b70c76f3c36d",
+						"exec": [
+							"var uuid = require('uuid');",
+							"var generatedUUID = uuid.v4();",
+							"",
+							"pm.environment.set('transfer_ID', generatedUUID);",
+							"",
+							"pm.variables.set('transferDate', (new Date()).toUTCString());",
+							"",
+							"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000));",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "b1bac429-8eba-409d-accc-49fe7038a3ef",
+						"exec": [
+							"pm.test(\"Send Transfer Status code is 202\", function () {",
+							"    pm.response.to.have.status(202);",
+							"});",
+							"",
+							"const { payeeFsp, payerFsp, transferId } = JSON.parse(request.data)",
+							"const destination = request.headers['fspiop-destination']",
+							"const source = request.headers['fspiop-source']",
+							"",
+							"/* ",
+							"  https://mojaloop.io/documentation/mojaloop-technical-overview/event-framework/",
+							"  ",
+							"  Mojaloop map - this indicates all metadata action, type, transacationAction and transactionType events",
+							"  ",
+							"  APM Map - This indicates all the label transaction such as transactionType, transactionAction, transactionId, source, destination",
+							"  ",
+							"  Transfer prepare Error - Invalid FSP - Following expectations confirms all the expected events and transaction labels for the transfer, prepare for the invalid FSP.",
+							"  ",
+							"  All these can be manually verified in http://dev1-efk.mojaloop.live/app/kibana#/dashboards?_g=()",
+							"  ",
+							"  For mojaloop events, In Discover, choose *mojaloop and search the transferId",
+							"  Choose transaction.name, metadata.event.action, metadata.event.type, metadata.trace.tags.transactionAction and metadata.trace.tags.transactionType as selected fields",
+							"  ",
+							"  For apm events, In Discover, choose * and search for labels.transactionId: \"transferId\"",
+							"  Choose transaction.name,labels.transactionType, labels.transactionAction, labels.source, labels.destination as selected fields",
+							"*/",
+							"const expectations = {",
+							"    mojaloop: new Map([",
+							"    ['cl_transfer_prepare',",
+							"        [{ action: 'egress', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'},",
+							"        { action: 'start', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer' },",
+							"        { action: 'span', type: 'trace' ,transactionAction: 'prepare', transactionType: 'transfer'},",
+							"        { action: 'error', type: 'log' ,transactionAction: 'prepare', transactionType: 'transfer'}]",
+							"    ],",
+							"    ['ml_transfer_prepare',",
+							"        [{ action: 'start', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer' },",
+							"        { action: 'span', type: 'trace' ,transactionAction: 'prepare', transactionType: 'transfer'}]",
+							"    ],",
+							"    ['ml_notification_event',",
+							"        [{ action: 'egress', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'},",
+							"        { action: 'start', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'  },",
+							"        { action: 'span', type: 'trace' ,transactionAction: 'prepare', transactionType: 'transfer'  }]",
+							"    ]]",
+							"    ),",
+							"    apm: new Map([",
+							"        ['cl_transfer_prepare', [{",
+							"            labels: {",
+							"                errorDescription:'error code: 3100 :: description: Generic validation error',",
+							"                errorCode: '3100',",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'prepare',",
+							"                transactionId: transferId,",
+							"                source,",
+							"                destination,",
+							"                payerFsp,",
+							"                payeeFsp",
+							"            }",
+							"        }]],",
+							"        ['ml_notification_event', [{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'prepare', ",
+							"                transactionId: transferId,",
+							"                source,",
+							"                destination,",
+							"                payerFsp,",
+							"                payeeFsp",
+							"            }",
+							"        }",
+							"        ]],",
+							"        ['ml_transfer_prepare', [{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'prepare', ",
+							"                transactionId: transferId,",
+							"                source,",
+							"                destination,",
+							"                payerFsp,",
+							"                payeeFsp",
+							"            }",
+							"        }]]",
+							"    ])",
+							"}",
+							"",
+							"//EFK Test : Elasticsearch, Fluentd and Kibana(EFK) stack",
+							"setTimeout(() => CommonTests.EFKTest(pm, pm.variables.get('HOST_EFK_SEARCH'), transferId, pm.response, expectations), pm.variables.get('TIMEOUT_EFK_TESTS'))",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.interoperability.transfers+json;version=1"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/vnd.interoperability.transfers+json;version=1.0"
+					},
+					{
+						"key": "Date",
+						"value": "{{transferDate}}"
+					},
+					{
+						"key": "FSPIOP-Source",
+						"value": "{{payerfsp}}"
+					},
+					{
+						"key": "FSPIOP-Destination",
+						"value": "invalidfsp"
+					},
+					{
+						"key": "FSPIOP-Signature",
+						"value": "{{fspiop-signature}}",
+						"type": "text"
+					},
+					{
+						"key": "FSPIOP-URI",
+						"value": "/transfers",
+						"type": "text"
+					},
+					{
+						"key": "FSPIOP-HTTP-Method",
+						"value": "POST",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"invalidfsp\",\n  \"amount\": {\n    \"amount\": \"1\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}\n"
+				},
+				"url": {
+					"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+					"host": [
+						"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+					],
+					"path": [
+						"transfers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer Prepare Error - Block Transfer",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "373ce4bd-e96f-49df-a8e4-e2bd6e8490ab",
+						"exec": [
+							"var uuid = require('uuid');",
+							"var generatedUUID = uuid.v4();",
+							"",
+							"pm.environment.set('transfer_ID', generatedUUID);",
+							"pm.environment.set('transferDate', (new Date()).toUTCString());",
+							"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))",
+							"",
+							"var amount = Number(pm.environment.get(\"payerNDC\")) - Number( pm.variables.get(\"payerfspPositionBeforeTransfer\")) + 100",
+							"pm.environment.set('transferAmount', amount)",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "ec961c23-5b9f-4509-9b30-4ea1de9a7b43",
+						"exec": [
+							"pm.test(\"Status code is 202\", function () {",
+							"    pm.response.to.have.status(202);",
+							"});",
+							"",
+							"const { payeeFsp, payerFsp, transferId } = JSON.parse(request.data)",
+							"const destination = request.headers['fspiop-destination']",
+							"const source = request.headers['fspiop-source']",
+							"",
+							"/* ",
+							"  https://mojaloop.io/documentation/mojaloop-technical-overview/event-framework/",
+							"  ",
+							"  Mojaloop map - this indicates all metadata action, type, transacationAction and transactionType events",
+							"  ",
+							"  APM Map - This indicates all the label transaction such as transactionType, transactionAction, transactionId, source, destination",
+							"  ",
+							"  Transfer prepare Error - Invalid FSP - Following expectations confirms all the expected events and transaction labels for the transfer, prepare for the invalid FSP.",
+							"  ",
+							"  All these can be manually verified in http://dev1-efk.mojaloop.live/app/kibana#/dashboards?_g=()",
+							"  ",
+							"  For mojaloop events, In Discover, choose *mojaloop and search the transferId",
+							"  Choose transaction.name, metadata.event.action, metadata.event.type, metadata.trace.tags.transactionAction and metadata.trace.tags.transactionType as selected fields",
+							"  ",
+							"  For apm events, In Discover, choose * and search for labels.transactionId: \"transferId\"",
+							"  Choose transaction.name,labels.transactionType, labels.transactionAction, labels.source, labels.destination as selected fields",
+							"*/",
+							"const expectations = {",
+							"    mojaloop: new Map([",
+							"    ['cl_transfer_prepare',",
+							"        [{ action: 'egress', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'},",
+							"        { action: 'start', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer' },",
+							"        { action: 'span', type: 'trace' ,transactionAction: 'prepare', transactionType: 'transfer'}]",
+							"    ],",
+							"    ['ml_transfer_prepare',",
+							"        [{ action: 'start', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer' },",
+							"        { action: 'span', type: 'trace' ,transactionAction: 'prepare', transactionType: 'transfer'}]",
+							"    ],",
+							"    ['ml_notification_event',",
+							"        [{ action: 'egress', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'},",
+							"        { action: 'start', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'  },",
+							"        { action: 'span', type: 'trace' ,transactionAction: 'prepare', transactionType: 'transfer'  }]",
+							"    ],",
+							"    ['cl_transfer_position',",
+							"        [{ action: 'egress', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'  },",
+							"        { action: 'start', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'  },",
+							"        { action: 'span', type: 'trace',transactionAction: 'prepare', transactionType: 'transfer'  },",
+							"        { action: 'error', type: 'log',transactionAction: 'prepare', transactionType: 'transfer'  }]",
+							"    ]]",
+							"    ),",
+							"    apm: new Map([",
+							"        ['cl_transfer_prepare', [{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'prepare',",
+							"                transactionId: transferId,",
+							"                source,",
+							"                destination,",
+							"                payerFsp,",
+							"                payeeFsp",
+							"            }",
+							"        }]],",
+							"        ['ml_notification_event', [{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'prepare', ",
+							"                transactionId: transferId,",
+							"                source,",
+							"                destination,",
+							"                payerFsp,",
+							"                payeeFsp",
+							"            }",
+							"        }]],",
+							"        ['cl_transfer_position', [{",
+							"            labels: {",
+							"                errorDescription:'error code: 4001 :: description: Payer FSP insufficient liquidity',",
+							"                errorCode: '4001',",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'prepare',",
+							"                transactionId: transferId,",
+							"                source,",
+							"                destination,",
+							"                payerFsp,",
+							"                payeeFsp",
+							"            }",
+							"        }]],",
+							"        ['ml_transfer_prepare', [{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'prepare', ",
+							"                transactionId: transferId,",
+							"                source,",
+							"                destination,",
+							"                payerFsp,",
+							"                payeeFsp",
+							"            }",
+							"        }]]",
+							"    ])",
+							"}",
+							"",
+							"//EFK Test : Elasticsearch, Fluentd and Kibana(EFK) stack",
+							"setTimeout(() => CommonTests.EFKTest(pm, pm.variables.get('HOST_EFK_SEARCH'), transferId, pm.response, expectations), pm.variables.get('TIMEOUT_EFK_TESTS'))",
+							"",
+							"pm.environment.set('transferAmount', 100);",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.interoperability.transfers+json;version=1"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/vnd.interoperability.transfers+json;version=1.0"
+					},
+					{
+						"key": "Date",
+						"value": "{{transferDate}}"
+					},
+					{
+						"key": "FSPIOP-Source",
+						"value": "{{payerfsp}}"
+					},
+					{
+						"key": "FSPIOP-Destination",
+						"value": "{{payeefsp}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"{{payeefsp}}\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+				},
+				"url": {
+					"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+					"host": [
+						"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+					],
+					"path": [
+						"transfers"
+					]
+				},
+				"description": "send a tranfer request with ilp packet and condition that are generated in quotes response along with expiry, fspiop source,fspiop destination, amount and currency."
+			},
+			"response": []
+		},
+		{
+			"name": "Send Prepare",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "16b4580d-74c7-44e9-952e-d40a61f9cb69",
+						"exec": [
+							"var uuid = require('uuid');",
+							"var generatedUUID = uuid.v4();",
+							"",
+							"pm.environment.set('transfer_ID', generatedUUID);",
+							"pm.environment.set('transferDate', (new Date()).toUTCString());",
+							"pm.environment.set('transferExpiration', new Date(new Date().getTime() + 600000));",
+							"pm.environment.set('transferAmount', 99);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "e47ebaa4-926e-4007-821a-e68cd385e18c",
+						"exec": [
+							"pm.test(\"Status code is 202\", function () {",
+							"    pm.response.to.have.status(202);",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{BEARER_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.interoperability.transfers+json;version=1"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/vnd.interoperability.transfers+json;version=1"
+					},
+					{
+						"key": "Date",
+						"value": "{{dateHeader}}"
+					},
+					{
+						"key": "FSPIOP-Source",
+						"value": "{{payerfsp}}"
+					},
+					{
+						"key": "FSPIOP-Destination",
+						"value": "noresponsepayeefsp"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{validCondition}}\"\n}"
+				},
+				"url": {
+					"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+					"host": [
+						"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+					],
+					"path": [
+						"transfers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer Prepare Error - Abort Fulfil",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2e244cfd-ff69-448a-8b62-176d4dd0b28d",
+						"exec": [
+							"pm.environment.set(\"completedTimestamp\",new Date().toISOString());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "358f8ed8-6882-4c54-8dfd-177607c9e07b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const transferId = pm.environment.get(\"transfer_ID\")",
+							"const payeeFsp = request.headers[\"fspiop-source\"]",
+							"const payerFsp = request.headers[\"fspiop-destination\"]",
+							"const source = request.headers[\"fspiop-destination\"]",
+							"const destination = request.headers[\"fspiop-source\"]",
+							"",
+							"const expectations = {",
+							"mojaloop: new Map([",
+							"    ['cl_transfer_prepare',",
+							"        [{ action: 'egress', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'},",
+							"        { action: 'start', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer' },",
+							"        { action: 'span', type: 'trace' ,transactionAction: 'prepare', transactionType: 'transfer'}]",
+							"    ],",
+							"    ['ml_transfer_prepare',",
+							"        [{ action: 'start', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer' },",
+							"        { action: 'span', type: 'trace' ,transactionAction: 'prepare', transactionType: 'transfer'}]",
+							"    ],",
+							"    ['cl_transfer_position',",
+							"        [{ action: 'egress', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'  },",
+							"        { action: 'start', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'  },",
+							"        { action: 'span', type: 'trace',transactionAction: 'prepare', transactionType: 'transfer'  },",
+							"        { action: 'start', type: 'audit',transactionAction: 'fulfil', transactionType: 'transfer'  },",
+							"        { action: 'egress', type: 'audit',transactionAction: 'fulfil', transactionType: 'transfer'  },",
+							"        { action: 'span', type: 'trace',transactionAction: 'fulfil', transactionType: 'transfer'  }]",
+							"    ],",
+							"    ['ml_notification_event',",
+							"        [{ action: 'egress', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'  } ,",
+							"        { action: 'start', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'  } ,",
+							"        { action: 'span', type: 'trace' ,transactionAction: 'prepare', transactionType: 'transfer'  },",
+							"        { action: 'error', type: 'log' ,transactionAction: 'prepare', transactionType: 'transfer'  },",
+							"        { action: 'start', type: 'audit' ,transactionAction: 'fulfil', transactionType: 'transfer'  },",
+							"        { action: 'span', type: 'trace' ,transactionAction: 'fulfil', transactionType: 'transfer'  }]",
+							"    ],",
+							"    ['cl_transfer_fulfil',",
+							"        [{ action: 'egress', type: 'audit' ,transactionAction: 'fulfil', transactionType: 'transfer'  },",
+							"        { action: 'start', type: 'audit',transactionAction: 'fulfil', transactionType: 'transfer'   },",
+							"        { action: 'span', type: 'trace' ,transactionAction: 'fulfil', transactionType: 'transfer'  }]",
+							"    ],",
+							"    ['ml_transfer_fulfil',",
+							"        [{ action: 'start', type: 'audit' ,transactionAction: 'fulfil', transactionType: 'transfer' },",
+							"        { action: 'span', type: 'trace' ,transactionAction: 'fulfil', transactionType: 'transfer' },",
+							"        { action: 'debug', type: 'log' ,transactionAction: 'fulfil', transactionType: 'transfer' }]]",
+							"    ]),",
+							"    apm: new Map([",
+							"        ['cl_transfer_prepare', [{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'prepare',",
+							"                transactionId: transferId,",
+							"                source,",
+							"                destination,",
+							"                payerFsp,",
+							"                payeeFsp",
+							"            }",
+							"        }]],",
+							"        ['cl_transfer_position', [{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'prepare',",
+							"                transactionId: transferId,",
+							"                source,",
+							"                destination,",
+							"                payerFsp,",
+							"                payeeFsp",
+							"            }",
+							"        },{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'fulfil',",
+							"                transactionId: transferId,",
+							"                source:destination,",
+							"                destination:source",
+							"            }",
+							"        }]",
+							"        ],",
+							"        ['ml_notification_event', [{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'prepare', ",
+							"                errorCode : '2001',",
+							"                errorDescription : 'error code: 2001 :: description: Internal server error',",
+							"                transactionId: transferId,",
+							"                source,",
+							"                destination,",
+							"                payerFsp,",
+							"                payeeFsp",
+							"            }",
+							"        },{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'fulfil', ",
+							"                transactionId: transferId,",
+							"                source:destination,",
+							"                destination:source",
+							"            }}]",
+							"        ],",
+							"        ['cl_transfer_fulfil', [{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'fulfil', ",
+							"                transactionId: transferId,",
+							"                source:destination,",
+							"                destination:source",
+							"            }",
+							"        }]],",
+							"",
+							"        ['ml_transfer_fulfil', [{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'fulfil',",
+							"                transactionId: transferId,",
+							"                source:destination,",
+							"                destination:source",
+							"            }",
+							"        }]],",
+							"        ['ml_transfer_prepare', [{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'prepare', ",
+							"                transactionId: transferId,",
+							"                source,",
+							"                destination,",
+							"                payerFsp,",
+							"                payeeFsp",
+							"            }",
+							"        }]]",
+							"    ])",
+							"}",
+							"",
+							"//EFK Test : Elasticsearch, Fluentd and Kibana(EFK) stack",
+							"setTimeout(() => CommonTests.EFKTest(pm, pm.variables.get('HOST_EFK_SEARCH'), transferId, pm.response, expectations), pm.variables.get('TIMEOUT_EFK_TESTS'))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{PAYEEFSP_BEARER_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/vnd.interoperability.transfers+json;version=1"
+					},
+					{
+						"key": "Date",
+						"type": "text",
+						"value": "{{dateHeader}}"
+					},
+					{
+						"key": "FSPIOP-Source",
+						"type": "text",
+						"value": "noresponsepayeefsp"
+					},
+					{
+						"key": "FSPIOP-Destination",
+						"type": "text",
+						"value": "{{payerfsp}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/vnd.interoperability.transfers+json;version=1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fulfilment\": \"{{validFulfillment}}\",\n  \"completedTimestamp\": \"{{completedTimestamp}}\",\n  \"transferState\": \"ABORTED\"\n}"
+				},
+				"url": {
+					"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{transfer_ID}}",
+					"host": [
+						"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+					],
+					"path": [
+						"transfers",
+						"{{transfer_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer Prepare Error- Timeout",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "16b4580d-74c7-44e9-952e-d40a61f9cb69",
+						"exec": [
+							"var uuid = require('uuid');",
+							"var generatedUUID = uuid.v4();",
+							"",
+							"pm.environment.set('transfer_ID', generatedUUID);",
+							"pm.environment.set('transferDate', (new Date()).toUTCString());",
+							"pm.environment.set('transferAmount', 10);",
+							"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 30000))",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "e47ebaa4-926e-4007-821a-e68cd385e18c",
+						"exec": [
+							"pm.test(\"Status code is 202\", function () {",
+							"    pm.response.to.have.status(202);",
+							"});",
+							"",
+							"const { payeeFsp, payerFsp, transferId } = JSON.parse(request.data)",
+							"const destination = request.headers['fspiop-destination']",
+							"const source = request.headers['fspiop-source']",
+							"",
+							"/* ",
+							"  https://mojaloop.io/documentation/mojaloop-technical-overview/event-framework/",
+							"  ",
+							"  Mojaloop map - this indicates all metadata action, type, transacationAction and transactionType events",
+							"  ",
+							"  APM Map - This indicates all the label transaction such as transactionType, transactionAction, transactionId, source, destination",
+							"  ",
+							"  Transfer prepare Error - Timeout - Following expectations confirms all the expected events and transaction labels for the transfer, prepare for the Timeout Expiry.",
+							"  ",
+							"  All these can be manually verified in http://dev1-efk.mojaloop.live/app/kibana#/dashboards?_g=()",
+							"  ",
+							"  For mojaloop events, In Discover, choose *mojaloop and search the transferId",
+							"  Choose transaction.name, metadata.event.action, metadata.event.type, metadata.trace.tags.transactionAction and metadata.trace.tags.transactionType as selected fields",
+							"  ",
+							"  For apm events, In Discover, choose * and search for labels.transactionId: \"transferId\"",
+							"  Choose transaction.name,labels.transactionType, labels.transactionAction, labels.source, labels.destination as selected fields",
+							"*/",
+							"const expectations = {",
+							"    mojaloop: new Map([",
+							"    ['cl_transfer_prepare',",
+							"        [{ action: 'egress', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'},",
+							"        { action: 'start', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer' },",
+							"        { action: 'span', type: 'trace' ,transactionAction: 'prepare', transactionType: 'transfer'}]",
+							"    ],",
+							"    ['ml_transfer_prepare',",
+							"        [{ action: 'start', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer' },",
+							"        { action: 'span', type: 'trace' ,transactionAction: 'prepare', transactionType: 'transfer'}]",
+							"    ],",
+							"    ['ml_notification_event',",
+							"        [{ action: 'egress', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'},",
+							"        { action: 'start', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'  },",
+							"        { action: 'span', type: 'trace' ,transactionAction: 'prepare', transactionType: 'transfer'  },",
+							"        { action: 'error', type: 'log' ,transactionAction: 'prepare', transactionType: 'transfer'  }]",
+							"    ],",
+							"    ['cl_transfer_position',",
+							"        [{ action: 'egress', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'  },",
+							"        { action: 'start', type: 'audit',transactionAction: 'prepare', transactionType: 'transfer'  },",
+							"        { action: 'span', type: 'trace',transactionAction: 'prepare', transactionType: 'transfer'  }]",
+							"    ]]",
+							"    ),",
+							"    apm: new Map([",
+							"        ['cl_transfer_prepare', [{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'prepare',",
+							"                transactionId: transferId,",
+							"                source,",
+							"                destination,",
+							"                payerFsp,",
+							"                payeeFsp",
+							"            }",
+							"        }]],",
+							"        ['ml_notification_event', [{",
+							"            labels: {",
+							"                errorDescription:'error code: 2001 :: description: Internal server error',",
+							"                errorCode: '2001',",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'prepare', ",
+							"                transactionId: transferId,",
+							"                source,",
+							"                destination,",
+							"                payerFsp,",
+							"                payeeFsp",
+							"            }",
+							"        }]],",
+							"        ['cl_transfer_position', [{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'prepare',",
+							"                transactionId: transferId,",
+							"                source,",
+							"                destination,",
+							"                payerFsp,",
+							"                payeeFsp",
+							"            }",
+							"        }]],",
+							"        ['ml_transfer_prepare', [{",
+							"            labels: {",
+							"                transactionType: 'transfer',",
+							"                transactionAction: 'prepare', ",
+							"                transactionId: transferId,",
+							"                source,",
+							"                destination,",
+							"                payerFsp,",
+							"                payeeFsp",
+							"            }",
+							"        }]]",
+							"    ])",
+							"}",
+							"",
+							"//EFK Test : Elasticsearch, Fluentd and Kibana(EFK) stack",
+							"setTimeout(() => CommonTests.EFKTest(pm, pm.variables.get('HOST_EFK_SEARCH'), transferId, pm.response, expectations), pm.variables.get('TIMEOUT_EFK_TESTS'))",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{BEARER_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.interoperability.transfers+json;version=1"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/vnd.interoperability.transfers+json;version=1"
+					},
+					{
+						"key": "Date",
+						"value": "{{dateHeader}}"
+					},
+					{
+						"key": "FSPIOP-Source",
+						"value": "{{payerfsp}}"
+					},
+					{
+						"key": "FSPIOP-Destination",
+						"value": "noresponsepayeefsp"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"nMel-FDPpp3T77jfC11fUXdcy935hy089AJ9v2OTXBI\"\n}"
+				},
+				"url": {
+					"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+					"host": [
+						"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+					],
+					"path": [
+						"transfers"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "153c0e6e-2fce-42ac-98c1-efa8542169dd",
+				"type": "text/javascript",
+				"exec": [
+					"CommonTests = {",
+					"    EFKTest: function (pm, url, transferId, response, expectations) {",
+					"            let results = {",
+					"                mojaloop: new Map(),",
+					"                apm: new Map(),",
+					"                fail: false",
+					"            }",
+					"            pm.sendRequest({",
+					"                url,",
+					"                method: 'POST',",
+					"                header: 'content-type:application/json',",
+					"                body: {",
+					"                    mode: 'raw',",
+					"                    raw: JSON.stringify({",
+					"                        \"query\": {",
+					"                            \"query_string\": {",
+					"                                \"query\": `(metadata.trace.tags.transactionId:\\\"${transferId}\\\" OR (labels.transactionId:\\\"${transferId}\\\" AND transaction.name:*))`",
+					"                            }",
+					"                        },",
+					"                        \"size\": 60",
+					"                    })",
+					"                }",
+					"            }, function (err, res) {",
+					"                if (err) console.log('Error ', err)",
+					"                const body = res.json()",
+					"    ",
+					"                pm.test(\"EFK search query response to have status code 200/202\", function () {",
+					"                    pm.expect(pm.response.code).to.be.oneOf([200, 202])",
+					"                })",
+					"    ",
+					"                pm.test(\"result to have entries matching the response hits entries\", function () {",
+					"                    pm.expect(body.hits.hits.length).to.eql(body.hits.total.value)",
+					"                })",
+					"                body.hits.hits.forEach(entry => {",
+					"                    if (entry._index.match(/mojaloop*/)) {",
+					"                        let { type, action } = entry._source.metadata.event",
+					"                        let { transactionType, transactionAction } = entry._source.metadata.trace.tags",
+					"                        if (results.mojaloop.has(`${entry._source.metadata.trace.service}`)) {",
+					"                            let record = results.mojaloop.get(`${entry._source.metadata.trace.service}`)",
+					"                            record.push({ transactionType, transactionAction, type, action })",
+					"                            results.mojaloop.set(`${entry._source.metadata.trace.service}`, record)",
+					"                        } else {",
+					"                            results.mojaloop.set(`${entry._source.metadata.trace.service}`, [{ transactionType, transactionAction, type, action }])",
+					"                        }",
+					"                    } else if (entry._index.match(/apm*/)) {",
+					"                        let { labels } = entry._source",
+					"                        if (results.apm.has(`${entry._source.transaction.name}`)){",
+					"                            let record = results.apm.get(`${entry._source.transaction.name}`)",
+					"                            record.push({labels})",
+					"                            results.apm.set(`${entry._source.transaction.name}`, record)",
+					"                        } else {",
+					"                        results.apm.set(entry._source.transaction.name, [{ labels }])",
+					"                        }",
+					"                    } else {",
+					"                        results.reason = 'more indexes found'",
+					"                        results.fail = true",
+					"                    }",
+					"                })",
+					"    ",
+					"                pm.test(\"Indexes to match only mojaloop and apm\", function () {",
+					"                    pm.expect(results.fail).to.eql(false)",
+					"                    pm.test(\"Mojaloop index values match the expected count and values\", () => {",
+					"                        pm.expect(results.mojaloop.size).to.eql(expectations.mojaloop.size)",
+					"                        for (let [key, value] of results.mojaloop) {",
+					"                            pm.expect(value).to.include.all.deep.members(expectations.mojaloop.get(key))",
+					"                            // console.log(\"Service:\",key)",
+					"                            // console.log(\"Values:\",value)",
+					"                            // console.log(\"Keys:\",expectations.mojaloop.get(key))",
+					"                        }",
+					"                    })",
+					"                    pm.test(\"Apm index values match the expected count and values\", function () {",
+					"                        pm.expect(results.apm.size).to.eql(expectations.apm.size)",
+					"                        for (let [key, value] of results.apm) {",
+					"                            // console.log(\"Service:\",key)",
+					"                            // console.log(\"Values:\",value)",
+					"                            // console.log(\"Keys:\",expectations.apm.get(key))",
+					"                            pm.expect(value).to.include.all.deep.members(expectations.apm.get(key))",
+					"                        }",
+					"                    })",
+					"                })",
+					"            });",
+					"        }",
+					"}",
+					"",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "f1810c90-0862-423b-971d-0c0ee7418e4e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "c4bd526e-1d2f-4dd1-a405-ec2a1f30fda2",
+			"key": "RUN_EFK_TESTS",
+			"value": "true",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"id": "c471d5e5-f4ca-4c2f-a640-ed5a05b3100d",
+			"key": "TIMEOUT_EFK_TESTS",
+			"value": "20000",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
