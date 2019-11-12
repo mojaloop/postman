@@ -140,3 +140,44 @@ OSS-New-Deployment-FSP-Setup
 3. Navigate to `Golden_Path` > `p2p_money_transfer` > `p2p_happy_path SEND Quote` > `Send Transfer`
 4. Click **Send**
 5. You can check the logs, database, etc to see the transfer state, status changes, positions and other such information.
+
+## 5. Running inside a locally deployed Kubernetes cluster of Mojaloop
+The available docker image can be used in order to deploy the tests inside a running local K8s cluster as a standalone `pod`, by using a `pod.yaml` file like the following example:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postman
+spec:
+  containers:
+    - name: postman-tests
+      image: mojaloop/postman
+      command: ["/bin/sh"]
+      args: ["-c", "newman run Golden_Path.postman_collection.json \
+      -e environments/Mojaloop-Local.postman_environment.json \
+      --env-var HOST_QUOTING_SERVICE='foo' \
+      --env-var HOST_CENTRAL_LEDGER='bar' \
+      --bail"]
+  restartPolicy: Never
+```
+
+and pushing it inside the K8s cluster with a command like:
+```shell script
+kubectl create -f ./pod.yaml
+```
+
+The command (in the part `args` of the above yaml definition) could be changed to whatever suits the needs of the user and the logs of it can be viewed by running:
+
+```shell script
+kubectl logs postman-tests
+```
+
+The `pod` can be deleted with:
+```shell script
+kubectl delete -f ./pod.yaml
+```
+or
+```shell script
+kubectl delete pods postman-tests
+```
