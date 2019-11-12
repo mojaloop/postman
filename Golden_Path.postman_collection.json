@@ -1,11 +1,8 @@
 {
 	"info": {
-<<<<<<< Updated upstream
-		"_postman_id": "0f76779a-34b8-4a38-9794-2ea69e0eafa8",
-=======
 		"_postman_id": "06f62cc2-d2d7-49e7-80ae-54865083be06",
->>>>>>> Stashed changes
 		"name": "Golden_Path",
+		"description": "Purpose: To setup a newly deployed Mojaloop Switch and add test FSPs along with their callback and other Information needed for end-to-end testing.\n\nContributors:\n- Mowali\n- Amar Ramachandran <amarnath.ramachandran@modusbox.com>\n- Georgi Georgiev <georgi.georgiev@modusbox.com>\n- Juan Correa <juan.correa@modusbox.com>\n- Miguel deBarros <miguel.debarros@modusbox.com>\n- Nico Duvenage <nico.duvenage@modusbox.com>\n- Sam Kummary <sam@modusbox.com>\n- Sri Miryala <sridevi.miriyala@modusbox.com>\n- Steven Oderayi <steven.oderayi@modusbox.com>\n- valentin genev <valentin.genev@modusbox.com>\n- Vijay Guthi <vijaya.guthi@modusbox.com>",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -1931,10 +1928,8 @@
 									"setTimeout(function () {",
 									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
 									"          if(response.responseSize !== 0) {",
-									"              const jsonData = response.json().data;",
-									"              const headers = response.json().headers;",
-									"              const transferId = pm.environment.get(\"transfer_ID\");",
-									"              ",
+									"              var jsonData = response.json().data;",
+									"              var headers = response.json().headers;",
 									"              pm.test(\"Error Code should be returned\", function () {",
 									"                pm.expect(jsonData.errorInformation.errorCode).to.eql('4001');",
 									"              });",
@@ -1961,12 +1956,12 @@
 									"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
 									"            });",
 									"            ",
-									"            pm.test(`fspiop-uri is /payerfsp/transfers/${transferId}/error`, function () {",
-									"                pm.expect(headers['fspiop-uri']).to.eql(`/payerfsp/transfers/${transferId}/error`);",
+									"            pm.test(\"fspiop-uri is empty\", function () {",
+									"                pm.expect(headers['fspiop-uri']).to.eql(undefined);",
 									"            });",
 									"            ",
-									"            pm.test(\"fspiop-http-method is PUT\", function () {",
-									"                pm.expect(headers['fspiop-http-method']).to.eql(\"PUT\");",
+									"            pm.test(\"fspiop-http-method is empty\", function () {",
+									"                pm.expect(headers['fspiop-http-method']).to.eql(undefined);",
 									"            });",
 									"          } else {",
 									"              pm.test(\"Transfer FAILED\", function () {",
@@ -11359,11 +11354,11 @@
 									"          console.log('response: ',response.json());",
 									"       ",
 									"       var jsonData = response.json();",
-									"        pm.test(\"Error Code should be returned '3100'\", function () {",
-									"            pm.expect(jsonData.errorInformation.errorCode).to.eql('3100');",
+									"        pm.test(\"Error Code should be returned '3202'\", function () {",
+									"            pm.expect(jsonData.errorInformation.errorCode).to.eql('3202');",
 									"        });",
 									"        pm.test(\"Error Description should be returned\", function () {",
-									"            pm.expect(jsonData.errorInformation.errorDescription).to.eql('Generic validation error - Unsupported participant \\'payerfsp\\'');",
+									"            pm.expect(jsonData.errorInformation.errorDescription).to.include('Payer FSP ID not found');",
 									"        });",
 									"        ",
 									"      } else {",
@@ -12441,18 +12436,35 @@
 			"name": "Bug Fixes",
 			"item": [
 				{
-					"name": "Check transfers/ Missing ID #849",
-					"event": [
+					"name": "Tests for Bugfix #998 - Quoting service not using most recent endpoint",
+					"item": [
 						{
-							"listen": "prerequest",
-							"script": {
-								"id": "2e244cfd-ff69-448a-8b62-176d4dd0b28d",
-								"exec": [
-									"pm.environment.set(\"completedTimestamp\",new Date().toISOString());",
-									""
+							"name": "Add payeefsp request URL - QUOTES PUT with incorrect endpoint",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
 								],
-<<<<<<< Updated upstream
-=======
 								"body": {
 									"mode": "raw",
 									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_QUOTES\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/incorrectpayeefsp\"\n}"
@@ -12997,7 +13009,6 @@
 									"pm.environment.set(\"completedTimestamp\",new Date().toISOString());",
 									""
 								],
->>>>>>> Stashed changes
 								"type": "text/javascript"
 							}
 						},
@@ -13394,12 +13405,12 @@
 								"exec": [
 									"const jsonData = pm.response.json();",
 									"",
-									"pm.test(\"Check Internal server error\", function () {",
-									"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Internal server error');",
+									"pm.test(\"Check Malformed syntax error\", function () {",
+									"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Malformed syntax');",
 									"});",
 									"",
-									"pm.test(\"Check Error code 2001\", function () {",
-									"    pm.expect(jsonData.errorInformation.errorCode).to.eql('2001');",
+									"pm.test(\"Check Error code 3101\", function () {",
+									"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3101');",
 									"});"
 								],
 								"type": "text/javascript"
@@ -14006,70 +14017,35 @@
 					"response": []
 				},
 				{
-<<<<<<< Updated upstream
-					"name": "Check FSPIOP Headers from ML-API-Adapter #1032",
-=======
 					"name": "Check FSPIOP Headers from Switch #883",
->>>>>>> Stashed changes
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "900142b0-e4d7-43a4-a751-38202b600661",
+								"id": "91dac134-b7ce-400b-9565-638885baf8f8",
 								"exec": [
-									"pm.test(\"Status code is 202\", () => {",
+									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
 									"});",
 									"",
-									"setTimeout(() => {",
-									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\" + pm.environment.get(\"transfer_ID\"), function (err, response) {",
-									"            const responseBody = response.responseSize ? response.json() : null;",
-									"            const headers = responseBody.headers || null;",
-									"            const transferId = pm.environment.get(\"transfer_ID\");",
-									"            ",
-									"            pm.test(\"Expect simulator to return response\", () => {",
-									"                  pm.expect(response.responseSize).to.be.above(0);",
-									"              })",
-									"            pm.test(\"payerfsp fspiop-source is switch\", () => {",
-									"                pm.expect(headers['fspiop-source']).to.eql('switch');",
-									"            });",
-									"            ",
-									"            pm.test(\"payerfsp fspiop-destination is payerfsp\", () => {",
-									"                pm.expect(headers['fspiop-destination']).to.eql('payerfsp');",
-									"            });",
-									"            ",
-									"            pm.test(\"payerfsp content-type should be application/vnd.interoperability.transfers+json;version=1.0\", () => {",
-									"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
-									"            });",
-									"            ",
-									"            pm.test(\"payerfsp accept is empty\", () => {",
-									"                pm.expect(headers['accept']).to.eql(undefined);",
-									"            });",
-									"            ",
-									"            pm.test(\"fspiop-signature is empty\", () => {",
-									"                pm.expect(headers['fspiop-signature']).to.eql(undefined);",
-									"            });",
-									"            ",
-									"            pm.test(`payerfsp fspiop-uri is /payerfsp/transfers/${transferId}/error`, () => {",
-									"                pm.expect(headers['fspiop-uri']).to.eql(`/payerfsp/transfers/${transferId}/error`);",
-									"            });",
-									"            ",
-									"            pm.test(\"payerfsp fspiop-http-method is PUT\", () => {",
-									"                pm.expect(headers['fspiop-http-method']).to.eql('PUT');",
-									"            });",
-									"            ",
-									"            pm.test(\"Response data does not have transferId\", () => {",
-									"               pm.expect(responseBody.data.transferId).to.eql(undefined);",
-									"            });",
-									"            ",
-									"            pm.test(\"Response status is not COMMITTED\", () => {",
-									"                pm.expect(responseBody.data.transferState).to.not.eql('COMMITTED');",
-									"            });",
-									"   });",
-									"}, 12000)",
 									"",
-									"",
-									"",
+									"setTimeout(function () {",
+									"  partyId = pm.variables.get(\"InexistentPartyId\");",
+									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\") + `/payerfsp/callbacks/${partyId}`, function (err, response) {",
+									"      responseBody = response.json();",
+									"      pm.test(\"Expect simulator to return response\", () => {",
+									"          pm.expect(response.responseSize).to.be.above(0);",
+									"      })",
+									"      pm.test(`Expect FSPIO-URI header to be /parties/MSISDN/${partyId}/error`, function () {",
+									"          pm.expect(responseBody.headers).to.have.property(\"fspiop-uri\");",
+									"          pm.expect(responseBody.headers[\"fspiop-uri\"]).to.equal(`/parties/MSISDN/${partyId}/error`);",
+									"        });",
+									"        pm.test(\"Expected FSPIO-HTTP-Method header to be PUT\", function () {",
+									"            pm.expect(responseBody.headers).to.have.property(\"fspiop-http-method\");",
+									"            pm.expect(responseBody.headers[\"fspiop-http-method\"]).to.equal(\"PUT\");",
+									"        });",
+									"    });",
+									"}, 6000)",
 									""
 								],
 								"type": "text/javascript"
@@ -14078,70 +14054,49 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "20820c95-0a24-4906-a6ba-708d6ecf4a61",
+								"id": "40093898-31d3-4474-b6d1-70d1604ee160",
 								"exec": [
-									"var uuid = require('uuid');",
-									"var generatedUUID = uuid.v4();",
-									"",
-									"pm.environment.set('transfer_ID', generatedUUID);",
-									"pm.environment.set('transferDate', (new Date()).toUTCString());",
-									"pm.environment.set('transferExpiration',new Date(new Date().getTime() + 10000));",
-									"pm.environment.set('transferAmount', 1.9999);"
+									"pm.environment.set('dateHeader', (new Date()).toUTCString());",
+									"pm.variables.set('InexistentPartyId', 1999999)",
+									""
 								],
 								"type": "text/javascript"
 							}
 						}
 					],
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/vnd.interoperability.transfers+json;version=1"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/vnd.interoperability.transfers+json;version=1.0"
+								"type": "text",
+								"value": "application/vnd.interoperability.parties+json;version=1"
 							},
 							{
 								"key": "Date",
-								"value": "{{transferDate}}"
+								"type": "text",
+								"value": "{{dateHeader}}"
 							},
 							{
 								"key": "FSPIOP-Source",
+								"type": "text",
 								"value": "{{payerfsp}}"
 							},
 							{
-								"key": "FSPIOP-Destination",
-								"value": "{{payeefsp}}"
-							},
-							{
-								"key": "FSPIOP-Signature",
+								"key": "Content-Type",
 								"type": "text",
-								"value": "{{fspiop-signature}}"
-							},
-							{
-								"key": "FSPIOP-URI",
-								"type": "text",
-								"value": "/transfers"
-							},
-							{
-								"key": "FSPIOP-HTTP-Method",
-								"type": "text",
-								"value": "POST"
+								"value": "application/vnd.interoperability.parties+json;version=1.0"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"{{payerfsp}}\",\n  \"payeeFsp\": \"noresponsepayeefsp\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
-						},
 						"url": {
-							"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+							"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/{{InexistentPartyId}}",
 							"host": [
-								"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+								"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
 							],
 							"path": [
-								"transfers"
+								"parties",
+								"MSISDN",
+								"{{InexistentPartyId}}"
 							]
 						}
 					},
@@ -14286,8 +14241,6 @@
 					"response": []
 				}
 			]
-<<<<<<< Updated upstream
-=======
 		}
 	],
 	"event": [
@@ -14310,7 +14263,6 @@
 					""
 				]
 			}
->>>>>>> Stashed changes
 		}
 	]
 }
