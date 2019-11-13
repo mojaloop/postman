@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6d101d90-93f2-477e-9f3f-b52d06f81fbf",
+		"_postman_id": "90a32d04-9b11-4559-8d77-35d1282fbb94",
 		"name": "Golden_Path",
 		"description": "Purpose: To setup a newly deployed Mojaloop Switch and add test FSPs along with their callback and other Information needed for end-to-end testing.\n\nContributors:\n- Mowali\n- Amar Ramachandran <amarnath.ramachandran@modusbox.com>\n- Georgi Georgiev <georgi.georgiev@modusbox.com>\n- Juan Correa <juan.correa@modusbox.com>\n- Miguel deBarros <miguel.debarros@modusbox.com>\n- Nico Duvenage <nico.duvenage@modusbox.com>\n- Sam Kummary <sam@modusbox.com>\n- Sri Miryala <sridevi.miriyala@modusbox.com>\n- Steven Oderayi <steven.oderayi@modusbox.com>\n- valentin genev <valentin.genev@modusbox.com>\n- Vijay Guthi <vijaya.guthi@modusbox.com>",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -13033,6 +13033,264 @@
 									""
 								]
 							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Tests for Bugfix #981 - 500 http code instead of 400",
+					"item": [
+						{
+							"name": "Add Participant - Duplicate account Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "b153965b-4892-41b1-9ff7-dc54ad6ef262",
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"",
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"Check Generic client error\", function () {",
+											"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Generic client error');",
+											"});",
+											"",
+											"pm.test(\"Check Error code 3000\", function () {",
+											"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3000');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"{{payerfsp}}\",\n  \"currency\": \"USD\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+									],
+									"path": [
+										"participants"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add non existing Participant",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "0a476ec8-7d80-440d-870d-de5810fb7d75",
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"",
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"Check Generic ID not found\", function () {",
+											"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Generic ID not found');",
+											"});",
+											"",
+											"pm.test(\"Check Error code 3200\", function () {",
+											"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3200');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "FSPIOP-Source",
+										"value": "{{payerfsp}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/xyz",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"xyz"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Get Participant",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{participant}}",
+											"protocol": "http",
+											"host": [
+												"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+											],
+											"path": [
+												"participants",
+												"{{participant}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Connection",
+											"value": "keep-alive",
+											"name": "Connection",
+											"description": "Options that are desired for the connection"
+										},
+										{
+											"key": "Content-Length",
+											"value": "251",
+											"name": "Content-Length",
+											"description": "The length of the response body in octets (8-bit bytes)"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8",
+											"name": "Content-Type",
+											"description": "The mime type of this content"
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 22 Aug 2018 15:25:18 GMT",
+											"name": "Date",
+											"description": "The date and time that the message was sent"
+										},
+										{
+											"key": "Server",
+											"value": "nginx/1.13.8",
+											"name": "Server",
+											"description": "A name for the server"
+										},
+										{
+											"key": "accept-ranges",
+											"value": "bytes",
+											"name": "accept-ranges",
+											"description": "Content-Types that are acceptable"
+										},
+										{
+											"key": "cache-control",
+											"value": "no-cache",
+											"name": "cache-control",
+											"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+										}
+									],
+									"cookie": [],
+									"body": "{\"name\":\"testfsp\",\"id\":\"test-central-ledger.mojaloop.test/participants/testfsp\",\"created\":\"2018-08-22T08:16:50.000Z\",\"isActive\":1,\"links\":{\"self\":\"test-central-ledger.mojaloop.test/participants/testfsp\"},\"currencies\":[{\"currency\":\"USD\",\"isActive\":1}]}"
+								}
+							]
+						},
+						{
+							"name": "Add Participant - Invalid Currency",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "9df0802f-5fca-4d63-9351-14baf806c481",
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"",
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"Check Malformed syntax\", function () {",
+											"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Malformed syntax');",
+											"});",
+											"",
+											"pm.test(\"Check Error code 3101\", function () {",
+											"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3101');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "{{payerfsp}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"payer10\",\n  \"currency\": \"A#\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants"
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"protocolProfileBehavior": {},
