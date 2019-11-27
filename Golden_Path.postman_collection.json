@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7335cc78-6718-4401-a41c-0f411d36da2c",
+		"_postman_id": "a760cecb-f4ca-4343-9937-3a7e02e858ca",
 		"name": "Golden_Path",
 		"description": "Purpose: To setup a newly deployed Mojaloop Switch and add test FSPs along with their callback and other Information needed for end-to-end testing.\n\nContributors:\n- Mowali\n- Amar Ramachandran <amarnath.ramachandran@modusbox.com>\n- Georgi Georgiev <georgi.georgiev@modusbox.com>\n- Juan Correa <juan.correa@modusbox.com>\n- Miguel deBarros <miguel.debarros@modusbox.com>\n- Nico Duvenage <nico.duvenage@modusbox.com>\n- Sam Kummary <sam@modusbox.com>\n- Sri Miryala <sridevi.miriyala@modusbox.com>\n- Steven Oderayi <steven.oderayi@modusbox.com>\n- valentin genev <valentin.genev@modusbox.com>\n- Vijay Guthi <vijaya.guthi@modusbox.com>",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -7549,11 +7549,6 @@
 										"key": "FSPIOP-Destination",
 										"type": "text",
 										"value": "{{payerfsp}}"
-									},
-									{
-										"key": "Accept",
-										"value": "application/vnd.interoperability.transfers+json;version=1",
-										"type": "text"
 									}
 								],
 								"body": {
@@ -8621,7 +8616,7 @@
 											"pm.environment.set('transfer_ID', generatedUUID);",
 											"pm.environment.set('transferDate', (new Date()).toUTCString());",
 											"pm.environment.set('transferAmount', 10);",
-											"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 30000))"
+											"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 2000))"
 										],
 										"type": "text/javascript"
 									}
@@ -8806,7 +8801,7 @@
 											"setTimeout(function () {",
 											"  pm.sendRequest('www.google.com', function (err, response) {}",
 											"    );",
-											"}, 40000)"
+											"}, 15000)"
 										],
 										"type": "text/javascript"
 									}
@@ -15832,12 +15827,12 @@
 							"raw": "{\n  \"fulfilment\": \"{{validFulfillment}}\",\n  \"completedTimestamp\": \"{{completedTimestamp}}\",\n  \"transferState\": \"COMMITTED\"\n}"
 						},
 						"url": {
-							"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+							"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/quotes",
 							"host": [
 								"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
 							],
 							"path": [
-								"transfers"
+								"quotes"
 							]
 						}
 					},
