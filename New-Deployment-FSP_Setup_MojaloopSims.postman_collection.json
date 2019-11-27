@@ -651,6 +651,16 @@
 								}
 							],
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [
 									{
@@ -658,6 +668,11 @@
 										"name": "Content-Type",
 										"type": "text",
 										"value": "application/json"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "hub_operator",
+										"type": "text"
 									}
 								],
 								"body": {
@@ -695,6 +710,16 @@
 								}
 							],
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [
 									{
@@ -739,6 +764,16 @@
 								}
 							],
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [
 									{
@@ -783,6 +818,16 @@
 								}
 							],
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [
 									{
@@ -1015,7 +1060,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL\",\n  \"value\": \"{{PAYERFSP_CALLBACK_URL}}\"\n}"
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_QUOTES\",\n  \"value\": \"{{PAYERFSP_CALLBACK_URL}}\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/payerfsp/endpoints",
@@ -1171,7 +1216,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "{{BEARER_TOKEN}}",
+											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 											"type": "string"
 										}
 									]
@@ -1186,7 +1231,7 @@
 									},
 									{
 										"key": "FSPIOP-Source",
-										"value": "payerfsp",
+										"value": "hub_operator",
 										"type": "text"
 									}
 								],
@@ -1216,7 +1261,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "{{BEARER_TOKEN}}",
+											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 											"type": "string"
 										}
 									]
@@ -1396,7 +1441,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "{{BEARER_TOKEN}}",
+											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 											"type": "string"
 										}
 									]
@@ -2091,6 +2136,16 @@
 								}
 							],
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [
 									{
@@ -2161,7 +2216,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL\",\n  \"value\": \"{{PAYEEFSP_CALLBACK_URL}}\"\n}"
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_QUOTES\",\n  \"value\": \"{{PAYEEFSP_CALLBACK_URL}}\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/payeefsp/endpoints",
@@ -2257,7 +2312,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "{{BEARER_TOKEN}}",
+											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 											"type": "string"
 										}
 									]
@@ -2315,7 +2370,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "{{BEARER_TOKEN}}",
+											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 											"type": "string"
 										}
 									]
@@ -2649,7 +2704,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "{{BEARER_TOKEN}}",
+											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 											"type": "string"
 										}
 									]
@@ -2664,7 +2719,7 @@
 									},
 									{
 										"key": "FSPIOP-Source",
-										"value": "{{payerfsp}}",
+										"value": "{{hub_operator}}",
 										"type": "text"
 									}
 								],
@@ -3532,7 +3587,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "{{TESTFSP1_BEARER_TOKEN}}",
+											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 											"type": "string"
 										}
 									]
@@ -3544,6 +3599,11 @@
 										"name": "Content-Type",
 										"type": "text",
 										"value": "application/json"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "hub_operator",
+										"type": "text"
 									}
 								],
 								"body": {
@@ -6220,7 +6280,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL\",\n  \"value\": \"{{TESTFSP3_CALLBACK_URL}}\"\n}\n"
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_QUOTES\",\n  \"value\": \"{{TESTFSP3_CALLBACK_URL}}\"\n}\n"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/endpoints",
