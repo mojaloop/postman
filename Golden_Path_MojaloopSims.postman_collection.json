@@ -19400,7 +19400,7 @@
 							"name": "089 - Active and inactive participant",
 							"item": [
 								{
-									"name": "Update participant (testfsp4 to inactive)",
+									"name": "Update participant (testfsp2 to inactive)",
 									"event": [
 										{
 											"listen": "test",
@@ -19421,7 +19421,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "{{PAYERFSP_BEARER_TOKEN}}",
+													"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 													"type": "string"
 												}
 											]
@@ -19435,22 +19435,22 @@
 											},
 											{
 												"key": "FSPIOP-Source",
-												"value": "payerfsp",
+												"value": "hub_operator",
 												"type": "text"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n              \"isActive\": false\r\n            }"
+											"raw": "{\r\n  \"isActive\": false\r\n}"
 										},
 										"url": {
-											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4",
+											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2",
 											"host": [
 												"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
 											],
 											"path": [
 												"participants",
-												"testfsp4"
+												"testfsp2"
 											]
 										},
 										"description": "Inactives participant testfsp4"
@@ -19458,20 +19458,98 @@
 									"response": []
 								},
 								{
-									"name": "Send Quote fail (testfsp1 to testfsp4)",
+									"name": "(BUG) Send Quote fail (testfsp1 to testfsp2)",
 									"event": [
 										{
 											"listen": "prerequest",
 											"script": {
 												"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 												"exec": [
-													"   var uuid = require('uuid');",
-													"   var generatedUUID = uuid.v4();",
-													"   pm.variables.set('quoteId', generatedUUID);",
-													"   generatedUUID = uuid.v4();",
-													"   pm.environment.set('transactionId', generatedUUID);",
+													"var navigator = {}; ",
+													"var window = {}; ",
+													"eval(pm.environment.get('jrsassign'));",
 													"",
-													"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"pm.environment.set('quoteId', generatedUUID);",
+													"generatedUUID = uuid.v4();",
+													"pm.environment.set('transactionId', generatedUUID);",
+													"",
+													"pm.variables.set('quoteDate', (new Date()).toUTCString());",
+													"pm.variables.set('payerName', 'PayerFirst PayerLast');",
+													"pm.variables.set('payerMSISDN', '918381008987');",
+													"",
+													"pm.variables.set('expectedPayeeFirstName', 'GoldenFirst');",
+													"pm.variables.set('expectedPayeeLastName', 'GoldenLast');",
+													"pm.variables.set('expectedPayeeDOB', '2010-10-10');",
+													"",
+													"var oHeader = {alg: \"RS256\", \"FSPIOP-Source\":\"testfsp1\",\"FSPIOP-Destination\":\"testfsp2\", \"FSPIOP-URI\":\"/quotes\", \"FSPIOP-HTTP-Method\":\"POST\", \"Date\":pm.variables.get('quoteDate')};",
+													"var sHeader = JSON.stringify(oHeader);",
+													"console.log(`sHeader: ${sHeader}`)",
+													"",
+													"var objPayload = {",
+													"  \"quoteId\": pm.environment.get('quoteId'),",
+													"  \"transactionId\": pm.environment.get('transactionId'),",
+													"  \"payer\": {",
+													"    \"partyIdInfo\": {",
+													"      \"partyIdType\": \"MSISDN\",",
+													"      \"partyIdentifier\": pm.variables.get('payerMSISDN'),",
+													"      \"fspId\": \"testfsp1\"",
+													"    },",
+													"    \"personalInfo\": {",
+													"      \"complexName\": {",
+													"        \"firstName\": \"Mats\",",
+													"        \"lastName\": \"Hagman\"",
+													"      },",
+													"      \"dateOfBirth\": \"1983-10-25\"",
+													"    }",
+													"  },",
+													"  \"payee\": {",
+													"    \"partyIdInfo\": {",
+													"      \"partyIdType\": \"MSISDN\",",
+													"      \"partyIdentifier\": pm.environment.get('payeefspMSISDN'),",
+													"      \"fspId\": \"testfsp2\"",
+													"    }",
+													"  },",
+													"  \"amountType\": \"RECEIVE\",",
+													"  \"amount\": {",
+													"    \"amount\": \"60\",",
+													"    \"currency\": pm.environment.get('currency')",
+													"  },",
+													"  \"transactionType\": {",
+													"    \"scenario\": \"TRANSFER\",",
+													"    \"initiator\": \"PAYER\",",
+													"    \"initiatorType\": \"CONSUMER\"",
+													"  },",
+													"  \"note\": \"hej\"",
+													"}",
+													"",
+													"var sPayload = JSON.stringify(objPayload)",
+													"console.log(`sPayload: ${sPayload}`)",
+													"pm.variables.set(\"quoteRequest\", sPayload);",
+													"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
+													"console.log(`token: ${token}`)",
+													"",
+													"// var encodedHeaders = btoa(sHeader)",
+													"",
+													"// var ofspiopSignature = {signature: vSignature, protectedHeader: encodedHeaders}",
+													"// var token = JSON.stringify(ofspiopSignature)",
+													"",
+													"const [ protectedHeaderBase64, , signature ] = token.split('.');",
+													"",
+													"const signatureObject = {",
+													"    signature: signature.replace('\"', ''),",
+													"    protectedHeader: protectedHeaderBase64.replace('\"', '')",
+													"};",
+													"",
+													"console.log(JSON.stringify(signatureObject))",
+													"",
+													"pm.variables.set('fspiopSignature',JSON.stringify(signatureObject))",
+													"",
+													"",
+													"",
+													"",
 													""
 												],
 												"type": "text/javascript"
@@ -19480,40 +19558,97 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "029f9c14-13e7-4aac-ada8-572ccf2d502c",
+												"id": "b7ca6bc0-b58a-46d8-8881-2db1aa0703ef",
 												"exec": [
-													"/*pm.test(\"Status code is 202\", function () {",
+													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
-													"});*/",
-													"",
-													"//pm.environment.set('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE','false')",
+													"});",
 													"",
 													"setTimeout(function () {",
-													"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/testfsp1/correlationid/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
+													"  pm.sendRequest(pm.environment.get(\"TESTFSP1_SDK_INBOUND_URL\")+\"/callbacks/\"+pm.environment.get(\"quoteId\"), function (err, response) {",
 													"      if(response.responseSize !== 0) {",
-													"          console.log(response.json());",
-													"     /*  pm.test(\"Response ilpPacket is not null\", function () {",
-													"           pm.expect(response.json().ilpPacket).not.equal(null);",
-													"           pm.environment.set(\"ilpPacket\", response.json().ilpPacket);",
-													"       });",
-													"       ",
-													"       pm.test(\"Response condition is not null\", function () {",
-													"           pm.expect(response.json().condition).not.equal(null);",
-													"           pm.environment.set(\"condition\", response.json().condition);",
-													"       });*/",
-													"        pm.test(\"Quote should FAILED\", function () {",
-													"            throw new Error('Unssuported participant is allowed to send Quotes');",
+													"          //Checking headers",
+													"            var headers = response.json().headers;",
+													"            pm.test(\"testfsp1 fspiop-source is switch\", function () {",
+													"                pm.expect(headers['fspiop-source']).to.eql('switch');",
+													"            });",
+													"            ",
+													"            pm.test(\"testfsp1 fspiop-destination is testfsp1\", function () {",
+													"                pm.expect(headers['fspiop-destination']).to.eql('testfsp1');",
+													"            });",
+													"            ",
+													"            pm.test(\"testfsp1 content-type should be application/vnd.interoperability.quotes+json;version=1.0\", function () {",
+													"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.quotes+json;version=1.0');",
+													"            });",
+													"            ",
+													"            pm.test(\"testfsp1 accept is empty\", function () {",
+													"                pm.expect(headers['accept']).to.eql(undefined);",
+													"            });",
+													"            ",
+													"            ",
+													"            ",
+													"            var {signature,protectedHeader} = JSON.parse(headers['fspiop-signature'])",
+													"            // var strData = JSON.stringify(response.json().data)",
+													"            // const token = `${protectedHeader}.${btoa(strData)}.${signature}`",
+													"            // console.log(`token: ${token}`)",
+													"            // var isValid = KJUR.jws.JWS.verify(token, pm.environment.get('goldenpayeefspJWSPubKey'), {alg: ['RS256']})",
+													"            // console.log(`isValid: ${isValid}`)",
+													"            // pm.test(\"Check if the response is JWS valid\", function () {",
+													"            //     pm.expect(isValid).to.eql(true);",
+													"            // });",
+													"            ",
+													"            //Validate protected header inside Signature",
+													"            var decodedProtectedHeaders = JSON.parse(atob(protectedHeader))",
+													"            console.log('decodedProtectedHeaders:',decodedProtectedHeaders)",
+													"            ",
+													"            pm.test(\"FSPIOP-Signature Protected Header alg to be RS256\", function () {",
+													"                pm.expect(decodedProtectedHeaders['alg']).to.eql('RS256');",
+													"            });",
+													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-URI to be /quotes/\"+pm.environment.get(\"quoteId\"), function () {",
+													"                pm.expect(decodedProtectedHeaders['FSPIOP-URI']).to.eql('/quotes/'+pm.environment.get(\"quoteId\")+'/errror');",
+													"            });",
+													"            ",
+													"",
+													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-HTTP-Method to be PUT\", function () {",
+													"                pm.expect(decodedProtectedHeaders['FSPIOP-HTTP-Method']).to.eql('PUT');",
+													"            });",
+													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Source to be goldenpayeefsp\", function () {",
+													"                pm.expect(decodedProtectedHeaders['FSPIOP-Source']).to.eql('switch');",
+													"            });",
+													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Destination to be payerfsp\", function () {",
+													"                pm.expect(decodedProtectedHeaders['FSPIOP-Destination']).to.eql('testfsp1');",
+													"            });",
+													"            pm.test(\"FSPIOP-Signature Protected Header Date is present\", function () {",
+													"                pm.expect(decodedProtectedHeaders['Date']).to.eql(headers['date']);",
+													"            });",
+													"           ",
+													"            pm.test(\"testfsp1 FSPIOP-URI to be /quotes/\"+pm.environment.get(\"quoteId\"), function () {",
+													"                pm.expect(headers['fspiop-uri']).to.eql('/quotes/'+pm.environment.get(\"quoteId\")+'/error');",
+													"            });",
+													"            ",
+													"            pm.test(\"payerfsp fspiop-http-method is PUT\", function () {",
+													"                pm.expect(headers['fspiop-http-method']).to.eql('PUT');",
+													"            });",
+													"            ",
+													"            var jsonData = response.json().data;",
+													"            ",
+													"            pm.test(\"Error code is 3201\", function () {",
+													"                pm.expect(jsonData.errorInformation.errorCode).to.eql('3201');",
+													"            });",
+													"           ",
+													"           pm.test(\"Error Description is Destination FSP Error - Unsupported participant \", function () {",
+													"                pm.expect(jsonData.errorInformation.errorDescription).to.include('Destination FSP Error - Unsupported');",
 													"           });",
 													"           ",
 													"      } else {",
-													"           pm.test(\"Quotes should not returned any response for inactive participant\", function () {",
-													"          ",
-													"       });",
+													"          pm.test(\"Quote FAILED\", function () {",
+													"            throw new Error('Did not receive response on Payer side');",
+													"           });",
+													"           postman.setNextRequest(null);",
 													"      }",
 													"       ",
 													"   });",
-													"}, 4000);",
-													"",
+													"}, 1000)",
 													"",
 													"",
 													""
@@ -19537,7 +19672,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.quotes+json"
+												"value": "application/vnd.interoperability.quotes+json;version=1"
 											},
 											{
 												"key": "Content-Type",
@@ -19545,7 +19680,7 @@
 											},
 											{
 												"key": "Date",
-												"value": "{{dateHeader}}"
+												"value": "{{quoteDate}}"
 											},
 											{
 												"key": "FSPIOP-Source",
@@ -19553,12 +19688,27 @@
 											},
 											{
 												"key": "FSPIOP-Destination",
-												"value": "testfsp4"
+												"value": "testfsp2"
+											},
+											{
+												"key": "FSPIOP-Signature",
+												"type": "text",
+												"value": "{{fspiopSignature}}"
+											},
+											{
+												"key": "FSPIOP-HTTP-Method",
+												"type": "text",
+												"value": "POST"
+											},
+											{
+												"key": "FSPIOP-URI",
+												"type": "text",
+												"value": "/quotes"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp1\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp4\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"55\",\n    \"currency\": \"XOF\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+											"raw": "{{quoteRequest}}"
 										},
 										"url": {
 											"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
@@ -19568,64 +19718,135 @@
 											"path": [
 												"quotes"
 											]
-										},
-										"description": "Trying to send quote request to testfsp4"
+										}
 									},
 									"response": []
 								},
 								{
-									"name": "Send Transfer fail(testfsp1 to testfsp4)",
+									"name": "(BUG) Send Transfer fail(testfsp1 to testfsp2)",
 									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "16b4580d-74c7-44e9-952e-d40a61f9cb69",
-												"exec": [
-													"//if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
-													"   var uuid = require('uuid');",
-													"   var generatedUUID = uuid.v4();",
-													"//   pm.environment.set('transfer_ID', generatedUUID);",
-													"//} else {",
-													"    pm.environment.set('transfer_ID', pm.environment.get('transactionId'));",
-													"//}",
-													"",
-													"//if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-													"   pm.environment.set('transferDate', (new Date()).toUTCString());",
-													"//}",
-													"",
-													"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 120000))"
-												],
-												"type": "text/javascript"
-											}
-										},
 										{
 											"listen": "test",
 											"script": {
-												"id": "e47ebaa4-926e-4007-821a-e68cd385e18c",
+												"id": "900142b0-e4d7-43a4-a751-38202b600661",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
 													"});",
 													"",
-													"pm.environment.set('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE','true')",
-													"",
+													"//Check the callback response that Switch forwards to payerfsp",
 													"setTimeout(function () {",
-													"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/testfsp1/correlationid/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
+													"  pm.sendRequest(pm.environment.get(\"TESTFSP1_SDK_INBOUND_URL\")+\"/callbacks/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
 													"          if(response.responseSize !== 0) {",
-													"              var jsonData = response.json();",
-													"            pm.test(\"Error message is expected as response: Participant testfsp4 is inactive\", function () {",
-													"          ",
-													"           pm.expect(jsonData.errorInformation.errorCode).to.eql(\"3100\");",
-													"           pm.expect(jsonData.errorInformation.errorDescription).to.eql('Generic validation error: Participant testfsp4 is inactive');",
-													"        });",
+													"            //Checking headers",
+													"            var headers = response.json().headers;",
+													"            pm.test(\"fspiop-source is switch \", function () {",
+													"                pm.expect(headers['fspiop-source']).to.eql('switch');",
+													"            });",
+													"            ",
+													"            pm.test(\"fspiop-destination is testfsp1\", function () {",
+													"                pm.expect(headers['fspiop-destination']).to.eql('testfsp1');",
+													"            });",
+													"            ",
+													"            pm.test(\"content-type should be application/vnd.interoperability.transfers+json;version=1.0\", function () {",
+													"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
+													"            });",
+													"            ",
+													"            pm.test(\"accept is empty\", function () {",
+													"                pm.expect(headers['accept']).to.eql(undefined);",
+													"            });",
+													"            ",
+													"            pm.test(\"fspiop-signature is not empty\", function () {",
+													"                    pm.expect(headers['fspiop-signature']).not.eql(undefined);",
+													"                });",
+													"            ",
+													"            ",
+													"            pm.test(\"fspiop-uri includes /transfers/{{transfer_ID}}\", function () {",
+													"                pm.expect(headers['fspiop-uri']).to.eql('/transfers/'+ pm.environment.get(\"transfer_ID\")+'/error');",
+													"            });",
+													"            ",
+													"            pm.test(\"fspiop-http-method is PUT\", function () {",
+													"                pm.expect(headers['fspiop-http-method']).to.eql('PUT');",
+													"            });",
+													"            ",
+													"            var jsonData = response.json().data;",
+													"            pm.test(\"Error code is 2001\", function () {",
+													"                pm.expect(jsonData.errorInformation.errorCode).to.eql('2001');",
+													"            });",
+													"           ",
+													"           pm.test(\"Error Description is Internal server error \", function () {",
+													"                pm.expect(jsonData.errorInformation.errorDescription).to.include('Internal server error');",
+													"           });",
 													"          } else {",
 													"              pm.test(\"Transfer FAILED\", function () {",
-													"                throw new Error('Did not receive response');",
+													"                throw new Error('Did not receive response on payer side');",
 													"              });",
-													"            //  postman.setNextRequest(null);",
+													"              postman.setNextRequest(null)",
 													"          }",
 													"   });",
-													"}, 5000);"
+													"}, 1300)",
+													"",
+													"",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "20820c95-0a24-4906-a6ba-708d6ecf4a61",
+												"exec": [
+													"var navigator = {}; //fake a navigator object for the lib",
+													"var window = {}; //fake a window object for the lib",
+													"eval(pm.environment.get('jrsassign'));",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"pm.environment.set('transfer_ID', pm.environment.get('transactionId'));",
+													"",
+													"",
+													"pm.variables.set('transferDate', (new Date()).toUTCString());",
+													"",
+													"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))",
+													"",
+													"var oHeader = {alg: \"RS256\", \"FSPIOP-Source\":\"testfsp1\",\"FSPIOP-Destination\":\"testfsp2\", \"FSPIOP-URI\":\"/transfers\", \"FSPIOP-HTTP-Method\":\"POST\", \"Date\":pm.variables.get('transferDate')};",
+													"var sHeader = JSON.stringify(oHeader);",
+													"console.log(`sHeader: ${sHeader}`)",
+													"",
+													"var objPayload = {",
+													"  \"transferId\": pm.environment.get('transfer_ID'),",
+													"  \"payerFsp\": \"testfsp1\",",
+													"  \"payeeFsp\": \"testfsp2\",",
+													"  \"amount\": {",
+													"    \"amount\": \"10\",",
+													"    \"currency\": pm.environment.get('currency')",
+													"  },",
+													"  \"expiration\": pm.environment.get('transferExpiration'),",
+													"  \"ilpPacket\": pm.environment.get('ilpPacket'),",
+													"  \"condition\": pm.environment.get('condition')",
+													"}",
+													"var sPayload = JSON.stringify(objPayload)",
+													"console.log(`sPayload: ${sPayload}`)",
+													"pm.variables.set(\"transferRequest\", sPayload);",
+													"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
+													"//console.log(`token: ${token}`)",
+													"",
+													"// var encodedHeaders = btoa(sHeader)",
+													"",
+													"// var ofspiopSignature = {signature: vSignature, protectedHeader: encodedHeaders}",
+													"// var token = JSON.stringify(ofspiopSignature)",
+													"",
+													"const [ protectedHeaderBase64, , signature ] = token.split('.');",
+													"",
+													"const signatureObject = {",
+													"    signature: signature.replace('\"', ''),",
+													"    protectedHeader: protectedHeaderBase64.replace('\"', '')",
+													"};",
+													"",
+													"console.log(JSON.stringify(signatureObject))",
+													"",
+													"pm.variables.set('fspiopSignature',JSON.stringify(signatureObject))"
 												],
 												"type": "text/javascript"
 											}
@@ -19650,7 +19871,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.transfers+json;version=1"
+												"value": "application/vnd.interoperability.transfers+json;version=1.0"
 											},
 											{
 												"key": "Date",
@@ -19662,28 +19883,42 @@
 											},
 											{
 												"key": "FSPIOP-Destination",
-												"value": "testfsp4"
+												"value": "testfsp2"
+											},
+											{
+												"key": "FSPIOP-Signature",
+												"type": "text",
+												"value": "{{fspiopSignature}}"
+											},
+											{
+												"key": "FSPIOP-URI",
+												"type": "text",
+												"value": "/transfers"
+											},
+											{
+												"key": "FSPIOP-HTTP-Method",
+												"type": "text",
+												"value": "POST"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"testfsp1\",\n  \"payeeFsp\": \"testfsp4\",\n  \"amount\": {\n    \"amount\": \"55\",\n    \"currency\": \"XOF\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+											"raw": "{{transferRequest}}"
 										},
 										"url": {
-											"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+											"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/transfers",
 											"host": [
-												"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+												"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
 											],
 											"path": [
 												"transfers"
 											]
-										},
-										"description": "Trying to send transfer request to testfsp4  inactive participant"
+										}
 									},
 									"response": []
 								},
 								{
-									"name": "Update participant (testfsp4 to active)",
+									"name": "Update participant (testfsp2 to active)",
 									"event": [
 										{
 											"listen": "test",
@@ -19693,6 +19928,666 @@
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
 													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "FSPIOP-Source",
+												"type": "text",
+												"value": "hub_operator"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n              \"isActive\": true\r\n            }"
+										},
+										"url": {
+											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2",
+											"host": [
+												"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+											],
+											"path": [
+												"participants",
+												"testfsp2"
+											]
+										},
+										"description": "Reactivate participant testfsp4"
+									},
+									"response": []
+								},
+								{
+									"name": "Send Quote (testfsp1 to testfsp2) - pass",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
+												"exec": [
+													"  var navigator = {}; ",
+													"var window = {}; ",
+													"eval(pm.environment.get('jrsassign'));",
+													"",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"pm.environment.set('quoteId', generatedUUID);",
+													"generatedUUID = uuid.v4();",
+													"pm.environment.set('transactionId', generatedUUID);",
+													"",
+													"pm.variables.set('quoteDate', (new Date()).toUTCString());",
+													"pm.variables.set('payerName', 'PayerFirst PayerLast');",
+													"pm.variables.set('payerMSISDN', '918381008987');",
+													"",
+													"pm.variables.set('expectedPayeeFirstName', 'GoldenFirst');",
+													"pm.variables.set('expectedPayeeLastName', 'GoldenLast');",
+													"pm.variables.set('expectedPayeeDOB', '2010-10-10');",
+													"",
+													"var oHeader = {alg: \"RS256\", \"FSPIOP-Source\":\"testfsp1\",\"FSPIOP-Destination\":\"testfsp2\", \"FSPIOP-URI\":\"/quotes\", \"FSPIOP-HTTP-Method\":\"POST\", \"Date\":pm.variables.get('quoteDate')};",
+													"var sHeader = JSON.stringify(oHeader);",
+													"console.log(`sHeader: ${sHeader}`)",
+													"",
+													"var objPayload = {",
+													"  \"quoteId\": pm.environment.get('quoteId'),",
+													"  \"transactionId\": pm.environment.get('transactionId'),",
+													"  \"payer\": {",
+													"    \"partyIdInfo\": {",
+													"      \"partyIdType\": \"MSISDN\",",
+													"      \"partyIdentifier\": pm.variables.get('payerMSISDN'),",
+													"      \"fspId\": \"testfsp1\"",
+													"    },",
+													"    \"personalInfo\": {",
+													"      \"complexName\": {",
+													"        \"firstName\": \"Mats\",",
+													"        \"lastName\": \"Hagman\"",
+													"      },",
+													"      \"dateOfBirth\": \"1983-10-25\"",
+													"    }",
+													"  },",
+													"  \"payee\": {",
+													"    \"partyIdInfo\": {",
+													"      \"partyIdType\": \"MSISDN\",",
+													"      \"partyIdentifier\": pm.environment.get('payeefspMSISDN'),",
+													"      \"fspId\": \"testfsp2\"",
+													"    }",
+													"  },",
+													"  \"amountType\": \"RECEIVE\",",
+													"  \"amount\": {",
+													"    \"amount\": \"60\",",
+													"    \"currency\": pm.environment.get('currency')",
+													"  },",
+													"  \"transactionType\": {",
+													"    \"scenario\": \"TRANSFER\",",
+													"    \"initiator\": \"PAYER\",",
+													"    \"initiatorType\": \"CONSUMER\"",
+													"  },",
+													"  \"note\": \"hej\"",
+													"}",
+													"",
+													"var sPayload = JSON.stringify(objPayload)",
+													"console.log(`sPayload: ${sPayload}`)",
+													"pm.variables.set(\"quoteRequest\", sPayload);",
+													"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
+													"console.log(`token: ${token}`)",
+													"",
+													"// var encodedHeaders = btoa(sHeader)",
+													"",
+													"// var ofspiopSignature = {signature: vSignature, protectedHeader: encodedHeaders}",
+													"// var token = JSON.stringify(ofspiopSignature)",
+													"",
+													"const [ protectedHeaderBase64, , signature ] = token.split('.');",
+													"",
+													"const signatureObject = {",
+													"    signature: signature.replace('\"', ''),",
+													"    protectedHeader: protectedHeaderBase64.replace('\"', '')",
+													"};",
+													"",
+													"console.log(JSON.stringify(signatureObject))",
+													"",
+													"pm.variables.set('fspiopSignature',JSON.stringify(signatureObject))",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "029f9c14-13e7-4aac-ada8-572ccf2d502c",
+												"exec": [
+													"pm.test(\"Status code is 202\", function () {\r",
+													"    pm.response.to.have.status(202);\r",
+													"});\r",
+													"\r",
+													"setTimeout(function () {\r",
+													"  pm.sendRequest(pm.environment.get(\"TESTFSP2_SDK_INBOUND_URL\")+\"/requests/\"+pm.variables.get(\"quoteId\"), function (err, response) {\r",
+													"          if(response.responseSize !== 0) {\r",
+													"              \r",
+													"              //Check the Headers\r",
+													"              var headers = response.json().headers;\r",
+													"              \r",
+													"                pm.test(\"testfsp2 fspiop-source is testfsp1\", function () {\r",
+													"                    pm.expect(headers['fspiop-source']).to.eql('testfsp1');\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 fspiop-destination is testfsp2\", function () {\r",
+													"                    pm.expect(headers['fspiop-destination']).to.eql('testfsp2');\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 fspiop-signature is same as sent in the request\", function () {\r",
+													"                    pm.expect(headers['fspiop-signature']).to.eql(pm.variables.get(\"fspiopSignature\"));\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 accept is same as sent in the request\", function () {\r",
+													"                    pm.expect(headers['accept']).to.eql('application/vnd.interoperability.quotes+json;version=1');\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 content-typeis same as sent in the request\", function () {\r",
+													"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.quotes+json;version=1.0');\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 fspiop-uri is /quotes\", function () {\r",
+													"                    pm.expect(headers['fspiop-uri']).to.eql('/quotes');\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 fspiop-http-method is POST\", function () {\r",
+													"                    pm.expect(headers['fspiop-http-method']).to.eql('POST');\r",
+													"                });\r",
+													"                \r",
+													"          } else {\r",
+													"              pm.test(\"Quote FAILED\", function () {\r",
+													"                throw new Error('Did not receive request on payee side');\r",
+													"              });\r",
+													"              postman.setNextRequest(null)\r",
+													"          }\r",
+													"   });\r",
+													"}, 1100)\r",
+													"\r",
+													"setTimeout(function () {\r",
+													"  pm.sendRequest(pm.environment.get(\"TESTFSP1_SDK_INBOUND_URL\")+\"/callbacks/\"+pm.environment.get(\"quoteId\"), function (err, response) {\r",
+													"      if(response.responseSize !== 0) {\r",
+													"          //Checking headers\r",
+													"            var headers = response.json().headers;\r",
+													"            pm.test(\"testfsp1 fspiop-source is testfsp2\", function () {\r",
+													"                pm.expect(headers['fspiop-source']).to.eql('testfsp2');\r",
+													"            });\r",
+													"            \r",
+													"            pm.test(\"testfsp1 fspiop-destination is testfsp1\", function () {\r",
+													"                pm.expect(headers['fspiop-destination']).to.eql('testfsp1');\r",
+													"            });\r",
+													"            \r",
+													"            pm.test(\"testfsp1 content-type should be application/vnd.interoperability.quotes+json;version=1.0\", function () {\r",
+													"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.quotes+json;version=1.0');\r",
+													"            });\r",
+													"            \r",
+													"            pm.test(\"testfsp1 accept is empty\", function () {\r",
+													"                pm.expect(headers['accept']).to.eql(undefined);\r",
+													"            });\r",
+													"            \r",
+													"            \r",
+													"            \r",
+													"            var {signature,protectedHeader} = JSON.parse(headers['fspiop-signature'])\r",
+													"            // var strData = JSON.stringify(response.json().data)\r",
+													"            // const token = `${protectedHeader}.${btoa(strData)}.${signature}`\r",
+													"            // console.log(`token: ${token}`)\r",
+													"            // var isValid = KJUR.jws.JWS.verify(token, pm.environment.get('goldentestfsp2JWSPubKey'), {alg: ['RS256']})\r",
+													"            // console.log(`isValid: ${isValid}`)\r",
+													"            // pm.test(\"Check if the response is JWS valid\", function () {\r",
+													"            //     pm.expect(isValid).to.eql(true);\r",
+													"            // });\r",
+													"            \r",
+													"            //Validate protected header inside Signature\r",
+													"            var decodedProtectedHeaders = JSON.parse(atob(protectedHeader))\r",
+													"            console.log('decodedProtectedHeaders:',decodedProtectedHeaders)\r",
+													"            \r",
+													"            pm.test(\"FSPIOP-Signature Protected Header alg to be RS256\", function () {\r",
+													"                pm.expect(decodedProtectedHeaders['alg']).to.eql('RS256');\r",
+													"            });\r",
+													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-URI to be /quotes/\"+pm.environment.get(\"quoteId\"), function () {\r",
+													"                pm.expect(decodedProtectedHeaders['FSPIOP-URI']).to.eql('/quotes/'+pm.environment.get(\"quoteId\"));\r",
+													"            });\r",
+													"            \r",
+													"\r",
+													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-HTTP-Method to be PUT\", function () {\r",
+													"                pm.expect(decodedProtectedHeaders['FSPIOP-HTTP-Method']).to.eql('PUT');\r",
+													"            });\r",
+													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Source to be goldentestfsp2\", function () {\r",
+													"                pm.expect(decodedProtectedHeaders['FSPIOP-Source']).to.eql('testfsp2');\r",
+													"            });\r",
+													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Destination to be testfsp1\", function () {\r",
+													"                pm.expect(decodedProtectedHeaders['FSPIOP-Destination']).to.eql('testfsp1');\r",
+													"            });\r",
+													"            pm.test(\"FSPIOP-Signature Protected Header Date is present\", function () {\r",
+													"                pm.expect(decodedProtectedHeaders['Date']).to.eql(headers['date']);\r",
+													"            });\r",
+													"           \r",
+													"            pm.test(\"testfsp1 FSPIOP-URI to be /quotes/\"+pm.environment.get(\"quoteId\"), function () {\r",
+													"                pm.expect(headers['fspiop-uri']).to.eql('/quotes/'+pm.environment.get(\"quoteId\"));\r",
+													"            });\r",
+													"            \r",
+													"            pm.test(\"testfsp1 fspiop-http-method is PUT\", function () {\r",
+													"                pm.expect(headers['fspiop-http-method']).to.eql('PUT');\r",
+													"            });\r",
+													"            \r",
+													"            var jsonData = response.json().data;\r",
+													"            \r",
+													"            pm.test(\"Response quoteId is  null\", function () {\r",
+													"                pm.expect(jsonData.quoteId).to.eql(undefined);\r",
+													"                \r",
+													"            });\r",
+													"          \r",
+													"            pm.test(\"Response ilpPacket is not null\", function () {\r",
+													"                pm.expect(jsonData.ilpPacket).not.equal(undefined);\r",
+													"                pm.environment.set(\"ilpPacket\", jsonData.ilpPacket);\r",
+													"            });\r",
+													"       \r",
+													"           pm.test(\"Response condition is not null\", function () {\r",
+													"               pm.expect(jsonData.condition).not.equal(undefined);\r",
+													"               pm.environment.set(\"condition\", jsonData.condition);\r",
+													"           });\r",
+													"      } else {\r",
+													"          pm.test(\"Quote FAILED\", function () {\r",
+													"            throw new Error('Did not receive response on Payer side');\r",
+													"           });\r",
+													"           postman.setNextRequest(null);\r",
+													"      }\r",
+													"       \r",
+													"   });\r",
+													"}, 1000)\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{TESTFSP1_BEARER_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.quotes+json;version=1",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.quotes+json;version=1.0",
+												"type": "text"
+											},
+											{
+												"key": "Date",
+												"value": "{{quoteDate}}",
+												"type": "text"
+											},
+											{
+												"key": "FSPIOP-Source",
+												"value": "testfsp1",
+												"type": "text"
+											},
+											{
+												"key": "FSPIOP-Destination",
+												"value": "testfsp2",
+												"type": "text"
+											},
+											{
+												"key": "FSPIOP-Signature",
+												"value": "{{fspiopSignature}}",
+												"type": "text"
+											},
+											{
+												"key": "FSPIOP-HTTP-Method",
+												"value": "POST",
+												"type": "text"
+											},
+											{
+												"key": "FSPIOP-URI",
+												"value": "/quotes",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{{quoteRequest}}"
+										},
+										"url": {
+											"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
+											"host": [
+												"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+											],
+											"path": [
+												"quotes"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Send Transfer ( testfsp1 to testfsp2 ) - pass",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "16b4580d-74c7-44e9-952e-d40a61f9cb69",
+												"exec": [
+													"var navigator = {}; //fake a navigator object for the lib\r",
+													"var window = {}; //fake a window object for the lib\r",
+													"eval(pm.environment.get('jrsassign'));\r",
+													"\r",
+													"var uuid = require('uuid');\r",
+													"var generatedUUID = uuid.v4();\r",
+													"pm.environment.set('transfer_ID', pm.environment.get('transactionId'));\r",
+													"\r",
+													"\r",
+													"pm.variables.set('transferDate', (new Date()).toUTCString());\r",
+													"\r",
+													"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))\r",
+													"\r",
+													"var oHeader = {alg: \"RS256\", \"FSPIOP-Source\":\"testfsp1\",\"FSPIOP-Destination\":\"testfsp2\", \"FSPIOP-URI\":\"/transfers\", \"FSPIOP-HTTP-Method\":\"POST\", \"Date\":pm.variables.get('transferDate')};\r",
+													"var sHeader = JSON.stringify(oHeader);\r",
+													"console.log(`sHeader: ${sHeader}`)\r",
+													"\r",
+													"var objPayload = {\r",
+													"  \"transferId\": pm.environment.get('transfer_ID'),\r",
+													"  \"payerFsp\": \"testfsp1\",\r",
+													"  \"payeeFsp\": \"testfsp2\",\r",
+													"  \"amount\": {\r",
+													"    \"amount\": \"60\",\r",
+													"    \"currency\": pm.environment.get('currency')\r",
+													"  },\r",
+													"  \"expiration\": pm.environment.get('transferExpiration'),\r",
+													"  \"ilpPacket\": pm.environment.get('ilpPacket'),\r",
+													"  \"condition\": pm.environment.get('condition')\r",
+													"}\r",
+													"var sPayload = JSON.stringify(objPayload)\r",
+													"console.log(`sPayload: ${sPayload}`)\r",
+													"pm.variables.set(\"transferRequest\", sPayload);\r",
+													"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));\r",
+													"//console.log(`token: ${token}`)\r",
+													"\r",
+													"// var encodedHeaders = btoa(sHeader)\r",
+													"\r",
+													"// var ofspiopSignature = {signature: vSignature, protectedHeader: encodedHeaders}\r",
+													"// var token = JSON.stringify(ofspiopSignature)\r",
+													"\r",
+													"const [ protectedHeaderBase64, , signature ] = token.split('.');\r",
+													"\r",
+													"const signatureObject = {\r",
+													"    signature: signature.replace('\"', ''),\r",
+													"    protectedHeader: protectedHeaderBase64.replace('\"', '')\r",
+													"};\r",
+													"\r",
+													"console.log(JSON.stringify(signatureObject))\r",
+													"\r",
+													"pm.variables.set('fspiopSignature',JSON.stringify(signatureObject))"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "e47ebaa4-926e-4007-821a-e68cd385e18c",
+												"exec": [
+													"pm.test(\"Status code is 202\", function () {\r",
+													"    pm.response.to.have.status(202);\r",
+													"});\r",
+													"\r",
+													"// //Check the request that Switch forwards to testfsp2\r",
+													"setTimeout(function () {\r",
+													"  pm.sendRequest(pm.environment.get(\"TESTFSP2_SDK_INBOUND_URL\")+\"/requests/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {\r",
+													"          if(response.responseSize !== 0) {\r",
+													"              \r",
+													"              //Check the Headers\r",
+													"              var headers = response.json().headers;\r",
+													"              \r",
+													"                pm.test(\"testfsp2 fspiop-source is goldentestfsp1\", function () {\r",
+													"                    pm.expect(headers['fspiop-source']).to.eql('testfsp1');\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 fspiop-destination is goldentestfsp2\", function () {\r",
+													"                    pm.expect(headers['fspiop-destination']).to.eql('testfsp2');\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 content-typeis same as sent in the request\", function () {\r",
+													"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 accept is same as sent in the request\", function () {\r",
+													"                    pm.expect(headers['accept']).to.eql('application/vnd.interoperability.transfers+json;version=1');\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 fspiop-signature is same as sent in the request\", function () {\r",
+													"                    pm.expect(headers['fspiop-signature']).to.eql(pm.variables.get(\"fspiopSignature\"));\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 fspiop-http-method is POST\", function () {\r",
+													"                    pm.expect(headers['fspiop-http-method']).to.eql('POST');\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 fspiop-uri is /transfers\", function () {\r",
+													"                    pm.expect(headers['fspiop-uri']).to.eql('/transfers');\r",
+													"                });\r",
+													"                \r",
+													"                \r",
+													"                //Check the data\r",
+													"                var jsonData = response.json().data;\r",
+													"                pm.test(\"testfsp2 data should have the same transferId as request\", function () {\r",
+													"                  pm.expect(jsonData.transferId).to.eql(pm.environment.get(\"transfer_ID\"));\r",
+													"                });\r",
+													"                pm.test(\"testfsp2 data should have the same amount as request\", function () {\r",
+													"                  pm.expect(jsonData.amount.amount).to.eql('60');\r",
+													"                });\r",
+													"                pm.test(\"testfsp2 data should have the same currency as request\", function () {\r",
+													"                  pm.expect(jsonData.amount.currency).to.eql(pm.environment.get(\"currency\"));\r",
+													"                });\r",
+													"                pm.test(\"testfsp2 data should have the same expiration as request\", function () {\r",
+													"                  pm.expect(jsonData.expiration).to.eql(pm.environment.get(\"transferExpiration\"));\r",
+													"                });\r",
+													"                pm.test(\"testfsp2 data should have the same ilpPacket as request\", function () {\r",
+													"                  pm.expect(jsonData.ilpPacket).to.eql(pm.environment.get(\"ilpPacket\"));\r",
+													"                });\r",
+													"                pm.test(\"testfsp2 data should have the same condition as request\", function () {\r",
+													"                  pm.expect(jsonData.condition).to.eql(pm.environment.get(\"condition\"));\r",
+													"                });\r",
+													"                \r",
+													"          } else {\r",
+													"              pm.test(\"Transfer FAILED\", function () {\r",
+													"                throw new Error('Did not receive response on payee side');\r",
+													"              });\r",
+													"              postman.setNextRequest(null)\r",
+													"          }\r",
+													"  });\r",
+													"}, 1100)\r",
+													"\r",
+													"//Check the callback response that Switch forwards to testfsp1\r",
+													"setTimeout(function () {\r",
+													"  pm.sendRequest(pm.environment.get(\"TESTFSP1_SDK_INBOUND_URL\")+\"/callbacks/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {\r",
+													"          if(response.responseSize !== 0) {\r",
+													"            //Checking headers\r",
+													"            var headers = response.json().headers;\r",
+													"            pm.test(\"testfsp1 fspiop-source is goldentestfsp2 \", function () {\r",
+													"                pm.expect(headers['fspiop-source']).to.eql('testfsp2');\r",
+													"            });\r",
+													"            \r",
+													"            pm.test(\"testfsp1 fspiop-destination is goldentestfsp1\", function () {\r",
+													"                pm.expect(headers['fspiop-destination']).to.eql('testfsp1');\r",
+													"            });\r",
+													"            \r",
+													"            pm.test(\"testfsp1 content-type should be application/vnd.interoperability.transfers+json;version=1.0\", function () {\r",
+													"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');\r",
+													"            });\r",
+													"            \r",
+													"            pm.test(\"testfsp1 accept is empty\", function () {\r",
+													"                pm.expect(headers['accept']).to.eql(undefined);\r",
+													"            });\r",
+													"            \r",
+													"            \r",
+													"            pm.test(\"testfsp1 fspiop-uri includes /transfers/{{transfer_ID}}\", function () {\r",
+													"                pm.expect(headers['fspiop-uri']).to.eql('/transfers/'+ pm.environment.get(\"transfer_ID\"));\r",
+													"            });\r",
+													"            \r",
+													"            pm.test(\"testfsp1 fspiop-http-method is PUT\", function () {\r",
+													"                pm.expect(headers['fspiop-http-method']).to.eql('PUT');\r",
+													"            });\r",
+													"            \r",
+													"            var jsonData = response.json().data;\r",
+													"            pm.test(\"Response data does not have transferId\", function () {\r",
+													"               pm.expect(jsonData.transferId).to.eql(undefined);\r",
+													"            });\r",
+													"            pm.test(\"Response status is COMMITTED\", function () {\r",
+													"                pm.expect(jsonData.transferState).to.eql('COMMITTED');\r",
+													"            });\r",
+													"          } else {\r",
+													"              pm.test(\"Transfer FAILED\", function () {\r",
+													"                throw new Error('Did not receive response on payer side');\r",
+													"              });\r",
+													"              postman.setNextRequest(null)\r",
+													"          }\r",
+													"   });\r",
+													"}, 1500)"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{TESTFSP1_BEARER_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transfers+json;version=1",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transfers+json;version=1.0",
+												"type": "text"
+											},
+											{
+												"key": "Date",
+												"value": "{{transferDate}}",
+												"type": "text"
+											},
+											{
+												"key": "FSPIOP-Source",
+												"value": "testfsp1",
+												"type": "text"
+											},
+											{
+												"key": "FSPIOP-Destination",
+												"value": "testfsp2",
+												"type": "text"
+											},
+											{
+												"key": "FSPIOP-Signature",
+												"value": "{{fspiopSignature}}",
+												"type": "text"
+											},
+											{
+												"key": "FSPIOP-URI",
+												"value": "/transfers",
+												"type": "text"
+											},
+											{
+												"key": "FSPIOP-HTTP-Method",
+												"value": "POST",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{{transferRequest}}"
+										},
+										"url": {
+											"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/transfers",
+											"host": [
+												"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+											],
+											"path": [
+												"transfers"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "090 - Active and inactive participants accounts",
+							"item": [
+								{
+									"name": "3. Get testfsp2 Participant Account",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "678552e9-40be-4016-82d7-7bf3827dde82",
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "715434bf-73bd-4d33-93bd-da639a7f3b6c",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"var jsonData = pm.response.json();",
+													"jsonData",
+													"    .filter(account => account.currency === pm.environment.get('currency'))",
+													"    .forEach(curAccount => {",
+													"        if(curAccount.ledgerAccountType === \"POSITION\") {",
+													"            pm.environment.set(\"testfsp2PositionAccountId\", curAccount.id);",
+													"            ",
+													"        }",
+													"    })",
+													"",
+													""
 												],
 												"type": "text/javascript"
 											}
@@ -19709,264 +20604,98 @@
 												}
 											]
 										},
-										"method": "PUT",
+										"method": "GET",
 										"header": [
-											{
-												"key": "Content-Type",
-												"type": "text",
-												"value": "application/json"
-											},
 											{
 												"key": "FSPIOP-Source",
 												"type": "text",
-												"value": "payerfsp"
+												"value": "{{payerfsp}}"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n              \"isActive\": true\r\n            }"
-										},
 										"url": {
-											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4",
+											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/accounts",
 											"host": [
 												"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
 											],
 											"path": [
 												"participants",
-												"testfsp4"
+												"testfsp2",
+												"accounts"
 											]
-										},
-										"description": "Reactivate participant testfsp4"
+										}
 									},
-									"response": []
+									"response": [
+										{
+											"name": "Get Participant",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "http://{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/{{participant}}",
+													"protocol": "http",
+													"host": [
+														"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+													],
+													"path": [
+														"participants",
+														"{{participant}}"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Connection",
+													"value": "keep-alive",
+													"name": "Connection",
+													"description": "Options that are desired for the connection"
+												},
+												{
+													"key": "Content-Length",
+													"value": "251",
+													"name": "Content-Length",
+													"description": "The length of the response body in octets (8-bit bytes)"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json; charset=utf-8",
+													"name": "Content-Type",
+													"description": "The mime type of this content"
+												},
+												{
+													"key": "Date",
+													"value": "Wed, 22 Aug 2018 15:25:18 GMT",
+													"name": "Date",
+													"description": "The date and time that the message was sent"
+												},
+												{
+													"key": "Server",
+													"value": "nginx/1.13.8",
+													"name": "Server",
+													"description": "A name for the server"
+												},
+												{
+													"key": "accept-ranges",
+													"value": "bytes",
+													"name": "accept-ranges",
+													"description": "Content-Types that are acceptable"
+												},
+												{
+													"key": "cache-control",
+													"value": "no-cache",
+													"name": "cache-control",
+													"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+												}
+											],
+											"cookie": [],
+											"body": "{\"name\":\"testfsp\",\"id\":\"test-central-ledger.mojaloop.test/participants/testfsp\",\"created\":\"2018-08-22T08:16:50.000Z\",\"isActive\":1,\"links\":{\"self\":\"test-central-ledger.mojaloop.test/participants/testfsp\"},\"currencies\":[{\"currency\":\"USD\",\"isActive\":1}]}"
+										}
+									]
 								},
 								{
-									"name": "Send Quote pass (testfsp1 to testfsp4)",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
-												"exec": [
-													"   var uuid = require('uuid');",
-													"   var generatedUUID = uuid.v4();",
-													"   pm.variables.set('quoteId', generatedUUID);",
-													"   generatedUUID = uuid.v4();",
-													"   pm.environment.set('transactionId', generatedUUID);",
-													"",
-													"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
-													""
-												],
-												"type": "text/javascript"
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"id": "029f9c14-13e7-4aac-ada8-572ccf2d502c",
-												"exec": [
-													"pm.test(\"Status code is 202\", function () {",
-													"    pm.response.to.have.status(202);",
-													"});",
-													"",
-													"",
-													"setTimeout(function () {",
-													"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/testfsp1/correlationid/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
-													"      if(response.responseSize !== 0) {",
-													"          console.log(response.json());",
-													"       pm.test(\"Response ilpPacket is not null\", function () {",
-													"           pm.expect(response.json().ilpPacket).not.equal(undefined);",
-													"           pm.environment.set(\"ilpPacket\", response.json().ilpPacket);",
-													"       });",
-													"       ",
-													"       pm.test(\"Response condition is not null\", function () {",
-													"           pm.expect(response.json().condition).not.equal(undefined);",
-													"           pm.environment.set(\"condition\", response.json().condition);",
-													"       });",
-													"      } else {",
-													"          pm.test(\"Quote FAILED\", function () {",
-													"            throw new Error('Did not receive response');",
-													"           });",
-													"           postman.setNextRequest(null);",
-													"      }",
-													"       ",
-													"   });",
-													"}, 2000)"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{TESTFSP1_BEARER_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/vnd.interoperability.quotes+json"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
-											},
-											{
-												"key": "Date",
-												"value": "{{dateHeader}}"
-											},
-											{
-												"key": "FSPIOP-Source",
-												"value": "testfsp1"
-											},
-											{
-												"key": "FSPIOP-Destination",
-												"value": "testfsp4"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp1\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp4\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"55\",\n    \"currency\": \"XOF\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
-										},
-										"url": {
-											"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
-											"host": [
-												"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
-											],
-											"path": [
-												"quotes"
-											]
-										},
-										"description": "Trying to send quote request to testfsp4"
-									},
-									"response": []
-								},
-								{
-									"name": "Send Transfer pass(testfsp1 to testfsp4)",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "16b4580d-74c7-44e9-952e-d40a61f9cb69",
-												"exec": [
-													"//if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
-													"   var uuid = require('uuid');",
-													"   var generatedUUID = uuid.v4();",
-													"//   pm.environment.set('transfer_ID', generatedUUID);",
-													"//} else {",
-													"    pm.environment.set('transfer_ID', pm.environment.get('transactionId'));",
-													"//}",
-													"",
-													"//if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-													"   pm.environment.set('transferDate', (new Date()).toUTCString());",
-													"//}",
-													"",
-													"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 120000))"
-												],
-												"type": "text/javascript"
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"id": "e47ebaa4-926e-4007-821a-e68cd385e18c",
-												"exec": [
-													"pm.test(\"Status code is 202\", function () {",
-													"    pm.response.to.have.status(202);",
-													"});",
-													"",
-													"pm.environment.set('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE','true')",
-													"",
-													"setTimeout(function () {",
-													"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/testfsp1/correlationid/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
-													"          if(response.responseSize !== 0) {",
-													"              var jsonData = response.json();",
-													"              pm.test(\"Response data does not have transferId\", function () {",
-													"               pm.expect(jsonData.transferId).to.eql(undefined);",
-													"             });",
-													"              pm.test(\"Response status is COMMITTED\", function () {",
-													"                pm.expect(jsonData.transferState).to.eql('COMMITTED');",
-													"              });",
-													"          } else {",
-													"              pm.test(\"Transfer FAILED\", function () {",
-													"                throw new Error('Did not receive response');",
-													"              });",
-													"              postman.setNextRequest(null)",
-													"          }",
-													"   });",
-													"}, 2000)"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{TESTFSP1_BEARER_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/vnd.interoperability.transfers+json;version=1"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/vnd.interoperability.transfers+json;version=1"
-											},
-											{
-												"key": "Date",
-												"value": "{{transferDate}}"
-											},
-											{
-												"key": "FSPIOP-Source",
-												"value": "testfsp1"
-											},
-											{
-												"key": "FSPIOP-Destination",
-												"value": "testfsp4"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"testfsp1\",\n  \"payeeFsp\": \"testfsp4\",\n  \"amount\": {\n    \"amount\": \"55\",\n    \"currency\": \"XOF\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
-										},
-										"url": {
-											"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
-											"host": [
-												"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
-											],
-											"path": [
-												"transfers"
-											]
-										},
-										"description": "Trying to send transfer request to testfsp4  inactive participant"
-									},
-									"response": []
-								}
-							],
-							"protocolProfileBehavior": {},
-							"_postman_isSubFolder": true
-						},
-						{
-							"name": "090 - Active and inactive participants accounts",
-							"item": [
-								{
-									"name": "Update participant (testfsp4 to inactive) account",
+									"name": "Update participant (testfsp2 to inactive) account",
 									"event": [
 										{
 											"listen": "test",
@@ -19987,7 +20716,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "{{BEARER_TOKEN}}",
+													"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 													"type": "string"
 												}
 											]
@@ -20002,23 +20731,23 @@
 											{
 												"key": "FSPIOP-Source",
 												"type": "text",
-												"value": "payerfsp"
+												"value": "hub_operator"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n              \"isActive\": false\r\n            }"
+											"raw": "{\r\n  \"isActive\": false\r\n}"
 										},
 										"url": {
-											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4/accounts/{{accountidinactive}}",
+											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/accounts/{{testfsp2PositionAccountId}}",
 											"host": [
 												"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
 											],
 											"path": [
 												"participants",
-												"testfsp4",
+												"testfsp2",
 												"accounts",
-												"{{accountidinactive}}"
+												"{{testfsp2PositionAccountId}}"
 											]
 										},
 										"description": "inactives testfsp4 position account"
@@ -20026,20 +20755,98 @@
 									"response": []
 								},
 								{
-									"name": "Send Quote(testfsp1 to testfsp4) account - fail",
+									"name": "(BUG) Send Quote fail (testfsp1 to testfsp2)",
 									"event": [
 										{
 											"listen": "prerequest",
 											"script": {
 												"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 												"exec": [
-													"   var uuid = require('uuid');",
-													"   var generatedUUID = uuid.v4();",
-													"   pm.variables.set('quoteId', generatedUUID);",
-													"   generatedUUID = uuid.v4();",
-													"   pm.environment.set('transactionId', generatedUUID);",
+													"var navigator = {}; ",
+													"var window = {}; ",
+													"eval(pm.environment.get('jrsassign'));",
 													"",
-													"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"pm.environment.set('quoteId', generatedUUID);",
+													"generatedUUID = uuid.v4();",
+													"pm.environment.set('transactionId', generatedUUID);",
+													"",
+													"pm.variables.set('quoteDate', (new Date()).toUTCString());",
+													"pm.variables.set('payerName', 'PayerFirst PayerLast');",
+													"pm.variables.set('payerMSISDN', '918381008987');",
+													"",
+													"pm.variables.set('expectedPayeeFirstName', 'GoldenFirst');",
+													"pm.variables.set('expectedPayeeLastName', 'GoldenLast');",
+													"pm.variables.set('expectedPayeeDOB', '2010-10-10');",
+													"",
+													"var oHeader = {alg: \"RS256\", \"FSPIOP-Source\":\"testfsp1\",\"FSPIOP-Destination\":\"testfsp2\", \"FSPIOP-URI\":\"/quotes\", \"FSPIOP-HTTP-Method\":\"POST\", \"Date\":pm.variables.get('quoteDate')};",
+													"var sHeader = JSON.stringify(oHeader);",
+													"console.log(`sHeader: ${sHeader}`)",
+													"",
+													"var objPayload = {",
+													"  \"quoteId\": pm.environment.get('quoteId'),",
+													"  \"transactionId\": pm.environment.get('transactionId'),",
+													"  \"payer\": {",
+													"    \"partyIdInfo\": {",
+													"      \"partyIdType\": \"MSISDN\",",
+													"      \"partyIdentifier\": pm.variables.get('payerMSISDN'),",
+													"      \"fspId\": \"testfsp1\"",
+													"    },",
+													"    \"personalInfo\": {",
+													"      \"complexName\": {",
+													"        \"firstName\": \"Mats\",",
+													"        \"lastName\": \"Hagman\"",
+													"      },",
+													"      \"dateOfBirth\": \"1983-10-25\"",
+													"    }",
+													"  },",
+													"  \"payee\": {",
+													"    \"partyIdInfo\": {",
+													"      \"partyIdType\": \"MSISDN\",",
+													"      \"partyIdentifier\": pm.environment.get('payeefspMSISDN'),",
+													"      \"fspId\": \"testfsp2\"",
+													"    }",
+													"  },",
+													"  \"amountType\": \"RECEIVE\",",
+													"  \"amount\": {",
+													"    \"amount\": \"60\",",
+													"    \"currency\": pm.environment.get('currency')",
+													"  },",
+													"  \"transactionType\": {",
+													"    \"scenario\": \"TRANSFER\",",
+													"    \"initiator\": \"PAYER\",",
+													"    \"initiatorType\": \"CONSUMER\"",
+													"  },",
+													"  \"note\": \"hej\"",
+													"}",
+													"",
+													"var sPayload = JSON.stringify(objPayload)",
+													"console.log(`sPayload: ${sPayload}`)",
+													"pm.variables.set(\"quoteRequest\", sPayload);",
+													"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
+													"console.log(`token: ${token}`)",
+													"",
+													"// var encodedHeaders = btoa(sHeader)",
+													"",
+													"// var ofspiopSignature = {signature: vSignature, protectedHeader: encodedHeaders}",
+													"// var token = JSON.stringify(ofspiopSignature)",
+													"",
+													"const [ protectedHeaderBase64, , signature ] = token.split('.');",
+													"",
+													"const signatureObject = {",
+													"    signature: signature.replace('\"', ''),",
+													"    protectedHeader: protectedHeaderBase64.replace('\"', '')",
+													"};",
+													"",
+													"console.log(JSON.stringify(signatureObject))",
+													"",
+													"pm.variables.set('fspiopSignature',JSON.stringify(signatureObject))",
+													"",
+													"",
+													"",
+													"",
 													""
 												],
 												"type": "text/javascript"
@@ -20048,37 +20855,97 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "029f9c14-13e7-4aac-ada8-572ccf2d502c",
+												"id": "b7ca6bc0-b58a-46d8-8881-2db1aa0703ef",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
 													"});",
 													"",
-													"//pm.environment.set('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE','false')",
-													"",
-													"/*setTimeout(function () {",
-													"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/testfsp1/correlationid/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
+													"setTimeout(function () {",
+													"  pm.sendRequest(pm.environment.get(\"TESTFSP1_SDK_INBOUND_URL\")+\"/callbacks/\"+pm.environment.get(\"quoteId\"), function (err, response) {",
 													"      if(response.responseSize !== 0) {",
-													"          console.log(response.json());",
-													"       pm.test(\"Response ilpPacket is not null\", function () {",
-													"           pm.expect(response.json().ilpPacket).not.equal(null);",
-													"           pm.environment.set(\"ilpPacket\", response.json().ilpPacket);",
-													"       });",
-													"       ",
-													"       pm.test(\"Response condition is not null\", function () {",
-													"           pm.expect(response.json().condition).not.equal(null);",
-													"           pm.environment.set(\"condition\", response.json().condition);",
-													"       });",
+													"          //Checking headers",
+													"            var headers = response.json().headers;",
+													"            pm.test(\"testfsp1 fspiop-source is switch\", function () {",
+													"                pm.expect(headers['fspiop-source']).to.eql('switch');",
+													"            });",
+													"            ",
+													"            pm.test(\"testfsp1 fspiop-destination is testfsp1\", function () {",
+													"                pm.expect(headers['fspiop-destination']).to.eql('testfsp1');",
+													"            });",
+													"            ",
+													"            pm.test(\"testfsp1 content-type should be application/vnd.interoperability.quotes+json;version=1.0\", function () {",
+													"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.quotes+json;version=1.0');",
+													"            });",
+													"            ",
+													"            pm.test(\"testfsp1 accept is empty\", function () {",
+													"                pm.expect(headers['accept']).to.eql(undefined);",
+													"            });",
+													"            ",
+													"            ",
+													"            ",
+													"            var {signature,protectedHeader} = JSON.parse(headers['fspiop-signature'])",
+													"            // var strData = JSON.stringify(response.json().data)",
+													"            // const token = `${protectedHeader}.${btoa(strData)}.${signature}`",
+													"            // console.log(`token: ${token}`)",
+													"            // var isValid = KJUR.jws.JWS.verify(token, pm.environment.get('goldenpayeefspJWSPubKey'), {alg: ['RS256']})",
+													"            // console.log(`isValid: ${isValid}`)",
+													"            // pm.test(\"Check if the response is JWS valid\", function () {",
+													"            //     pm.expect(isValid).to.eql(true);",
+													"            // });",
+													"            ",
+													"            //Validate protected header inside Signature",
+													"            var decodedProtectedHeaders = JSON.parse(atob(protectedHeader))",
+													"            console.log('decodedProtectedHeaders:',decodedProtectedHeaders)",
+													"            ",
+													"            pm.test(\"FSPIOP-Signature Protected Header alg to be RS256\", function () {",
+													"                pm.expect(decodedProtectedHeaders['alg']).to.eql('RS256');",
+													"            });",
+													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-URI to be /quotes/\"+pm.environment.get(\"quoteId\"), function () {",
+													"                pm.expect(decodedProtectedHeaders['FSPIOP-URI']).to.eql('/quotes/'+pm.environment.get(\"quoteId\")+'/errror');",
+													"            });",
+													"            ",
+													"",
+													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-HTTP-Method to be PUT\", function () {",
+													"                pm.expect(decodedProtectedHeaders['FSPIOP-HTTP-Method']).to.eql('PUT');",
+													"            });",
+													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Source to be goldenpayeefsp\", function () {",
+													"                pm.expect(decodedProtectedHeaders['FSPIOP-Source']).to.eql('switch');",
+													"            });",
+													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Destination to be payerfsp\", function () {",
+													"                pm.expect(decodedProtectedHeaders['FSPIOP-Destination']).to.eql('testfsp1');",
+													"            });",
+													"            pm.test(\"FSPIOP-Signature Protected Header Date is present\", function () {",
+													"                pm.expect(decodedProtectedHeaders['Date']).to.eql(headers['date']);",
+													"            });",
+													"           ",
+													"            pm.test(\"testfsp1 FSPIOP-URI to be /quotes/\"+pm.environment.get(\"quoteId\"), function () {",
+													"                pm.expect(headers['fspiop-uri']).to.eql('/quotes/'+pm.environment.get(\"quoteId\")+'/error');",
+													"            });",
+													"            ",
+													"            pm.test(\"payerfsp fspiop-http-method is PUT\", function () {",
+													"                pm.expect(headers['fspiop-http-method']).to.eql('PUT');",
+													"            });",
+													"            ",
+													"            var jsonData = response.json().data;",
+													"            ",
+													"            pm.test(\"Error code is 3201\", function () {",
+													"                pm.expect(jsonData.errorInformation.errorCode).to.eql('3201');",
+													"            });",
+													"           ",
+													"           pm.test(\"Error Description is Destination FSP Error - Unsupported participant \", function () {",
+													"                pm.expect(jsonData.errorInformation.errorDescription).to.include('Destination FSP Error - Unsupported');",
+													"           });",
+													"           ",
 													"      } else {",
 													"          pm.test(\"Quote FAILED\", function () {",
-													"            throw new Error('Did not receive response');",
+													"            throw new Error('Did not receive response on Payer side');",
 													"           });",
-													"         //  postman.setNextRequest(null);",
+													"           postman.setNextRequest(null);",
 													"      }",
 													"       ",
 													"   });",
-													"}, 4000);*/",
-													"",
+													"}, 1000)",
 													"",
 													"",
 													""
@@ -20102,7 +20969,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.quotes+json"
+												"value": "application/vnd.interoperability.quotes+json;version=1"
 											},
 											{
 												"key": "Content-Type",
@@ -20110,7 +20977,7 @@
 											},
 											{
 												"key": "Date",
-												"value": "{{dateHeader}}"
+												"value": "{{quoteDate}}"
 											},
 											{
 												"key": "FSPIOP-Source",
@@ -20118,12 +20985,27 @@
 											},
 											{
 												"key": "FSPIOP-Destination",
-												"value": "testfsp4"
+												"value": "testfsp2"
+											},
+											{
+												"key": "FSPIOP-Signature",
+												"type": "text",
+												"value": "{{fspiopSignature}}"
+											},
+											{
+												"key": "FSPIOP-HTTP-Method",
+												"type": "text",
+												"value": "POST"
+											},
+											{
+												"key": "FSPIOP-URI",
+												"type": "text",
+												"value": "/quotes"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp1\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp4\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"55\",\n    \"currency\": \"XOF\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+											"raw": "{{quoteRequest}}"
 										},
 										"url": {
 											"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
@@ -20133,64 +21015,135 @@
 											"path": [
 												"quotes"
 											]
-										},
-										"description": "Trying to send quote request for testfsp4 with inactive account"
+										}
 									},
 									"response": []
 								},
 								{
-									"name": "Send Transfer(testfsp1 to testfsp4) account - fail",
+									"name": "(BUG) Send Transfer fail(testfsp1 to testfsp2)",
 									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "16b4580d-74c7-44e9-952e-d40a61f9cb69",
-												"exec": [
-													"//if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
-													"   var uuid = require('uuid');",
-													"   var generatedUUID = uuid.v4();",
-													" //  pm.environment.set('transfer_ID', generatedUUID);",
-													"//} else {",
-													"    pm.environment.set('transfer_ID', pm.environment.get('transactionId'));",
-													"//}",
-													"",
-													"//if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-													"   pm.environment.set('transferDate', (new Date()).toUTCString());",
-													"//}",
-													"",
-													"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 120000))"
-												],
-												"type": "text/javascript"
-											}
-										},
 										{
 											"listen": "test",
 											"script": {
-												"id": "e47ebaa4-926e-4007-821a-e68cd385e18c",
+												"id": "900142b0-e4d7-43a4-a751-38202b600661",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
 													"});",
 													"",
-													"pm.environment.set('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE','true')",
-													"",
+													"//Check the callback response that Switch forwards to payerfsp",
 													"setTimeout(function () {",
-													"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/testfsp1/correlationid/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
+													"  pm.sendRequest(pm.environment.get(\"TESTFSP1_SDK_INBOUND_URL\")+\"/callbacks/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
 													"          if(response.responseSize !== 0) {",
-													"              var jsonData = response.json();",
-													"              pm.test(\"Error message is expected as response: Participant testfsp4 XOF account is inactive\", function () {",
-													"          ",
-													"           pm.expect(jsonData.errorInformation.errorCode).to.eql(\"3100\");",
-													"           pm.expect(jsonData.errorInformation.errorDescription).to.eql('Generic validation error: Participant testfsp4 XOF account is inactive');",
-													"        });",
+													"            //Checking headers",
+													"            var headers = response.json().headers;",
+													"            pm.test(\"fspiop-source is switch \", function () {",
+													"                pm.expect(headers['fspiop-source']).to.eql('switch');",
+													"            });",
+													"            ",
+													"            pm.test(\"fspiop-destination is testfsp1\", function () {",
+													"                pm.expect(headers['fspiop-destination']).to.eql('testfsp1');",
+													"            });",
+													"            ",
+													"            pm.test(\"content-type should be application/vnd.interoperability.transfers+json;version=1.0\", function () {",
+													"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
+													"            });",
+													"            ",
+													"            pm.test(\"accept is empty\", function () {",
+													"                pm.expect(headers['accept']).to.eql(undefined);",
+													"            });",
+													"            ",
+													"            pm.test(\"fspiop-signature is not empty\", function () {",
+													"                    pm.expect(headers['fspiop-signature']).not.eql(undefined);",
+													"                });",
+													"            ",
+													"            ",
+													"            pm.test(\"fspiop-uri includes /transfers/{{transfer_ID}}\", function () {",
+													"                pm.expect(headers['fspiop-uri']).to.eql('/transfers/'+ pm.environment.get(\"transfer_ID\")+'/error');",
+													"            });",
+													"            ",
+													"            pm.test(\"fspiop-http-method is PUT\", function () {",
+													"                pm.expect(headers['fspiop-http-method']).to.eql('PUT');",
+													"            });",
+													"            ",
+													"            var jsonData = response.json().data;",
+													"            pm.test(\"Error code is 2001\", function () {",
+													"                pm.expect(jsonData.errorInformation.errorCode).to.eql('2001');",
+													"            });",
+													"           ",
+													"           pm.test(\"Error Description is Internal server error \", function () {",
+													"                pm.expect(jsonData.errorInformation.errorDescription).to.include('Internal server error');",
+													"           });",
 													"          } else {",
 													"              pm.test(\"Transfer FAILED\", function () {",
-													"                throw new Error('Did not receive response');",
+													"                throw new Error('Did not receive response on payer side');",
 													"              });",
-													"             // postman.setNextRequest(null);",
+													"              postman.setNextRequest(null)",
 													"          }",
 													"   });",
-													"}, 7000);"
+													"}, 1300)",
+													"",
+													"",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "20820c95-0a24-4906-a6ba-708d6ecf4a61",
+												"exec": [
+													"var navigator = {}; //fake a navigator object for the lib",
+													"var window = {}; //fake a window object for the lib",
+													"eval(pm.environment.get('jrsassign'));",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"pm.environment.set('transfer_ID', pm.environment.get('transactionId'));",
+													"",
+													"",
+													"pm.variables.set('transferDate', (new Date()).toUTCString());",
+													"",
+													"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))",
+													"",
+													"var oHeader = {alg: \"RS256\", \"FSPIOP-Source\":\"testfsp1\",\"FSPIOP-Destination\":\"testfsp2\", \"FSPIOP-URI\":\"/transfers\", \"FSPIOP-HTTP-Method\":\"POST\", \"Date\":pm.variables.get('transferDate')};",
+													"var sHeader = JSON.stringify(oHeader);",
+													"console.log(`sHeader: ${sHeader}`)",
+													"",
+													"var objPayload = {",
+													"  \"transferId\": pm.environment.get('transfer_ID'),",
+													"  \"payerFsp\": \"testfsp1\",",
+													"  \"payeeFsp\": \"testfsp2\",",
+													"  \"amount\": {",
+													"    \"amount\": \"10\",",
+													"    \"currency\": pm.environment.get('currency')",
+													"  },",
+													"  \"expiration\": pm.environment.get('transferExpiration'),",
+													"  \"ilpPacket\": pm.environment.get('ilpPacket'),",
+													"  \"condition\": pm.environment.get('condition')",
+													"}",
+													"var sPayload = JSON.stringify(objPayload)",
+													"console.log(`sPayload: ${sPayload}`)",
+													"pm.variables.set(\"transferRequest\", sPayload);",
+													"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
+													"//console.log(`token: ${token}`)",
+													"",
+													"// var encodedHeaders = btoa(sHeader)",
+													"",
+													"// var ofspiopSignature = {signature: vSignature, protectedHeader: encodedHeaders}",
+													"// var token = JSON.stringify(ofspiopSignature)",
+													"",
+													"const [ protectedHeaderBase64, , signature ] = token.split('.');",
+													"",
+													"const signatureObject = {",
+													"    signature: signature.replace('\"', ''),",
+													"    protectedHeader: protectedHeaderBase64.replace('\"', '')",
+													"};",
+													"",
+													"console.log(JSON.stringify(signatureObject))",
+													"",
+													"pm.variables.set('fspiopSignature',JSON.stringify(signatureObject))"
 												],
 												"type": "text/javascript"
 											}
@@ -20215,7 +21168,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.transfers+json;version=1"
+												"value": "application/vnd.interoperability.transfers+json;version=1.0"
 											},
 											{
 												"key": "Date",
@@ -20227,28 +21180,42 @@
 											},
 											{
 												"key": "FSPIOP-Destination",
-												"value": "testfsp4"
+												"value": "testfsp2"
+											},
+											{
+												"key": "FSPIOP-Signature",
+												"type": "text",
+												"value": "{{fspiopSignature}}"
+											},
+											{
+												"key": "FSPIOP-URI",
+												"type": "text",
+												"value": "/transfers"
+											},
+											{
+												"key": "FSPIOP-HTTP-Method",
+												"type": "text",
+												"value": "POST"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"testfsp1\",\n  \"payeeFsp\": \"testfsp4\",\n  \"amount\": {\n    \"amount\": \"55\",\n    \"currency\": \"XOF\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+											"raw": "{{transferRequest}}"
 										},
 										"url": {
-											"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+											"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/transfers",
 											"host": [
-												"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+												"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
 											],
 											"path": [
 												"transfers"
 											]
-										},
-										"description": "Trying to send transfer request for testfsp4 with inactive account"
+										}
 									},
 									"response": []
 								},
 								{
-									"name": "Update participant (testfsp4 to active) account",
+									"name": "Update participant (testfsp2 to active) account",
 									"event": [
 										{
 											"listen": "test",
@@ -20269,7 +21236,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "{{BEARER_TOKEN}}",
+													"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 													"type": "string"
 												}
 											]
@@ -20284,44 +21251,118 @@
 											{
 												"key": "FSPIOP-Source",
 												"type": "text",
-												"value": "payerfsp"
+												"value": "hub_operator"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n              \"isActive\": true\r\n            }"
+											"raw": "{\r\n  \"isActive\": true\r\n}"
 										},
 										"url": {
-											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4/accounts/{{accountidinactive}}",
+											"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp2/accounts/{{testfsp2PositionAccountId}}",
 											"host": [
 												"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
 											],
 											"path": [
 												"participants",
-												"testfsp4",
+												"testfsp2",
 												"accounts",
-												"{{accountidinactive}}"
+												"{{testfsp2PositionAccountId}}"
 											]
 										},
-										"description": "Reactivates account for testfsp4"
+										"description": "inactives testfsp4 position account"
 									},
 									"response": []
 								},
 								{
-									"name": "Send Quote(testfsp1 to testfsp4) account - pass",
+									"name": "Send Quote (testfsp1 to testfsp2) - pass",
 									"event": [
 										{
 											"listen": "prerequest",
 											"script": {
 												"id": "887e4721-3923-41bd-bf8a-3d0cd5eed8ee",
 												"exec": [
-													"   var uuid = require('uuid');",
-													"   var generatedUUID = uuid.v4();",
-													"   pm.variables.set('quoteId', generatedUUID);",
-													"   generatedUUID = uuid.v4();",
-													"   pm.environment.set('transactionId', generatedUUID);",
+													"  var navigator = {}; ",
+													"var window = {}; ",
+													"eval(pm.environment.get('jrsassign'));",
 													"",
-													"   pm.variables.set('quoteDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"pm.environment.set('quoteId', generatedUUID);",
+													"generatedUUID = uuid.v4();",
+													"pm.environment.set('transactionId', generatedUUID);",
+													"",
+													"pm.variables.set('quoteDate', (new Date()).toUTCString());",
+													"pm.variables.set('payerName', 'PayerFirst PayerLast');",
+													"pm.variables.set('payerMSISDN', '918381008987');",
+													"",
+													"pm.variables.set('expectedPayeeFirstName', 'GoldenFirst');",
+													"pm.variables.set('expectedPayeeLastName', 'GoldenLast');",
+													"pm.variables.set('expectedPayeeDOB', '2010-10-10');",
+													"",
+													"var oHeader = {alg: \"RS256\", \"FSPIOP-Source\":\"testfsp1\",\"FSPIOP-Destination\":\"testfsp2\", \"FSPIOP-URI\":\"/quotes\", \"FSPIOP-HTTP-Method\":\"POST\", \"Date\":pm.variables.get('quoteDate')};",
+													"var sHeader = JSON.stringify(oHeader);",
+													"console.log(`sHeader: ${sHeader}`)",
+													"",
+													"var objPayload = {",
+													"  \"quoteId\": pm.environment.get('quoteId'),",
+													"  \"transactionId\": pm.environment.get('transactionId'),",
+													"  \"payer\": {",
+													"    \"partyIdInfo\": {",
+													"      \"partyIdType\": \"MSISDN\",",
+													"      \"partyIdentifier\": pm.variables.get('payerMSISDN'),",
+													"      \"fspId\": \"testfsp1\"",
+													"    },",
+													"    \"personalInfo\": {",
+													"      \"complexName\": {",
+													"        \"firstName\": \"Mats\",",
+													"        \"lastName\": \"Hagman\"",
+													"      },",
+													"      \"dateOfBirth\": \"1983-10-25\"",
+													"    }",
+													"  },",
+													"  \"payee\": {",
+													"    \"partyIdInfo\": {",
+													"      \"partyIdType\": \"MSISDN\",",
+													"      \"partyIdentifier\": pm.environment.get('payeefspMSISDN'),",
+													"      \"fspId\": \"testfsp2\"",
+													"    }",
+													"  },",
+													"  \"amountType\": \"RECEIVE\",",
+													"  \"amount\": {",
+													"    \"amount\": \"60\",",
+													"    \"currency\": pm.environment.get('currency')",
+													"  },",
+													"  \"transactionType\": {",
+													"    \"scenario\": \"TRANSFER\",",
+													"    \"initiator\": \"PAYER\",",
+													"    \"initiatorType\": \"CONSUMER\"",
+													"  },",
+													"  \"note\": \"hej\"",
+													"}",
+													"",
+													"var sPayload = JSON.stringify(objPayload)",
+													"console.log(`sPayload: ${sPayload}`)",
+													"pm.variables.set(\"quoteRequest\", sPayload);",
+													"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
+													"console.log(`token: ${token}`)",
+													"",
+													"// var encodedHeaders = btoa(sHeader)",
+													"",
+													"// var ofspiopSignature = {signature: vSignature, protectedHeader: encodedHeaders}",
+													"// var token = JSON.stringify(ofspiopSignature)",
+													"",
+													"const [ protectedHeaderBase64, , signature ] = token.split('.');",
+													"",
+													"const signatureObject = {",
+													"    signature: signature.replace('\"', ''),",
+													"    protectedHeader: protectedHeaderBase64.replace('\"', '')",
+													"};",
+													"",
+													"console.log(JSON.stringify(signatureObject))",
+													"",
+													"pm.variables.set('fspiopSignature',JSON.stringify(signatureObject))",
 													""
 												],
 												"type": "text/javascript"
@@ -20332,33 +21373,146 @@
 											"script": {
 												"id": "029f9c14-13e7-4aac-ada8-572ccf2d502c",
 												"exec": [
-													"pm.test(\"Status code is 202\", function () {",
-													"    pm.response.to.have.status(202);",
-													"});",
-													"",
-													"",
-													"setTimeout(function () {",
-													"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/testfsp1/correlationid/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
-													"      if(response.responseSize !== 0) {",
-													"          console.log(response.json());",
-													"       pm.test(\"Response ilpPacket is not null\", function () {",
-													"           pm.expect(response.json().ilpPacket).not.equal(undefined);",
-													"           pm.environment.set(\"ilpPacket\", response.json().ilpPacket);",
-													"       });",
-													"       ",
-													"       pm.test(\"Response condition is not null\", function () {",
-													"           pm.expect(response.json().condition).not.equal(undefined);",
-													"           pm.environment.set(\"condition\", response.json().condition);",
-													"       });",
-													"      } else {",
-													"          pm.test(\"Quote FAILED\", function () {",
-													"            throw new Error('Did not receive response');",
-													"           });",
-													"           postman.setNextRequest(null);",
-													"      }",
-													"       ",
-													"   });",
-													"}, 2000)"
+													"pm.test(\"Status code is 202\", function () {\r",
+													"    pm.response.to.have.status(202);\r",
+													"});\r",
+													"\r",
+													"setTimeout(function () {\r",
+													"  pm.sendRequest(pm.environment.get(\"TESTFSP2_SDK_INBOUND_URL\")+\"/requests/\"+pm.variables.get(\"quoteId\"), function (err, response) {\r",
+													"          if(response.responseSize !== 0) {\r",
+													"              \r",
+													"              //Check the Headers\r",
+													"              var headers = response.json().headers;\r",
+													"              \r",
+													"                pm.test(\"testfsp2 fspiop-source is testfsp1\", function () {\r",
+													"                    pm.expect(headers['fspiop-source']).to.eql('testfsp1');\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 fspiop-destination is testfsp2\", function () {\r",
+													"                    pm.expect(headers['fspiop-destination']).to.eql('testfsp2');\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 fspiop-signature is same as sent in the request\", function () {\r",
+													"                    pm.expect(headers['fspiop-signature']).to.eql(pm.variables.get(\"fspiopSignature\"));\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 accept is same as sent in the request\", function () {\r",
+													"                    pm.expect(headers['accept']).to.eql('application/vnd.interoperability.quotes+json;version=1');\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 content-typeis same as sent in the request\", function () {\r",
+													"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.quotes+json;version=1.0');\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 fspiop-uri is /quotes\", function () {\r",
+													"                    pm.expect(headers['fspiop-uri']).to.eql('/quotes');\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 fspiop-http-method is POST\", function () {\r",
+													"                    pm.expect(headers['fspiop-http-method']).to.eql('POST');\r",
+													"                });\r",
+													"                \r",
+													"          } else {\r",
+													"              pm.test(\"Quote FAILED\", function () {\r",
+													"                throw new Error('Did not receive request on payee side');\r",
+													"              });\r",
+													"              postman.setNextRequest(null)\r",
+													"          }\r",
+													"   });\r",
+													"}, 1100)\r",
+													"\r",
+													"setTimeout(function () {\r",
+													"  pm.sendRequest(pm.environment.get(\"TESTFSP1_SDK_INBOUND_URL\")+\"/callbacks/\"+pm.environment.get(\"quoteId\"), function (err, response) {\r",
+													"      if(response.responseSize !== 0) {\r",
+													"          //Checking headers\r",
+													"            var headers = response.json().headers;\r",
+													"            pm.test(\"testfsp1 fspiop-source is testfsp2\", function () {\r",
+													"                pm.expect(headers['fspiop-source']).to.eql('testfsp2');\r",
+													"            });\r",
+													"            \r",
+													"            pm.test(\"testfsp1 fspiop-destination is testfsp1\", function () {\r",
+													"                pm.expect(headers['fspiop-destination']).to.eql('testfsp1');\r",
+													"            });\r",
+													"            \r",
+													"            pm.test(\"testfsp1 content-type should be application/vnd.interoperability.quotes+json;version=1.0\", function () {\r",
+													"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.quotes+json;version=1.0');\r",
+													"            });\r",
+													"            \r",
+													"            pm.test(\"testfsp1 accept is empty\", function () {\r",
+													"                pm.expect(headers['accept']).to.eql(undefined);\r",
+													"            });\r",
+													"            \r",
+													"            \r",
+													"            \r",
+													"            var {signature,protectedHeader} = JSON.parse(headers['fspiop-signature'])\r",
+													"            // var strData = JSON.stringify(response.json().data)\r",
+													"            // const token = `${protectedHeader}.${btoa(strData)}.${signature}`\r",
+													"            // console.log(`token: ${token}`)\r",
+													"            // var isValid = KJUR.jws.JWS.verify(token, pm.environment.get('goldentestfsp2JWSPubKey'), {alg: ['RS256']})\r",
+													"            // console.log(`isValid: ${isValid}`)\r",
+													"            // pm.test(\"Check if the response is JWS valid\", function () {\r",
+													"            //     pm.expect(isValid).to.eql(true);\r",
+													"            // });\r",
+													"            \r",
+													"            //Validate protected header inside Signature\r",
+													"            var decodedProtectedHeaders = JSON.parse(atob(protectedHeader))\r",
+													"            console.log('decodedProtectedHeaders:',decodedProtectedHeaders)\r",
+													"            \r",
+													"            pm.test(\"FSPIOP-Signature Protected Header alg to be RS256\", function () {\r",
+													"                pm.expect(decodedProtectedHeaders['alg']).to.eql('RS256');\r",
+													"            });\r",
+													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-URI to be /quotes/\"+pm.environment.get(\"quoteId\"), function () {\r",
+													"                pm.expect(decodedProtectedHeaders['FSPIOP-URI']).to.eql('/quotes/'+pm.environment.get(\"quoteId\"));\r",
+													"            });\r",
+													"            \r",
+													"\r",
+													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-HTTP-Method to be PUT\", function () {\r",
+													"                pm.expect(decodedProtectedHeaders['FSPIOP-HTTP-Method']).to.eql('PUT');\r",
+													"            });\r",
+													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Source to be goldentestfsp2\", function () {\r",
+													"                pm.expect(decodedProtectedHeaders['FSPIOP-Source']).to.eql('testfsp2');\r",
+													"            });\r",
+													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Destination to be testfsp1\", function () {\r",
+													"                pm.expect(decodedProtectedHeaders['FSPIOP-Destination']).to.eql('testfsp1');\r",
+													"            });\r",
+													"            pm.test(\"FSPIOP-Signature Protected Header Date is present\", function () {\r",
+													"                pm.expect(decodedProtectedHeaders['Date']).to.eql(headers['date']);\r",
+													"            });\r",
+													"           \r",
+													"            pm.test(\"testfsp1 FSPIOP-URI to be /quotes/\"+pm.environment.get(\"quoteId\"), function () {\r",
+													"                pm.expect(headers['fspiop-uri']).to.eql('/quotes/'+pm.environment.get(\"quoteId\"));\r",
+													"            });\r",
+													"            \r",
+													"            pm.test(\"testfsp1 fspiop-http-method is PUT\", function () {\r",
+													"                pm.expect(headers['fspiop-http-method']).to.eql('PUT');\r",
+													"            });\r",
+													"            \r",
+													"            var jsonData = response.json().data;\r",
+													"            \r",
+													"            pm.test(\"Response quoteId is  null\", function () {\r",
+													"                pm.expect(jsonData.quoteId).to.eql(undefined);\r",
+													"                \r",
+													"            });\r",
+													"          \r",
+													"            pm.test(\"Response ilpPacket is not null\", function () {\r",
+													"                pm.expect(jsonData.ilpPacket).not.equal(undefined);\r",
+													"                pm.environment.set(\"ilpPacket\", jsonData.ilpPacket);\r",
+													"            });\r",
+													"       \r",
+													"           pm.test(\"Response condition is not null\", function () {\r",
+													"               pm.expect(jsonData.condition).not.equal(undefined);\r",
+													"               pm.environment.set(\"condition\", jsonData.condition);\r",
+													"           });\r",
+													"      } else {\r",
+													"          pm.test(\"Quote FAILED\", function () {\r",
+													"            throw new Error('Did not receive response on Payer side');\r",
+													"           });\r",
+													"           postman.setNextRequest(null);\r",
+													"      }\r",
+													"       \r",
+													"   });\r",
+													"}, 1000)\r",
+													""
 												],
 												"type": "text/javascript"
 											}
@@ -20379,28 +21533,48 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.quotes+json"
+												"value": "application/vnd.interoperability.quotes+json;version=1",
+												"type": "text"
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "application/vnd.interoperability.quotes+json;version=1.0",
+												"type": "text"
 											},
 											{
 												"key": "Date",
-												"value": "{{dateHeader}}"
+												"value": "{{quoteDate}}",
+												"type": "text"
 											},
 											{
 												"key": "FSPIOP-Source",
-												"value": "testfsp1"
+												"value": "testfsp1",
+												"type": "text"
 											},
 											{
 												"key": "FSPIOP-Destination",
-												"value": "testfsp4"
+												"value": "testfsp2",
+												"type": "text"
+											},
+											{
+												"key": "FSPIOP-Signature",
+												"value": "{{fspiopSignature}}",
+												"type": "text"
+											},
+											{
+												"key": "FSPIOP-HTTP-Method",
+												"value": "POST",
+												"type": "text"
+											},
+											{
+												"key": "FSPIOP-URI",
+												"value": "/quotes",
+												"type": "text"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22507008181\",\n      \"fspId\": \"testfsp1\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"testfsp4\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"55\",\n    \"currency\": \"XOF\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+											"raw": "{{quoteRequest}}"
 										},
 										"url": {
 											"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/quotes",
@@ -20410,32 +21584,68 @@
 											"path": [
 												"quotes"
 											]
-										},
-										"description": "Trying to send quote request for testfsp4 with inactive account"
+										}
 									},
 									"response": []
 								},
 								{
-									"name": "Send Transfer(testfsp1 to testfsp4) account -pass",
+									"name": "Send Transfer ( testfsp1 to testfsp2 ) - pass",
 									"event": [
 										{
 											"listen": "prerequest",
 											"script": {
 												"id": "16b4580d-74c7-44e9-952e-d40a61f9cb69",
 												"exec": [
-													"//if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
-													"   var uuid = require('uuid');",
-													"   var generatedUUID = uuid.v4();",
-													" //  pm.environment.set('transfer_ID', generatedUUID);",
-													"//} else {",
-													"    pm.environment.set('transfer_ID', pm.environment.get('transactionId'));",
-													"//}",
-													"",
-													"//if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-													"   pm.environment.set('transferDate', (new Date()).toUTCString());",
-													"//}",
-													"",
-													"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 120000))"
+													"var navigator = {}; //fake a navigator object for the lib\r",
+													"var window = {}; //fake a window object for the lib\r",
+													"eval(pm.environment.get('jrsassign'));\r",
+													"\r",
+													"var uuid = require('uuid');\r",
+													"var generatedUUID = uuid.v4();\r",
+													"pm.environment.set('transfer_ID', pm.environment.get('transactionId'));\r",
+													"\r",
+													"\r",
+													"pm.variables.set('transferDate', (new Date()).toUTCString());\r",
+													"\r",
+													"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))\r",
+													"\r",
+													"var oHeader = {alg: \"RS256\", \"FSPIOP-Source\":\"testfsp1\",\"FSPIOP-Destination\":\"testfsp2\", \"FSPIOP-URI\":\"/transfers\", \"FSPIOP-HTTP-Method\":\"POST\", \"Date\":pm.variables.get('transferDate')};\r",
+													"var sHeader = JSON.stringify(oHeader);\r",
+													"console.log(`sHeader: ${sHeader}`)\r",
+													"\r",
+													"var objPayload = {\r",
+													"  \"transferId\": pm.environment.get('transfer_ID'),\r",
+													"  \"payerFsp\": \"testfsp1\",\r",
+													"  \"payeeFsp\": \"testfsp2\",\r",
+													"  \"amount\": {\r",
+													"    \"amount\": \"60\",\r",
+													"    \"currency\": pm.environment.get('currency')\r",
+													"  },\r",
+													"  \"expiration\": pm.environment.get('transferExpiration'),\r",
+													"  \"ilpPacket\": pm.environment.get('ilpPacket'),\r",
+													"  \"condition\": pm.environment.get('condition')\r",
+													"}\r",
+													"var sPayload = JSON.stringify(objPayload)\r",
+													"console.log(`sPayload: ${sPayload}`)\r",
+													"pm.variables.set(\"transferRequest\", sPayload);\r",
+													"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));\r",
+													"//console.log(`token: ${token}`)\r",
+													"\r",
+													"// var encodedHeaders = btoa(sHeader)\r",
+													"\r",
+													"// var ofspiopSignature = {signature: vSignature, protectedHeader: encodedHeaders}\r",
+													"// var token = JSON.stringify(ofspiopSignature)\r",
+													"\r",
+													"const [ protectedHeaderBase64, , signature ] = token.split('.');\r",
+													"\r",
+													"const signatureObject = {\r",
+													"    signature: signature.replace('\"', ''),\r",
+													"    protectedHeader: protectedHeaderBase64.replace('\"', '')\r",
+													"};\r",
+													"\r",
+													"console.log(JSON.stringify(signatureObject))\r",
+													"\r",
+													"pm.variables.set('fspiopSignature',JSON.stringify(signatureObject))"
 												],
 												"type": "text/javascript"
 											}
@@ -20445,30 +21655,123 @@
 											"script": {
 												"id": "e47ebaa4-926e-4007-821a-e68cd385e18c",
 												"exec": [
-													"pm.test(\"Status code is 202\", function () {",
-													"    pm.response.to.have.status(202);",
-													"});",
-													"",
-													"pm.environment.set('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE','true')",
-													"",
-													"setTimeout(function () {",
-													"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/testfsp1/correlationid/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
-													"          if(response.responseSize !== 0) {",
-													"              var jsonData = response.json();",
-													"              pm.test(\"Response data does not have transferId\", function () {",
-													"               pm.expect(jsonData.transferId).to.eql(undefined);",
-													"             });",
-													"              pm.test(\"Response status is COMMITTED\", function () {",
-													"                pm.expect(jsonData.transferState).to.eql('COMMITTED');",
-													"              });",
-													"          } else {",
-													"              pm.test(\"Transfer FAILED\", function () {",
-													"                throw new Error('Did not receive response');",
-													"              });",
-													"              postman.setNextRequest(null)",
-													"          }",
-													"   });",
-													"}, 2000)"
+													"pm.test(\"Status code is 202\", function () {\r",
+													"    pm.response.to.have.status(202);\r",
+													"});\r",
+													"\r",
+													"// //Check the request that Switch forwards to testfsp2\r",
+													"setTimeout(function () {\r",
+													"  pm.sendRequest(pm.environment.get(\"TESTFSP2_SDK_INBOUND_URL\")+\"/requests/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {\r",
+													"          if(response.responseSize !== 0) {\r",
+													"              \r",
+													"              //Check the Headers\r",
+													"              var headers = response.json().headers;\r",
+													"              \r",
+													"                pm.test(\"testfsp2 fspiop-source is goldentestfsp1\", function () {\r",
+													"                    pm.expect(headers['fspiop-source']).to.eql('testfsp1');\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 fspiop-destination is goldentestfsp2\", function () {\r",
+													"                    pm.expect(headers['fspiop-destination']).to.eql('testfsp2');\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 content-typeis same as sent in the request\", function () {\r",
+													"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 accept is same as sent in the request\", function () {\r",
+													"                    pm.expect(headers['accept']).to.eql('application/vnd.interoperability.transfers+json;version=1');\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 fspiop-signature is same as sent in the request\", function () {\r",
+													"                    pm.expect(headers['fspiop-signature']).to.eql(pm.variables.get(\"fspiopSignature\"));\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 fspiop-http-method is POST\", function () {\r",
+													"                    pm.expect(headers['fspiop-http-method']).to.eql('POST');\r",
+													"                });\r",
+													"                \r",
+													"                pm.test(\"testfsp2 fspiop-uri is /transfers\", function () {\r",
+													"                    pm.expect(headers['fspiop-uri']).to.eql('/transfers');\r",
+													"                });\r",
+													"                \r",
+													"                \r",
+													"                //Check the data\r",
+													"                var jsonData = response.json().data;\r",
+													"                pm.test(\"testfsp2 data should have the same transferId as request\", function () {\r",
+													"                  pm.expect(jsonData.transferId).to.eql(pm.environment.get(\"transfer_ID\"));\r",
+													"                });\r",
+													"                pm.test(\"testfsp2 data should have the same amount as request\", function () {\r",
+													"                  pm.expect(jsonData.amount.amount).to.eql('60');\r",
+													"                });\r",
+													"                pm.test(\"testfsp2 data should have the same currency as request\", function () {\r",
+													"                  pm.expect(jsonData.amount.currency).to.eql(pm.environment.get(\"currency\"));\r",
+													"                });\r",
+													"                pm.test(\"testfsp2 data should have the same expiration as request\", function () {\r",
+													"                  pm.expect(jsonData.expiration).to.eql(pm.environment.get(\"transferExpiration\"));\r",
+													"                });\r",
+													"                pm.test(\"testfsp2 data should have the same ilpPacket as request\", function () {\r",
+													"                  pm.expect(jsonData.ilpPacket).to.eql(pm.environment.get(\"ilpPacket\"));\r",
+													"                });\r",
+													"                pm.test(\"testfsp2 data should have the same condition as request\", function () {\r",
+													"                  pm.expect(jsonData.condition).to.eql(pm.environment.get(\"condition\"));\r",
+													"                });\r",
+													"                \r",
+													"          } else {\r",
+													"              pm.test(\"Transfer FAILED\", function () {\r",
+													"                throw new Error('Did not receive response on payee side');\r",
+													"              });\r",
+													"              postman.setNextRequest(null)\r",
+													"          }\r",
+													"  });\r",
+													"}, 1100)\r",
+													"\r",
+													"//Check the callback response that Switch forwards to testfsp1\r",
+													"setTimeout(function () {\r",
+													"  pm.sendRequest(pm.environment.get(\"TESTFSP1_SDK_INBOUND_URL\")+\"/callbacks/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {\r",
+													"          if(response.responseSize !== 0) {\r",
+													"            //Checking headers\r",
+													"            var headers = response.json().headers;\r",
+													"            pm.test(\"testfsp1 fspiop-source is goldentestfsp2 \", function () {\r",
+													"                pm.expect(headers['fspiop-source']).to.eql('testfsp2');\r",
+													"            });\r",
+													"            \r",
+													"            pm.test(\"testfsp1 fspiop-destination is goldentestfsp1\", function () {\r",
+													"                pm.expect(headers['fspiop-destination']).to.eql('testfsp1');\r",
+													"            });\r",
+													"            \r",
+													"            pm.test(\"testfsp1 content-type should be application/vnd.interoperability.transfers+json;version=1.0\", function () {\r",
+													"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');\r",
+													"            });\r",
+													"            \r",
+													"            pm.test(\"testfsp1 accept is empty\", function () {\r",
+													"                pm.expect(headers['accept']).to.eql(undefined);\r",
+													"            });\r",
+													"            \r",
+													"            \r",
+													"            pm.test(\"testfsp1 fspiop-uri includes /transfers/{{transfer_ID}}\", function () {\r",
+													"                pm.expect(headers['fspiop-uri']).to.eql('/transfers/'+ pm.environment.get(\"transfer_ID\"));\r",
+													"            });\r",
+													"            \r",
+													"            pm.test(\"testfsp1 fspiop-http-method is PUT\", function () {\r",
+													"                pm.expect(headers['fspiop-http-method']).to.eql('PUT');\r",
+													"            });\r",
+													"            \r",
+													"            var jsonData = response.json().data;\r",
+													"            pm.test(\"Response data does not have transferId\", function () {\r",
+													"               pm.expect(jsonData.transferId).to.eql(undefined);\r",
+													"            });\r",
+													"            pm.test(\"Response status is COMMITTED\", function () {\r",
+													"                pm.expect(jsonData.transferState).to.eql('COMMITTED');\r",
+													"            });\r",
+													"          } else {\r",
+													"              pm.test(\"Transfer FAILED\", function () {\r",
+													"                throw new Error('Did not receive response on payer side');\r",
+													"              });\r",
+													"              postman.setNextRequest(null)\r",
+													"          }\r",
+													"   });\r",
+													"}, 1500)"
 												],
 												"type": "text/javascript"
 											}
@@ -20489,39 +21792,58 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.transfers+json;version=1"
+												"value": "application/vnd.interoperability.transfers+json;version=1",
+												"type": "text"
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.transfers+json;version=1"
+												"value": "application/vnd.interoperability.transfers+json;version=1.0",
+												"type": "text"
 											},
 											{
 												"key": "Date",
-												"value": "{{transferDate}}"
+												"value": "{{transferDate}}",
+												"type": "text"
 											},
 											{
 												"key": "FSPIOP-Source",
-												"value": "testfsp1"
+												"value": "testfsp1",
+												"type": "text"
 											},
 											{
 												"key": "FSPIOP-Destination",
-												"value": "testfsp4"
+												"value": "testfsp2",
+												"type": "text"
+											},
+											{
+												"key": "FSPIOP-Signature",
+												"value": "{{fspiopSignature}}",
+												"type": "text"
+											},
+											{
+												"key": "FSPIOP-URI",
+												"value": "/transfers",
+												"type": "text"
+											},
+											{
+												"key": "FSPIOP-HTTP-Method",
+												"value": "POST",
+												"type": "text"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"transferId\": \"{{transfer_ID}}\",\n  \"payerFsp\": \"testfsp1\",\n  \"payeeFsp\": \"testfsp4\",\n  \"amount\": {\n    \"amount\": \"55\",\n    \"currency\": \"XOF\"\n  },\n  \"expiration\": \"{{transferExpiration}}\",\n  \"ilpPacket\": \"{{ilpPacket}}\",\n  \"condition\": \"{{condition}}\"\n}"
+											"raw": "{{transferRequest}}"
 										},
 										"url": {
-											"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+											"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/transfers",
 											"host": [
-												"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+												"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
 											],
 											"path": [
 												"transfers"
 											]
-										},
-										"description": "Trying to send transfer request for testfsp4 with inactive account"
+										}
 									},
 									"response": []
 								}
