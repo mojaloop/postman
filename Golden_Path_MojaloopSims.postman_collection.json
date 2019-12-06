@@ -2163,6 +2163,20 @@
 							"item": [
 								{
 									"name": "Add party to payeefsp - MSISDN",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "29b9bc87-1012-4c8d-a593-7506feb361eb",
+												"exec": [
+													"pm.test(\"Successful POST request\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([204,500]);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
 									"request": {
 										"auth": {
 											"type": "noauth"
