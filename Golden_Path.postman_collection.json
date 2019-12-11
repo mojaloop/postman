@@ -16904,6 +16904,440 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "transaction-request-service",
+			"item": [
+				{
+					"name": "transactionRequestById",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "Date",
+								"value": "{{dateHeader}}",
+								"type": "text"
+							},
+							{
+								"key": "fspiop-source",
+								"value": "payerfsp",
+								"type": "text"
+							},
+							{
+								"key": "x-forwarded-for",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-destination",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-encryption",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-signature",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-uri",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-http-method",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:4001/transactionRequests/b51ec534-ee48-4575-b6a9-ead2955b8069",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4001",
+							"path": [
+								"transactionRequests",
+								"b51ec534-ee48-4575-b6a9-ead2955b8069"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "health",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": ""
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": ""
+							},
+							{
+								"key": "Date",
+								"type": "text",
+								"value": ""
+							},
+							{
+								"key": "fspiop-source",
+								"type": "text",
+								"value": ""
+							},
+							{
+								"key": "x-forwarded-for",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-destination",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-encryption",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-signature",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-uri",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-http-method",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:4001/health",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4001",
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "transactionRequestById",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Date",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "fspiop-source",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "Content-Length",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-forwarded-for",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-destination",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-encryption",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-signature",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-uri",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-http-method",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"transactionId\": \"b51ec534-ee48-4575-b6a9-ead2955b8069\",\n    \"transactionRequestState\": \"RECEIVED\",\n    \"extensionList\": {\n        \"extension\": [\n            {\n                \"key\": \"errorDescription\",\n                \"value\": \"This is a more detailed error description\"\n            },\n            {\n                \"key\": \"errorDescription\",\n                \"value\": \"This is a more detailed error description\"\n            }\n        ]\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4001/transactionRequests/b51ec534-ee48-4575-b6a9-ead2955b8069",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4001",
+							"path": [
+								"transactionRequests",
+								"b51ec534-ee48-4575-b6a9-ead2955b8069"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "transactionRequestErrorById",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Date",
+								"type": "text",
+								"value": ""
+							},
+							{
+								"key": "fspiop-source",
+								"type": "text",
+								"value": ""
+							},
+							{
+								"key": "Content-Length",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							},
+							{
+								"key": "x-forwarded-for",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-destination",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-encryption",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-signature",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-uri",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-http-method",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"errorInformation\": {\n        \"errorCode\": \"5100\",\n        \"errorDescription\": \"This is an error description\",\n        \"extensionList\": {\n            \"extension\": [\n                {\n                    \"key\": \"errorDescription\",\n                    \"value\": \"This is a more detailed error description\"\n                },\n                {\n                    \"key\": \"errorDescription\",\n                    \"value\": \"This is a more detailed error description\"\n                }\n            ]\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4001/transactionRequests/{ID}/error",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4001",
+							"path": [
+								"transactionRequests",
+								"{ID}",
+								"error"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "transactionRequests",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Date",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "fspiop-source",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "Content-Length",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "x-forwarded-for",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-destination",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-encryption",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-signature",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-uri",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-http-method",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"transactionRequestId\": \"b51ec534-ee48-4575-b6a9-ead2955b8069\",\n    \"payee\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"PERSONAL_ID\",\n            \"partyIdentifier\": \"16135551212\",\n            \"partySubIdOrType\": \"DRIVING_LICENSE\",\n            \"fspId\": \"1234\"\n        },\n        \"merchantClassificationCode\": \"4321\",\n        \"name\": \"Justin Trudeau\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"Justin\",\n                \"middleName\": \"Pierre\",\n                \"lastName\": \"Trudeau\"\n            },\n            \"dateOfBirth\": \"1971-12-25\"\n        }\n    },\n    \"payer\": {\n        \"partyIdType\": \"PERSONAL_ID\",\n        \"partyIdentifier\": \"16135551212\",\n        \"partySubIdOrType\": \"DRIVING_LICENSE\",\n        \"fspId\": \"1234\"\n    },\n    \"amount\": {\n        \"currency\": \"USD\",\n        \"amount\": \"123.45\"\n    },\n    \"transactionType\": {\n        \"scenario\": \"DEPOSIT\",\n        \"subScenario\": \"locally defined sub-scenario\",\n        \"initiator\": \"PAYEE\",\n        \"initiatorType\": \"CONSUMER\",\n        \"refundInfo\": {\n            \"originalTransactionId\": \"b51ec534-ee48-4575-b6a9-ead2955b8069\",\n            \"refundReason\": \"free text indicating reason for the refund\"\n        },\n        \"balanceOfPayments\": \"123\"\n    },\n    \"note\": \"Free-text memo\",\n    \"geoCode\": {\n        \"latitude\": \"+45.4215\",\n        \"longitude\": \"+75.6972\"\n    },\n    \"authenticationType\": \"OTP\",\n    \"expiration\": \"2016-05-24T08:38:08.699-04:00\",\n    \"extensionList\": {\n        \"extension\": [\n            {\n                \"key\": \"errorDescription\",\n                \"value\": \"This is a more detailed error description\"\n            },\n            {\n                \"key\": \"errorDescription\",\n                \"value\": \"This is a more detailed error description\"\n            }\n        ]\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4001/transactionRequests",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4001",
+							"path": [
+								"transactionRequests"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"event": [
