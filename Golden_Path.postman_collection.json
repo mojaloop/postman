@@ -16909,113 +16909,53 @@
 			"name": "transaction-request-service",
 			"item": [
 				{
-					"name": "transactionRequestById",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "",
-								"type": "text"
-							},
-							{
-								"key": "Date",
-								"value": "{{dateHeader}}",
-								"type": "text"
-							},
-							{
-								"key": "fspiop-source",
-								"value": "payerfsp",
-								"type": "text"
-							},
-							{
-								"key": "x-forwarded-for",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "fspiop-destination",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "fspiop-encryption",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "fspiop-signature",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "fspiop-uri",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "fspiop-http-method",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"url": {
-							"raw": "http://localhost:4001/transactionRequests/b51ec534-ee48-4575-b6a9-ead2955b8069",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "4001",
-							"path": [
-								"transactionRequests",
-								"b51ec534-ee48-4575-b6a9-ead2955b8069"
-							],
-							"query": [
-								{
-									"key": "",
-									"value": "",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "health",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "313ab3ab-2c67-46e1-91e8-772e47790223",
+								"exec": [
+									"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "2d29de89-bc48-4e74-a70f-24a1a2ddd2ad",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
 								"type": "text",
-								"value": ""
+								"value": "application/vnd.interoperability.health+json;version=1"
 							},
 							{
 								"key": "Content-Type",
 								"type": "text",
-								"value": ""
+								"value": "application/vnd.interoperability.health+json;version=1.0"
 							},
 							{
 								"key": "Date",
 								"type": "text",
-								"value": ""
+								"value": "{{transactionRequestDate}}"
 							},
 							{
 								"key": "fspiop-source",
 								"type": "text",
-								"value": ""
+								"value": "{{payerfsp}}"
 							},
 							{
 								"key": "x-forwarded-for",
@@ -17026,8 +16966,7 @@
 							{
 								"key": "fspiop-destination",
 								"type": "text",
-								"value": "",
-								"disabled": true
+								"value": "{{payeefsp}}"
 							},
 							{
 								"key": "fspiop-encryption",
@@ -17038,20 +16977,17 @@
 							{
 								"key": "fspiop-signature",
 								"type": "text",
-								"value": "",
-								"disabled": true
+								"value": "{{fspiop-signature}}"
 							},
 							{
 								"key": "fspiop-uri",
 								"type": "text",
-								"value": "",
-								"disabled": true
+								"value": "/health"
 							},
 							{
 								"key": "fspiop-http-method",
 								"type": "text",
-								"value": "",
-								"disabled": true
+								"value": "GET"
 							}
 						],
 						"url": {
@@ -17069,24 +17005,165 @@
 					"response": []
 				},
 				{
+					"name": "transactionRequests",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9ad0a55e-eb18-4254-bd15-c4fc78a3eddd",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "bf383c06-2d3a-4a4f-82c5-1866e9d13adb",
+								"exec": [
+									"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+									"",
+									"var uuid = require('uuid');",
+									"var generatedUUID = uuid.v4();",
+									"",
+									"pm.environment.set('transactionRequestId', generatedUUID);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.transactionRequests+json;version=1",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/vnd.interoperability.transactionRequests+json;version=1.0",
+								"type": "text"
+							},
+							{
+								"key": "Date",
+								"value": "{{transactionRequestDate}}",
+								"type": "text"
+							},
+							{
+								"key": "fspiop-source",
+								"value": "{{payerfsp}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Length",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "x-forwarded-for",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-destination",
+								"value": "{{payeefsp}}",
+								"type": "text"
+							},
+							{
+								"key": "fspiop-encryption",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-signature",
+								"value": "{{fspiop-signature}}",
+								"type": "text"
+							},
+							{
+								"key": "fspiop-uri",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "fspiop-http-method",
+								"value": "POST",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"transactionRequestId\": \"{{transactionRequestId}}\",\n    \"payee\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"PERSONAL_ID\",\n            \"partyIdentifier\": \"16135551212\",\n            \"partySubIdOrType\": \"DRIVING_LICENSE\",\n            \"fspId\": \"1234\"\n        },\n        \"merchantClassificationCode\": \"4321\",\n        \"name\": \"Justin Trudeau\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"Justin\",\n                \"middleName\": \"Pierre\",\n                \"lastName\": \"Trudeau\"\n            },\n            \"dateOfBirth\": \"1971-12-25\"\n        }\n    },\n    \"payer\": {\n        \"partyIdType\": \"PERSONAL_ID\",\n        \"partyIdentifier\": \"16135551212\",\n        \"partySubIdOrType\": \"DRIVING_LICENSE\",\n        \"fspId\": \"1234\"\n    },\n    \"amount\": {\n        \"currency\": \"USD\",\n        \"amount\": \"123.45\"\n    },\n    \"transactionType\": {\n        \"scenario\": \"DEPOSIT\",\n        \"subScenario\": \"locally defined sub-scenario\",\n        \"initiator\": \"PAYEE\",\n        \"initiatorType\": \"CONSUMER\",\n        \"refundInfo\": {\n            \"originalTransactionId\": \"{{transactionRequestId}}\",\n            \"refundReason\": \"free text indicating reason for the refund\"\n        },\n        \"balanceOfPayments\": \"123\"\n    },\n    \"note\": \"Free-text memo\",\n    \"geoCode\": {\n        \"latitude\": \"+45.4215\",\n        \"longitude\": \"+75.6972\"\n    },\n    \"authenticationType\": \"OTP\",\n    \"expiration\": \"2016-05-24T08:38:08.699-04:00\",\n    \"extensionList\": {\n        \"extension\": [\n            {\n                \"key\": \"errorDescription\",\n                \"value\": \"This is a more detailed error description\"\n            },\n            {\n                \"key\": \"errorDescription\",\n                \"value\": \"This is a more detailed error description\"\n            }\n        ]\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4001/transactionRequests",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4001",
+							"path": [
+								"transactionRequests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "transactionRequestById",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "07347f6c-d979-41bd-856f-fcc283e5a598",
+								"exec": [
+									"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "8190d5f4-5897-4621-acc6-673015bbf24a",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
 								"name": "Content-Type",
-								"value": "application/json",
+								"value": "application/vnd.interoperability.transactionRequests+json;version=1.0",
 								"type": "text"
 							},
 							{
 								"key": "Date",
-								"value": "",
+								"value": "{{transactionRequestDate}}",
 								"type": "text"
 							},
 							{
 								"key": "fspiop-source",
-								"value": "",
+								"value": "{{payerfsp}}",
 								"type": "text"
 							},
 							{
@@ -17103,9 +17180,8 @@
 							},
 							{
 								"key": "fspiop-destination",
-								"value": "",
-								"type": "text",
-								"disabled": true
+								"value": "{{payeefsp}}",
+								"type": "text"
 							},
 							{
 								"key": "fspiop-encryption",
@@ -17115,21 +17191,18 @@
 							},
 							{
 								"key": "fspiop-signature",
-								"value": "",
-								"type": "text",
-								"disabled": true
+								"value": "{{fspiop-signature}}",
+								"type": "text"
 							},
 							{
 								"key": "fspiop-uri",
-								"value": "",
-								"type": "text",
-								"disabled": true
+								"value": "/transactionRequests",
+								"type": "text"
 							},
 							{
 								"key": "fspiop-http-method",
-								"value": "",
-								"type": "text",
-								"disabled": true
+								"value": "PUT",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -17158,6 +17231,30 @@
 				},
 				{
 					"name": "transactionRequestErrorById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "775127b9-3fed-4417-a151-9ce04879693c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2e96a551-9f62-47d3-8cd4-3f3ba3036370",
+								"exec": [
+									"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -17165,17 +17262,17 @@
 								"key": "Content-Type",
 								"name": "Content-Type",
 								"type": "text",
-								"value": "application/json"
+								"value": "application/vnd.interoperability.transactionRequests+json;version=1.0"
 							},
 							{
 								"key": "Date",
 								"type": "text",
-								"value": ""
+								"value": "{{transactionRequestDate}}"
 							},
 							{
 								"key": "fspiop-source",
 								"type": "text",
-								"value": ""
+								"value": "{{payerfsp}}"
 							},
 							{
 								"key": "Content-Length",
@@ -17192,8 +17289,7 @@
 							{
 								"key": "fspiop-destination",
 								"type": "text",
-								"value": "",
-								"disabled": true
+								"value": "{{payeefsp}}"
 							},
 							{
 								"key": "fspiop-encryption",
@@ -17204,20 +17300,17 @@
 							{
 								"key": "fspiop-signature",
 								"type": "text",
-								"value": "",
-								"disabled": true
+								"value": "{{fspiop-signature}}"
 							},
 							{
 								"key": "fspiop-uri",
 								"type": "text",
-								"value": "",
-								"disabled": true
+								"value": "/transactionRequests"
 							},
 							{
 								"key": "fspiop-http-method",
 								"type": "text",
-								"value": "",
-								"disabled": true
+								"value": "PUT"
 							}
 						],
 						"body": {
@@ -17246,34 +17339,52 @@
 					"response": []
 				},
 				{
-					"name": "transactionRequests",
+					"name": "transactionRequestById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+								"exec": [
+									"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "",
+								"value": "application/vnd.interoperability.transactionRequests+json;version=1",
 								"type": "text"
 							},
 							{
 								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/json",
+								"value": "application/vnd.interoperability.transactionRequests+json;version=1.0",
 								"type": "text"
 							},
 							{
 								"key": "Date",
-								"value": "",
+								"value": "{{transactionRequestDate}}",
 								"type": "text"
 							},
 							{
 								"key": "fspiop-source",
-								"value": "",
-								"type": "text"
-							},
-							{
-								"key": "Content-Length",
-								"value": "",
+								"value": "{{payerfsp}}",
 								"type": "text"
 							},
 							{
@@ -17284,9 +17395,8 @@
 							},
 							{
 								"key": "fspiop-destination",
-								"value": "",
-								"type": "text",
-								"disabled": true
+								"value": "{{payeefsp}}",
+								"type": "text"
 							},
 							{
 								"key": "fspiop-encryption",
@@ -17296,41 +17406,37 @@
 							},
 							{
 								"key": "fspiop-signature",
-								"value": "",
-								"type": "text",
-								"disabled": true
+								"value": "{{fspiop-signature}}",
+								"type": "text"
 							},
 							{
 								"key": "fspiop-uri",
-								"value": "",
-								"type": "text",
-								"disabled": true
+								"value": "/transactionRequests",
+								"type": "text"
 							},
 							{
 								"key": "fspiop-http-method",
-								"value": "",
-								"type": "text",
-								"disabled": true
+								"value": "GET",
+								"type": "text"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"transactionRequestId\": \"b51ec534-ee48-4575-b6a9-ead2955b8069\",\n    \"payee\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"PERSONAL_ID\",\n            \"partyIdentifier\": \"16135551212\",\n            \"partySubIdOrType\": \"DRIVING_LICENSE\",\n            \"fspId\": \"1234\"\n        },\n        \"merchantClassificationCode\": \"4321\",\n        \"name\": \"Justin Trudeau\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"Justin\",\n                \"middleName\": \"Pierre\",\n                \"lastName\": \"Trudeau\"\n            },\n            \"dateOfBirth\": \"1971-12-25\"\n        }\n    },\n    \"payer\": {\n        \"partyIdType\": \"PERSONAL_ID\",\n        \"partyIdentifier\": \"16135551212\",\n        \"partySubIdOrType\": \"DRIVING_LICENSE\",\n        \"fspId\": \"1234\"\n    },\n    \"amount\": {\n        \"currency\": \"USD\",\n        \"amount\": \"123.45\"\n    },\n    \"transactionType\": {\n        \"scenario\": \"DEPOSIT\",\n        \"subScenario\": \"locally defined sub-scenario\",\n        \"initiator\": \"PAYEE\",\n        \"initiatorType\": \"CONSUMER\",\n        \"refundInfo\": {\n            \"originalTransactionId\": \"b51ec534-ee48-4575-b6a9-ead2955b8069\",\n            \"refundReason\": \"free text indicating reason for the refund\"\n        },\n        \"balanceOfPayments\": \"123\"\n    },\n    \"note\": \"Free-text memo\",\n    \"geoCode\": {\n        \"latitude\": \"+45.4215\",\n        \"longitude\": \"+75.6972\"\n    },\n    \"authenticationType\": \"OTP\",\n    \"expiration\": \"2016-05-24T08:38:08.699-04:00\",\n    \"extensionList\": {\n        \"extension\": [\n            {\n                \"key\": \"errorDescription\",\n                \"value\": \"This is a more detailed error description\"\n            },\n            {\n                \"key\": \"errorDescription\",\n                \"value\": \"This is a more detailed error description\"\n            }\n        ]\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:4001/transactionRequests",
+							"raw": "http://localhost:4001/transactionRequests/b51ec534-ee48-4575-b6a9-ead2955b8069",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "4001",
 							"path": [
-								"transactionRequests"
+								"transactionRequests",
+								"b51ec534-ee48-4575-b6a9-ead2955b8069"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
 							]
 						}
 					},
