@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "a760cecb-f4ca-4343-9937-3a7e02e858ca",
-		"name": "Golden_Path",
+		"_postman_id": "a25a5325-bb41-4072-af92-8fabf4bd7314",
+		"name": "1110-Golden_Path",
 		"description": "Purpose: To setup a newly deployed Mojaloop Switch and add test FSPs along with their callback and other Information needed for end-to-end testing.\n\nContributors:\n- Mowali\n- Amar Ramachandran <amarnath.ramachandran@modusbox.com>\n- Georgi Georgiev <georgi.georgiev@modusbox.com>\n- Juan Correa <juan.correa@modusbox.com>\n- Miguel deBarros <miguel.debarros@modusbox.com>\n- Nico Duvenage <nico.duvenage@modusbox.com>\n- Sam Kummary <sam@modusbox.com>\n- Sri Miryala <sridevi.miriyala@modusbox.com>\n- Steven Oderayi <steven.oderayi@modusbox.com>\n- valentin genev <valentin.genev@modusbox.com>\n- Vijay Guthi <vijaya.guthi@modusbox.com>",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -17207,7 +17207,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"transactionId\": \"b51ec534-ee48-4575-b6a9-ead2955b8069\",\n    \"transactionRequestState\": \"RECEIVED\",\n    \"extensionList\": {\n        \"extension\": [\n            {\n                \"key\": \"errorDescription\",\n                \"value\": \"This is a more detailed error description\"\n            },\n            {\n                \"key\": \"errorDescription\",\n                \"value\": \"This is a more detailed error description\"\n            }\n        ]\n    }\n}",
+							"raw": "{\n    \"transactionId\": \"{{transactionRequestId}}\",\n    \"transactionRequestState\": \"RECEIVED\",\n    \"extensionList\": {\n        \"extension\": [\n            {\n                \"key\": \"errorDescription\",\n                \"value\": \"This is a more detailed error description\"\n            },\n            {\n                \"key\": \"errorDescription\",\n                \"value\": \"This is a more detailed error description\"\n            }\n        ]\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -17215,7 +17215,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:4001/transactionRequests/b51ec534-ee48-4575-b6a9-ead2955b8069",
+							"raw": "http://localhost:4001/transactionRequests/{{transactionRequestId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -17223,7 +17223,7 @@
 							"port": "4001",
 							"path": [
 								"transactionRequests",
-								"b51ec534-ee48-4575-b6a9-ead2955b8069"
+								"{{transactionRequestId}}"
 							]
 						}
 					},
@@ -17323,7 +17323,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:4001/transactionRequests/{ID}/error",
+							"raw": "http://localhost:4001/transactionRequests/{{transactionRequestId}}/error",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -17331,7 +17331,7 @@
 							"port": "4001",
 							"path": [
 								"transactionRequests",
-								"{ID}",
+								"{{transactionRequestId}}",
 								"error"
 							]
 						}
@@ -17421,7 +17421,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:4001/transactionRequests/b51ec534-ee48-4575-b6a9-ead2955b8069",
+							"raw": "http://localhost:4001/transactionRequests/{{transactionRequestId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -17429,7 +17429,7 @@
 							"port": "4001",
 							"path": [
 								"transactionRequests",
-								"b51ec534-ee48-4575-b6a9-ead2955b8069"
+								"{{transactionRequestId}}"
 							],
 							"query": [
 								{
