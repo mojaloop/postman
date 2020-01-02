@@ -13387,6 +13387,106 @@
 					"response": []
 				},
 				{
+					"name": "Check Send Quote - Missing Accept Header",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4376c794-71a8-474c-9b25-a0714ca62df8",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"            ",
+									"pm.test(\"Check Missing mandatory element - Invalid accept header\", function () {",
+									"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Malformed syntax - Invalid accept header');",
+									"});            ",
+									"            ",
+									"pm.test(\"Check Error code 3101\", function () {",
+									"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3101');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a2b75bc4-ffe4-4a22-8fbf-d806b0f3a2d7",
+								"exec": [
+									"var uuid = require('uuid');",
+									"var generatedUUID = uuid.v4();",
+									"",
+									"pm.environment.set('quoteId', generatedUUID);",
+									"generatedUUID = uuid.v4();",
+									"pm.environment.set('transactionId', generatedUUID);",
+									"pm.environment.set('transferAmount', 60.1234);",
+									"pm.environment.set('quoteDate', (new Date()).toUTCString());",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TESTFSP1_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.quotes+json",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.interoperability.quotes+json;version=1.0"
+							},
+							{
+								"key": "Date",
+								"value": "{{quoteDate}}"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "payerfsp"
+							},
+							{
+								"key": "FSPIOP-Destination",
+								"value": "payeefsp"
+							},
+							{
+								"key": "FSPIOP-Signature",
+								"type": "text",
+								"value": "{{fspiop-signature}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{payerMSISDN}}\",\n      \"fspId\": \"payerfsp\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"payeefsp\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
+							"host": [
+								"{{HOST_QUOTING_SERVICE}}"
+							],
+							"path": [
+								"quotes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get Quote - Missing content type",
 					"event": [
 						{
@@ -13416,14 +13516,6 @@
 							"script": {
 								"id": "a2b75bc4-ffe4-4a22-8fbf-d806b0f3a2d7",
 								"exec": [
-									"// var uuid = require('uuid');",
-									"// var generatedUUID = uuid.v4();",
-									"",
-									"// pm.environment.set('quoteId', generatedUUID);",
-									"// generatedUUID = uuid.v4();",
-									"// pm.environment.set('transactionId', generatedUUID);",
-									"// pm.environment.set('transferAmount', 60.1234);",
-									"// pm.environment.set('quoteDate', (new Date()).toUTCString());",
 									""
 								],
 								"type": "text/javascript"
@@ -13514,14 +13606,6 @@
 							"script": {
 								"id": "a2b75bc4-ffe4-4a22-8fbf-d806b0f3a2d7",
 								"exec": [
-									"// var uuid = require('uuid');",
-									"// var generatedUUID = uuid.v4();",
-									"",
-									"// pm.environment.set('quoteId', generatedUUID);",
-									"// generatedUUID = uuid.v4();",
-									"// pm.environment.set('transactionId', generatedUUID);",
-									"// pm.environment.set('transferAmount', 60.1234);",
-									"// pm.environment.set('quoteDate', (new Date()).toUTCString());",
 									""
 								],
 								"type": "text/javascript"
