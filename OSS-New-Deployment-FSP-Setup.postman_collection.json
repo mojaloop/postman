@@ -993,6 +993,270 @@
 							"response": []
 						},
 						{
+							"name": "Add payerfsp callback - PARTICIPANT SUB-ID PUT",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTICIPANT_SUB_ID_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/participants/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payerfsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payerfsp callback - PARTICIPANT SUB-ID PUT Error",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTICIPANT_SUB_ID_PUT_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/participants/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}/error\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payerfsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payerfsp callback - PARTICIPANT SUB-ID DELETE",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTICIPANT_SUB_ID_DELETE\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/participants/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payerfsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payerfsp callback - PARTIES SUB-ID GET",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTIES_SUB_ID_GET\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/parties/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payerfsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payerfsp callback - PARTIES SUB-ID PUT",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTIES_SUB_ID_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/parties/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payerfsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payerfsp callback - PARTIES SUB-ID PUT Error",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTIES_SUB_ID_PUT_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/parties/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}/error\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payerfsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "9. Set Endpoint-NET_DEBIT_CAP_ADJUSTMENT_EMAIL Copy",
 							"event": [
 								{
@@ -1509,270 +1773,6 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/bulkTransfers/{{id}}/error\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}"
-									],
-									"path": [
-										"participants",
-										"payerfsp",
-										"endpoints"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add payerfsp callback - PARTICIPANT SUB-ID PUT",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTICIPANT_SUB_ID_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/participants/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}"
-									],
-									"path": [
-										"participants",
-										"payerfsp",
-										"endpoints"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add payerfsp callback - PARTICIPANT SUB-ID PUT Error",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTICIPANT_SUB_ID_PUT_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/participants/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}/error\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}"
-									],
-									"path": [
-										"participants",
-										"payerfsp",
-										"endpoints"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add payerfsp callback - PARTICIPANT SUB-ID DELETE",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTICIPANT_SUB_ID_DELETE\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/participants/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}"
-									],
-									"path": [
-										"participants",
-										"payerfsp",
-										"endpoints"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add payerfsp callback - PARTIES SUB-ID GET",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTIES_SUB_ID_GET\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/parties/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}"
-									],
-									"path": [
-										"participants",
-										"payerfsp",
-										"endpoints"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add payerfsp callback - PARTIES SUB-ID PUT",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTIES_SUB_ID_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/parties/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}"
-									],
-									"path": [
-										"participants",
-										"payerfsp",
-										"endpoints"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add payerfsp callback - PARTIES SUB-ID PUT Error",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTIES_SUB_ID_PUT_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/parties/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}/error\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
@@ -2366,6 +2366,226 @@
 							"response": []
 						},
 						{
+							"name": "Add payeefsp callback - PARTICIPANT SUB-ID PUT",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTICIPANT_SUB_ID_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/participants/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payeefsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payeefsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payeefsp callback - PARTICIPANT SUB-ID PUT Error",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTICIPANT_SUB_ID_PUT_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/participants/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}/error\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payeefsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payeefsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payeefsp callback - PARTIES SUB-ID GET",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTIES_SUB_ID_GET\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/parties/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payeefsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payeefsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payeefsp callback - PARTIES SUB-ID PUT",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTIES_SUB_ID_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/parties/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payeefsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payeefsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payeefsp callback - PARTIES SUB-ID PUT Error",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTIES_SUB_ID_PUT_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/parties/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}/error\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payeefsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payeefsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "9. Set Endpoint-NET_DEBIT_CAP_ADJUSTMENT_EMAIL Copy Copy",
 							"event": [
 								{
@@ -2882,226 +3102,6 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_BULK_TRANSFER_POST\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/bulkTransfers\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payeefsp/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}"
-									],
-									"path": [
-										"participants",
-										"payeefsp",
-										"endpoints"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add payeefsp callback - PARTICIPANT SUB-ID PUT",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTICIPANT_SUB_ID_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/participants/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payeefsp/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}"
-									],
-									"path": [
-										"participants",
-										"payeefsp",
-										"endpoints"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add payeefsp callback - PARTICIPANT SUB-ID PUT Error",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTICIPANT_SUB_ID_PUT_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/participants/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}/error\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payeefsp/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}"
-									],
-									"path": [
-										"participants",
-										"payeefsp",
-										"endpoints"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add payeefsp callback - PARTIES SUB-ID GET",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTIES_SUB_ID_GET\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/parties/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payeefsp/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}"
-									],
-									"path": [
-										"participants",
-										"payeefsp",
-										"endpoints"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add payeefsp callback - PARTIES SUB-ID PUT",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTIES_SUB_ID_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/parties/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payeefsp/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}"
-									],
-									"path": [
-										"participants",
-										"payeefsp",
-										"endpoints"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add payeefsp callback - PARTIES SUB-ID PUT Error",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTIES_SUB_ID_PUT_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/parties/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}/error\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payeefsp/endpoints",
