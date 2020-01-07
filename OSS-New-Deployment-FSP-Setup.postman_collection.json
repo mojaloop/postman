@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "9e122705-d32f-4f7a-9299-053319fe7683",
+		"_postman_id": "c3a53db4-e465-49a8-abe0-2c3fc2b14883",
 		"name": "OSS-New-Deployment-FSP-Setup",
 		"description": "Purpose: Perform Golden path end-to-end testing on a deployed Mojaloop system\n\nContributors:\n- Mowali\n- Amar Ramachandran <amarnath.ramachandran@modusbox.com>\n- Georgi Georgiev <georgi.georgiev@modusbox.com>\n- Juan Correa <juan.correa@modusbox.com>\n- Miguel deBarros <miguel.debarros@modusbox.com>\n- Nico Duvenage <nico.duvenage@modusbox.com>\n- Sam Kummary <sam@modusbox.com>\n- Sri Miryala <sridevi.miriyala@modusbox.com>\n- Steven Oderayi <steven.oderayi@modusbox.com>\n- valentin genev <valentin.genev@modusbox.com>\n- Vijay Guthi <vijaya.guthi@modusbox.com>",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -413,7 +413,8 @@
 						}
 					]
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "FSP Onboarding",
@@ -1524,6 +1525,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -2632,6 +2634,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -3256,6 +3259,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -3880,6 +3884,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -4504,6 +4509,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -5128,6 +5134,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -5382,6 +5389,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
 			],
@@ -5406,7 +5414,8 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Add Users to Simulators",
@@ -5414,6 +5423,7 @@
 				{
 					"name": "payerfsp",
 					"item": [],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -5705,6 +5715,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -5996,6 +6007,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -6287,132 +6299,11 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
-			]
-		},
-		{
-			"name": "Add SubId Users to Simulator",
-			"item": [
-				{
-					"name": "payerfsp",
-					"item": [
-						{
-							"name": "Add SubId User - 27713803920 - 100",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "e3f505ea-4c76-4c5c-944c-c9188b39b699",
-										"exec": [
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
-										"exec": [
-											"pm.test(\"Status code is 202\", function () {",
-											"    pm.response.to.have.status(202);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n \"fspId\": \"{{payerfsp}}\",\n \"currency\": \"USD\",\n \"partySubIdOrType\": \"100\"\n}\n"
-								},
-								"url": {
-									"raw": "{{HOST_SIMULATOR}}/oracle/participants/MSISDN/27713803920",
-									"host": [
-										"{{HOST_SIMULATOR}}"
-									],
-									"path": [
-										"oracle",
-										"participants",
-										"MSISDN",
-										"27713803920"
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "payeefsp",
-					"item": [
-						{
-							"name": "Add SubId User - 27713803921 - 200",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "e3f505ea-4c76-4c5c-944c-c9188b39b699",
-										"exec": [
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
-										"exec": [
-											"pm.test(\"Status code is 202\", function () {",
-											"    pm.response.to.have.status(202);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n \"fspId\": \"{{payeefsp}}\",\n \"currency\": \"USD\",\n \"partySubIdOrType\": \"200\"\n}\n"
-								},
-								"url": {
-									"raw": "{{HOST_SIMULATOR}}/oracle/participants/MSISDN/27713803921",
-									"host": [
-										"{{HOST_SIMULATOR}}"
-									],
-									"path": [
-										"oracle",
-										"participants",
-										"MSISDN",
-										"27713803921"
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"_postman_isSubFolder": true
-				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Oracle Onboarding",
@@ -6653,9 +6544,9 @@
 							"raw": "{\n    \"party\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"MSISDN\",\n            \"partyIdentifier\": \"27720201002\",\n            \"fspId\": \"payeefsp\"\n        },\n        \"name\": \"SiabeloMaroka\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"Aruna\",\n                \"lastName\": \"Switch\"\n            },\n            \"dateOfBirth\": \"1/7/1980\"\n        }\n    }\n}"
 						},
 						"url": {
-							"raw": "{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/parties/MSISDN/27720201002",
+							"raw": "{{HOST_SIMULATOR}}/payeefsp/parties/MSISDN/27720201002",
 							"host": [
-								"{{HOST_SIMULATOR_K8S_CLUSTER}}"
+								"{{HOST_SIMULATOR}}"
 							],
 							"path": [
 								"payeefsp",
@@ -6667,7 +6558,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Add Users to ALS / mock-pathfinder",
@@ -7155,160 +7047,8 @@
 					},
 					"response": []
 				}
-			]
-		},
-		{
-			"name": "Add SubId Users to ALS",
-			"item": [
-				{
-					"name": "payerfsp",
-					"item": [
-						{
-							"name": "Add SubId User - 27713803920 - 100",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "e3f505ea-4c76-4c5c-944c-c9188b39b699",
-										"exec": [
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
-										"exec": [
-											"pm.test(\"Status code is 202\", function () {",
-											"    pm.response.to.have.status(202);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/vnd.interoperability.participants+json;version=1.0"
-									},
-									{
-										"key": "Accept",
-										"value": "application/vnd.interoperability.participants+json;version=1",
-										"type": "text"
-									},
-									{
-										"key": "Date",
-										"value": "{{transferDate}}",
-										"type": "text"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"value": "{{payerfsp}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n \"fspId\": \"{{payerfsp}}\",\n \"currency\": \"USD\"\n}\n"
-								},
-								"url": {
-									"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/27713803920/100",
-									"host": [
-										"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
-									],
-									"path": [
-										"participants",
-										"MSISDN",
-										"27713803920",
-										"100"
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "payeefsp",
-					"item": [
-						{
-							"name": "Add SubId User - 27713803921 - 200",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "e3f505ea-4c76-4c5c-944c-c9188b39b699",
-										"exec": [
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
-										"exec": [
-											"pm.test(\"Status code is 202\", function () {",
-											"    pm.response.to.have.status(202);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/vnd.interoperability.participants+json;version=1.0"
-									},
-									{
-										"key": "Accept",
-										"value": "application/vnd.interoperability.participants+json;version=1",
-										"type": "text"
-									},
-									{
-										"key": "Date",
-										"value": "{{transferDate}}",
-										"type": "text"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"value": "{{payeefsp}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n \"fspId\": \"{{payeefsp}}\",\n \"currency\": \"USD\"\n}\n"
-								},
-								"url": {
-									"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/27713803921/200",
-									"host": [
-										"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
-									],
-									"path": [
-										"participants",
-										"MSISDN",
-										"27713803921",
-										"200"
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"_postman_isSubFolder": true
-				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"event": [
@@ -7344,5 +7084,6 @@
 				]
 			}
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
