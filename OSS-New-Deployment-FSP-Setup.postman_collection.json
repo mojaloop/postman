@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "c3a53db4-e465-49a8-abe0-2c3fc2b14883",
+		"_postman_id": "566ef503-3b82-4474-b58b-07dc87b4d13d",
 		"name": "OSS-New-Deployment-FSP-Setup",
 		"description": "Purpose: Perform Golden path end-to-end testing on a deployed Mojaloop system\n\nContributors:\n- Mowali\n- Amar Ramachandran <amarnath.ramachandran@modusbox.com>\n- Georgi Georgiev <georgi.georgiev@modusbox.com>\n- Juan Correa <juan.correa@modusbox.com>\n- Miguel deBarros <miguel.debarros@modusbox.com>\n- Nico Duvenage <nico.duvenage@modusbox.com>\n- Sam Kummary <sam@modusbox.com>\n- Sri Miryala <sridevi.miriyala@modusbox.com>\n- Steven Oderayi <steven.oderayi@modusbox.com>\n- valentin genev <valentin.genev@modusbox.com>\n- Vijay Guthi <vijaya.guthi@modusbox.com>",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -977,6 +977,270 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/transfers/{{transferId}}/error\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payerfsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payerfsp callback - PARTICIPANT SUB-ID PUT",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTICIPANT_SUB_ID_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/participants/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payerfsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payerfsp callback - PARTICIPANT SUB-ID PUT Error",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTICIPANT_SUB_ID_PUT_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/participants/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}/error\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payerfsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payerfsp callback - PARTICIPANT SUB-ID DELETE",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTICIPANT_SUB_ID_DELETE\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/participants/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payerfsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payerfsp callback - PARTIES SUB-ID GET",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTIES_SUB_ID_GET\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/parties/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payerfsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payerfsp callback - PARTIES SUB-ID PUT",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTIES_SUB_ID_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/parties/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payerfsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payerfsp callback - PARTIES SUB-ID PUT Error",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTIES_SUB_ID_PUT_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payerfsp/parties/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}/error\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payerfsp/endpoints",
@@ -2086,6 +2350,226 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/transfers/{{transferId}}/error\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payeefsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payeefsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payeefsp callback - PARTICIPANT SUB-ID PUT",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTICIPANT_SUB_ID_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/participants/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payeefsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payeefsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payeefsp callback - PARTICIPANT SUB-ID PUT Error",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTICIPANT_SUB_ID_PUT_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/participants/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}/error\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payeefsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payeefsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payeefsp callback - PARTIES SUB-ID GET",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTIES_SUB_ID_GET\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/parties/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payeefsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payeefsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payeefsp callback - PARTIES SUB-ID PUT",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTIES_SUB_ID_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/parties/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payeefsp/endpoints",
+									"host": [
+										"{{HOST_CENTRAL_LEDGER}}"
+									],
+									"path": [
+										"participants",
+										"payeefsp",
+										"endpoints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add payeefsp callback - PARTIES SUB-ID PUT Error",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_PARTIES_SUB_ID_PUT_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/payeefsp/parties/{{partyIdType}}/{{partyIdentifier}}/{{partySubIdOrType}}/error\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}/participants/payeefsp/endpoints",
@@ -7046,6 +7530,162 @@
 						"description": "Set the Proxy URIs for a specific FSP. This will allow the switch to re-direct the incoming Quote requests to the respective FSP.\n\n*Note: connectorPort has been deprecated and is no longer used, but still required in the request."
 					},
 					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Add SubId Users to ALS",
+			"item": [
+				{
+					"name": "payerfsp",
+					"item": [
+						{
+							"name": "Add SubId User - 27713803920 - 100",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "e3f505ea-4c76-4c5c-944c-c9188b39b699",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/vnd.interoperability.participants+json;version=1.0"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.interoperability.participants+json;version=1",
+										"type": "text"
+									},
+									{
+										"key": "Date",
+										"value": "{{transferDate}}",
+										"type": "text"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "{{payerfsp}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n \"fspId\": \"{{payerfsp}}\",\n \"currency\": \"USD\"\n}\n"
+								},
+								"url": {
+									"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/27713803920/100",
+									"host": [
+										"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+									],
+									"path": [
+										"participants",
+										"MSISDN",
+										"27713803920",
+										"100"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "payeefsp",
+					"item": [
+						{
+							"name": "Add SubId User - 27713803921 - 200",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "e3f505ea-4c76-4c5c-944c-c9188b39b699",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "a34ed0a6-ec7f-4147-8103-ec17cefcb9e7",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/vnd.interoperability.participants+json;version=1.0"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.interoperability.participants+json;version=1",
+										"type": "text"
+									},
+									{
+										"key": "Date",
+										"value": "{{transferDate}}",
+										"type": "text"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "{{payeefsp}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n \"fspId\": \"{{payeefsp}}\",\n \"currency\": \"USD\"\n}\n"
+								},
+								"url": {
+									"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/27713803921/200",
+									"host": [
+										"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+									],
+									"path": [
+										"participants",
+										"MSISDN",
+										"27713803921",
+										"200"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
 				}
 			],
 			"protocolProfileBehavior": {}
