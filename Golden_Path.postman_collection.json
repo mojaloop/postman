@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "cdb7d4cf-2a1b-4966-b9f8-18088fd9470d",
+		"_postman_id": "2c360ea6-d4d7-4829-8c4a-d23ec63fbe29",
 		"name": "Golden_Path",
 		"description": "Purpose: To setup a newly deployed Mojaloop Switch and add test FSPs along with their callback and other Information needed for end-to-end testing.\n\nContributors:\n- Mowali\n- Amar Ramachandran <amarnath.ramachandran@modusbox.com>\n- Georgi Georgiev <georgi.georgiev@modusbox.com>\n- Juan Correa <juan.correa@modusbox.com>\n- Miguel deBarros <miguel.debarros@modusbox.com>\n- Nico Duvenage <nico.duvenage@modusbox.com>\n- Sam Kummary <sam@modusbox.com>\n- Sri Miryala <sridevi.miriyala@modusbox.com>\n- Steven Oderayi <steven.oderayi@modusbox.com>\n- valentin genev <valentin.genev@modusbox.com>\n- Vijay Guthi <vijaya.guthi@modusbox.com>",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -377,6 +377,9 @@
 											"       if(response.responseSize !== 0) { ",
 											"       //Checking headers",
 											"        var headers = response.json().headers;",
+											"         pm.test(\"payeefsp accept should be application/vnd.interoperability.parties+json;version=1\", function () {",
+											"            pm.expect(headers['accept']).to.eql('application/vnd.interoperability.parties+json;version=1');",
+											"        });",
 											"        pm.test(\"payeefsp fspiop-source is payerfsp\", function () {",
 											"            pm.expect(headers['fspiop-source']).to.eql('payerfsp');",
 											"        });",
