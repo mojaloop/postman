@@ -7,16 +7,17 @@
  *   `./scripts/orderEnvironment.js ./environments/Mojaloop-Local.postman_environment.json`
  */
 
-// TODO: figure out a better path...
-const filePath = `../${process.argv[2]}`
+
+const rootDir = `${__dirname}/..` //This will break if the script is moved out of ./scripts
+const filePath = `${process.argv[2]}`
 const fs = require('fs')
 
-const environmentFile = require(filePath)
+const environmentFile = require(`${rootDir}/${filePath}`)
 
 // Sort the `values` in the file in a non-case-sensitive manner
 environmentFile.values.sort((valA, valB) => {
-  a = valA.key.toLowerCase();
-  b = valB.key.toLowerCase();
+  const a = valA.key.toLowerCase();
+  const b = valB.key.toLowerCase();
 
   if (a > b) { 
     return 1; 
@@ -27,4 +28,4 @@ environmentFile.values.sort((valA, valB) => {
   return 0;
 })
 
-fs.writeFileSync('./test.json', Buffer.from(JSON.stringify(environmentFile, null, 2)))
+fs.writeFileSync(`${rootDir}/${filePath}`, Buffer.from(JSON.stringify(environmentFile, null, 2)))
