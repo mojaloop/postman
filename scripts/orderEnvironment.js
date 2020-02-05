@@ -28,4 +28,4 @@ environmentFile.values.sort((valA, valB) => {
   return 0;
 })
 
-fs.writeFileSync(`${rootDir}/${filePath}`, Buffer.from(JSON.stringify(environmentFile, null, 2)))
+fs.writeFileSync(`${rootDir}/${filePath}`, Buffer.from(JSON.stringify(environmentFile, null, 4)))
