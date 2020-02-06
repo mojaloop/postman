@@ -181,3 +181,19 @@ or
 ```shell script
 kubectl delete pods postman-tests
 ```
+
+## Tools + Utils
+
+### orderEnvironment
+
+Annoyingly, when exporting Postman environments, there is no ordering done of the key names, which means managing 100+ environment settings gets really taxing.
+
+You can use the `orderEnvironment.js` script to do this ordering for you, after exporting your environment files.
+
+For example:
+
+```bash
+./scripts/orderEnvironment.js ./environments/Mojaloop-Local.postman_environment.json
+```
+
+This little step will make using Postman just that bit easier...
