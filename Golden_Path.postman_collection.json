@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "8f31fe85-a24c-4488-aa3c-57281cb255ea",
+		"_postman_id": "2c360ea6-d4d7-4829-8c4a-d23ec63fbe29",
 		"name": "Golden_Path",
 		"description": "Purpose: To setup a newly deployed Mojaloop Switch and add test FSPs along with their callback and other Information needed for end-to-end testing.\n\nContributors:\n- Mowali\n- Amar Ramachandran <amarnath.ramachandran@modusbox.com>\n- Georgi Georgiev <georgi.georgiev@modusbox.com>\n- Juan Correa <juan.correa@modusbox.com>\n- Miguel deBarros <miguel.debarros@modusbox.com>\n- Nico Duvenage <nico.duvenage@modusbox.com>\n- Sam Kummary <sam@modusbox.com>\n- Sri Miryala <sridevi.miriyala@modusbox.com>\n- Steven Oderayi <steven.oderayi@modusbox.com>\n- valentin genev <valentin.genev@modusbox.com>\n- Vijay Guthi <vijaya.guthi@modusbox.com>",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -12575,49 +12575,7 @@
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
-									"});",
-									"",
-									"setTimeout(function () {",
-									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/transactionRequests/requests/\"+pm.environment.get(\"transactionRequestId\"), function (err, response) {",
-									"      if(response.responseSize !== 0) {",
-									"            const responseJson = response.json()",
-									"            const headers = responseJson.headers",
-									"            const data = responseJson.data",
-									"            ",
-									"            console.log(responseJson)",
-									"            ",
-									"            pm.test(\"Callback received in the Simulator\", function () {",
-									"                pm.expect(data).not.equal(undefined);",
-									"            });",
-									"            ",
-									"            pm.test(\"transactionId matches\", function () {",
-									"                pm.expect(data['transactionRequestId']).to.eql(pm.environment.get(\"transactionRequestId\"));",
-									"            });",
-									"                ",
-									"            pm.test(\"fspiop-source is payerfsp\", function () {",
-									"                pm.expect(headers['fspiop-source']).to.eql('payerfsp');",
-									"            });",
-									"            ",
-									"            pm.test(\"fspiop-destination is payeefsp\", function () {",
-									"                pm.expect(headers['fspiop-destination']).to.eql('payeefsp');",
-									"            });",
-									"            ",
-									"            pm.test(\"fspiop-http-method is POST\", function () {",
-									"                pm.expect(headers['fspiop-http-method']).to.eql('POST');",
-									"            });",
-									"            ",
-									"            pm.test(\"content-type is same as sent in the request\", function () {",
-									"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transactionRequests+json;version=1.0');",
-									"            });",
-									"            ",
-									"      } else {",
-									"          pm.test(\"Transaction Request FAILED\", function () {",
-									"            throw new Error('Did not receive response');",
-									"          });",
-									"      }",
-									"       ",
-									"  });",
-									"}, 2000)"
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -12704,7 +12662,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"transactionRequestId\": \"{{transactionRequestId}}\",\n    \"payee\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"PERSONAL_ID\",\n            \"partyIdentifier\": \"16135551212\",\n            \"partySubIdOrType\": \"DRIVING_LICENSE\",\n            \"fspId\": \"1234\"\n        },\n        \"merchantClassificationCode\": \"4321\",\n        \"name\": \"Justin Trudeau\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"Justin\",\n                \"middleName\": \"Pierre\",\n                \"lastName\": \"Trudeau\"\n            },\n            \"dateOfBirth\": \"1971-12-25\"\n        }\n    },\n    \"payer\": {\n        \"partyIdType\": \"PERSONAL_ID\",\n        \"partyIdentifier\": \"16135551212\",\n        \"partySubIdOrType\": \"DRIVING_LICENSE\",\n        \"fspId\": \"1234\"\n    },\n    \"amount\": {\n        \"currency\": \"USD\",\n        \"amount\": \"123.45\"\n    },\n    \"transactionType\": {\n        \"scenario\": \"DEPOSIT\",\n        \"subScenario\": \"CUSTOM_SUBSCENARIO\",\n        \"initiator\": \"PAYEE\",\n        \"initiatorType\": \"CONSUMER\",\n        \"refundInfo\": {\n            \"originalTransactionId\": \"{{transactionRequestId}}\",\n            \"refundReason\": \"free text indicating reason for the refund\"\n        },\n        \"balanceOfPayments\": \"123\"\n    },\n    \"note\": \"Free-text memo\",\n    \"geoCode\": {\n        \"latitude\": \"+45.4215\",\n        \"longitude\": \"+75.6972\"\n    },\n    \"authenticationType\": \"OTP\",\n    \"expiration\": \"2016-05-24T08:38:08.699-04:00\",\n    \"extensionList\": {\n        \"extension\": [\n            {\n                \"key\": \"errorDescription\",\n                \"value\": \"This is a more detailed error description\"\n            },\n            {\n                \"key\": \"errorDescription\",\n                \"value\": \"This is a more detailed error description\"\n            }\n        ]\n    }\n}",
+							"raw": "{\n    \"transactionRequestId\": \"{{transactionRequestId}}\",\n    \"payee\": {\n        \"partyIdInfo\": {\n            \"partyIdType\": \"PERSONAL_ID\",\n            \"partyIdentifier\": \"16135551212\",\n            \"partySubIdOrType\": \"DRIVING_LICENSE\",\n            \"fspId\": \"1234\"\n        },\n        \"merchantClassificationCode\": \"4321\",\n        \"name\": \"Justin Trudeau\",\n        \"personalInfo\": {\n            \"complexName\": {\n                \"firstName\": \"Justin\",\n                \"middleName\": \"Pierre\",\n                \"lastName\": \"Trudeau\"\n            },\n            \"dateOfBirth\": \"1971-12-25\"\n        }\n    },\n    \"payer\": {\n        \"partyIdType\": \"PERSONAL_ID\",\n        \"partyIdentifier\": \"16135551212\",\n        \"partySubIdOrType\": \"DRIVING_LICENSE\",\n        \"fspId\": \"1234\"\n    },\n    \"amount\": {\n        \"currency\": \"USD\",\n        \"amount\": \"123.45\"\n    },\n    \"transactionType\": {\n        \"scenario\": \"DEPOSIT\",\n        \"subScenario\": \"locally defined sub-scenario\",\n        \"initiator\": \"PAYEE\",\n        \"initiatorType\": \"CONSUMER\",\n        \"refundInfo\": {\n            \"originalTransactionId\": \"{{transactionRequestId}}\",\n            \"refundReason\": \"free text indicating reason for the refund\"\n        },\n        \"balanceOfPayments\": \"123\"\n    },\n    \"note\": \"Free-text memo\",\n    \"geoCode\": {\n        \"latitude\": \"+45.4215\",\n        \"longitude\": \"+75.6972\"\n    },\n    \"authenticationType\": \"OTP\",\n    \"expiration\": \"2016-05-24T08:38:08.699-04:00\",\n    \"extensionList\": {\n        \"extension\": [\n            {\n                \"key\": \"errorDescription\",\n                \"value\": \"This is a more detailed error description\"\n            },\n            {\n                \"key\": \"errorDescription\",\n                \"value\": \"This is a more detailed error description\"\n            }\n        ]\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -12743,49 +12701,7 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"setTimeout(function () {",
-									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/transactionRequests/callbacks/\"+pm.environment.get(\"transactionRequestId\"), function (err, response) {",
-									"      if(response.responseSize !== 0) {",
-									"            const responseJson = response.json()",
-									"            const headers = responseJson.headers",
-									"            const data = responseJson.data",
-									"            ",
-									"            console.log(responseJson)",
-									"            ",
-									"            pm.test(\"Callback received in the Simulator\", function () {",
-									"                pm.expect(data).not.equal(undefined);",
-									"            });",
-									"            ",
-									"            pm.test(\"transactionId matches\", function () {",
-									"                pm.expect(data['transactionId']).to.eql(pm.environment.get(\"transactionRequestId\"));",
-									"            });",
-									"                ",
-									"            pm.test(\"fspiop-source is payerfsp\", function () {",
-									"                pm.expect(headers['fspiop-source']).to.eql('payerfsp');",
-									"            });",
-									"            ",
-									"            pm.test(\"fspiop-destination is payeefsp\", function () {",
-									"                pm.expect(headers['fspiop-destination']).to.eql('payeefsp');",
-									"            });",
-									"            ",
-									"            pm.test(\"fspiop-http-method is PUT\", function () {",
-									"                pm.expect(headers['fspiop-http-method']).to.eql('PUT');",
-									"            });",
-									"            ",
-									"            pm.test(\"content-type is same as sent in the request\", function () {",
-									"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transactionRequests+json;version=1.0');",
-									"            });",
-									"            ",
-									"      } else {",
-									"          pm.test(\"Transaction Request FAILED\", function () {",
-									"            throw new Error('Did not receive response');",
-									"          });",
-									"      }",
-									"       ",
-									"  });",
-									"}, 2000)"
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -12794,11 +12710,6 @@
 					"request": {
 						"method": "PUT",
 						"header": [
-							{
-								"key": "Accept",
-								"value": "application/vnd.interoperability.transactionRequests+json;version=1",
-								"type": "text"
-							},
 							{
 								"key": "Content-Type",
 								"name": "Content-Type",
@@ -12886,53 +12797,7 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"setTimeout(function () {",
-									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/transactionRequests/callbacks/\"+pm.environment.get(\"transactionRequestId\"), function (err, response) {",
-									"      if(response.responseSize !== 0) {",
-									"            const responseJson = response.json()",
-									"            const headers = responseJson.headers",
-									"            const data = responseJson.data",
-									"            ",
-									"            console.log(responseJson)",
-									"            ",
-									"            pm.test(\"Callback received in the Simulator\", function () {",
-									"                pm.expect(data).not.equal(undefined);",
-									"            });",
-									"            ",
-									"            pm.test(\"errorCode is 5100\", function () {",
-									"                pm.expect(data['errorInformation'].errorCode).to.eql('5100');",
-									"            });",
-									"            ",
-									"            pm.test(\"errorDescription matches\", function () {",
-									"                pm.expect(data['errorInformation'].errorDescription).to.eql('This is an error description');",
-									"            });",
-									"                ",
-									"            pm.test(\"fspiop-source is payerfsp\", function () {",
-									"                pm.expect(headers['fspiop-source']).to.eql('payerfsp');",
-									"            });",
-									"            ",
-									"            pm.test(\"fspiop-destination is payeefsp\", function () {",
-									"                pm.expect(headers['fspiop-destination']).to.eql('payeefsp');",
-									"            });",
-									"            ",
-									"            pm.test(\"fspiop-http-method is PUT\", function () {",
-									"                pm.expect(headers['fspiop-http-method']).to.eql('PUT');",
-									"            });",
-									"            ",
-									"            pm.test(\"content-type is same as sent in the request\", function () {",
-									"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transactionRequests+json;version=1.0');",
-									"            });",
-									"            ",
-									"      } else {",
-									"          pm.test(\"Transaction Request FAILED\", function () {",
-									"            throw new Error('Did not receive response');",
-									"          });",
-									"      }",
-									"       ",
-									"  });",
-									"}, 2000)"
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -12951,11 +12816,6 @@
 					"request": {
 						"method": "PUT",
 						"header": [
-							{
-								"key": "Accept",
-								"value": "",
-								"type": "text"
-							},
 							{
 								"key": "Content-Type",
 								"name": "Content-Type",
@@ -13044,7 +12904,6 @@
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
-									"    ",
 									"});"
 								],
 								"type": "text/javascript"
@@ -13118,7 +12977,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/transactionRequests/{{transactionRequestId}}",
+							"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/transactionRequests/{{transactionRequestId}}?",
 							"host": [
 								"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
 							],
