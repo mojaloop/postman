@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "aae0c846-7e22-487f-8fb8-9d36012e61fa",
+		"_postman_id": "73973c71-7103-44f7-8b6f-e455cd4d6cac",
 		"name": "Golden_Path",
 		"description": "Purpose: To setup a newly deployed Mojaloop Switch and add test FSPs along with their callback and other Information needed for end-to-end testing.\n\nContributors:\n- Mowali\n- Amar Ramachandran <amarnath.ramachandran@modusbox.com>\n- Georgi Georgiev <georgi.georgiev@modusbox.com>\n- Juan Correa <juan.correa@modusbox.com>\n- Miguel deBarros <miguel.debarros@modusbox.com>\n- Nico Duvenage <nico.duvenage@modusbox.com>\n- Sam Kummary <sam@modusbox.com>\n- Sri Miryala <sridevi.miriyala@modusbox.com>\n- Steven Oderayi <steven.oderayi@modusbox.com>\n- valentin genev <valentin.genev@modusbox.com>\n- Vijay Guthi <vijaya.guthi@modusbox.com>",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -12521,21 +12521,9 @@
 								"value": "{{payerfsp}}"
 							},
 							{
-								"key": "x-forwarded-for",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							},
-							{
 								"key": "fspiop-destination",
 								"type": "text",
 								"value": "{{payeefsp}}"
-							},
-							{
-								"key": "fspiop-encryption",
-								"type": "text",
-								"value": "",
-								"disabled": true
 							},
 							{
 								"key": "fspiop-signature",
@@ -12578,7 +12566,7 @@
 									"});",
 									"",
 									"setTimeout(function () {",
-									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/transactionRequests/requests/\"+pm.environment.get(\"transactionRequestId\"), function (err, response) {",
+									"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/transactionRequests/callbacks/\"+pm.environment.get(\"transactionRequestId\"), function (err, response) {",
 									"      if(response.responseSize !== 0) {",
 									"            const responseJson = response.json()",
 									"            const headers = responseJson.headers",
@@ -12589,7 +12577,7 @@
 									"            });",
 									"            ",
 									"            pm.test(\"transactionId matches\", function () {",
-									"                pm.expect(data['transactionRequestId']).to.eql(pm.environment.get(\"transactionRequestId\"));",
+									"                pm.expect(data['transactionId']).to.eql(pm.environment.get(\"transactionRequestId\"));",
 									"            });",
 									"                ",
 									"            pm.test(\"fspiop-source is payerfsp\", function () {",
@@ -12600,8 +12588,8 @@
 									"                pm.expect(headers['fspiop-destination']).to.eql('payeefsp');",
 									"            });",
 									"            ",
-									"            pm.test(\"fspiop-http-method is POST\", function () {",
-									"                pm.expect(headers['fspiop-http-method']).to.eql('POST');",
+									"            pm.test(\"fspiop-http-method is PUT\", function () {",
+									"                pm.expect(headers['fspiop-http-method']).to.eql('PUT');",
 									"            });",
 									"            ",
 									"            pm.test(\"content-type is same as sent in the request\", function () {",
@@ -12657,42 +12645,18 @@
 							},
 							{
 								"key": "fspiop-source",
-								"value": "{{payerfsp}}",
-								"type": "text"
-							},
-							{
-								"key": "Content-Length",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "x-forwarded-for",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "fspiop-destination",
 								"value": "{{payeefsp}}",
 								"type": "text"
 							},
 							{
-								"key": "fspiop-encryption",
-								"value": "",
-								"type": "text",
-								"disabled": true
+								"key": "fspiop-destination",
+								"value": "{{payerfsp}}",
+								"type": "text"
 							},
 							{
 								"key": "fspiop-signature",
 								"value": "{{fspiop-signature}}",
 								"type": "text"
-							},
-							{
-								"key": "fspiop-uri",
-								"value": "",
-								"type": "text",
-								"disabled": true
 							},
 							{
 								"key": "fspiop-http-method",
@@ -12812,27 +12776,9 @@
 								"type": "text"
 							},
 							{
-								"key": "Content-Length",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "x-forwarded-for",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							},
-							{
 								"key": "fspiop-destination",
 								"value": "{{payeefsp}}",
 								"type": "text"
-							},
-							{
-								"key": "fspiop-encryption",
-								"value": "",
-								"type": "text",
-								"disabled": true
 							},
 							{
 								"key": "fspiop-signature",
@@ -12841,7 +12787,7 @@
 							},
 							{
 								"key": "fspiop-uri",
-								"value": "/transactionRequests",
+								"value": "/transactionRequests/{{transactionRequestId}}",
 								"type": "text"
 							},
 							{
@@ -12967,27 +12913,9 @@
 								"value": "{{payerfsp}}"
 							},
 							{
-								"key": "Content-Length",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							},
-							{
-								"key": "x-forwarded-for",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							},
-							{
 								"key": "fspiop-destination",
 								"type": "text",
 								"value": "{{payeefsp}}"
-							},
-							{
-								"key": "fspiop-encryption",
-								"type": "text",
-								"value": "",
-								"disabled": true
 							},
 							{
 								"key": "fspiop-signature",
@@ -12997,7 +12925,7 @@
 							{
 								"key": "fspiop-uri",
 								"type": "text",
-								"value": "/transactionRequests"
+								"value": "/transactionRequests/{{transactionRequestId}}/error"
 							},
 							{
 								"key": "fspiop-http-method",
@@ -13078,21 +13006,9 @@
 								"type": "text"
 							},
 							{
-								"key": "x-forwarded-for",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							},
-							{
 								"key": "fspiop-destination",
 								"value": "{{payeefsp}}",
 								"type": "text"
-							},
-							{
-								"key": "fspiop-encryption",
-								"value": "",
-								"type": "text",
-								"disabled": true
 							},
 							{
 								"key": "fspiop-signature",
@@ -13111,7 +13027,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/transactionRequests/{{transactionRequestId}}?",
+							"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/transactionRequests/{{transactionRequestId}}",
 							"host": [
 								"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
 							],
