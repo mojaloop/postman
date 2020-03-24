@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "9d7af5af-f98c-43ea-b521-8d2b6bfcc9ed",
+		"_postman_id": "821325a6-7f17-4fa3-9a5f-db06e1071679",
 		"name": "OSS-New-Deployment-FSP-Setup",
 		"description": "Purpose: Perform Golden path end-to-end testing on a deployed Mojaloop system\n\nContributors:\n- Mowali\n- Amar Ramachandran <amarnath.ramachandran@modusbox.com>\n- Georgi Georgiev <georgi.georgiev@modusbox.com>\n- Juan Correa <juan.correa@modusbox.com>\n- Miguel deBarros <miguel.debarros@modusbox.com>\n- Nico Duvenage <nico.duvenage@modusbox.com>\n- Sam Kummary <sam@modusbox.com>\n- Sri Miryala <sridevi.miriyala@modusbox.com>\n- Steven Oderayi <steven.oderayi@modusbox.com>\n- valentin genev <valentin.genev@modusbox.com>\n- Vijay Guthi <vijaya.guthi@modusbox.com>",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -414,6 +414,77 @@
 					]
 				}
 			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "SettlementModels",
+			"item": [
+				{
+					"name": "Create settlement model DEFERREDNET",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"DEFERREDNET\",\n  \"settlementGranularity\": \"NET\",\n  \"settlementInterchange\": \"MULTILATERAL\",\n  \"settlementDelay\": \"DEFERRED\",\n  \"requireLiquidityCheck\": true,\n  \"ledgerAccountType\": \"POSITION\",\n  \"autoPositionReset\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}/settlementModels",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}"
+							],
+							"path": [
+								"settlementModels"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create settlement model DEFERRED NET USD",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"DEFERREDNETUSD\",\n  \"settlementGranularity\": \"NET\",\n  \"settlementInterchange\": \"MULTILATERAL\",\n  \"settlementDelay\": \"DEFERRED\",\n  \"currency\": \"USD\",\n  \"requireLiquidityCheck\": true,\n  \"ledgerAccountType\": \"POSITION\",\n  \"autoPositionReset\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}/settlementModels",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}"
+							],
+							"path": [
+								"settlementModels"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "this is responsible for creating mandastory settlement models",
 			"protocolProfileBehavior": {}
 		},
 		{
