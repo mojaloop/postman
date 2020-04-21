@@ -1,0 +1,208 @@
+{
+	"info": {
+		"_postman_id": "f4f3f2fc-fc56-4373-abaa-43fdad56eb4a",
+		"name": "Bulk API Transfers",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET Bulk API Health",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "60f81e91-c527-4e45-ae4d-1114129cd1ae",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST_BULK_ADAPTER}}/health",
+					"host": [
+						"{{HOST_BULK_ADAPTER}}"
+					],
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Bulk Transfer",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "60f81e91-c527-4e45-ae4d-1114129cd1ae",
+						"exec": [
+							"const uuid = require('uuid');",
+							"",
+							"const delay = 1000 * 3600 * 24",
+							"const bulkTransferId = uuid.v4();",
+							"const bulkQuoteId = uuid.v4();",
+							"const transferId = uuid.v4();",
+							"const transferId2 = uuid.v4();",
+							"const now = new Date();",
+							"const headerDate = now.toUTCString();",
+							"const expirationDate = new Date(now.getTime() + delay).toISOString();",
+							"const completedTimestamp = now.toISOString();",
+							"",
+							"pm.environment.set(\"bulkTransferId\", bulkTransferId);",
+							"pm.environment.set(\"bulkQuoteId\", bulkQuoteId);",
+							"pm.environment.set(\"transferId\", transferId);",
+							"pm.environment.set(\"transferId2\", transferId2);",
+							"pm.environment.set(\"headerDate\", headerDate);",
+							"pm.environment.set(\"expirationDate\", expirationDate);",
+							"pm.environment.set(\"completedTimestamp\", completedTimestamp);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "{{contentType}}"
+					},
+					{
+						"key": "Date",
+						"value": "{{headerDate}}"
+					},
+					{
+						"key": "Accept",
+						"value": "{{contentType}}"
+					},
+					{
+						"key": "FSPIOP-Source",
+						"value": "{{payerFsp}}"
+					},
+					{
+						"key": "FSPIOP-Destination",
+						"value": "{{payeeFsp}}"
+					},
+					{
+						"key": "FSPIOP-Signature",
+						"type": "text",
+						"value": "~~{{payerFsp}}~~"
+					},
+					{
+						"key": "FSPIOP-URI",
+						"type": "text",
+						"value": "/parties/msisdn/123456789"
+					},
+					{
+						"key": "FSPIOP-HTTP-Method",
+						"value": "POST",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \n    \"bulkTransferId\": \"{{bulkTransferId}}\",\n    \"bulkQuoteId\": \"{{bulkQuoteId}}\",\n    \"payeeFsp\": \"{{payeeFsp}}\",\n    \"payerFsp\": \"{{payerFsp}}\",\n    \"individualTransfers\":\n    [ {\n        \"transferId\": \"{{transferId}}\",\n        \"transferAmount\": {\n            \"currency\": \"{{currency}}\",\n            \"amount\": \"{{amount}}\"\n        },\n        \"ilpPacket\": \"{{ilpPacket}}\",\n        \"condition\": \"{{condition}}\",\n        \"extensionList\": { \"extension\": [\n            { \"key\": \"{{extKey1}}t1\", \"value\": \"{{extValue1}}t1\"},\n            { \"key\": \"{{extKey2}}t1\", \"value\": \"{{extValue2}}t1\"}\n        ] }\n      },\n      {\n        \"transferId\": \"{{transferId2}}\",\n        \"transferAmount\": {\n            \"currency\": \"{{currency2}}\",\n            \"amount\": \"{{amount2}}\"\n        },\n        \"ilpPacket\": \"{{ilpPacket2}}\",\n        \"condition\": \"{{condition2}}\"\n    } ],\n    \"expiration\": \"{{expirationDate}}\"\n}"
+				},
+				"url": {
+					"raw": "{{HOST_BULK_ADAPTER}}/bulkTransfers",
+					"host": [
+						"{{HOST_BULK_ADAPTER}}"
+					],
+					"path": [
+						"bulkTransfers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Bulk Transfer",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "60f81e91-c527-4e45-ae4d-1114129cd1ae",
+						"exec": [
+							"const delay = 1000 * 3600 * 24 * 0",
+							"const now = new Date();",
+							"const headerDate = now.toUTCString();",
+							"const completedTimestamp = new Date(now.getTime() + delay).toISOString();",
+							"",
+							"pm.environment.set(\"headerDate\", headerDate);",
+							"pm.environment.set(\"completedTimestamp\", completedTimestamp);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "{{contentType}}"
+					},
+					{
+						"key": "Date",
+						"value": "{{headerDate}}"
+					},
+					{
+						"key": "Accept",
+						"value": "{{contentType}}"
+					},
+					{
+						"key": "FSPIOP-Source",
+						"value": "{{payeeFsp}}"
+					},
+					{
+						"key": "FSPIOP-Destination",
+						"value": "{{payerFsp}}"
+					},
+					{
+						"key": "FSPIOP-Signature",
+						"type": "text",
+						"value": "~~{{payeeFsp}}~~"
+					},
+					{
+						"key": "FSPIOP-URI",
+						"type": "text",
+						"value": "/parties/msisdn/123456789"
+					},
+					{
+						"key": "FSPIOP-HTTP-Method",
+						"value": "PUT",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \n    \"bulkTransferState\": \"COMPLETED\",\n\t\"completedTimestamp\": \"{{completedTimestamp}}\",\n    \"individualTransferResults\":\n    [ {\n        \"transferId\": \"{{transferId}}\",\n        \"fulfilment\": \"{{fulfilment}}\",\n        \"extensionList\": { \"extension\": [\n            { \"key\": \"{{extKey1}}t1\", \"value\": \"{{extValue1}}t1\"},\n            { \"key\": \"{{extKey2}}t1\", \"value\": \"{{extValue2}}t1\"}\n        ] }\n      },\n      {\n        \"transferId\": \"{{transferId2}}\",\n        \"fulfilment\": \"{{fulfilment2}}\"\n      }\n    ],\n    \"extensionList\": { \"extension\": [\n        { \"key\": \"{{extKey1}}\", \"value\": \"{{extValue1}}\"},\n        { \"key\": \"{{extKey2}}\", \"value\": \"{{extValue2}}\"}\n    ] }\n}"
+				},
+				"url": {
+					"raw": "{{HOST_BULK_ADAPTER}}/bulkTransfers/{{bulkTransferId}}",
+					"host": [
+						"{{HOST_BULK_ADAPTER}}"
+					],
+					"path": [
+						"bulkTransfers",
+						"{{bulkTransferId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
