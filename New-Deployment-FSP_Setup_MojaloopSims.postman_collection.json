@@ -504,8 +504,28 @@
 											"pm.environment.set('fundsInPrepareAmount', 5000);",
 											"",
 											"",
-											"const hubGetStatusRequest = {",
+											"const payerfspGetStatusRequest = {",
 											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/payerfsp/accounts',",
+											"  method: 'GET',",
+											"  header: {",
+											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"      \"Content-Type\": \"application/json\"",
+											"  }",
+											"};",
+											"pm.sendRequest(payerfspGetStatusRequest, function (err, response) {",
+											"    console.log(response.json())",
+											"    var jsonData = response.json()",
+											"    for(var i in jsonData) {",
+											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
+											"            pm.environment.set(\"payerfspSettlementAccountId\",jsonData[i].id)",
+											"            pm.environment.set(\"payerfspSettlementAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+											"        }",
+											"    }",
+											"});",
+											"",
+											"const hubGetStatusRequest = {",
+											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
 											"  method: 'GET',",
 											"  header: {",
 											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
@@ -515,12 +535,15 @@
 											"};",
 											"pm.sendRequest(hubGetStatusRequest, function (err, response) {",
 											"    console.log(response.json())",
-											"    var jsonData = response.json()",
-											"    for(var i in jsonData) {",
-											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-											"            pm.environment.set(\"payerfspSettlementAccountId\",jsonData[i].id)",
-											"        }",
-											"    }",
+											"    //var jsonData = response.json()",
+											"    response.json()",
+											"        .filter( ledgerAccount => (ledgerAccount.currency === pm.environment.get('currency') && ledgerAccount.ledgerAccountType === 'HUB_RECONCILIATION'))",
+											"        .forEach(account => pm.environment.set(\"hubReconAccountBalanceBeforeFundsIn\",account.value))",
+											"    // for(var i in jsonData) {",
+											"    //     if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"    //         pm.environment.set(\"hubReconAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+											"    //     }",
+											"    // }",
 											"});",
 											""
 										],
@@ -555,7 +578,7 @@
 											"                payerfspSettlementAccountBalanceAfterFundsIn = jsonData[i].value",
 											"            }",
 											"        }",
-											"        var payerfspExpectedBalance = pm.environment.get('payerfspSettlementAccountBalanceBeforeFundsIn') + pm.environment.get('fundsInPrepareAmount')",
+											"        var payerfspExpectedBalance = pm.environment.get('payerfspSettlementAccountBalanceBeforeFundsIn') - pm.environment.get('fundsInPrepareAmount')",
 											"        pm.test(\"Final Payerfsp Settlement Account Balance should be same as before FundsIn + fundsInPrepareAmount\", function () {",
 											"            pm.expect(payerfspSettlementAccountBalanceAfterFundsIn).to.eql(payerfspExpectedBalance);",
 											"          });    ",
@@ -575,14 +598,17 @@
 											"        console.log(response.json())",
 											"        var jsonData = response.json()",
 											"        var currentHubReconAccountBalance",
-											"        for(var i in jsonData) {",
-											"            if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
-											"                hubReconAccountBalanceAfterFundsIn = jsonData[i].value",
-											"            }",
-											"        }",
-											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsIn\")",
+											"        response.json()",
+											"        .filter( ledgerAccount => (ledgerAccount.currency === pm.environment.get('currency') && ledgerAccount.ledgerAccountType === 'HUB_RECONCILIATION'))",
+											"        .forEach(account => hubReconAccountBalanceAfterFundsIn = account.value)",
+											"        // for(var i in jsonData) {",
+											"        //     if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"        //         hubReconAccountBalanceAfterFundsIn = jsonData[i].value",
+											"        //     }",
+											"        // }",
+											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsIn\")+pm.environment.get('fundsInPrepareAmount')",
 											"        console.log(hubExpectedBalance)",
-											"        pm.test(\"Final Hub Reconciliation Account Balance should be same as before FundsIn\", function () {",
+											"        pm.test(\"Final Hub Reconciliation Account Balance should increase by FundsIn Amount\", function () {",
 											"            pm.expect(hubReconAccountBalanceAfterFundsIn).to.eql(hubExpectedBalance);",
 											"          });  ",
 											"    });",
@@ -1659,8 +1685,28 @@
 											"pm.environment.set('fundsInPrepareAmount', 5000);",
 											"",
 											"",
-											"const hubGetStatusRequest = {",
+											"const payeefspGetStatusRequest = {",
 											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/payeefsp/accounts',",
+											"  method: 'GET',",
+											"  header: {",
+											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"      \"Content-Type\": \"application/json\"",
+											"  }",
+											"};",
+											"pm.sendRequest(payeefspGetStatusRequest, function (err, response) {",
+											"    console.log(response.json())",
+											"    var jsonData = response.json()",
+											"    for(var i in jsonData) {",
+											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
+											"            pm.environment.set(\"payeefspSettlementAccountId\",jsonData[i].id)",
+											"            pm.environment.set(\"payeefspSettlementAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+											"        }",
+											"    }",
+											"});",
+											"",
+											"const hubGetStatusRequest = {",
+											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
 											"  method: 'GET',",
 											"  header: {",
 											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
@@ -1670,14 +1716,16 @@
 											"};",
 											"pm.sendRequest(hubGetStatusRequest, function (err, response) {",
 											"    console.log(response.json())",
-											"    var jsonData = response.json()",
-											"    for(var i in jsonData) {",
-											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-											"            pm.environment.set(\"payeefspSettlementAccountId\",jsonData[i].value)",
-											"        }",
-											"    }",
+											"    //var jsonData = response.json()",
+											"    response.json()",
+											"        .filter( ledgerAccount => (ledgerAccount.currency === pm.environment.get('currency') && ledgerAccount.ledgerAccountType === 'HUB_RECONCILIATION'))",
+											"        .forEach(account => pm.environment.set(\"hubReconAccountBalanceBeforeFundsIn\",account.value))",
+											"    // for(var i in jsonData) {",
+											"    //     if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"    //         pm.environment.set(\"hubReconAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+											"    //     }",
+											"    // }",
 											"});",
-											"",
 											""
 										],
 										"type": "text/javascript"
@@ -1711,8 +1759,8 @@
 											"                payeefspSettlementAccountBalanceAfterFundsIn = jsonData[i].value",
 											"            }",
 											"        }",
-											"        var payeefspExpectedBalance = pm.environment.get('payeefspSettlementAccountBalanceBeforeFundsIn') + pm.environment.get('fundsInPrepareAmount')",
-											"        pm.test(\"Final Payeefsp Settlement Account Balance should be same as before FundsIn + fundsInPrepareAmount\", function () {",
+											"        var payeefspExpectedBalance = pm.environment.get('payeefspSettlementAccountBalanceBeforeFundsIn') - pm.environment.get('fundsInPrepareAmount')",
+											"        pm.test(\"Final payeefsp Settlement Account Balance should be same as before FundsIn + fundsInPrepareAmount\", function () {",
 											"            pm.expect(payeefspSettlementAccountBalanceAfterFundsIn).to.eql(payeefspExpectedBalance);",
 											"          });    ",
 											"    ",
@@ -1731,14 +1779,17 @@
 											"        console.log(response.json())",
 											"        var jsonData = response.json()",
 											"        var currentHubReconAccountBalance",
-											"        for(var i in jsonData) {",
-											"            if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
-											"                hubReconAccountBalanceAfterFundsIn = jsonData[i].value",
-											"            }",
-											"        }",
-											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsIn\")",
+											"        response.json()",
+											"        .filter( ledgerAccount => (ledgerAccount.currency === pm.environment.get('currency') && ledgerAccount.ledgerAccountType === 'HUB_RECONCILIATION'))",
+											"        .forEach(account => hubReconAccountBalanceAfterFundsIn = account.value)",
+											"        // for(var i in jsonData) {",
+											"        //     if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"        //         hubReconAccountBalanceAfterFundsIn = jsonData[i].value",
+											"        //     }",
+											"        // }",
+											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsIn\")+pm.environment.get('fundsInPrepareAmount')",
 											"        console.log(hubExpectedBalance)",
-											"        pm.test(\"Final Hub Reconciliation Account Balance should be same as before FundsIn\", function () {",
+											"        pm.test(\"Final Hub Reconciliation Account Balance should increase by FundsIn Amount\", function () {",
 											"            pm.expect(hubReconAccountBalanceAfterFundsIn).to.eql(hubExpectedBalance);",
 											"          });  ",
 											"    });",
@@ -2799,7 +2850,7 @@
 							"response": []
 						},
 						{
-							"name": "Deposit Funds in Settlement Account - Payerfsp",
+							"name": "Deposit Funds in Settlement Account - noresponsepayeefsp",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -2809,11 +2860,31 @@
 											"var uuid = require('uuid');",
 											"var generatedUUID = uuid.v4();",
 											"pm.environment.set('fundsInPrepareTransferId', generatedUUID);",
-											"pm.environment.set('fundsInPrepareAmount', 5000000);",
+											"pm.environment.set('fundsInPrepareAmount', 5000);",
 											"",
+											"",
+											"const noresponsepayeefspGetStatusRequest = {",
+											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/noresponsepayeefsp/accounts',",
+											"  method: 'GET',",
+											"  header: {",
+											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"      \"Content-Type\": \"application/json\"",
+											"  }",
+											"};",
+											"pm.sendRequest(noresponsepayeefspGetStatusRequest, function (err, response) {",
+											"    console.log(response.json())",
+											"    var jsonData = response.json()",
+											"    for(var i in jsonData) {",
+											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
+											"            pm.environment.set(\"noresponsepayeefspSettlementAccountId\",jsonData[i].id)",
+											"            pm.environment.set(\"noresponsepayeefspSettlementAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+											"        }",
+											"    }",
+											"});",
 											"",
 											"const hubGetStatusRequest = {",
-											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/noresponsepayeefsp/accounts',",
+											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
 											"  method: 'GET',",
 											"  header: {",
 											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
@@ -2823,12 +2894,15 @@
 											"};",
 											"pm.sendRequest(hubGetStatusRequest, function (err, response) {",
 											"    console.log(response.json())",
-											"    var jsonData = response.json()",
-											"    for(var i in jsonData) {",
-											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-											"            pm.environment.set(\"noresponsepayeefspSettlementAccountId\",jsonData[i].id)",
-											"        }",
-											"    }",
+											"    //var jsonData = response.json()",
+											"    response.json()",
+											"        .filter( ledgerAccount => (ledgerAccount.currency === pm.environment.get('currency') && ledgerAccount.ledgerAccountType === 'HUB_RECONCILIATION'))",
+											"        .forEach(account => pm.environment.set(\"hubReconAccountBalanceBeforeFundsIn\",account.value))",
+											"    // for(var i in jsonData) {",
+											"    //     if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"    //         pm.environment.set(\"hubReconAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+											"    //     }",
+											"    // }",
 											"});",
 											""
 										],
@@ -2863,6 +2937,39 @@
 											"                noresponsepayeefspSettlementAccountBalanceAfterFundsIn = jsonData[i].value",
 											"            }",
 											"        }",
+											"        var noresponsepayeefspExpectedBalance = pm.environment.get('noresponsepayeefspSettlementAccountBalanceBeforeFundsIn') - pm.environment.get('fundsInPrepareAmount')",
+											"        pm.test(\"Final noresponsepayeefsp Settlement Account Balance should be same as before FundsIn + fundsInPrepareAmount\", function () {",
+											"            pm.expect(noresponsepayeefspSettlementAccountBalanceAfterFundsIn).to.eql(noresponsepayeefspExpectedBalance);",
+											"          });    ",
+											"    ",
+											"    });",
+											"    ",
+											"    const hubGetStatusRequest = {",
+											"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(hubGetStatusRequest, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        var currentHubReconAccountBalance",
+											"        response.json()",
+											"        .filter( ledgerAccount => (ledgerAccount.currency === pm.environment.get('currency') && ledgerAccount.ledgerAccountType === 'HUB_RECONCILIATION'))",
+											"        .forEach(account => hubReconAccountBalanceAfterFundsIn = account.value)",
+											"        // for(var i in jsonData) {",
+											"        //     if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"        //         hubReconAccountBalanceAfterFundsIn = jsonData[i].value",
+											"        //     }",
+											"        // }",
+											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsIn\")+pm.environment.get('fundsInPrepareAmount')",
+											"        console.log(hubExpectedBalance)",
+											"        pm.test(\"Final Hub Reconciliation Account Balance should increase by FundsIn Amount\", function () {",
+											"            pm.expect(hubReconAccountBalanceAfterFundsIn).to.eql(hubExpectedBalance);",
+											"          });  ",
 											"    });",
 											"}, 2000)"
 										],
@@ -3434,8 +3541,28 @@
 											"pm.environment.set('fundsInPrepareAmount', 5000);",
 											"",
 											"",
-											"const hubGetStatusRequest = {",
+											"const testfsp1GetStatusRequest = {",
 											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/testfsp1/accounts',",
+											"  method: 'GET',",
+											"  header: {",
+											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"      \"Content-Type\": \"application/json\"",
+											"  }",
+											"};",
+											"pm.sendRequest(testfsp1GetStatusRequest, function (err, response) {",
+											"    console.log(response.json())",
+											"    var jsonData = response.json()",
+											"    for(var i in jsonData) {",
+											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
+											"            pm.environment.set(\"testfsp1SettlementAccountId\",jsonData[i].id)",
+											"            pm.environment.set(\"testfsp1SettlementAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+											"        }",
+											"    }",
+											"});",
+											"",
+											"const hubGetStatusRequest = {",
+											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
 											"  method: 'GET',",
 											"  header: {",
 											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
@@ -3445,14 +3572,16 @@
 											"};",
 											"pm.sendRequest(hubGetStatusRequest, function (err, response) {",
 											"    console.log(response.json())",
-											"    var jsonData = response.json()",
-											"    for(var i in jsonData) {",
-											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-											"            pm.environment.set(\"testfsp1SettlementAccountId\",jsonData[i].id)",
-											"        }",
-											"    }",
+											"    //var jsonData = response.json()",
+											"    response.json()",
+											"        .filter( ledgerAccount => (ledgerAccount.currency === pm.environment.get('currency') && ledgerAccount.ledgerAccountType === 'HUB_RECONCILIATION'))",
+											"        .forEach(account => pm.environment.set(\"hubReconAccountBalanceBeforeFundsIn\",account.value))",
+											"    // for(var i in jsonData) {",
+											"    //     if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"    //         pm.environment.set(\"hubReconAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+											"    //     }",
+											"    // }",
 											"});",
-											"",
 											""
 										],
 										"type": "text/javascript"
@@ -3467,57 +3596,60 @@
 											"    pm.response.to.have.status(202);",
 											"});",
 											"",
-											"// setTimeout(function () {",
-											"//     const testfsp1GetStatusRequest = {",
-											"//       url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"testfsp1\")+'/accounts',",
-											"//       method: 'GET',",
-											"//       header: {",
-											"//           \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
-											"//           \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-											"//           \"Content-Type\": \"application/json\"",
-											"//       }",
-											"//     };",
-											"//     pm.sendRequest(testfsp1GetStatusRequest, function (err, response) {",
-											"//         console.log(response.json())",
-											"//         var jsonData = response.json()",
-											"//         var testfsp1SettlementAccountBalanceAfterFundsIn",
-											"//         for(var i in jsonData) {",
-											"//             if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-											"//                 testfsp1SettlementAccountBalanceAfterFundsIn = jsonData[i].value",
-											"//             }",
-											"//         }",
-											"//         var testfsp1ExpectedBalance = pm.environment.get('testfsp1SettlementAccountBalanceBeforeFundsIn') + pm.environment.get('fundsInPrepareAmount')",
-											"//         pm.test(\"Final testfsp1 Settlement Account Balance should be same as before FundsIn + fundsInPrepareAmount\", function () {",
-											"//             pm.expect(testfsp1SettlementAccountBalanceAfterFundsIn).to.eql(testfsp1ExpectedBalance);",
-											"//           });    ",
+											"setTimeout(function () {",
+											"    const testfsp1GetStatusRequest = {",
+											"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/testfsp1/accounts',",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(testfsp1GetStatusRequest, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        var testfsp1SettlementAccountBalanceAfterFundsIn",
+											"        for(var i in jsonData) {",
+											"            if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
+											"                testfsp1SettlementAccountBalanceAfterFundsIn = jsonData[i].value",
+											"            }",
+											"        }",
+											"        var testfsp1ExpectedBalance = pm.environment.get('testfsp1SettlementAccountBalanceBeforeFundsIn') - pm.environment.get('fundsInPrepareAmount')",
+											"        pm.test(\"Final testfsp1 Settlement Account Balance should be same as before FundsIn + fundsInPrepareAmount\", function () {",
+											"            pm.expect(testfsp1SettlementAccountBalanceAfterFundsIn).to.eql(testfsp1ExpectedBalance);",
+											"          });    ",
 											"    ",
-											"//     });",
+											"    });",
 											"    ",
-											"//     const hubGetStatusRequest = {",
-											"//       url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
-											"//       method: 'GET',",
-											"//       header: {",
-											"//           \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
-											"//           \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-											"//           \"Content-Type\": \"application/json\"",
-											"//       }",
-											"//     };",
-											"//     pm.sendRequest(hubGetStatusRequest, function (err, response) {",
-											"//         console.log(response.json())",
-											"//         var jsonData = response.json()",
-											"//         var currentHubReconAccountBalance",
-											"//         for(var i in jsonData) {",
-											"//             if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
-											"//                 hubReconAccountBalanceAfterFundsIn = jsonData[i].value",
-											"//             }",
-											"//         }",
-											"//         var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsIn\")",
-											"//         console.log(hubExpectedBalance)",
-											"//         pm.test(\"Final Hub Reconciliation Account Balance should be same as before FundsIn\", function () {",
-											"//             pm.expect(hubReconAccountBalanceAfterFundsIn).to.eql(hubExpectedBalance);",
-											"//           });  ",
-											"//     });",
-											"// }, 2000)"
+											"    const hubGetStatusRequest = {",
+											"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(hubGetStatusRequest, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        var currentHubReconAccountBalance",
+											"        response.json()",
+											"        .filter( ledgerAccount => (ledgerAccount.currency === pm.environment.get('currency') && ledgerAccount.ledgerAccountType === 'HUB_RECONCILIATION'))",
+											"        .forEach(account => hubReconAccountBalanceAfterFundsIn = account.value)",
+											"        // for(var i in jsonData) {",
+											"        //     if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"        //         hubReconAccountBalanceAfterFundsIn = jsonData[i].value",
+											"        //     }",
+											"        // }",
+											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsIn\")+pm.environment.get('fundsInPrepareAmount')",
+											"        console.log(hubExpectedBalance)",
+											"        pm.test(\"Final Hub Reconciliation Account Balance should increase by FundsIn Amount\", function () {",
+											"            pm.expect(hubReconAccountBalanceAfterFundsIn).to.eql(hubExpectedBalance);",
+											"          });  ",
+											"    });",
+											"}, 2000)"
 										],
 										"type": "text/javascript"
 									}
@@ -4584,8 +4716,28 @@
 											"pm.environment.set('fundsInPrepareAmount', 5000);",
 											"",
 											"",
-											"const hubGetStatusRequest = {",
+											"const testfsp2GetStatusRequest = {",
 											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/testfsp2/accounts',",
+											"  method: 'GET',",
+											"  header: {",
+											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"      \"Content-Type\": \"application/json\"",
+											"  }",
+											"};",
+											"pm.sendRequest(testfsp2GetStatusRequest, function (err, response) {",
+											"    console.log(response.json())",
+											"    var jsonData = response.json()",
+											"    for(var i in jsonData) {",
+											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
+											"            pm.environment.set(\"testfsp2SettlementAccountId\",jsonData[i].id)",
+											"            pm.environment.set(\"testfsp2SettlementAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+											"        }",
+											"    }",
+											"});",
+											"",
+											"const hubGetStatusRequest = {",
+											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
 											"  method: 'GET',",
 											"  header: {",
 											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
@@ -4595,14 +4747,16 @@
 											"};",
 											"pm.sendRequest(hubGetStatusRequest, function (err, response) {",
 											"    console.log(response.json())",
-											"    var jsonData = response.json()",
-											"    for(var i in jsonData) {",
-											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-											"            pm.environment.set(\"testfsp2SettlementAccountId\",jsonData[i].id)",
-											"        }",
-											"    }",
+											"    //var jsonData = response.json()",
+											"    response.json()",
+											"        .filter( ledgerAccount => (ledgerAccount.currency === pm.environment.get('currency') && ledgerAccount.ledgerAccountType === 'HUB_RECONCILIATION'))",
+											"        .forEach(account => pm.environment.set(\"hubReconAccountBalanceBeforeFundsIn\",account.value))",
+											"    // for(var i in jsonData) {",
+											"    //     if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"    //         pm.environment.set(\"hubReconAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+											"    //     }",
+											"    // }",
 											"});",
-											"",
 											""
 										],
 										"type": "text/javascript"
@@ -4617,57 +4771,60 @@
 											"    pm.response.to.have.status(202);",
 											"});",
 											"",
-											"// setTimeout(function () {",
-											"//     const testfsp2GetStatusRequest = {",
-											"//       url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"testfsp2\")+'/accounts',",
-											"//       method: 'GET',",
-											"//       header: {",
-											"//           \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
-											"//           \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-											"//           \"Content-Type\": \"application/json\"",
-											"//       }",
-											"//     };",
-											"//     pm.sendRequest(testfsp2GetStatusRequest, function (err, response) {",
-											"//         console.log(response.json())",
-											"//         var jsonData = response.json()",
-											"//         var testfsp2SettlementAccountBalanceAfterFundsIn",
-											"//         for(var i in jsonData) {",
-											"//             if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-											"//                 testfsp2SettlementAccountBalanceAfterFundsIn = jsonData[i].value",
-											"//             }",
-											"//         }",
-											"//         var testfsp2ExpectedBalance = pm.environment.get('testfsp2SettlementAccountBalanceBeforeFundsIn') + pm.environment.get('fundsInPrepareAmount')",
-											"//         pm.test(\"Final testfsp2 Settlement Account Balance should be same as before FundsIn + fundsInPrepareAmount\", function () {",
-											"//             pm.expect(testfsp2SettlementAccountBalanceAfterFundsIn).to.eql(testfsp2ExpectedBalance);",
-											"//           });    ",
+											"setTimeout(function () {",
+											"    const testfsp2GetStatusRequest = {",
+											"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/testfsp2/accounts',",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(testfsp2GetStatusRequest, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        var testfsp2SettlementAccountBalanceAfterFundsIn",
+											"        for(var i in jsonData) {",
+											"            if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
+											"                testfsp2SettlementAccountBalanceAfterFundsIn = jsonData[i].value",
+											"            }",
+											"        }",
+											"        var testfsp2ExpectedBalance = pm.environment.get('testfsp2SettlementAccountBalanceBeforeFundsIn') - pm.environment.get('fundsInPrepareAmount')",
+											"        pm.test(\"Final testfsp2 Settlement Account Balance should be same as before FundsIn + fundsInPrepareAmount\", function () {",
+											"            pm.expect(testfsp2SettlementAccountBalanceAfterFundsIn).to.eql(testfsp2ExpectedBalance);",
+											"          });    ",
 											"    ",
-											"//     });",
+											"    });",
 											"    ",
-											"//     const hubGetStatusRequest = {",
-											"//       url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
-											"//       method: 'GET',",
-											"//       header: {",
-											"//           \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
-											"//           \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-											"//           \"Content-Type\": \"application/json\"",
-											"//       }",
-											"//     };",
-											"//     pm.sendRequest(hubGetStatusRequest, function (err, response) {",
-											"//         console.log(response.json())",
-											"//         var jsonData = response.json()",
-											"//         var currentHubReconAccountBalance",
-											"//         for(var i in jsonData) {",
-											"//             if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
-											"//                 hubReconAccountBalanceAfterFundsIn = jsonData[i].value",
-											"//             }",
-											"//         }",
-											"//         var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsIn\")",
-											"//         console.log(hubExpectedBalance)",
-											"//         pm.test(\"Final Hub Reconciliation Account Balance should be same as before FundsIn\", function () {",
-											"//             pm.expect(hubReconAccountBalanceAfterFundsIn).to.eql(hubExpectedBalance);",
-											"//           });  ",
-											"//     });",
-											"// }, 2000)"
+											"    const hubGetStatusRequest = {",
+											"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(hubGetStatusRequest, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        var currentHubReconAccountBalance",
+											"        response.json()",
+											"        .filter( ledgerAccount => (ledgerAccount.currency === pm.environment.get('currency') && ledgerAccount.ledgerAccountType === 'HUB_RECONCILIATION'))",
+											"        .forEach(account => hubReconAccountBalanceAfterFundsIn = account.value)",
+											"        // for(var i in jsonData) {",
+											"        //     if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"        //         hubReconAccountBalanceAfterFundsIn = jsonData[i].value",
+											"        //     }",
+											"        // }",
+											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsIn\")+pm.environment.get('fundsInPrepareAmount')",
+											"        console.log(hubExpectedBalance)",
+											"        pm.test(\"Final Hub Reconciliation Account Balance should increase by FundsIn Amount\", function () {",
+											"            pm.expect(hubReconAccountBalanceAfterFundsIn).to.eql(hubExpectedBalance);",
+											"          });  ",
+											"    });",
+											"}, 2000)"
 										],
 										"type": "text/javascript"
 									}
@@ -5729,8 +5886,28 @@
 											"pm.environment.set('fundsInPrepareAmount', 5000);",
 											"",
 											"",
-											"const hubGetStatusRequest = {",
+											"const testfsp3GetStatusRequest = {",
 											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/testfsp3/accounts',",
+											"  method: 'GET',",
+											"  header: {",
+											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"      \"Content-Type\": \"application/json\"",
+											"  }",
+											"};",
+											"pm.sendRequest(testfsp3GetStatusRequest, function (err, response) {",
+											"    console.log(response.json())",
+											"    var jsonData = response.json()",
+											"    for(var i in jsonData) {",
+											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT' && jsonData[i].currency === pm.environment.get('testfsp3ForexCurrency')) {",
+											"            pm.environment.set(\"testfsp3SettlementAccountId\",jsonData[i].id)",
+											"            pm.environment.set(\"testfsp3SettlementAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+											"        }",
+											"    }",
+											"});",
+											"",
+											"const hubGetStatusRequest = {",
+											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
 											"  method: 'GET',",
 											"  header: {",
 											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
@@ -5740,14 +5917,16 @@
 											"};",
 											"pm.sendRequest(hubGetStatusRequest, function (err, response) {",
 											"    console.log(response.json())",
-											"    var jsonData = response.json()",
-											"    for(var i in jsonData) {",
-											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-											"            pm.environment.set(\"testfsp3SettlementAccountId\",jsonData[i].id)",
-											"        }",
-											"    }",
+											"    //var jsonData = response.json()",
+											"    response.json()",
+											"        .filter( ledgerAccount => (ledgerAccount.currency === pm.environment.get('testfsp3ForexCurrency') && ledgerAccount.ledgerAccountType === 'HUB_RECONCILIATION'))",
+											"        .forEach(account => pm.environment.set(\"hubReconAccountBalanceBeforeFundsIn\",account.value))",
+											"    // for(var i in jsonData) {",
+											"    //     if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"    //         pm.environment.set(\"hubReconAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+											"    //     }",
+											"    // }",
 											"});",
-											"",
 											""
 										],
 										"type": "text/javascript"
@@ -5762,57 +5941,60 @@
 											"    pm.response.to.have.status(202);",
 											"});",
 											"",
-											"// setTimeout(function () {",
-											"//     const testfsp3GetStatusRequest = {",
-											"//       url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"testfsp3\")+'/accounts',",
-											"//       method: 'GET',",
-											"//       header: {",
-											"//           \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
-											"//           \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-											"//           \"Content-Type\": \"application/json\"",
-											"//       }",
-											"//     };",
-											"//     pm.sendRequest(testfsp3GetStatusRequest, function (err, response) {",
-											"//         console.log(response.json())",
-											"//         var jsonData = response.json()",
-											"//         var testfsp3SettlementAccountBalanceAfterFundsIn",
-											"//         for(var i in jsonData) {",
-											"//             if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-											"//                 testfsp3SettlementAccountBalanceAfterFundsIn = jsonData[i].value",
-											"//             }",
-											"//         }",
-											"//         var testfsp3ExpectedBalance = pm.environment.get('testfsp3SettlementAccountBalanceBeforeFundsIn') + pm.environment.get('fundsInPrepareAmount')",
-											"//         pm.test(\"Final testfsp3 Settlement Account Balance should be same as before FundsIn + fundsInPrepareAmount\", function () {",
-											"//             pm.expect(testfsp3SettlementAccountBalanceAfterFundsIn).to.eql(testfsp3ExpectedBalance);",
-											"//           });    ",
+											"setTimeout(function () {",
+											"    const testfsp3GetStatusRequest = {",
+											"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/testfsp3/accounts',",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(testfsp3GetStatusRequest, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        var testfsp3SettlementAccountBalanceAfterFundsIn",
+											"        for(var i in jsonData) {",
+											"            if(jsonData[i].ledgerAccountType === 'SETTLEMENT' && jsonData[i].currency === pm.environment.get('testfsp3ForexCurrency')) {",
+											"                testfsp3SettlementAccountBalanceAfterFundsIn = jsonData[i].value",
+											"            }",
+											"        }",
+											"        var testfsp3ExpectedBalance = pm.environment.get('testfsp3SettlementAccountBalanceBeforeFundsIn') - pm.environment.get('fundsInPrepareAmount')",
+											"        pm.test(\"Final testfsp3 Settlement Account Balance should be same as before FundsIn + fundsInPrepareAmount\", function () {",
+											"            pm.expect(testfsp3SettlementAccountBalanceAfterFundsIn).to.eql(testfsp3ExpectedBalance);",
+											"          });    ",
 											"    ",
-											"//     });",
+											"    });",
 											"    ",
-											"//     const hubGetStatusRequest = {",
-											"//       url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
-											"//       method: 'GET',",
-											"//       header: {",
-											"//           \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
-											"//           \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-											"//           \"Content-Type\": \"application/json\"",
-											"//       }",
-											"//     };",
-											"//     pm.sendRequest(hubGetStatusRequest, function (err, response) {",
-											"//         console.log(response.json())",
-											"//         var jsonData = response.json()",
-											"//         var currentHubReconAccountBalance",
-											"//         for(var i in jsonData) {",
-											"//             if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
-											"//                 hubReconAccountBalanceAfterFundsIn = jsonData[i].value",
-											"//             }",
-											"//         }",
-											"//         var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsIn\")",
-											"//         console.log(hubExpectedBalance)",
-											"//         pm.test(\"Final Hub Reconciliation Account Balance should be same as before FundsIn\", function () {",
-											"//             pm.expect(hubReconAccountBalanceAfterFundsIn).to.eql(hubExpectedBalance);",
-											"//           });  ",
-											"//     });",
-											"// }, 2000)"
+											"    const hubGetStatusRequest = {",
+											"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(hubGetStatusRequest, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        var currentHubReconAccountBalance",
+											"        response.json()",
+											"        .filter( ledgerAccount => (ledgerAccount.currency === pm.environment.get('testfsp3ForexCurrency') && ledgerAccount.ledgerAccountType === 'HUB_RECONCILIATION'))",
+											"        .forEach(account => hubReconAccountBalanceAfterFundsIn = account.value)",
+											"        // for(var i in jsonData) {",
+											"        //     if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"        //         hubReconAccountBalanceAfterFundsIn = jsonData[i].value",
+											"        //     }",
+											"        // }",
+											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsIn\")+pm.environment.get('fundsInPrepareAmount')",
+											"        console.log(hubExpectedBalance)",
+											"        pm.test(\"Final Hub Reconciliation Account Balance should increase by FundsIn Amount\", function () {",
+											"            pm.expect(hubReconAccountBalanceAfterFundsIn).to.eql(hubExpectedBalance);",
+											"          });  ",
+											"    });",
+											"}, 2000)"
 										],
 										"type": "text/javascript"
 									}
@@ -5843,7 +6025,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"{{fundsInPrepareTransferId}}\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsIn\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": {{fundsInPrepareAmount}},\n    \"currency\": \"EUR\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
+									"raw": "{\n  \"transferId\": \"{{fundsInPrepareTransferId}}\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsIn\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": {{fundsInPrepareAmount}},\n    \"currency\": \"{{testfsp3ForexCurrency}}\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/accounts/{{testfsp3SettlementAccountId}}",
@@ -6874,8 +7056,28 @@
 											"pm.environment.set('fundsInPrepareAmount', 5000);",
 											"",
 											"",
-											"const hubGetStatusRequest = {",
+											"const testfsp4GetStatusRequest = {",
 											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/testfsp4/accounts',",
+											"  method: 'GET',",
+											"  header: {",
+											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"      \"Content-Type\": \"application/json\"",
+											"  }",
+											"};",
+											"pm.sendRequest(testfsp4GetStatusRequest, function (err, response) {",
+											"    console.log(response.json())",
+											"    var jsonData = response.json()",
+											"    for(var i in jsonData) {",
+											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT' && jsonData[i].currency === pm.environment.get('testfsp4ForexCurrency')) {",
+											"            pm.environment.set(\"testfsp4SettlementAccountId\",jsonData[i].id)",
+											"            pm.environment.set(\"testfsp4SettlementAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+											"        }",
+											"    }",
+											"});",
+											"",
+											"const hubGetStatusRequest = {",
+											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
 											"  method: 'GET',",
 											"  header: {",
 											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
@@ -6885,14 +7087,16 @@
 											"};",
 											"pm.sendRequest(hubGetStatusRequest, function (err, response) {",
 											"    console.log(response.json())",
-											"    var jsonData = response.json()",
-											"    for(var i in jsonData) {",
-											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-											"            pm.environment.set(\"testfsp4SettlementAccountId\",jsonData[i].id)",
-											"        }",
-											"    }",
+											"    //var jsonData = response.json()",
+											"    response.json()",
+											"        .filter( ledgerAccount => (ledgerAccount.currency === pm.environment.get('testfsp4ForexCurrency') && ledgerAccount.ledgerAccountType === 'HUB_RECONCILIATION'))",
+											"        .forEach(account => pm.environment.set(\"hubReconAccountBalanceBeforeFundsIn\",account.value))",
+											"    // for(var i in jsonData) {",
+											"    //     if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"    //         pm.environment.set(\"hubReconAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+											"    //     }",
+											"    // }",
 											"});",
-											"",
 											""
 										],
 										"type": "text/javascript"
@@ -6907,57 +7111,60 @@
 											"    pm.response.to.have.status(202);",
 											"});",
 											"",
-											"// setTimeout(function () {",
-											"//     const testfsp4GetStatusRequest = {",
-											"//       url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"testfsp4\")+'/accounts',",
-											"//       method: 'GET',",
-											"//       header: {",
-											"//           \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
-											"//           \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-											"//           \"Content-Type\": \"application/json\"",
-											"//       }",
-											"//     };",
-											"//     pm.sendRequest(testfsp4GetStatusRequest, function (err, response) {",
-											"//         console.log(response.json())",
-											"//         var jsonData = response.json()",
-											"//         var testfsp4SettlementAccountBalanceAfterFundsIn",
-											"//         for(var i in jsonData) {",
-											"//             if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-											"//                 testfsp4SettlementAccountBalanceAfterFundsIn = jsonData[i].value",
-											"//             }",
-											"//         }",
-											"//         var testfsp4ExpectedBalance = pm.environment.get('testfsp4SettlementAccountBalanceBeforeFundsIn') + pm.environment.get('fundsInPrepareAmount')",
-											"//         pm.test(\"Final testfsp4 Settlement Account Balance should be same as before FundsIn + fundsInPrepareAmount\", function () {",
-											"//             pm.expect(testfsp4SettlementAccountBalanceAfterFundsIn).to.eql(testfsp4ExpectedBalance);",
-											"//           });    ",
+											"setTimeout(function () {",
+											"    const testfsp4GetStatusRequest = {",
+											"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/testfsp4/accounts',",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(testfsp4GetStatusRequest, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        var testfsp4SettlementAccountBalanceAfterFundsIn",
+											"        for(var i in jsonData) {",
+											"            if(jsonData[i].ledgerAccountType === 'SETTLEMENT' && jsonData[i].currency === pm.environment.get('testfsp4ForexCurrency')) {",
+											"                testfsp4SettlementAccountBalanceAfterFundsIn = jsonData[i].value",
+											"            }",
+											"        }",
+											"        var testfsp4ExpectedBalance = pm.environment.get('testfsp4SettlementAccountBalanceBeforeFundsIn') - pm.environment.get('fundsInPrepareAmount')",
+											"        pm.test(\"Final testfsp4 Settlement Account Balance should be same as before FundsIn + fundsInPrepareAmount\", function () {",
+											"            pm.expect(testfsp4SettlementAccountBalanceAfterFundsIn).to.eql(testfsp4ExpectedBalance);",
+											"          });    ",
 											"    ",
-											"//     });",
+											"    });",
 											"    ",
-											"//     const hubGetStatusRequest = {",
-											"//       url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
-											"//       method: 'GET',",
-											"//       header: {",
-											"//           \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
-											"//           \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-											"//           \"Content-Type\": \"application/json\"",
-											"//       }",
-											"//     };",
-											"//     pm.sendRequest(hubGetStatusRequest, function (err, response) {",
-											"//         console.log(response.json())",
-											"//         var jsonData = response.json()",
-											"//         var currentHubReconAccountBalance",
-											"//         for(var i in jsonData) {",
-											"//             if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
-											"//                 hubReconAccountBalanceAfterFundsIn = jsonData[i].value",
-											"//             }",
-											"//         }",
-											"//         var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsIn\")",
-											"//         console.log(hubExpectedBalance)",
-											"//         pm.test(\"Final Hub Reconciliation Account Balance should be same as before FundsIn\", function () {",
-											"//             pm.expect(hubReconAccountBalanceAfterFundsIn).to.eql(hubExpectedBalance);",
-											"//           });  ",
-											"//     });",
-											"// }, 2000)"
+											"    const hubGetStatusRequest = {",
+											"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(hubGetStatusRequest, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        var currentHubReconAccountBalance",
+											"        response.json()",
+											"        .filter( ledgerAccount => (ledgerAccount.currency === pm.environment.get('testfsp4ForexCurrency') && ledgerAccount.ledgerAccountType === 'HUB_RECONCILIATION'))",
+											"        .forEach(account => hubReconAccountBalanceAfterFundsIn = account.value)",
+											"        // for(var i in jsonData) {",
+											"        //     if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"        //         hubReconAccountBalanceAfterFundsIn = jsonData[i].value",
+											"        //     }",
+											"        // }",
+											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsIn\")+pm.environment.get('fundsInPrepareAmount')",
+											"        console.log(hubExpectedBalance)",
+											"        pm.test(\"Final Hub Reconciliation Account Balance should increase by FundsIn Amount\", function () {",
+											"            pm.expect(hubReconAccountBalanceAfterFundsIn).to.eql(hubExpectedBalance);",
+											"          });  ",
+											"    });",
+											"}, 2000)"
 										],
 										"type": "text/javascript"
 									}
@@ -6988,7 +7195,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"{{fundsInPrepareTransferId}}\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsIn\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": {{fundsInPrepareAmount}},\n    \"currency\": \"{{currency}}\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
+									"raw": "{\n  \"transferId\": \"{{fundsInPrepareTransferId}}\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsIn\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": {{fundsInPrepareAmount}},\n    \"currency\": \"{{testfsp4ForexCurrency}}\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp4/accounts/{{testfsp4SettlementAccountId}}",
@@ -7889,1669 +8096,6 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"name": "simdfsp1 (for Forex testing) ",
-					"item": [
-						{
-							"name": "Add simdfsp1",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "9e301b75-8068-47e9-8248-d99fe928474c",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"type": "text",
-										"value": "{{hub_operator}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\"name\": \"simdfsp1\",\"currency\": \"EUR\"}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add initial position and limits - simdfsp1",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "fb7f811e-1c26-46ab-a138-db682ffa96a0",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"type": "text",
-										"value": "{{hub_operator}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"currency\": \"EUR\",\n\t\"limit\": {\n\t  \"type\": \"NET_DEBIT_CAP\",\n\t  \"value\": 10000\n\t},\n\t\"initialPosition\": 0\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/simdfsp1/initialPositionAndLimits",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants",
-										"simdfsp1",
-										"initialPositionAndLimits"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Deposit Funds - simdfsp1",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "b74c5583-f1c5-4a5d-b614-b0b0229d6257",
-										"exec": [
-											"var uuid = require('uuid');",
-											"var generatedUUID = uuid.v4();",
-											"pm.environment.set('fundsInPrepareTransferId', generatedUUID);",
-											"pm.environment.set('fundsInPrepareAmount', 5000);",
-											"",
-											"",
-											"const hubGetStatusRequest = {",
-											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/simdfsp1/accounts',",
-											"  method: 'GET',",
-											"  header: {",
-											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
-											"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-											"      \"Content-Type\": \"application/json\"",
-											"  }",
-											"};",
-											"pm.sendRequest(hubGetStatusRequest, function (err, response) {",
-											"    console.log(response.json())",
-											"    var jsonData = response.json()",
-											"    for(var i in jsonData) {",
-											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-											"            pm.environment.set(\"simdfsp1SettlementAccountId\",jsonData[i].id)",
-											"        }",
-											"    }",
-											"});",
-											"",
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"id": "2b7013c0-79ab-48df-bb74-ad0114552201",
-										"exec": [
-											"pm.test(\"Status code is 202\", function () {",
-											"    pm.response.to.have.status(202);",
-											"});",
-											"",
-											"// setTimeout(function () {",
-											"//     const testfsp1GetStatusRequest = {",
-											"//       url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"testfsp1\")+'/accounts',",
-											"//       method: 'GET',",
-											"//       header: {",
-											"//           \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
-											"//           \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-											"//           \"Content-Type\": \"application/json\"",
-											"//       }",
-											"//     };",
-											"//     pm.sendRequest(testfsp1GetStatusRequest, function (err, response) {",
-											"//         console.log(response.json())",
-											"//         var jsonData = response.json()",
-											"//         var testfsp1SettlementAccountBalanceAfterFundsIn",
-											"//         for(var i in jsonData) {",
-											"//             if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-											"//                 testfsp1SettlementAccountBalanceAfterFundsIn = jsonData[i].value",
-											"//             }",
-											"//         }",
-											"//         var testfsp1ExpectedBalance = pm.environment.get('testfsp1SettlementAccountBalanceBeforeFundsIn') + pm.environment.get('fundsInPrepareAmount')",
-											"//         pm.test(\"Final testfsp1 Settlement Account Balance should be same as before FundsIn + fundsInPrepareAmount\", function () {",
-											"//             pm.expect(testfsp1SettlementAccountBalanceAfterFundsIn).to.eql(testfsp1ExpectedBalance);",
-											"//           });    ",
-											"    ",
-											"//     });",
-											"    ",
-											"//     const hubGetStatusRequest = {",
-											"//       url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
-											"//       method: 'GET',",
-											"//       header: {",
-											"//           \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
-											"//           \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-											"//           \"Content-Type\": \"application/json\"",
-											"//       }",
-											"//     };",
-											"//     pm.sendRequest(hubGetStatusRequest, function (err, response) {",
-											"//         console.log(response.json())",
-											"//         var jsonData = response.json()",
-											"//         var currentHubReconAccountBalance",
-											"//         for(var i in jsonData) {",
-											"//             if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
-											"//                 hubReconAccountBalanceAfterFundsIn = jsonData[i].value",
-											"//             }",
-											"//         }",
-											"//         var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsIn\")",
-											"//         console.log(hubExpectedBalance)",
-											"//         pm.test(\"Final Hub Reconciliation Account Balance should be same as before FundsIn\", function () {",
-											"//             pm.expect(hubReconAccountBalanceAfterFundsIn).to.eql(hubExpectedBalance);",
-											"//           });  ",
-											"//     });",
-											"// }, 2000)"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"type": "text",
-										"value": "{{hub_operator}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"{{fundsInPrepareTransferId}}\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsIn\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": {{fundsInPrepareAmount}},\n    \"currency\": \"EUR\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/simdfsp1/accounts/{{simdfsp1SettlementAccountId}}",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants",
-										"simdfsp1",
-										"accounts",
-										"{{simdfsp1SettlementAccountId}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add simdfsp1 callback - PARTICIPANTS/PARTIES (Do not use in ML)",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"value": "{{hub_operator}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/simdfsp1\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/simdfsp1/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants",
-										"simdfsp1",
-										"endpoints"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add simdfsp1 callback - TRANSFER POST",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"type": "text",
-										"value": "{{hub_operator}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_POST\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/simdfsp1/transfers\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/simdfsp1/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants",
-										"simdfsp1",
-										"endpoints"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add simdfsp1 callback - TRANSFER PUT",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"value": "{{hub_operator}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/simdfsp1/transfers/{{transferId}}\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/simdfsp1/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants",
-										"simdfsp1",
-										"endpoints"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add simdfsp1 callback - TRANSFER ERROR",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"type": "text",
-										"value": "{{hub_operator}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/simdfsp1/transfers/{{transferId}}/error\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/simdfsp1/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants",
-										"simdfsp1",
-										"endpoints"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Set Email-NET_DEBIT_CAP_ADJUSTMENT_EMAIL",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "7529aa47-7c2d-4698-bc1d-9bd2bc5c9a1a",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Cache-Control",
-										"value": "no-cache"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"type": "text",
-										"value": "{{hub_operator}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"NET_DEBIT_CAP_ADJUSTMENT_EMAIL\",\n  \"value\": \"sridevi.miriyala@modusbox.com\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/simdfsp1/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants",
-										"simdfsp1",
-										"endpoints"
-									]
-								},
-								"description": "Generated from a curl request: \ncurl -i -X POST     http://test-central-ledger.mojaloop.test/admin/participants/testfsp2/initialPositionAndLimits     -H 'Cache-Control: no-cache'     -H 'Content-Type: application/json'     -d '{\n    \\\"currency\\\": \\\"USD\\\",\n    \\\"limit\\\": {\n      \\\"type\\\": \\\"NET_DEBIT_CAP\\\",\n      \\\"value\\\": 1000\n    },\n    \\\"initialPosition\\\": 0\n  }'"
-							},
-							"response": [
-								{
-									"name": "2. Create Initial Position and Limits",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Cache-Control",
-												"value": "no-cache"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"currency\": \"USD\",\n    \"limit\": {\n      \"type\": \"NET_DEBIT_CAP\",\n      \"value\": 1000\n    },\n    \"initialPosition\": 0\n  }"
-										},
-										"url": {
-											"raw": "http://test-central-ledger.mojaloop.live/admin/participants/testfsp/initialPositionAndLimits",
-											"protocol": "http",
-											"host": [
-												"test-central-ledger",
-												"mojaloop",
-												"live"
-											],
-											"path": [
-												"admin",
-												"participants",
-												"testfsp",
-												"initialPositionAndLimits"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "Text",
-									"header": [],
-									"cookie": [],
-									"body": ""
-								}
-							]
-						},
-						{
-							"name": "Set Email-SETTLEMENT_TRANSFER_POSITION_CHANGE_EMAIL",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "621c5234-f12d-44de-bbec-6cc914f96088",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Cache-Control",
-										"value": "no-cache"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"type": "text",
-										"value": "{{hub_operator}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"SETTLEMENT_TRANSFER_POSITION_CHANGE_EMAIL\",\n  \"value\": \"sridevi.miriyala@modusbox.com\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/simdfsp1/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants",
-										"simdfsp1",
-										"endpoints"
-									]
-								},
-								"description": "Generated from a curl request: \ncurl -i -X POST     http://test-central-ledger.mojaloop.test/admin/participants/testfsp2/initialPositionAndLimits     -H 'Cache-Control: no-cache'     -H 'Content-Type: application/json'     -d '{\n    \\\"currency\\\": \\\"USD\\\",\n    \\\"limit\\\": {\n      \\\"type\\\": \\\"NET_DEBIT_CAP\\\",\n      \\\"value\\\": 1000\n    },\n    \\\"initialPosition\\\": 0\n  }'"
-							},
-							"response": [
-								{
-									"name": "2. Create Initial Position and Limits",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Cache-Control",
-												"value": "no-cache"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"currency\": \"USD\",\n    \"limit\": {\n      \"type\": \"NET_DEBIT_CAP\",\n      \"value\": 1000\n    },\n    \"initialPosition\": 0\n  }"
-										},
-										"url": {
-											"raw": "http://test-central-ledger.mojaloop.live/admin/participants/testfsp/initialPositionAndLimits",
-											"protocol": "http",
-											"host": [
-												"test-central-ledger",
-												"mojaloop",
-												"live"
-											],
-											"path": [
-												"admin",
-												"participants",
-												"testfsp",
-												"initialPositionAndLimits"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "Text",
-									"header": [],
-									"cookie": [],
-									"body": ""
-								}
-							]
-						},
-						{
-							"name": "Set Email-NET_DEBIT_CAP_THRESHOLD_BREACH_EMAIL",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "89f4b093-7a6a-440e-bf26-3642639d00f6",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Cache-Control",
-										"value": "no-cache"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"type": "text",
-										"value": "{{hub_operator}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"NET_DEBIT_CAP_THRESHOLD_BREACH_EMAIL\",\n  \"value\": \"sridevi.miriyala@modusbox.com\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/simdfsp1/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants",
-										"simdfsp1",
-										"endpoints"
-									]
-								},
-								"description": "Generated from a curl request: \ncurl -i -X POST     http://test-central-ledger.mojaloop.test/admin/participants/testfsp2/initialPositionAndLimits     -H 'Cache-Control: no-cache'     -H 'Content-Type: application/json'     -d '{\n    \\\"currency\\\": \\\"USD\\\",\n    \\\"limit\\\": {\n      \\\"type\\\": \\\"NET_DEBIT_CAP\\\",\n      \\\"value\\\": 1000\n    },\n    \\\"initialPosition\\\": 0\n  }'"
-							},
-							"response": [
-								{
-									"name": "2. Create Initial Position and Limits",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Cache-Control",
-												"value": "no-cache"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"currency\": \"USD\",\n    \"limit\": {\n      \"type\": \"NET_DEBIT_CAP\",\n      \"value\": 1000\n    },\n    \"initialPosition\": 0\n  }"
-										},
-										"url": {
-											"raw": "http://test-central-ledger.mojaloop.live/admin/participants/testfsp/initialPositionAndLimits",
-											"protocol": "http",
-											"host": [
-												"test-central-ledger",
-												"mojaloop",
-												"live"
-											],
-											"path": [
-												"admin",
-												"participants",
-												"testfsp",
-												"initialPositionAndLimits"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "Text",
-									"header": [],
-									"cookie": [],
-									"body": ""
-								}
-							]
-						}
-					],
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "3069dbcb-06ef-4269-8432-efd5c265d55d",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "5e0ae123-6434-4823-b066-51046812a326",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "simdfsp2 (For Forex Testing)",
-					"item": [
-						{
-							"name": "Add simdfsp2",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "9e301b75-8068-47e9-8248-d99fe928474c",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"type": "text",
-										"value": "{{hub_operator}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\"name\": \"simdfsp2\",\"currency\": \"XOF\"}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add initial position and limits - simdfsp2",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "fb7f811e-1c26-46ab-a138-db682ffa96a0",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"type": "text",
-										"value": "{{hub_operator}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"currency\": \"XOF\",\n\t\"limit\": {\n\t  \"type\": \"NET_DEBIT_CAP\",\n\t  \"value\": 10000\n\t},\n\t\"initialPosition\": 0\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/simdfsp2/initialPositionAndLimits",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants",
-										"simdfsp2",
-										"initialPositionAndLimits"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Deposit Funds - simdfsp2",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "b74c5583-f1c5-4a5d-b614-b0b0229d6257",
-										"exec": [
-											"var uuid = require('uuid');",
-											"var generatedUUID = uuid.v4();",
-											"pm.environment.set('fundsInPrepareTransferId', generatedUUID);",
-											"pm.environment.set('fundsInPrepareAmount', 5000);",
-											"",
-											"",
-											"const hubGetStatusRequest = {",
-											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/simdfsp2/accounts',",
-											"  method: 'GET',",
-											"  header: {",
-											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
-											"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-											"      \"Content-Type\": \"application/json\"",
-											"  }",
-											"};",
-											"pm.sendRequest(hubGetStatusRequest, function (err, response) {",
-											"    console.log(response.json())",
-											"    var jsonData = response.json()",
-											"    for(var i in jsonData) {",
-											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-											"            pm.environment.set(\"simdfsp2SettlementAccountId\",jsonData[i].id)",
-											"        }",
-											"    }",
-											"});",
-											"",
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"id": "2b7013c0-79ab-48df-bb74-ad0114552201",
-										"exec": [
-											"pm.test(\"Status code is 202\", function () {",
-											"    pm.response.to.have.status(202);",
-											"});",
-											"",
-											"// setTimeout(function () {",
-											"//     const testfsp2GetStatusRequest = {",
-											"//       url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"testfsp2\")+'/accounts',",
-											"//       method: 'GET',",
-											"//       header: {",
-											"//           \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
-											"//           \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-											"//           \"Content-Type\": \"application/json\"",
-											"//       }",
-											"//     };",
-											"//     pm.sendRequest(testfsp2GetStatusRequest, function (err, response) {",
-											"//         console.log(response.json())",
-											"//         var jsonData = response.json()",
-											"//         var testfsp2SettlementAccountBalanceAfterFundsIn",
-											"//         for(var i in jsonData) {",
-											"//             if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-											"//                 testfsp2SettlementAccountBalanceAfterFundsIn = jsonData[i].value",
-											"//             }",
-											"//         }",
-											"//         var testfsp2ExpectedBalance = pm.environment.get('testfsp2SettlementAccountBalanceBeforeFundsIn') + pm.environment.get('fundsInPrepareAmount')",
-											"//         pm.test(\"Final testfsp2 Settlement Account Balance should be same as before FundsIn + fundsInPrepareAmount\", function () {",
-											"//             pm.expect(testfsp2SettlementAccountBalanceAfterFundsIn).to.eql(testfsp2ExpectedBalance);",
-											"//           });    ",
-											"    ",
-											"//     });",
-											"    ",
-											"//     const hubGetStatusRequest = {",
-											"//       url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
-											"//       method: 'GET',",
-											"//       header: {",
-											"//           \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
-											"//           \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-											"//           \"Content-Type\": \"application/json\"",
-											"//       }",
-											"//     };",
-											"//     pm.sendRequest(hubGetStatusRequest, function (err, response) {",
-											"//         console.log(response.json())",
-											"//         var jsonData = response.json()",
-											"//         var currentHubReconAccountBalance",
-											"//         for(var i in jsonData) {",
-											"//             if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
-											"//                 hubReconAccountBalanceAfterFundsIn = jsonData[i].value",
-											"//             }",
-											"//         }",
-											"//         var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsIn\")",
-											"//         console.log(hubExpectedBalance)",
-											"//         pm.test(\"Final Hub Reconciliation Account Balance should be same as before FundsIn\", function () {",
-											"//             pm.expect(hubReconAccountBalanceAfterFundsIn).to.eql(hubExpectedBalance);",
-											"//           });  ",
-											"//     });",
-											"// }, 2000)"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"type": "text",
-										"value": "{{hub_operator}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"{{fundsInPrepareTransferId}}\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsIn\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": {{fundsInPrepareAmount}},\n    \"currency\": \"XOF\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/simdfsp2/accounts/{{simdfsp2SettlementAccountId}}",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants",
-										"simdfsp2",
-										"accounts",
-										"{{simdfsp2SettlementAccountId}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add simdfsp2 callback - PARTICIPANTS/PARTIES",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"type": "text",
-										"value": "{{hub_operator}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/simdfsp2\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/simdfsp2/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants",
-										"simdfsp2",
-										"endpoints"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add simdfsp2 callback - TRANSFER POST",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"type": "text",
-										"value": "{{hub_operator}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_POST\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/simdfsp2/transfers\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/simdfsp2/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants",
-										"simdfsp2",
-										"endpoints"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add simdfsp2 callback - TRANSFER PUT",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"type": "text",
-										"value": "{{hub_operator}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_PUT\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/simdfsp2/transfers/{{transferId}}\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/simdfsp2/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants",
-										"simdfsp2",
-										"endpoints"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add simdfsp2 callback - TRANSFER ERROR",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "bb928ca3-8904-4cff-94fa-9629ccf2418d",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"type": "text",
-										"value": "{{hub_operator}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"FSPIOP_CALLBACK_URL_TRANSFER_ERROR\",\n  \"value\": \"{{HOST_SIMULATOR_K8S_CLUSTER}}/simdfsp2/transfers/{{transferId}}/error\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/simdfsp2/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants",
-										"simdfsp2",
-										"endpoints"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Set Email-NET_DEBIT_CAP_ADJUSTMENT_EMAIL",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "e3f8da94-fecb-46d8-bc3d-dfa606d6d20f",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Cache-Control",
-										"value": "no-cache"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"type": "text",
-										"value": "{{hub_operator}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"NET_DEBIT_CAP_ADJUSTMENT_EMAIL\",\n  \"value\": \"sridevi.miriyala@modusbox.com\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/simdfsp2/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants",
-										"simdfsp2",
-										"endpoints"
-									]
-								},
-								"description": "Generated from a curl request: \ncurl -i -X POST     http://test-central-ledger.mojaloop.test/admin/participants/testfsp2/initialPositionAndLimits     -H 'Cache-Control: no-cache'     -H 'Content-Type: application/json'     -d '{\n    \\\"currency\\\": \\\"USD\\\",\n    \\\"limit\\\": {\n      \\\"type\\\": \\\"NET_DEBIT_CAP\\\",\n      \\\"value\\\": 1000\n    },\n    \\\"initialPosition\\\": 0\n  }'"
-							},
-							"response": [
-								{
-									"name": "2. Create Initial Position and Limits",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Cache-Control",
-												"value": "no-cache"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"currency\": \"USD\",\n    \"limit\": {\n      \"type\": \"NET_DEBIT_CAP\",\n      \"value\": 1000\n    },\n    \"initialPosition\": 0\n  }"
-										},
-										"url": {
-											"raw": "http://test-central-ledger.mojaloop.live/admin/participants/testfsp/initialPositionAndLimits",
-											"protocol": "http",
-											"host": [
-												"test-central-ledger",
-												"mojaloop",
-												"live"
-											],
-											"path": [
-												"admin",
-												"participants",
-												"testfsp",
-												"initialPositionAndLimits"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "Text",
-									"header": [],
-									"cookie": [],
-									"body": ""
-								}
-							]
-						},
-						{
-							"name": "Set Email-SETTLEMENT_TRANSFER_POSITION_CHANGE_EMAIL",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "c40bcd27-6089-4c34-965f-9be9166a214c",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Cache-Control",
-										"value": "no-cache"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"value": "{{hub_operator}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"SETTLEMENT_TRANSFER_POSITION_CHANGE_EMAIL\",\n  \"value\": \"sridevi.miriyala@modusbox.com\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/simdfsp2/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants",
-										"simdfsp2",
-										"endpoints"
-									]
-								},
-								"description": "Generated from a curl request: \ncurl -i -X POST     http://test-central-ledger.mojaloop.test/admin/participants/testfsp2/initialPositionAndLimits     -H 'Cache-Control: no-cache'     -H 'Content-Type: application/json'     -d '{\n    \\\"currency\\\": \\\"USD\\\",\n    \\\"limit\\\": {\n      \\\"type\\\": \\\"NET_DEBIT_CAP\\\",\n      \\\"value\\\": 1000\n    },\n    \\\"initialPosition\\\": 0\n  }'"
-							},
-							"response": [
-								{
-									"name": "2. Create Initial Position and Limits",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Cache-Control",
-												"value": "no-cache"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"currency\": \"USD\",\n    \"limit\": {\n      \"type\": \"NET_DEBIT_CAP\",\n      \"value\": 1000\n    },\n    \"initialPosition\": 0\n  }"
-										},
-										"url": {
-											"raw": "http://test-central-ledger.mojaloop.live/admin/participants/testfsp/initialPositionAndLimits",
-											"protocol": "http",
-											"host": [
-												"test-central-ledger",
-												"mojaloop",
-												"live"
-											],
-											"path": [
-												"admin",
-												"participants",
-												"testfsp",
-												"initialPositionAndLimits"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "Text",
-									"header": [],
-									"cookie": [],
-									"body": ""
-								}
-							]
-						},
-						{
-							"name": "Set Email-NET_DEBIT_CAP_THRESHOLD_BREACH_EMAIL",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "81e94a62-d9ff-4989-b574-edd0efe6ba05",
-										"exec": [
-											"pm.test(\"Status code is 201\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Cache-Control",
-										"value": "no-cache"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "FSPIOP-Source",
-										"type": "text",
-										"value": "{{hub_operator}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"type\": \"NET_DEBIT_CAP_THRESHOLD_BREACH_EMAIL\",\n  \"value\": \"sridevi.miriyala@modusbox.com\"\n}"
-								},
-								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/simdfsp2/endpoints",
-									"host": [
-										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
-									],
-									"path": [
-										"participants",
-										"simdfsp2",
-										"endpoints"
-									]
-								},
-								"description": "Generated from a curl request: \ncurl -i -X POST     http://test-central-ledger.mojaloop.test/admin/participants/testfsp2/initialPositionAndLimits     -H 'Cache-Control: no-cache'     -H 'Content-Type: application/json'     -d '{\n    \\\"currency\\\": \\\"USD\\\",\n    \\\"limit\\\": {\n      \\\"type\\\": \\\"NET_DEBIT_CAP\\\",\n      \\\"value\\\": 1000\n    },\n    \\\"initialPosition\\\": 0\n  }'"
-							},
-							"response": [
-								{
-									"name": "2. Create Initial Position and Limits",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Cache-Control",
-												"value": "no-cache"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"currency\": \"USD\",\n    \"limit\": {\n      \"type\": \"NET_DEBIT_CAP\",\n      \"value\": 1000\n    },\n    \"initialPosition\": 0\n  }"
-										},
-										"url": {
-											"raw": "http://test-central-ledger.mojaloop.live/admin/participants/testfsp/initialPositionAndLimits",
-											"protocol": "http",
-											"host": [
-												"test-central-ledger",
-												"mojaloop",
-												"live"
-											],
-											"path": [
-												"admin",
-												"participants",
-												"testfsp",
-												"initialPositionAndLimits"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "Text",
-									"header": [],
-									"cookie": [],
-									"body": ""
-								}
-							]
-						}
-					],
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "733b82a3-a8ca-492d-9052-8184ee211b62",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "e7650ad7-36cd-4f3f-a016-b0055cf825f2",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
 					"name": "DFSPEUR",
 					"item": [
 						{
@@ -9682,8 +8226,28 @@
 											"pm.environment.set('fundsInPrepareAmount', 5000);",
 											"",
 											"",
-											"const hubGetStatusRequest = {",
+											"const DFSPEURGetStatusRequest = {",
 											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/DFSPEUR/accounts',",
+											"  method: 'GET',",
+											"  header: {",
+											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"      \"Content-Type\": \"application/json\"",
+											"  }",
+											"};",
+											"pm.sendRequest(DFSPEURGetStatusRequest, function (err, response) {",
+											"    console.log(response.json())",
+											"    var jsonData = response.json()",
+											"    for(var i in jsonData) {",
+											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT' && jsonData[i].currency === 'EUR') {",
+											"            pm.environment.set(\"DFSPEURSettlementAccountId\",jsonData[i].id)",
+											"            pm.environment.set(\"DFSPEURSettlementAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+											"        }",
+											"    }",
+											"});",
+											"",
+											"const hubGetStatusRequest = {",
+											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
 											"  method: 'GET',",
 											"  header: {",
 											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
@@ -9693,14 +8257,16 @@
 											"};",
 											"pm.sendRequest(hubGetStatusRequest, function (err, response) {",
 											"    console.log(response.json())",
-											"    var jsonData = response.json()",
-											"    for(var i in jsonData) {",
-											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-											"            pm.environment.set(\"DFSPEURSettlementAccountBal\",jsonData[i].id)",
-											"        }",
-											"    }",
+											"    //var jsonData = response.json()",
+											"    response.json()",
+											"        .filter( ledgerAccount => (ledgerAccount.currency === 'EUR' && ledgerAccount.ledgerAccountType === 'HUB_RECONCILIATION'))",
+											"        .forEach(account => pm.environment.set(\"hubReconAccountBalanceBeforeFundsIn\",account.value))",
+											"    // for(var i in jsonData) {",
+											"    //     if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"    //         pm.environment.set(\"hubReconAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+											"    //     }",
+											"    // }",
 											"});",
-											"",
 											""
 										],
 										"type": "text/javascript"
@@ -9715,57 +8281,60 @@
 											"    pm.response.to.have.status(202);",
 											"});",
 											"",
-											"// setTimeout(function () {",
-											"//     const testfsp1GetStatusRequest = {",
-											"//       url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"testfsp1\")+'/accounts',",
-											"//       method: 'GET',",
-											"//       header: {",
-											"//           \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
-											"//           \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-											"//           \"Content-Type\": \"application/json\"",
-											"//       }",
-											"//     };",
-											"//     pm.sendRequest(testfsp1GetStatusRequest, function (err, response) {",
-											"//         console.log(response.json())",
-											"//         var jsonData = response.json()",
-											"//         var testfsp1SettlementAccountBalanceAfterFundsIn",
-											"//         for(var i in jsonData) {",
-											"//             if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-											"//                 testfsp1SettlementAccountBalanceAfterFundsIn = jsonData[i].value",
-											"//             }",
-											"//         }",
-											"//         var testfsp1ExpectedBalance = pm.environment.get('testfsp1SettlementAccountBalanceBeforeFundsIn') + pm.environment.get('fundsInPrepareAmount')",
-											"//         pm.test(\"Final testfsp1 Settlement Account Balance should be same as before FundsIn + fundsInPrepareAmount\", function () {",
-											"//             pm.expect(testfsp1SettlementAccountBalanceAfterFundsIn).to.eql(testfsp1ExpectedBalance);",
-											"//           });    ",
+											"setTimeout(function () {",
+											"    const DFSPEURGetStatusRequest = {",
+											"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/DFSPEUR/accounts',",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(DFSPEURGetStatusRequest, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        var DFSPEURSettlementAccountBalanceAfterFundsIn",
+											"        for(var i in jsonData) {",
+											"            if(jsonData[i].ledgerAccountType === 'SETTLEMENT' && jsonData[i].currency === 'EUR') {",
+											"                DFSPEURSettlementAccountBalanceAfterFundsIn = jsonData[i].value",
+											"            }",
+											"        }",
+											"        var DFSPEURExpectedBalance = pm.environment.get('DFSPEURSettlementAccountBalanceBeforeFundsIn') - pm.environment.get('fundsInPrepareAmount')",
+											"        pm.test(\"Final DFSPEUR Settlement Account Balance should be same as before FundsIn + fundsInPrepareAmount\", function () {",
+											"            pm.expect(DFSPEURSettlementAccountBalanceAfterFundsIn).to.eql(DFSPEURExpectedBalance);",
+											"          });    ",
 											"    ",
-											"//     });",
+											"    });",
 											"    ",
-											"//     const hubGetStatusRequest = {",
-											"//       url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
-											"//       method: 'GET',",
-											"//       header: {",
-											"//           \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
-											"//           \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-											"//           \"Content-Type\": \"application/json\"",
-											"//       }",
-											"//     };",
-											"//     pm.sendRequest(hubGetStatusRequest, function (err, response) {",
-											"//         console.log(response.json())",
-											"//         var jsonData = response.json()",
-											"//         var currentHubReconAccountBalance",
-											"//         for(var i in jsonData) {",
-											"//             if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
-											"//                 hubReconAccountBalanceAfterFundsIn = jsonData[i].value",
-											"//             }",
-											"//         }",
-											"//         var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsIn\")",
-											"//         console.log(hubExpectedBalance)",
-											"//         pm.test(\"Final Hub Reconciliation Account Balance should be same as before FundsIn\", function () {",
-											"//             pm.expect(hubReconAccountBalanceAfterFundsIn).to.eql(hubExpectedBalance);",
-											"//           });  ",
-											"//     });",
-											"// }, 2000)"
+											"    const hubGetStatusRequest = {",
+											"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(hubGetStatusRequest, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        var currentHubReconAccountBalance",
+											"        response.json()",
+											"        .filter( ledgerAccount => (ledgerAccount.currency === 'EUR' && ledgerAccount.ledgerAccountType === 'HUB_RECONCILIATION'))",
+											"        .forEach(account => hubReconAccountBalanceAfterFundsIn = account.value)",
+											"        // for(var i in jsonData) {",
+											"        //     if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"        //         hubReconAccountBalanceAfterFundsIn = jsonData[i].value",
+											"        //     }",
+											"        // }",
+											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsIn\")+pm.environment.get('fundsInPrepareAmount')",
+											"        console.log(hubExpectedBalance)",
+											"        pm.test(\"Final Hub Reconciliation Account Balance should increase by FundsIn Amount\", function () {",
+											"            pm.expect(hubReconAccountBalanceAfterFundsIn).to.eql(hubExpectedBalance);",
+											"          });  ",
+											"    });",
+											"}, 2000)"
 										],
 										"type": "text/javascript"
 									}
@@ -9799,7 +8368,7 @@
 									"raw": "{\n  \"transferId\": \"{{fundsInPrepareTransferId}}\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsIn\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": {{fundsInPrepareAmount}},\n    \"currency\": \"EUR\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
 								},
 								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/DFSPEUR/accounts/52",
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/DFSPEUR/accounts/{{DFSPEURSettlementAccountId}}",
 									"host": [
 										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
 									],
@@ -9807,7 +8376,7 @@
 										"participants",
 										"DFSPEUR",
 										"accounts",
-										"52"
+										"{{DFSPEURSettlementAccountId}}"
 									]
 								}
 							},
@@ -10383,10 +8952,10 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"name": "DFSPXOF",
+					"name": "DFSPMAD",
 					"item": [
 						{
-							"name": "Add DFSPXOF",
+							"name": "Add DFSPMAD",
 							"event": [
 								{
 									"listen": "test",
@@ -10427,7 +8996,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"name\": \"DFSPXOF\",\"currency\": \"XOF\"}"
+									"raw": "{\"name\": \"DFSPMAD\",\"currency\": \"MAD\"}"
 								},
 								"url": {
 									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants",
@@ -10442,7 +9011,7 @@
 							"response": []
 						},
 						{
-							"name": "Add initial position and limits - DFSPXOF",
+							"name": "Add initial position and limits - DFSPMAD",
 							"event": [
 								{
 									"listen": "test",
@@ -10483,16 +9052,16 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"currency\": \"XOF\",\n\t\"limit\": {\n\t  \"type\": \"NET_DEBIT_CAP\",\n\t  \"value\": 10000\n\t},\n\t\"initialPosition\": 0\n}"
+									"raw": "{\n\t\"currency\": \"MAD\",\n\t\"limit\": {\n\t  \"type\": \"NET_DEBIT_CAP\",\n\t  \"value\": 10000\n\t},\n\t\"initialPosition\": 0\n}"
 								},
 								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/DFSPXOF/initialPositionAndLimits",
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/DFSPMAD/initialPositionAndLimits",
 									"host": [
 										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
 									],
 									"path": [
 										"participants",
-										"DFSPXOF",
+										"DFSPMAD",
 										"initialPositionAndLimits"
 									]
 								}
@@ -10500,7 +9069,7 @@
 							"response": []
 						},
 						{
-							"name": "Deposit Funds - DFSPXOF",
+							"name": "Deposit Funds - DFSPMAD",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -10513,8 +9082,28 @@
 											"pm.environment.set('fundsInPrepareAmount', 5000);",
 											"",
 											"",
+											"const DFSPMADGetStatusRequest = {",
+											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/DFSPMAD/accounts',",
+											"  method: 'GET',",
+											"  header: {",
+											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"      \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"      \"Content-Type\": \"application/json\"",
+											"  }",
+											"};",
+											"pm.sendRequest(DFSPMADGetStatusRequest, function (err, response) {",
+											"    console.log(response.json())",
+											"    var jsonData = response.json()",
+											"    for(var i in jsonData) {",
+											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT' && jsonData[i].currency === 'EUR') {",
+											"            pm.environment.set(\"DFSPMADSettlementAccountId\",jsonData[i].id)",
+											"            pm.environment.set(\"DFSPMADSettlementAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+											"        }",
+											"    }",
+											"});",
+											"",
 											"const hubGetStatusRequest = {",
-											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/DFSPXOF/accounts',",
+											"  url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
 											"  method: 'GET',",
 											"  header: {",
 											"      \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
@@ -10524,14 +9113,16 @@
 											"};",
 											"pm.sendRequest(hubGetStatusRequest, function (err, response) {",
 											"    console.log(response.json())",
-											"    var jsonData = response.json()",
-											"    for(var i in jsonData) {",
-											"        if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-											"            pm.environment.set(\"DFSPXOFSettlementAccountId\",jsonData[i].id)",
-											"        }",
-											"    }",
+											"    //var jsonData = response.json()",
+											"    response.json()",
+											"        .filter( ledgerAccount => (ledgerAccount.currency === 'EUR' && ledgerAccount.ledgerAccountType === 'HUB_RECONCILIATION'))",
+											"        .forEach(account => pm.environment.set(\"hubReconAccountBalanceBeforeFundsIn\",account.value))",
+											"    // for(var i in jsonData) {",
+											"    //     if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"    //         pm.environment.set(\"hubReconAccountBalanceBeforeFundsIn\",jsonData[i].value)",
+											"    //     }",
+											"    // }",
 											"});",
-											"",
 											""
 										],
 										"type": "text/javascript"
@@ -10546,57 +9137,60 @@
 											"    pm.response.to.have.status(202);",
 											"});",
 											"",
-											"// setTimeout(function () {",
-											"//     const testfsp2GetStatusRequest = {",
-											"//       url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+pm.environment.get(\"testfsp2\")+'/accounts',",
-											"//       method: 'GET',",
-											"//       header: {",
-											"//           \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
-											"//           \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-											"//           \"Content-Type\": \"application/json\"",
-											"//       }",
-											"//     };",
-											"//     pm.sendRequest(testfsp2GetStatusRequest, function (err, response) {",
-											"//         console.log(response.json())",
-											"//         var jsonData = response.json()",
-											"//         var testfsp2SettlementAccountBalanceAfterFundsIn",
-											"//         for(var i in jsonData) {",
-											"//             if(jsonData[i].ledgerAccountType === 'SETTLEMENT') {",
-											"//                 testfsp2SettlementAccountBalanceAfterFundsIn = jsonData[i].value",
-											"//             }",
-											"//         }",
-											"//         var testfsp2ExpectedBalance = pm.environment.get('testfsp2SettlementAccountBalanceBeforeFundsIn') + pm.environment.get('fundsInPrepareAmount')",
-											"//         pm.test(\"Final testfsp2 Settlement Account Balance should be same as before FundsIn + fundsInPrepareAmount\", function () {",
-											"//             pm.expect(testfsp2SettlementAccountBalanceAfterFundsIn).to.eql(testfsp2ExpectedBalance);",
-											"//           });    ",
+											"setTimeout(function () {",
+											"    const DFSPMADGetStatusRequest = {",
+											"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/DFSPMAD/accounts',",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(DFSPMADGetStatusRequest, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        var DFSPMADSettlementAccountBalanceAfterFundsIn",
+											"        for(var i in jsonData) {",
+											"            if(jsonData[i].ledgerAccountType === 'SETTLEMENT' && jsonData[i].currency === 'EUR') {",
+											"                DFSPMADSettlementAccountBalanceAfterFundsIn = jsonData[i].value",
+											"            }",
+											"        }",
+											"        var DFSPMADExpectedBalance = pm.environment.get('DFSPMADSettlementAccountBalanceBeforeFundsIn') - pm.environment.get('fundsInPrepareAmount')",
+											"        pm.test(\"Final DFSPMAD Settlement Account Balance should be same as before FundsIn + fundsInPrepareAmount\", function () {",
+											"            pm.expect(DFSPMADSettlementAccountBalanceAfterFundsIn).to.eql(DFSPMADExpectedBalance);",
+											"          });    ",
 											"    ",
-											"//     });",
+											"    });",
 											"    ",
-											"//     const hubGetStatusRequest = {",
-											"//       url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
-											"//       method: 'GET',",
-											"//       header: {",
-											"//           \"Authorization\":\"Bearer \"+pm.environment.get(\"HUBOPERATOR_BEARER_TOKEN\"),",
-											"//           \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-											"//           \"Content-Type\": \"application/json\"",
-											"//       }",
-											"//     };",
-											"//     pm.sendRequest(hubGetStatusRequest, function (err, response) {",
-											"//         console.log(response.json())",
-											"//         var jsonData = response.json()",
-											"//         var currentHubReconAccountBalance",
-											"//         for(var i in jsonData) {",
-											"//             if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
-											"//                 hubReconAccountBalanceAfterFundsIn = jsonData[i].value",
-											"//             }",
-											"//         }",
-											"//         var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsIn\")",
-											"//         console.log(hubExpectedBalance)",
-											"//         pm.test(\"Final Hub Reconciliation Account Balance should be same as before FundsIn\", function () {",
-											"//             pm.expect(hubReconAccountBalanceAfterFundsIn).to.eql(hubExpectedBalance);",
-											"//           });  ",
-											"//     });",
-											"// }, 2000)"
+											"    const hubGetStatusRequest = {",
+											"      url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/hub/accounts',",
+											"      method: 'GET',",
+											"      header: {",
+											"          \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+											"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+											"          \"Content-Type\": \"application/json\"",
+											"      }",
+											"    };",
+											"    pm.sendRequest(hubGetStatusRequest, function (err, response) {",
+											"        console.log(response.json())",
+											"        var jsonData = response.json()",
+											"        var currentHubReconAccountBalance",
+											"        response.json()",
+											"        .filter( ledgerAccount => (ledgerAccount.currency === 'EUR' && ledgerAccount.ledgerAccountType === 'HUB_RECONCILIATION'))",
+											"        .forEach(account => hubReconAccountBalanceAfterFundsIn = account.value)",
+											"        // for(var i in jsonData) {",
+											"        //     if(jsonData[i].ledgerAccountType === 'HUB_RECONCILIATION') {",
+											"        //         hubReconAccountBalanceAfterFundsIn = jsonData[i].value",
+											"        //     }",
+											"        // }",
+											"        var hubExpectedBalance = pm.environment.get(\"hubReconAccountBalanceBeforeFundsIn\")+pm.environment.get('fundsInPrepareAmount')",
+											"        console.log(hubExpectedBalance)",
+											"        pm.test(\"Final Hub Reconciliation Account Balance should increase by FundsIn Amount\", function () {",
+											"            pm.expect(hubReconAccountBalanceAfterFundsIn).to.eql(hubExpectedBalance);",
+											"          });  ",
+											"    });",
+											"}, 2000)"
 										],
 										"type": "text/javascript"
 									}
@@ -10627,18 +9221,18 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"transferId\": \"{{fundsInPrepareTransferId}}\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsIn\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": {{fundsInPrepareAmount}},\n    \"currency\": \"XOF\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
+									"raw": "{\n  \"transferId\": \"{{fundsInPrepareTransferId}}\",\n  \"externalReference\": \"string\",\n  \"action\": \"recordFundsIn\",\n  \"reason\": \"string\",\n  \"amount\": {\n    \"amount\": {{fundsInPrepareAmount}},\n    \"currency\": \"MAD\"\n  },\n  \"extensionList\": {\n    \"extension\": [\n      {\n        \"key\": \"string\",\n        \"value\": \"string\"\n      }\n    ]\n  }\n}"
 								},
 								"url": {
-									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/DFSPXOF/accounts/{{DFSPXOFSettlementAccountId}}",
+									"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/DFSPMAD/accounts/{{DFSPMADSettlementAccountId}}",
 									"host": [
 										"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
 									],
 									"path": [
 										"participants",
-										"DFSPXOF",
+										"DFSPMAD",
 										"accounts",
-										"{{DFSPXOFSettlementAccountId}}"
+										"{{DFSPMADSettlementAccountId}}"
 									]
 								}
 							},
@@ -11568,7 +10162,7 @@
 										"id": "04a7ae97-9c85-439d-806d-cc44575537b2",
 										"exec": [
 											"pm.test(\"Successful POST request\", function () {",
-											"    pm.expect(pm.response.code).to.be.oneOf([204,200, 500]);",
+											"    pm.expect(pm.response.code).to.be.oneOf([204, 500]);",
 											"});"
 										],
 										"type": "text/javascript"
@@ -11702,7 +10296,7 @@
 										"id": "04a7ae97-9c85-439d-806d-cc44575537b2",
 										"exec": [
 											"pm.test(\"Successful POST request\", function () {",
-											"    pm.expect(pm.response.code).to.be.oneOf([204,200, 500]);",
+											"    pm.expect(pm.response.code).to.be.oneOf([204, 500]);",
 											"});"
 										],
 										"type": "text/javascript"
@@ -11836,7 +10430,7 @@
 										"id": "04a7ae97-9c85-439d-806d-cc44575537b2",
 										"exec": [
 											"pm.test(\"Successful POST request\", function () {",
-											"    pm.expect(pm.response.code).to.be.oneOf([204,200, 500]);",
+											"    pm.expect(pm.response.code).to.be.oneOf([204, 500]);",
 											"});"
 										],
 										"type": "text/javascript"
