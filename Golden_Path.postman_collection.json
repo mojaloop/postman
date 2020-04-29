@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ab11576d-bdd0-4be6-b883-42fd1ba9bacb",
+		"_postman_id": "fa9ae53e-76cd-460d-a573-efd074ec3007",
 		"name": "Golden_Path",
 		"description": "Purpose: To setup a newly deployed Mojaloop Switch and add test FSPs along with their callback and other Information needed for end-to-end testing.\n\nContributors:\n- Mowali\n- Amar Ramachandran <amarnath.ramachandran@modusbox.com>\n- Georgi Georgiev <georgi.georgiev@modusbox.com>\n- Juan Correa <juan.correa@modusbox.com>\n- Miguel deBarros <miguel.debarros@modusbox.com>\n- Nico Duvenage <nico.duvenage@modusbox.com>\n- Sam Kummary <sam@modusbox.com>\n- Sri Miryala <sridevi.miriyala@modusbox.com>\n- Steven Oderayi <steven.oderayi@modusbox.com>\n- valentin genev <valentin.genev@modusbox.com>\n- Vijay Guthi <vijaya.guthi@modusbox.com>",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -14225,8 +14225,2378 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"name": "authorizations",
+					"name": "authorizations ",
 					"item": [
+						{
+							"name": "Error framework",
+							"item": [
+								{
+									"name": "Check retriesLeft missing",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"const jsonData = pm.response.json();",
+													"",
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													"",
+													"pm.test(\"Check retriesLeft is required \", function () {",
+													"    pm.expect(jsonData.errorInformation.errorDescription).to.include('retriesLeft is required');",
+													"});",
+													"",
+													"pm.test(\"Check Error code 3100\", function () {",
+													"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3100');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0",
+												"type": "text"
+											},
+											{
+												"key": "Date",
+												"value": "{{transactionRequestDate}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-source",
+												"value": "{{payerfsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-destination",
+												"value": "{{payeefsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-signature",
+												"value": "{{fspiop-signature}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-uri",
+												"value": "/transactionRequests",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-http-method",
+												"value": "GET",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}?authenticationType=OTP&amount=102&currency=USD",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												"{{transactionRequestId}}"
+											],
+											"query": [
+												{
+													"key": "authenticationType",
+													"value": "OTP"
+												},
+												{
+													"key": "amount",
+													"value": "102"
+												},
+												{
+													"key": "currency",
+													"value": "USD"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check authenticationType missing",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"const jsonData = pm.response.json();",
+													"",
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													"",
+													"pm.test(\"Check Generic validation error \", function () {",
+													"    pm.expect(jsonData.errorInformation.errorDescription).to.include('authenticationType is required');",
+													"});",
+													"",
+													"pm.test(\"Check Error code 3100\", function () {",
+													"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3100');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0",
+												"type": "text"
+											},
+											{
+												"key": "Date",
+												"value": "{{transactionRequestDate}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-source",
+												"value": "{{payerfsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-destination",
+												"value": "{{payeefsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-signature",
+												"value": "{{fspiop-signature}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-uri",
+												"value": "/transactionRequests",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-http-method",
+												"value": "GET",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}?retriesLeft=2&amount=102&currency=USD",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												"{{transactionRequestId}}"
+											],
+											"query": [
+												{
+													"key": "retriesLeft",
+													"value": "2"
+												},
+												{
+													"key": "amount",
+													"value": "102"
+												},
+												{
+													"key": "currency",
+													"value": "USD"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check currency missing",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"const jsonData = pm.response.json();",
+													"",
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													"",
+													"pm.test(\"Check Generic validation error \", function () {",
+													"    pm.expect(jsonData.errorInformation.errorDescription).to.include('currency is required');",
+													"});",
+													"",
+													"pm.test(\"Check Error code 3100\", function () {",
+													"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3100');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0",
+												"type": "text"
+											},
+											{
+												"key": "Date",
+												"value": "{{transactionRequestDate}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-source",
+												"value": "{{payerfsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-destination",
+												"value": "{{payeefsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-signature",
+												"value": "{{fspiop-signature}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-uri",
+												"value": "/transactionRequests",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-http-method",
+												"value": "GET",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}?authenticationType=OTP&retriesLeft=2&amount=102",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												"{{transactionRequestId}}"
+											],
+											"query": [
+												{
+													"key": "authenticationType",
+													"value": "OTP"
+												},
+												{
+													"key": "retriesLeft",
+													"value": "2"
+												},
+												{
+													"key": "amount",
+													"value": "102"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check Method not allowed - 405 (BUG)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"const jsonData = pm.response.json();",
+													"",
+													"pm.test(\"Status code is 405\", function () {",
+													"    pm.response.to.have.status(405);",
+													"});",
+													"",
+													"pm.test(\"Check Unknown URI - Not Found \", function () {",
+													"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Unknown URI - Not Found');",
+													"});",
+													"",
+													"pm.test(\"Check Error code 3100\", function () {",
+													"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3100');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0",
+												"type": "text"
+											},
+											{
+												"key": "Date",
+												"value": "{{transactionRequestDate}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-source",
+												"value": "{{payerfsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-destination",
+												"value": "{{payeefsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-signature",
+												"value": "{{fspiop-signature}}",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "fspiop-uri",
+												"value": "/transactionRequests",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "fspiop-http-method",
+												"value": "GET",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check retriesLeft with non-number",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"const jsonData = pm.response.json();",
+													"",
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													"",
+													"pm.test(\"Check Generic validation error \", function () {",
+													"    pm.expect(jsonData.errorInformation.errorDescription).to.include('retriesLeft');",
+													"});",
+													"",
+													"pm.test(\"Check Error code 3100\", function () {",
+													"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3100');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"type": "text",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0"
+											},
+											{
+												"key": "Date",
+												"type": "text",
+												"value": "{{transactionRequestDate}}"
+											},
+											{
+												"key": "fspiop-source",
+												"type": "text",
+												"value": "{{payerfsp}}"
+											},
+											{
+												"key": "fspiop-destination",
+												"type": "text",
+												"value": "{{payeefsp}}"
+											},
+											{
+												"key": "fspiop-signature",
+												"type": "text",
+												"value": "{{fspiop-signature}}"
+											},
+											{
+												"key": "fspiop-uri",
+												"type": "text",
+												"value": "/transactionRequests"
+											},
+											{
+												"key": "fspiop-http-method",
+												"type": "text",
+												"value": "GET"
+											}
+										],
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}?authenticationType=OTP&retriesLeft=g&amount=102&currency=USD",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												"{{transactionRequestId}}"
+											],
+											"query": [
+												{
+													"key": "authenticationType",
+													"value": "OTP"
+												},
+												{
+													"key": "retriesLeft",
+													"value": "g"
+												},
+												{
+													"key": "amount",
+													"value": "102"
+												},
+												{
+													"key": "currency",
+													"value": "USD"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check retriesLeft with floating number",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"const jsonData = pm.response.json();",
+													"",
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													"",
+													"pm.test(\"Check Generic validation error \", function () {",
+													"    pm.expect(jsonData.errorInformation.errorDescription).to.include('retriesLeft');",
+													"});",
+													"",
+													"pm.test(\"Check Error code 3100\", function () {",
+													"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3100');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"type": "text",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0"
+											},
+											{
+												"key": "Date",
+												"type": "text",
+												"value": "{{transactionRequestDate}}"
+											},
+											{
+												"key": "fspiop-source",
+												"type": "text",
+												"value": "{{payerfsp}}"
+											},
+											{
+												"key": "fspiop-destination",
+												"type": "text",
+												"value": "{{payeefsp}}"
+											},
+											{
+												"key": "fspiop-signature",
+												"type": "text",
+												"value": "{{fspiop-signature}}"
+											},
+											{
+												"key": "fspiop-uri",
+												"type": "text",
+												"value": "/transactionRequests"
+											},
+											{
+												"key": "fspiop-http-method",
+												"type": "text",
+												"value": "GET"
+											}
+										],
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}?authenticationType=OTP&retriesLeft=1.5&amount=102&currency=USD",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												"{{transactionRequestId}}"
+											],
+											"query": [
+												{
+													"key": "authenticationType",
+													"value": "OTP"
+												},
+												{
+													"key": "retriesLeft",
+													"value": "1.5"
+												},
+												{
+													"key": "amount",
+													"value": "102"
+												},
+												{
+													"key": "currency",
+													"value": "USD"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check wrong authentication type",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"const jsonData = pm.response.json();",
+													"",
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													"",
+													"pm.test(\"Check Generic validation error \", function () {",
+													"    pm.expect(jsonData.errorInformation.errorDescription).to.include('authenticationType');",
+													"});",
+													"",
+													"pm.test(\"Check Error code 3100\", function () {",
+													"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3100');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"type": "text",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0"
+											},
+											{
+												"key": "Date",
+												"type": "text",
+												"value": "{{transactionRequestDate}}"
+											},
+											{
+												"key": "fspiop-source",
+												"type": "text",
+												"value": "{{payerfsp}}"
+											},
+											{
+												"key": "fspiop-destination",
+												"type": "text",
+												"value": "{{payeefsp}}"
+											},
+											{
+												"key": "fspiop-signature",
+												"type": "text",
+												"value": "{{fspiop-signature}}"
+											},
+											{
+												"key": "fspiop-uri",
+												"type": "text",
+												"value": "/transactionRequests"
+											},
+											{
+												"key": "fspiop-http-method",
+												"type": "text",
+												"value": "GET"
+											}
+										],
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}?authenticationType=XTP&retriesLeft=2&amount=102&currency=USD",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												"{{transactionRequestId}}"
+											],
+											"query": [
+												{
+													"key": "authenticationType",
+													"value": "XTP"
+												},
+												{
+													"key": "retriesLeft",
+													"value": "2"
+												},
+												{
+													"key": "amount",
+													"value": "102"
+												},
+												{
+													"key": "currency",
+													"value": "USD"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check accept header missing (BUG)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"pm.test(\"Status code is 202\", function () {",
+													"    pm.response.to.have.status(202);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"accept-encoding": true,
+											"accept": true
+										}
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0",
+												"type": "text"
+											},
+											{
+												"key": "Date",
+												"value": "{{transactionRequestDate}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-source",
+												"value": "{{payerfsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-destination",
+												"value": "{{payeefsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-signature",
+												"value": "{{fspiop-signature}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-uri",
+												"value": "/transactionRequests",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-http-method",
+												"value": "GET",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}?authenticationType=OTP&retriesLeft=2&amount=102&currency=USD",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												"{{transactionRequestId}}"
+											],
+											"query": [
+												{
+													"key": "authenticationType",
+													"value": "OTP"
+												},
+												{
+													"key": "retriesLeft",
+													"value": "2"
+												},
+												{
+													"key": "amount",
+													"value": "102"
+												},
+												{
+													"key": "currency",
+													"value": "USD"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check date missing (BUG)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													"",
+													"pm.test(\"Check date missing in Get authorizations \", function () {",
+													"    pm.expect(jsonData.errorInformation.errorDescription).to.include('Date is required');",
+													"});",
+													"",
+													"pm.test(\"Check Error code 3100\", function () {",
+													"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3100');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"type": "text",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0"
+											},
+											{
+												"key": "Date",
+												"type": "text",
+												"value": "{{transactionRequestDate}}",
+												"disabled": true
+											},
+											{
+												"key": "fspiop-source",
+												"type": "text",
+												"value": "{{payerfsp}}"
+											},
+											{
+												"key": "fspiop-destination",
+												"type": "text",
+												"value": "{{payeefsp}}"
+											},
+											{
+												"key": "fspiop-signature",
+												"type": "text",
+												"value": "{{fspiop-signature}}"
+											},
+											{
+												"key": "fspiop-uri",
+												"type": "text",
+												"value": "/transactionRequests"
+											},
+											{
+												"key": "fspiop-http-method",
+												"type": "text",
+												"value": "GET"
+											}
+										],
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}?authenticationType=OTP&retriesLeft=2&amount=102&currency=USD",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												"{{transactionRequestId}}"
+											],
+											"query": [
+												{
+													"key": "authenticationType",
+													"value": "OTP"
+												},
+												{
+													"key": "retriesLeft",
+													"value": "2"
+												},
+												{
+													"key": "amount",
+													"value": "102"
+												},
+												{
+													"key": "currency",
+													"value": "USD"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check fspiop-source missing (BUG)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													"",
+													"pm.test(\"Check fspiop-source missing in Get authorizations \", function () {",
+													"    pm.expect(jsonData.errorInformation.errorDescription).to.include('fspiop-source is required');",
+													"});",
+													"",
+													"pm.test(\"Check Error code 3100\", function () {",
+													"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3100');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0",
+												"type": "text"
+											},
+											{
+												"key": "Date",
+												"value": "{{transactionRequestDate}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-source",
+												"value": "{{payerfsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-destination",
+												"value": "{{payeefsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-signature",
+												"value": "{{fspiop-signature}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-uri",
+												"value": "/transactionRequests",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-http-method",
+												"value": "GET",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}?authenticationType=OTP&retriesLeft=2&amount=102&currency=USD",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												"{{transactionRequestId}}"
+											],
+											"query": [
+												{
+													"key": "authenticationType",
+													"value": "OTP"
+												},
+												{
+													"key": "retriesLeft",
+													"value": "2"
+												},
+												{
+													"key": "amount",
+													"value": "102"
+												},
+												{
+													"key": "currency",
+													"value": "USD"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check ID missing (BUG)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"pm.test(\"Status code is 202\", function () {",
+													"    pm.response.to.have.status(202);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0",
+												"type": "text"
+											},
+											{
+												"key": "Date",
+												"value": "{{transactionRequestDate}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-source",
+												"value": "{{payerfsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-destination",
+												"value": "{{payeefsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-signature",
+												"value": "{{fspiop-signature}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-uri",
+												"value": "/transactionRequests",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-http-method",
+												"value": "GET",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "content-type missing(BUG)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"pm.test(\"Status code is 202\", function () {",
+													"    pm.response.to.have.status(202);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"type": "text",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=3.0",
+												"disabled": true
+											},
+											{
+												"key": "Date",
+												"type": "text",
+												"value": "{{transactionRequestDate}}"
+											},
+											{
+												"key": "fspiop-source",
+												"type": "text",
+												"value": "{{payerfsp}}"
+											},
+											{
+												"key": "fspiop-destination",
+												"type": "text",
+												"value": "{{payeefsp}}"
+											},
+											{
+												"key": "fspiop-signature",
+												"type": "text",
+												"value": "{{fspiop-signature}}"
+											},
+											{
+												"key": "fspiop-uri",
+												"type": "text",
+												"value": "/transactionRequests"
+											},
+											{
+												"key": "fspiop-http-method",
+												"type": "text",
+												"value": "GET"
+											}
+										],
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}?authenticationType=OTP&retriesLeft=2&amount=102&currency=USD",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												"{{transactionRequestId}}"
+											],
+											"query": [
+												{
+													"key": "authenticationType",
+													"value": "OTP"
+												},
+												{
+													"key": "retriesLeft",
+													"value": "2"
+												},
+												{
+													"key": "amount",
+													"value": "102"
+												},
+												{
+													"key": "currency",
+													"value": "USD"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Wrong content-type - BUG",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"pm.test(\"Status code is 202\", function () {",
+													"    pm.response.to.have.status(202);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"type": "text",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0"
+											},
+											{
+												"key": "Date",
+												"type": "text",
+												"value": "{{transactionRequestDate}}"
+											},
+											{
+												"key": "fspiop-source",
+												"type": "text",
+												"value": "{{payerfsp}}"
+											},
+											{
+												"key": "fspiop-destination",
+												"type": "text",
+												"value": "{{payeefsp}}"
+											},
+											{
+												"key": "fspiop-signature",
+												"type": "text",
+												"value": "{{fspiop-signature}}"
+											},
+											{
+												"key": "fspiop-uri",
+												"type": "text",
+												"value": "/transactionRequests"
+											},
+											{
+												"key": "fspiop-http-method",
+												"type": "text",
+												"value": "GET"
+											}
+										],
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}?authenticationType=OTP&retriesLeft=2&amount=102&currency=USD",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												"{{transactionRequestId}}"
+											],
+											"query": [
+												{
+													"key": "authenticationType",
+													"value": "OTP"
+												},
+												{
+													"key": "retriesLeft",
+													"value": "2"
+												},
+												{
+													"key": "amount",
+													"value": "102"
+												},
+												{
+													"key": "currency",
+													"value": "USD"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check Too many elements - 3103 - Bug",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0",
+												"type": "text"
+											},
+											{
+												"key": "Date",
+												"value": "{{transactionRequestDate}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-source",
+												"value": "{{payeefsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-destination",
+												"value": "{{payerfsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-signature",
+												"value": "{{fspiop-signature}}",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "fspiop-uri",
+												"value": "/transactionRequests",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "fspiop-http-method",
+												"value": "PUT",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"authenticationInfo\": {\n    \"authentication\": \"OTP\",\n    \"authenticationValue\": \"234567\",\n    \"authenticationValue1\": \"234567\"\n  },\n  \"responseType\": \"REJECTED\"\n}"
+										},
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												"{{transactionRequestId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check Authorizatons - wrong responseType",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0",
+												"type": "text"
+											},
+											{
+												"key": "Date",
+												"value": "{{transactionRequestDate}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-source",
+												"value": "{{payeefsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-destination",
+												"value": "{{payerfsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-signature",
+												"value": "{{fspiop-signature}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-uri",
+												"value": "/transactionRequests",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-http-method",
+												"value": "PUT",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"authenticationInfo\": {\n    \"authentication\": \"OTP\",\n    \"authenticationValue\": \"234567\"\n  },\n  \"responseType\": \"WHAT\"\n}"
+										},
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												"{{transactionRequestId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check authentication missing - 400 - 3102 Error code - Bug",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"const jsonData = pm.response.json();",
+													"",
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													"",
+													"pm.test(\"Check Missing mandatory element \", function () {",
+													"    pm.expect(jsonData.errorInformation.errorDescription).to.include('authentication');",
+													"});",
+													"",
+													"pm.test(\"Check Error code 3102\", function () {",
+													"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3102');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0",
+												"type": "text"
+											},
+											{
+												"key": "Date",
+												"value": "{{transactionRequestDate}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-source",
+												"value": "{{payeefsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-destination",
+												"value": "{{payerfsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-signature",
+												"value": "{{fspiop-signature}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-uri",
+												"value": "/transactionRequests",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-http-method",
+												"value": "PUT",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"authenticationInfo\": {\n    \"authenticationValue\": \"234567\"\n  },\n  \"responseType\": \"REJECTED\"\n}"
+										},
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												"{{transactionRequestId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check authenticationValue missing - 400 - 3102 Error code - Bug",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"const jsonData = pm.response.json();",
+													"",
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													"",
+													"pm.test(\"Check Missing mandatory element \", function () {",
+													"    pm.expect(jsonData.errorInformation.errorDescription).to.include('authenticationValue');",
+													"});",
+													"",
+													"pm.test(\"Check Error code 3102\", function () {",
+													"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3102');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0",
+												"type": "text"
+											},
+											{
+												"key": "Date",
+												"value": "{{transactionRequestDate}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-source",
+												"value": "{{payeefsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-destination",
+												"value": "{{payerfsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-signature",
+												"value": "{{fspiop-signature}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-uri",
+												"value": "/transactionRequests",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-http-method",
+												"value": "PUT",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"authenticationInfo\": {\n    \"authentication\": \"OTP\"\n  },\n  \"responseType\": \"REJECTED\"\n}"
+										},
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												"{{transactionRequestId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check responseType missing - 400 - 3102 Error code - Bug",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"const jsonData = pm.response.json();",
+													"",
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													"",
+													"pm.test(\"Check Missing mandatory element - responseType \", function () {",
+													"    pm.expect(jsonData.errorInformation.errorDescription).to.include('responseType');",
+													"});",
+													"",
+													"pm.test(\"Check Error code 3102\", function () {",
+													"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3102');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0",
+												"type": "text"
+											},
+											{
+												"key": "Date",
+												"value": "{{transactionRequestDate}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-source",
+												"value": "{{payeefsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-destination",
+												"value": "{{payerfsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-signature",
+												"value": "{{fspiop-signature}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-uri",
+												"value": "/transactionRequests",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-http-method",
+												"value": "PUT",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"authenticationInfo\": {\n    \"authentication\": \"OTP\",\n    \"authenticationValue\": \"234567\"\n  }\n}"
+										},
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												"{{transactionRequestId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check authorization with content-type header missing - Bug",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"// const jsonData = pm.response.json();",
+													"",
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													"",
+													"// pm.test(\"Check authorization - missing content type - Error description \", function () {",
+													"//     pm.expect(jsonData.errorInformation.errorDescription).to.include('retriesLeft');",
+													"// });",
+													"",
+													"// pm.test(\"Check authorization - missing content type - Error code 3102\", function () {",
+													"//     pm.expect(jsonData.errorInformation.errorCode).to.eql('3102');",
+													"// });"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "Date",
+												"value": "{{transactionRequestDate}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-source",
+												"value": "{{payeefsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-destination",
+												"value": "{{payerfsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-signature",
+												"value": "{{fspiop-signature}}",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "fspiop-uri",
+												"value": "/transactionRequests",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "fspiop-http-method",
+												"value": "PUT",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"authenticationInfo\": {\n    \"authentication\": \"OTP\",\n    \"authenticationValue\": \"234567\"\n  },\n  \"responseType\": \"REJECTED\"\n}"
+										},
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												"{{transactionRequestId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check authorization with date header missing - Bug",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"// const jsonData = pm.response.json();",
+													"",
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													"",
+													"// pm.test(\"Check authorization - missing content type - Error description \", function () {",
+													"//     pm.expect(jsonData.errorInformation.errorDescription).to.include('retriesLeft');",
+													"// });",
+													"",
+													"// pm.test(\"Check authorization - missing content type - Error code 3102\", function () {",
+													"//     pm.expect(jsonData.errorInformation.errorCode).to.eql('3102');",
+													"// });"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0",
+												"type": "text"
+											},
+											{
+												"key": "Date",
+												"value": "{{transactionRequestDate}}",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "fspiop-source",
+												"value": "{{payeefsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-destination",
+												"value": "{{payerfsp}}",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "fspiop-signature",
+												"value": "{{fspiop-signature}}",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "fspiop-uri",
+												"value": "/transactionRequests",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "fspiop-http-method",
+												"value": "PUT",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"authenticationInfo\": {\n    \"authentication\": \"OTP\",\n    \"authenticationValue\": \"234567\"\n  },\n  \"responseType\": \"REJECTED\"\n}"
+										},
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												"{{transactionRequestId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check authorization with fspiop header missing - Bug",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"// const jsonData = pm.response.json();",
+													"",
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													"",
+													"// pm.test(\"Check authorization - missing content type - Error description \", function () {",
+													"//     pm.expect(jsonData.errorInformation.errorDescription).to.include('retriesLeft');",
+													"// });",
+													"",
+													"// pm.test(\"Check authorization - missing content type - Error code 3102\", function () {",
+													"//     pm.expect(jsonData.errorInformation.errorCode).to.eql('3102');",
+													"// });"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0",
+												"type": "text"
+											},
+											{
+												"key": "Date",
+												"value": "{{transactionRequestDate}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-source",
+												"value": "{{payeefsp}}",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "fspiop-destination",
+												"value": "{{payerfsp}}",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "fspiop-signature",
+												"value": "{{fspiop-signature}}",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "fspiop-uri",
+												"value": "/transactionRequests",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "fspiop-http-method",
+												"value": "PUT",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"authenticationInfo\": {\n    \"authentication\": \"OTP\",\n    \"authenticationValue\": \"234567\"\n  },\n  \"responseType\": \"REJECTED\"\n}"
+										},
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												"{{transactionRequestId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check authorization with accept header missing - Bug",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+												"exec": [
+													"// const jsonData = pm.response.json();",
+													"",
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													"",
+													"// pm.test(\"Check authorization - missing content type - Error description \", function () {",
+													"//     pm.expect(jsonData.errorInformation.errorDescription).to.include('retriesLeft');",
+													"// });",
+													"",
+													"// pm.test(\"Check authorization - missing content type - Error code 3102\", function () {",
+													"//     pm.expect(jsonData.errorInformation.errorCode).to.eql('3102');",
+													"// });"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+												"exec": [
+													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"",
+													"pm.environment.set('transactionRequestId', generatedUUID);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"accept": true,
+											"accept-encoding": true
+										}
+									},
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0",
+												"type": "text"
+											},
+											{
+												"key": "Date",
+												"value": "{{transactionRequestDate}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-source",
+												"value": "{{payeefsp}}",
+												"type": "text"
+											},
+											{
+												"key": "fspiop-destination",
+												"value": "{{payerfsp}}",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "fspiop-signature",
+												"value": "{{fspiop-signature}}",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "fspiop-uri",
+												"value": "/transactionRequests",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "fspiop-http-method",
+												"value": "PUT",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"authenticationInfo\": {\n    \"authentication\": \"OTP\",\n    \"authenticationValue\": \"234567\"\n  },\n  \"responseType\": \"REJECTED\"\n}"
+										},
+										"url": {
+											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}",
+											"host": [
+												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+											],
+											"path": [
+												"authorizations",
+												"{{transactionRequestId}}"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						},
 						{
 							"name": "authorizations",
 							"event": [
@@ -14424,6 +16794,124 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "authorizations/ID/error",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "a591ec31-0179-4938-ac00-e5c09b0d142c",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "b4ebea00-d146-4f2f-97d2-d99cb5d8d2ad",
+										"exec": [
+											"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
+											"",
+											"var uuid = require('uuid');",
+											"var generatedUUID = uuid.v4();",
+											"",
+											"pm.environment.set('transactionRequestId', generatedUUID);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/vnd.interoperability.transactionRequests+json;version=1",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/vnd.interoperability.transactionRequests+json;version=1.0",
+										"type": "text"
+									},
+									{
+										"key": "Date",
+										"value": "{{transactionRequestDate}}",
+										"type": "text"
+									},
+									{
+										"key": "fspiop-source",
+										"value": "{{payeefsp}}",
+										"type": "text"
+									},
+									{
+										"key": "fspiop-destination",
+										"value": "{{payerfsp}}",
+										"type": "text"
+									},
+									{
+										"key": "fspiop-signature",
+										"value": "{{fspiop-signature}}",
+										"type": "text"
+									},
+									{
+										"key": "fspiop-uri",
+										"value": "/transactionRequests",
+										"type": "text"
+									},
+									{
+										"key": "fspiop-http-method",
+										"value": "PUT",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"errorInformation\": {\n    \"errorCode\": \"3100\",\n    \"errorDescription\": \"Generic Validation Error\"\n  }\n}"
+								},
+								"url": {
+									"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}/error",
+									"host": [
+										"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
+									],
+									"path": [
+										"authorizations",
+										"{{transactionRequestId}}",
+										"error"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a29b9984-55da-4ed3-bfeb-689e1685f0c0",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3f36a72a-5b49-4fc4-9470-25c2291d275f",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
 						}
 					],
 					"protocolProfileBehavior": {},
