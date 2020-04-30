@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ab11576d-bdd0-4be6-b883-42fd1ba9bacb",
+		"_postman_id": "dd97a25f-d1a0-46d5-bc66-9926cbab597a",
 		"name": "Golden_Path",
 		"description": "Purpose: To setup a newly deployed Mojaloop Switch and add test FSPs along with their callback and other Information needed for end-to-end testing.\n\nContributors:\n- Mowali\n- Amar Ramachandran <amarnath.ramachandran@modusbox.com>\n- Georgi Georgiev <georgi.georgiev@modusbox.com>\n- Juan Correa <juan.correa@modusbox.com>\n- Miguel deBarros <miguel.debarros@modusbox.com>\n- Nico Duvenage <nico.duvenage@modusbox.com>\n- Sam Kummary <sam@modusbox.com>\n- Sri Miryala <sridevi.miriyala@modusbox.com>\n- Steven Oderayi <steven.oderayi@modusbox.com>\n- valentin genev <valentin.genev@modusbox.com>\n- Vijay Guthi <vijaya.guthi@modusbox.com>",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -3704,7 +3704,6 @@
 															"        pm.environment.set(\"testfsp4PositionAccountBalanceBeforeTransfer\", jsonData[i].value);",
 															"    }",
 															"}",
-															"",
 															""
 														],
 														"type": "text/javascript"
@@ -3752,7 +3751,7 @@
 									"name": "Run Quote & Transfers",
 									"item": [
 										{
-											"name": "Get Existing Open Window",
+											"name": "Get Existing Open Window(quotes and transfers)",
 											"event": [
 												{
 													"listen": "test",
@@ -3819,7 +3818,7 @@
 											"response": []
 										},
 										{
-											"name": "Close Existing Window",
+											"name": "Close Existing Window(quotes and transfers)",
 											"event": [
 												{
 													"listen": "test",
@@ -5128,7 +5127,6 @@
 															"   });",
 															"}, 2000)",
 															"",
-															"",
 															""
 														],
 														"type": "text/javascript"
@@ -5190,7 +5188,7 @@
 									"_postman_isSubFolder": true
 								},
 								{
-									"name": "Create Settlement",
+									"name": "Create Settlement DEFERREDNET",
 									"item": [
 										{
 											"name": "Get Existing Open Window",
@@ -5232,8 +5230,8 @@
 												"header": [
 													{
 														"key": "FSPIOP-Source",
-														"value": "payerfsp",
-														"type": "text"
+														"type": "text",
+														"value": "payerfsp"
 													}
 												],
 												"url": {
@@ -5339,6 +5337,23 @@
 															"    pm.expect(jsonData.participants.length).to.eql(4);",
 															"});",
 															"",
+															"pm.test(\"DEFERREDNET calculation for testfsp1 should be 80.09\", function () {",
+															"    pm.expect(jsonData.participants[0].accounts[0].netSettlementAmount.amount).to.eql(80.09);",
+															"});",
+															"",
+															"",
+															"pm.test(\"DEFERREDNET calculation for testfsp2 should be -75.667\", function () {",
+															"    pm.expect(jsonData.participants[1].accounts[0].netSettlementAmount.amount).to.eql(-75.667);",
+															"});",
+															"",
+															"pm.test(\"DEFERREDNET calculation for testfsp3 should be -10.1857\", function () {",
+															"    pm.expect(jsonData.participants[2].accounts[0].netSettlementAmount.amount).to.eql(-10.1857);",
+															"});",
+															"",
+															"pm.test(\"DEFERREDNET calculation for testfsp4 should be 5.7627\", function () {",
+															"    pm.expect(jsonData.participants[3].accounts[0].netSettlementAmount.amount).to.eql(5.7627);",
+															"});",
+															"",
 															"for(var j in jsonData.participants) {",
 															"    for(var k in jsonData.participants[j].accounts) {",
 															"        console.log(jsonData.participants[j].accounts[k].id)",
@@ -5369,7 +5384,10 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"settlementModel\": \"DEFERREDNET\",\n  \"reason\": \"TESTING\",\n  \"settlementWindows\": [\n    {\n      \"id\": {{closedWindowID}}\n    }\n  ]\n}"
+													"raw": "{\n  \"settlementModel\": \"DEFERREDNET\",\n  \"reason\": \"TESTING\",\n  \"settlementWindows\": [\n    {\n      \"id\": {{closedWindowID}}\n    }\n  ]\n}",
+													"options": {
+														"raw": {}
+													}
 												},
 												"url": {
 													"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements",
