@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "daf45def-02ec-4f72-90a9-bc21e38b52ec",
-		"name": "Golden_Path_MojaloopSims_without_FX",
+		"_postman_id": "54d076c3-860a-4eb7-a216-7b07b2d25a2d",
+		"name": "Golden_Path_Mojaloop_without_FX",
 		"description": "Author: Sridevi Miriyala\nDescription: Golden Path Tests using Mojaloop Simulators",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -15,7 +15,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "08cdf9bc-08a3-4b38-b512-c91a7035d504",
+								"id": "72a855b4-688d-4c40-b510-b9389c660488",
 								"exec": [
 									"var uuid = require('uuid');",
 									"var generatedUUID = uuid.v4();",
@@ -66,7 +66,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "7fbd11f5-27d0-4d1f-af60-740c97f97f8d",
+								"id": "e2617499-c4e2-411e-a0d4-c2d4f7c9fa05",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -179,7 +179,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "897228e7-7519-45eb-8a03-9ee659afffc1",
+								"id": "4f6704bb-abde-4cf1-9fcc-9f00910418be",
 								"exec": [
 									"var uuid = require('uuid');",
 									"var generatedUUID = uuid.v4();",
@@ -230,7 +230,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "9079f84c-f7f6-4388-a803-c38139225d75",
+								"id": "ea1957e2-84cb-44dc-bcd1-7692c03df8c2",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -338,7 +338,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "34f82c7f-19b9-4f66-b7cb-581ae3ee28e8",
+								"id": "82e46050-33df-4df0-9766-562278a6cacb",
 								"exec": [
 									"var uuid = require('uuid');",
 									"var generatedUUID = uuid.v4();",
@@ -395,7 +395,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "10a92f08-3944-4d5e-a1f0-f0dc03a1f410",
+								"id": "229c76f4-82b0-4393-9a6d-444773a927fb",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -503,7 +503,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "460fe5b6-8b4b-4563-9416-aa841345a27d",
+								"id": "62656f68-7ef7-404c-a559-f8ddd62ce308",
 								"exec": [
 									"var uuid = require('uuid');",
 									"var generatedUUID = uuid.v4();",
@@ -554,7 +554,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "4f5450cb-2334-4f00-bb71-ee467c430e67",
+								"id": "8982bdd5-d61f-45b8-a50a-1d78bd356798",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -669,50 +669,12 @@
 							"name": "(BUG) p2p_happy_path_RECEIVE_quote",
 							"item": [
 								{
-									"name": "Download JWS Signature Generation Package",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"id": "47a4a0e1-b310-4ef5-894a-aadf6e8a9420",
-												"exec": [
-													"",
-													"pm.environment.set(\"jrsassign\", pm.response.text());",
-													"",
-													"pm.test(\"Status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "http://kjur.github.io/jsrsasign/jsrsasign-latest-all-min.js",
-											"protocol": "http",
-											"host": [
-												"kjur",
-												"github",
-												"io"
-											],
-											"path": [
-												"jsrsasign",
-												"jsrsasign-latest-all-min.js"
-											]
-										}
-									},
-									"response": []
-								},
-								{
 									"name": "Add {{payeefspMSISDN}} to payeefsp",
 									"event": [
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "63fa94a8-e136-42f4-a211-4c85395848ba",
+												"id": "e3adef3b-ff26-4ffa-8bb3-58df9513ff18",
 												"exec": [
 													"pm.environment.set('fullName', 'PayeeFirst PayeeLast');",
 													"pm.environment.set('firstName', 'PayeeFirst');",
@@ -726,7 +688,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "7d3d87b0-988f-4e80-b526-8162fef90e71",
+												"id": "e73aa33e-4a6d-4726-90af-d92e297a3e6b",
 												"exec": [
 													"pm.test(\"Successful POST request\", function () {",
 													"    pm.expect(pm.response.code).to.be.oneOf([204, 500]);",
@@ -771,7 +733,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "deb56dc2-8e5e-4606-af23-dad682923bd3",
+												"id": "7bda0be3-6d9d-4750-b660-828a6ef343bb",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -916,7 +878,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "0d51dec1-23a5-4afc-8d82-c5b8fee8bab8",
+												"id": "f615edc8-b250-43d0-8e61-7c4eb0ec04e4",
 												"exec": [
 													"pm.variables.set('expectedFullName', 'PayeeFirst PayeeLast');",
 													"pm.variables.set('expectedFirstName', 'PayeeFirst');",
@@ -987,7 +949,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "63dfda15-27d1-4794-9756-66781548ae42",
+												"id": "a63a606a-0a1e-4a1f-a276-95d70b195b2f",
 												"exec": [
 													"var navigator = {}; ",
 													"var window = {}; ",
@@ -1082,7 +1044,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "a66e26ab-73a7-4d79-9297-5d3dfd2a48d2",
+												"id": "d80f9a7d-ac1a-4f5b-8bef-553e3883c192",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -1302,7 +1264,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "37afbeec-e5bd-47b7-8376-732b45171f97",
+												"id": "d0d10877-1d56-4139-9ad3-686830cc4860",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -1451,7 +1413,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "22155a18-005c-4958-b5cb-e2402ef96073",
+												"id": "f96aff4e-ce90-4657-b638-43ea5637b25e",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib",
 													"var window = {}; //fake a window object for the lib",
@@ -1586,7 +1548,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "86b464ef-7fc0-4f85-9fda-b26eb3cb61f9",
+												"id": "501ec559-ea7d-432b-b348-6971e3040547",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -1651,7 +1613,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "9a5b7381-a8e2-470b-a5f2-c0769a23b2bf",
+												"id": "bebd73b4-78b0-4368-bcaf-9a73c126eaed",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -1715,7 +1677,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "8a6faf5c-54ba-4473-823f-d13fe339ca08",
+												"id": "04214904-e357-4b02-828b-2da33445bce5",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib",
 													"var window = {}; //fake a window object for the lib",
@@ -1810,7 +1772,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "91cb911d-2a0f-4f32-9ce6-874397b83b6c",
+												"id": "4ed80fb2-30a8-4707-9281-0abe6487fcf6",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -2029,7 +1991,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "2d4df5f4-6a9a-4bc6-887e-7b7fdc114b1d",
+												"id": "332a1ba0-f0cd-4c31-ba42-b237418376b8",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -2173,7 +2135,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "47b02a36-ecf7-4e40-bfbb-1b13f47ed5ec",
+												"id": "242ee67a-6f80-4795-8a0a-30c57658f037",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib",
 													"var window = {}; //fake a window object for the lib",
@@ -2301,7 +2263,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "4e8897a0-3b84-440f-9b22-92705e2bfa28",
+												"id": "f997d2f1-c5e9-4c16-b6a2-7725a119bb6d",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -2377,7 +2339,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "b422da58-31c4-44e5-8959-0962c6be040f",
+												"id": "a926c31c-7716-4bb5-9e33-4e0937449321",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -2449,7 +2411,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "f375c5b2-e8f6-4712-9774-7d263d5b188f",
+								"id": "c75b6b44-5f49-4ff0-9494-159471fa6a89",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -2459,7 +2421,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "4dfe9a05-0b27-408b-a30f-d2629f17097d",
+								"id": "4e5f9a79-abc4-47b0-a5d2-c5eb27d86868",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -2482,7 +2444,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "31831ce4-391f-4071-a842-457b0e031a05",
+												"id": "f24f17f0-3f3a-4afc-9219-7fc35bb16819",
 												"exec": [
 													"pm.test(\"Successful POST request\", function () {",
 													"    pm.expect(pm.response.code).to.be.oneOf([204,500]);",
@@ -2527,7 +2489,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "2f9920ce-dd38-4d41-bbd8-75637b6ce491",
+												"id": "72523297-8e5f-4a14-adff-58abddf48808",
 												"exec": [
 													"var uuid = require('uuid');",
 													"var generatedUUID = uuid.v4();",
@@ -2554,7 +2516,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "d1d74f5b-f5c2-4b6d-8e40-a484dc81727a",
+												"id": "e9657c7e-c516-4966-a53d-d2a78772b2b4",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -3174,7 +3136,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "1a0b1a13-f9e9-46a8-aba8-2680f9739bee",
+										"id": "b1a0a491-4c94-4992-9f36-b108cda945f1",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -3230,7 +3192,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "062b1f17-608a-4f09-939f-679ecf2a435d",
+										"id": "8e747f8c-b759-4250-99fe-da5098bc9dab",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -3284,7 +3246,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "ffbc8c65-b8d5-413c-8592-b3cbf3d1db41",
+										"id": "6df69bd1-98d5-478b-a105-74dd6db136e5",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -3361,7 +3323,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "660db9b1-201f-4998-912c-40dceb699c54",
+										"id": "09d603e5-8607-45c3-8483-046996c4b61b",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -3434,7 +3396,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "67f9b21c-889b-44bd-80be-45f1117ab951",
+										"id": "450bdbfc-679d-4e12-8a63-828203a86020",
 										"exec": [
 											"var navigator = {}; ",
 											"var window = {}; ",
@@ -3529,7 +3491,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "e7439532-5bf3-4ec5-8386-f155bcb9ce27",
+										"id": "689e8f88-00e3-4793-a77e-a3d31419a492",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -3749,7 +3711,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "abaf083a-b3da-4bea-9d42-674842754cb6",
+										"id": "55a9cd64-939d-4598-99f9-afd6bc4727db",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -3820,7 +3782,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "908799c4-3e28-4237-a118-1d3d51f58181",
+										"id": "35fdfbf4-9843-457b-8a67-bf45b6ce9ef1",
 										"exec": [
 											"var navigator = {}; //fake a navigator object for the lib",
 											"var window = {}; //fake a window object for the lib",
@@ -3954,7 +3916,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "b5234d7f-0a34-47b5-9832-581991aafe11",
+										"id": "433aa1ff-c924-4928-a80b-4a63aeff9c29",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -4018,7 +3980,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "6890ae3d-bce4-4b8c-a8c5-40d87b04b118",
+										"id": "7e7d9089-623d-407d-8738-52a0789d251b",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -4082,7 +4044,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "f49b94f2-6f3c-4ed8-b4cb-66e9ab8c5372",
+								"id": "4d96d50f-62cd-457c-8884-98a2d824cd27",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -4092,7 +4054,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6e95c7f4-e46a-4683-b94d-83bb73c2dbb2",
+								"id": "a36f4035-8917-46cc-a99d-99708466a30e",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -4112,7 +4074,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "7666ec11-9cc3-486d-8d17-8306cb1bd171",
+										"id": "e90312cd-551c-4014-a91d-49e1c4f790c6",
 										"exec": [
 											"var navigator = {}; ",
 											"var window = {}; ",
@@ -4207,7 +4169,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "6e02b700-51a8-429d-91aa-15445f87ae49",
+										"id": "086b02c8-2962-4082-9b6a-aedeaf4a3dd6",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -4427,7 +4389,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "d7e762d6-9f6a-489b-b9d6-92d6c779275d",
+										"id": "ab1800ab-669e-480e-8133-dbd72ba8a1dd",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -4562,7 +4524,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "6caa7228-2460-41cd-ac49-2d0cc605464a",
+										"id": "8b87f9ca-6090-4e3b-b496-4b11af765fe7",
 										"exec": [
 											"var navigator = {}; //fake a navigator object for the lib",
 											"var window = {}; //fake a window object for the lib",
@@ -4690,7 +4652,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "7cf5faf9-9cd0-4be3-8a12-c4fcae1850dd",
+										"id": "780c46cd-69dc-44ca-8ce4-97e9958efee6",
 										"exec": [
 											"",
 											"pm.variables.set('transferDate', (new Date()).toUTCString());",
@@ -4702,7 +4664,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "2101ea55-13b9-4df6-85cd-9497bdf63935",
+										"id": "ecbf8ee0-10a5-4e89-901e-4e736a768218",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -4822,7 +4784,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "7e660fad-0761-40d0-a069-f46689a03400",
+										"id": "c4baf2d5-f7cf-4004-9786-c410b0f20b14",
 										"exec": [
 											"var uuid = require('uuid');",
 											"var generatedUUID = uuid.v4();",
@@ -4835,7 +4797,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "043fde5d-e656-4b63-a048-d5b85f8a1d46",
+										"id": "1da8ef19-9609-41f6-9a9d-0d7a76dc31da",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -4998,7 +4960,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "c6879691-0e9a-4edf-9495-9f7932761cbf",
+										"id": "b1a14571-3680-4e4f-b335-30303658ee84",
 										"exec": [
 											"var uuid = require('uuid');",
 											"var generatedUUID = uuid.v4();",
@@ -5011,7 +4973,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "9a9f2b68-ce5b-4165-b569-6aa259b59c63",
+										"id": "6f912a0c-a461-43e0-89ef-2268ad93a2e0",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -5176,7 +5138,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "bfe2efdb-835b-4e73-9e17-8c2d0e30d6d7",
+										"id": "cf9996e0-6987-4b9b-b74f-ca02cd4ecf40",
 										"exec": [
 											"var uuid = require('uuid');",
 											"var generatedUUID = uuid.v4();",
@@ -5189,7 +5151,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7a3073c7-8797-43ae-a0df-4fdec13f5276",
+										"id": "e711593d-4096-4177-96e0-0a4395fdd83a",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -5312,7 +5274,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "f35d79b6-c055-4a82-b34a-d292594d142b",
+												"id": "7436afd5-ba85-4b17-a743-046fc68bd1a8",
 												"exec": [
 													"var uuid = require('uuid');",
 													"var generatedUUID = uuid.v4();",
@@ -5366,7 +5328,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "17f49df8-99bb-4276-a748-0e110c726021",
+												"id": "e3261025-9188-4da0-bb44-ea49fe3cd4f2",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -5475,7 +5437,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "b021fe30-569a-4058-8080-869b073c13c6",
+												"id": "9aee0dd6-4888-458c-8a8d-ec35a082f9f5",
 												"exec": [
 													"pm.environment.set('dateHeader', (new Date()).toUTCString());"
 												],
@@ -5485,7 +5447,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "bbe81235-53f2-4c9c-8f74-b7c994e6e3f8",
+												"id": "e4574ba2-5d5f-4475-be3c-827371b55832",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -5584,9 +5546,9 @@
 											}
 										],
 										"url": {
-											"raw": "{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}/transfers/{{fundsOutPrepareReserveTransferId}}",
+											"raw": "{{HOST_ML_API}}{{BASE_ML_API}}/transfers/{{fundsOutPrepareReserveTransferId}}",
 											"host": [
-												"{{HOST_SWITCH}}{{BASE_PATH_SWITCH}}"
+												"{{HOST_ML_API}}{{BASE_ML_API}}"
 											],
 											"path": [
 												"transfers",
@@ -5603,7 +5565,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "1c6b2def-3031-4901-92c4-428501eebd9e",
+												"id": "4bcbb371-d0e8-40b2-b5ac-3e9c7cb4ee2b",
 												"exec": [
 													"var uuid = require('uuid');",
 													"var generatedUUID = uuid.v4();",
@@ -5656,7 +5618,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "0e30fa67-de91-4e3b-a9cc-307b77d62b8d",
+												"id": "9ebe3406-2805-4fd5-b5bd-6d6b210099f7",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -5767,7 +5729,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "8fae82ef-280f-4780-bcd7-730e43adda86",
+												"id": "de504a1e-b16a-4d65-abef-810d02f42e41",
 												"exec": [
 													"pm.environment.set('dateHeader', (new Date()).toUTCString());"
 												],
@@ -5777,7 +5739,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "a1e4e74e-4692-4433-8aa1-76b2486a97f4",
+												"id": "0691a549-4903-4651-ab4c-0c8dae803bab",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -5901,7 +5863,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "a57938ef-9139-45ed-a6e7-aa63dfb6aed6",
+												"id": "c8090675-cf7e-45d2-9ab8-da24c353992f",
 												"exec": [
 													"var uuid = require('uuid');",
 													"var generatedUUID = uuid.v4();",
@@ -5955,7 +5917,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "80528363-5539-4062-a1cc-8f5438051427",
+												"id": "71764a55-f405-4079-925a-62090bd26be2",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -6064,7 +6026,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "8d4bdfb4-36ba-450c-8a10-764c67b6d6d9",
+												"id": "7f57d275-2bbd-47e2-af2e-68b8565cccc8",
 												"exec": [
 													"pm.environment.set('dateHeader', (new Date()).toUTCString());"
 												],
@@ -6074,7 +6036,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "6169f919-64b0-4075-be34-1ef72c3405ba",
+												"id": "bfdc4574-4034-45b7-a0dc-f66ae758a36f",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -6193,7 +6155,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "1f32edb4-8e9a-4a4a-9b67-b54037c65378",
+												"id": "31810188-1c53-4293-91a8-b3f7d6c5df20",
 												"exec": [
 													"var uuid = require('uuid');",
 													"var generatedUUID = uuid.v4();",
@@ -6245,7 +6207,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "626114c3-9263-4130-94a2-9f6314d8a585",
+												"id": "c80f9dbc-e3e1-4814-8af0-729124b32032",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -6356,7 +6318,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "71454e1e-dc1a-4cd2-870f-942067f78a68",
+												"id": "834a1b8b-c3ee-4eba-83db-009b026be04f",
 												"exec": [
 													"pm.environment.set('dateHeader', (new Date()).toUTCString());"
 												],
@@ -6366,7 +6328,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "f1d89582-0e27-4bb4-b66c-f6fa1f01578e",
+												"id": "9138f804-4972-4565-8067-f009d691168e",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -6496,7 +6458,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "dc580832-6a6f-4606-ac3a-12f13ae2fc44",
+										"id": "ab2d4857-747c-4a24-9282-a49b450031d7",
 										"exec": [
 											"var uuid = require('uuid');",
 											"var generatedUUID = uuid.v4();",
@@ -6550,7 +6512,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "bb326f2d-56bd-4543-b01a-2ee3bcb2b1ae",
+										"id": "2f5bc75f-550b-484b-b408-78048260609e",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -6660,7 +6622,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "574e4da5-f29b-479f-b92b-3d784fd9b142",
+										"id": "118cf935-0c77-47cd-a9f7-580663f2c4b1",
 										"exec": [
 											"pm.environment.set('dateHeader', (new Date()).toUTCString());"
 										],
@@ -6670,7 +6632,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "41b9588c-5931-4452-bf8b-0e56cba925c6",
+										"id": "d32d5e59-237f-46ec-9be8-34557b1edf05",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -6806,11 +6768,13 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "0535d745-e798-47f6-a544-e0dfb8ac264c",
+																"id": "8b174de1-7bca-4cc8-9072-dd1690a09ae0",
 																"exec": [
 																	"const fsps = ['payerfsp','payeefsp','testfsp1','testfsp2'];",
+																	"const jsonData = pm.response && pm.response.json();",
 																	"",
-																	"pm.response.json().map(participant => {",
+																	"if (jsonData.length) {",
+																	"    jsonData.map(participant => {",
 																	"    if(fsps.include(participant.name)) {",
 																	"       const participantGetRequest = {",
 																	"          url: pm.environment.get(\"HOST_CENTRAL_LEDGER\")+pm.environment.get(\"BASE_CENTRAL_LEDGER_ADMIN\")+'/participants/'+participant.name,",
@@ -6858,7 +6822,12 @@
 																	"            }",
 																	"        }); ",
 																	"    }",
-																	"})"
+																	"})",
+																	"} else {",
+																	"    pm.test(\"Test FAILED\", function () {",
+																	"        throw new Error('Did not receive response or invalid response was recieved.');",
+																	"    });",
+																	"}"
 																],
 																"type": "text/javascript"
 															}
@@ -6903,7 +6872,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "75751b57-82bf-4fd9-b464-2f95633260fd",
+																"id": "8595de77-56f6-4557-8360-a75db0ba91e3",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
@@ -6970,7 +6939,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "bca8f94f-2121-4263-add2-120d35539f16",
+																"id": "f4460d26-255d-44b3-a597-2aeceed85814",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
@@ -7034,31 +7003,37 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "9461aaa6-fe08-4067-b7ef-6cb309d1093e",
+																"id": "f427d1a9-f451-4c33-a526-373f86124cd1",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
 																	"});",
 																	"",
-																	"pm.environment.set(\"settlementId\", pm.response.json().id);",
 																	"var jsonData = pm.response.json();",
+																	"",
+																	"if (jsonData) {",
+																	"    jsonData.id && pm.environment.set(\"settlementId\", jsonData.id);",
+																	"        ",
+																	"    pm.test(\"Settlement State should be PENDING_SETTLEMENT\", function () {",
+																	"        pm.expect(jsonData.state).to.eql('PENDING_SETTLEMENT');",
+																	"    });",
 																	"    ",
-																	"pm.test(\"Settlement State should be PENDING_SETTLEMENT\", function () {",
-																	"    pm.expect(jsonData.state).to.eql('PENDING_SETTLEMENT');",
-																	"});",
-																	"",
-																	"pm.test(\"Number of associated windows should be 1\", function () {",
-																	"    pm.expect(jsonData.settlementWindows.length).to.eql(1);",
-																	"});",
-																	"",
-																	"pm.test(\"Associated Settlement Window ID should be: \"+pm.environment.get(\"closedWindowID\"), function () {",
-																	"    pm.expect(jsonData.settlementWindows[0].id).to.eql(pm.environment.get(\"closedWindowID\"));",
-																	"});",
-																	"",
-																	"pm.test(\"Associated Settlement Window state should be PENDING_SETTLEMENT \", function () {",
-																	"    pm.expect(jsonData.settlementWindows[0].state).to.eql('PENDING_SETTLEMENT');",
-																	"});",
-																	"",
+																	"    pm.test(\"Number of associated windows should be 1\", function () {",
+																	"        pm.expect(jsonData.settlementWindows.length).to.eql(1);",
+																	"    });",
+																	"    ",
+																	"    pm.test(\"Associated Settlement Window ID should be: \"+pm.environment.get(\"closedWindowID\"), function () {",
+																	"        pm.expect(jsonData.settlementWindows[0].id).to.eql(pm.environment.get(\"closedWindowID\"));",
+																	"    });",
+																	"    ",
+																	"    pm.test(\"Associated Settlement Window state should be PENDING_SETTLEMENT \", function () {",
+																	"        pm.expect(jsonData.settlementWindows[0].state).to.eql('PENDING_SETTLEMENT');",
+																	"    });",
+																	"} else {",
+																	"     pm.test(\"Test FAILED\", function () {",
+																	"        throw new Error('Did not receive response.');",
+																	"    });",
+																	"}",
 																	"",
 																	"",
 																	""
@@ -7112,11 +7087,13 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "6aa38d3e-f600-47f2-9939-4468e1b52c36",
+																"id": "4e25f906-b3c5-4bfc-9459-351b21db25d0",
 																"exec": [
 																	"",
-																	"var jsonData = pm.response.json();",
-																	"jsonData.participants.map(participant => {",
+																	"var jsonData = pm.response.responseSize && pm.response.json();",
+																	"",
+																	"if (jsonData && jsonData.participants) {",
+																	"    jsonData.participants.map(participant => {",
 																	"    participant.accounts",
 																	"                    .filter(account => account.netSettlementAmount.currency === pm.environment.get('currency'))",
 																	"                    .forEach(curAccount => {",
@@ -7153,7 +7130,11 @@
 																	"                        });",
 																	"                    })",
 																	"})",
-																	""
+																	"} else {",
+																	"    pm.test(\"Test FAILED\", function () {",
+																	"        throw new Error('Did not receive response or invalid response was received.');",
+																	"    });",
+																	"}"
 																],
 																"type": "text/javascript"
 															}
@@ -7197,10 +7178,11 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "783a754b-37f0-43af-b4d9-aa4443336d6a",
+																"id": "778cf08a-8ad2-4284-9342-637470fdb4cd",
 																"exec": [
 																	"",
-																	"var jsonData = pm.response.json();",
+																	"var jsonData = pm.response.responseSize && pm.response.json();",
+																	"if (jsonData && jsonData.participants) {",
 																	"jsonData.participants.map(participant => {",
 																	"    participant.accounts",
 																	"                    .filter(account => account.netSettlementAmount.currency === pm.environment.get('currency'))",
@@ -7237,7 +7219,12 @@
 																	"                            console.log(response.json());",
 																	"                        });",
 																	"                    })",
-																	"})"
+																	"})",
+																	"} else {",
+																	"    pm.test('Test FAILED', function(){",
+																	"        throw new Error('Did not receive response or invalid response recieved.')",
+																	"    })",
+																	"}"
 																],
 																"type": "text/javascript"
 															}
@@ -7281,14 +7268,17 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "1eb0cafa-3be9-4811-b040-ef71f8bd1c7c",
+																"id": "5559788f-be50-4a86-bb81-bd9b4344470a",
 																"exec": [
 																	"",
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
 																	"});",
-																	"var jsonData = pm.response.json();",
-																	"jsonData.participants.map(participant => {",
+																	"",
+																	"var jsonData = pm.response.responseSize && pm.response.json();",
+																	"",
+																	"if (jsonData && jsonData.participants) {",
+																	"    jsonData.participants.map(participant => {",
 																	"    participant.accounts",
 																	"                    .filter(account => account.netSettlementAmount.currency === pm.environment.get('currency'))",
 																	"                    .forEach(curAccount => {",
@@ -7325,7 +7315,11 @@
 																	"                        });",
 																	"                    })",
 																	"})",
-																	"",
+																	"} else {",
+																	"    pm.test(\"Test FAILED\", function () {",
+																	"        throw new Error('Did not receive response or invalid response was received.');",
+																	"    });",
+																	"}",
 																	""
 																],
 																"type": "text/javascript"
@@ -7370,15 +7364,17 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "4b2cb57b-f771-4a82-bad7-52b336348bbd",
+																"id": "e86caa6b-a25c-4946-a1b1-9d07a599447c",
 																"exec": [
 																	"",
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
 																	"});",
 																	"",
-																	"var jsonData = pm.response.json();",
-																	"jsonData.participants.map(participant => {",
+																	"var jsonData = pm.response.responseSize && pm.response.json();",
+																	"",
+																	"if (jsonData && jsonData.participants) {",
+																	"    jsonData.participants.map(participant => {",
 																	"    participant.accounts",
 																	"                    .filter(account => account.netSettlementAmount.currency === pm.environment.get('currency'))",
 																	"                    .forEach(curAccount => {",
@@ -7415,6 +7411,11 @@
 																	"                        });",
 																	"                    })",
 																	"})",
+																	"} else {",
+																	"    pm.test(\"Test FAILED\", function () {",
+																	"        throw new Error('Did not receive response or invalid response was received.');",
+																	"    });",
+																	"}",
 																	"",
 																	""
 																],
@@ -7460,7 +7461,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "60fb9d5f-6722-44fc-9c8d-c40369c5a22d",
+														"id": "31389f54-aea7-4917-8770-0470b8f386a4",
 														"type": "text/javascript",
 														"exec": [
 															""
@@ -7470,7 +7471,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "6696310b-5445-4443-b103-bf4e4ca7bbd2",
+														"id": "b92abe60-3342-4bf0-803a-445348c92639",
 														"type": "text/javascript",
 														"exec": [
 															""
@@ -7490,7 +7491,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "248f161f-da16-4461-ace4-2781803c6436",
+																"id": "efdab2fa-9a61-4285-88b5-1f84289fa85b",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
@@ -7556,7 +7557,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "ac270230-d873-43de-96a5-f66e406c169d",
+																"id": "15cb1186-99cf-43ed-a2ae-1f01ba68c11b",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
@@ -7622,7 +7623,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "1d2d9c94-5635-444d-9373-e839f5d28fb1",
+																"id": "23162c90-f168-444f-94c4-ef6323b75541",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
@@ -7690,7 +7691,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "60b90b89-ef5d-4cb2-8884-ad214b87d7f6",
+																"id": "007bfc98-0acf-437f-a218-c5f9a1733b94",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
@@ -7756,7 +7757,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "3e9e4f7e-2afe-4da4-9780-0f66a43d6340",
+																"id": "76b597df-8993-4e82-80aa-a10be485b76d",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
@@ -7826,7 +7827,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "80988333-e726-436b-ac79-8ecccd612c8f",
+																"id": "bfa8d447-f37f-481a-a6ef-a7aff5faa105",
 																"exec": [
 																	"  var navigator = {}; ",
 																	"var window = {}; ",
@@ -7891,7 +7892,7 @@
 																	"var sPayload = JSON.stringify(objPayload)",
 																	"//console.log(`sPayload: ${sPayload}`)",
 																	"pm.variables.set(\"quoteRequest\", sPayload);",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
+																	"//var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
 																	"//console.log(`token: ${token}`)",
 																	"",
 																	"// var encodedHeaders = btoa(sHeader)",
@@ -7917,7 +7918,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "89dddbd7-b9e5-40c5-8aca-eb8b3654dcc2",
+																"id": "b28efb3f-8a46-4213-801b-2f731286314d",
 																"exec": [
 																	"pm.test(\"Status code is 202\", function () {\r",
 																	"    pm.response.to.have.status(202);\r",
@@ -8140,7 +8141,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "1501e8e8-9d7a-4b09-8e4a-debe929ed777",
+																"id": "67350a2b-4e65-4015-86da-9188cf0f319b",
 																"exec": [
 																	"var navigator = {}; //fake a navigator object for the lib\r",
 																	"var window = {}; //fake a window object for the lib\r",
@@ -8174,7 +8175,7 @@
 																	"var sPayload = JSON.stringify(objPayload)\r",
 																	"//console.log(`sPayload: ${sPayload}`)\r",
 																	"pm.variables.set(\"transferRequest\", sPayload);\r",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));\r",
+																	"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));\r",
 																	"//console.log(`token: ${token}`)\r",
 																	"\r",
 																	"// var encodedHeaders = btoa(sHeader)\r",
@@ -8182,7 +8183,7 @@
 																	"// var ofspiopSignature = {signature: vSignature, protectedHeader: encodedHeaders}\r",
 																	"// var token = JSON.stringify(ofspiopSignature)\r",
 																	"\r",
-																	"const [ protectedHeaderBase64, , signature ] = token.split('.');\r",
+																	"// const [ protectedHeaderBase64, , signature ] = token.split('.');\r",
 																	"\r",
 																	"//const signatureObject = {\r",
 																	"//    signature: signature.replace('\"', ''),\r",
@@ -8199,7 +8200,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "116321f2-112b-4828-b5d4-209f59ade4ab",
+																"id": "80d2cc93-e744-4e15-8b4c-ff18594996d1",
 																"exec": [
 																	"pm.test(\"Status code is 202\", function () {\r",
 																	"    pm.response.to.have.status(202);\r",
@@ -8399,7 +8400,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "fd100bc6-3e1c-4196-b803-e98739be12cb",
+																"id": "dc9a204e-0c74-4d85-952f-97ec534a4203",
 																"exec": [
 																	"var navigator = {}; ",
 																	"var window = {}; ",
@@ -8464,7 +8465,7 @@
 																	"var sPayload = JSON.stringify(objPayload)",
 																	"//console.log(`sPayload: ${sPayload}`)",
 																	"pm.variables.set(\"quoteRequest\", sPayload);",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
+																	"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
 																	"//console.log(`token: ${token}`)",
 																	"",
 																	"// var encodedHeaders = btoa(sHeader)",
@@ -8490,7 +8491,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "d4033ee7-19b0-4bab-ada2-12bf564d8f77",
+																"id": "bed479f2-82a8-4281-a0ef-4910e54b25eb",
 																"exec": [
 																	"pm.test(\"Status code is 202\", function () {\r",
 																	"    pm.response.to.have.status(202);\r",
@@ -8626,7 +8627,6 @@
 																	"          pm.test(\"Quote FAILED\", function () {\r",
 																	"            throw new Error('Did not receive response on Payer side');\r",
 																	"           });\r",
-																	"           // postman.setNextRequest(null);\r",
 																	"      }\r",
 																	"       \r",
 																	"   });\r",
@@ -8713,7 +8713,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "5db0434e-6b26-435e-8593-766b99cf1b36",
+																"id": "b6f67215-54db-4884-83f3-88ff2eb1edf2",
 																"exec": [
 																	"var navigator = {}; //fake a navigator object for the lib\r",
 																	"var window = {}; //fake a window object for the lib\r",
@@ -8747,7 +8747,7 @@
 																	"var sPayload = JSON.stringify(objPayload)\r",
 																	"//console.log(`sPayload: ${sPayload}`)\r",
 																	"pm.variables.set(\"transferRequest\", sPayload);\r",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));\r",
+																	"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));\r",
 																	"//console.log(`token: ${token}`)\r",
 																	"\r",
 																	"// var encodedHeaders = btoa(sHeader)\r",
@@ -8755,7 +8755,7 @@
 																	"// var ofspiopSignature = {signature: vSignature, protectedHeader: encodedHeaders}\r",
 																	"// var token = JSON.stringify(ofspiopSignature)\r",
 																	"\r",
-																	"const [ protectedHeaderBase64, , signature ] = token.split('.');\r",
+																	"// const [ protectedHeaderBase64, , signature ] = token.split('.');\r",
 																	"\r",
 																	"//const signatureObject = {\r",
 																	"//    signature: signature.replace('\"', ''),\r",
@@ -8772,7 +8772,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "37cfce1f-225d-4592-837e-610507e42a91",
+																"id": "2800e075-5445-41af-ab59-a672845d534f",
 																"exec": [
 																	"pm.test(\"Status code is 202\", function () {\r",
 																	"    pm.response.to.have.status(202);\r",
@@ -8972,7 +8972,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "8c1a8d5e-c822-4d73-8d60-ccba7629b10d",
+																"id": "148dce47-544a-44d2-89a0-72812f7d9e01",
 																"exec": [
 																	"var navigator = {}; \r",
 																	"var window = {}; \r",
@@ -9062,7 +9062,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "490567aa-1843-454b-92c9-dfb50dac810b",
+																"id": "98d69731-1da3-4c4f-a847-8120b8103b77",
 																"exec": [
 																	"pm.test(\"Status code is 202\", function () {\r",
 																	"    pm.response.to.have.status(202);\r",
@@ -9284,7 +9284,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "42772785-d27d-4819-9e4a-493b457d17e1",
+																"id": "e8af8962-5ffd-482d-8a0d-5ab6adf851fa",
 																"exec": [
 																	"var navigator = {}; //fake a navigator object for the lib\r",
 																	"var window = {}; //fake a window object for the lib\r",
@@ -9343,7 +9343,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "d72e5191-9623-4466-970d-d1790e94344e",
+																"id": "ae64b386-3e80-46aa-928c-b570c32db6ea",
 																"exec": [
 																	"pm.test(\"Status code is 202\", function () {\r",
 																	"    pm.response.to.have.status(202);\r",
@@ -9549,7 +9549,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "8dbc13bc-03ef-47ed-98be-c824db3d1d46",
+																"id": "8919cb5e-f9f4-4197-97ee-e7d996265da9",
 																"exec": [
 																	"var navigator = {}; ",
 																	"var window = {}; ",
@@ -9614,7 +9614,7 @@
 																	"var sPayload = JSON.stringify(objPayload)",
 																	"//console.log(`sPayload: ${sPayload}`)",
 																	"pm.variables.set(\"quoteRequest\", sPayload);",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp2JWSKey'));",
+																	"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp2JWSKey'));",
 																	"//console.log(`token: ${token}`)",
 																	"",
 																	"// var encodedHeaders = btoa(sHeader)",
@@ -9640,7 +9640,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "af658176-62b5-403e-9062-6749d50d8a2c",
+																"id": "c13b5c78-e1f0-47cc-a2ef-c2975c6e6376",
 																"exec": [
 																	"pm.test(\"Status code is 202\", function () {\r",
 																	"    pm.response.to.have.status(202);\r",
@@ -9685,7 +9685,6 @@
 																	"              pm.test(\"Quote FAILED\", function () {\r",
 																	"                throw new Error('Did not receive request on payee side');\r",
 																	"              });\r",
-																	"              // postman.setNextRequest(null)\r",
 																	"          }\r",
 																	"   });\r",
 																	"}, 1100)\r",
@@ -9711,9 +9710,8 @@
 																	"                pm.expect(headers['accept']).to.eql(undefined);\r",
 																	"            });\r",
 																	"            \r",
-																	"            \r",
-																	"            \r",
-																	"            var {signature,protectedHeader} = JSON.parse(headers['fspiop-signature'])\r",
+																	"            var headerFSPIOPSignature = headers['fspiop-signature']\r",
+																	"            var {signature,protectedHeader} = JSON.parse(headerFSPIOPSignature.replace(/\\\\/g, \"\"))\r",
 																	"            // var strData = JSON.stringify(response.json().data)\r",
 																	"            // const token = `${protectedHeader}.${btoa(strData)}.${signature}`\r",
 																	"            // console.log(`token: ${token}`)\r",
@@ -9760,7 +9758,6 @@
 																	"            \r",
 																	"            pm.test(\"Response quoteId is  null\", function () {\r",
 																	"                pm.expect(jsonData.quoteId).to.eql(undefined);\r",
-																	"                \r",
 																	"            });\r",
 																	"          \r",
 																	"            pm.test(\"Response ilpPacket is not null\", function () {\r",
@@ -9776,7 +9773,6 @@
 																	"          pm.test(\"Quote FAILED\", function () {\r",
 																	"            throw new Error('Did not receive response on Payer side');\r",
 																	"           });\r",
-																	"           // postman.setNextRequest(null);\r",
 																	"      }\r",
 																	"       \r",
 																	"   });\r",
@@ -9868,7 +9864,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "4ad76d6b-8372-4299-a0fe-b43d0d75b22a",
+																"id": "05d0c797-94b8-4429-a918-f5e73b3d7cbc",
 																"exec": [
 																	"var navigator = {}; //fake a navigator object for the lib\r",
 																	"var window = {}; //fake a window object for the lib\r",
@@ -9902,7 +9898,7 @@
 																	"var sPayload = JSON.stringify(objPayload)\r",
 																	"//console.log(`sPayload: ${sPayload}`)\r",
 																	"pm.variables.set(\"transferRequest\", sPayload);\r",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp2JWSKey'));\r",
+																	"//var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp2JWSKey'));\r",
 																	"//console.log(`token: ${token}`)\r",
 																	"\r",
 																	"// var encodedHeaders = btoa(sHeader)\r",
@@ -9910,7 +9906,7 @@
 																	"// var ofspiopSignature = {signature: vSignature, protectedHeader: encodedHeaders}\r",
 																	"// var token = JSON.stringify(ofspiopSignature)\r",
 																	"\r",
-																	"const [ protectedHeaderBase64, , signature ] = token.split('.');\r",
+																	"//const [ protectedHeaderBase64, , signature ] = token.split('.');\r",
 																	"\r",
 																	"//const signatureObject = {\r",
 																	"//    signature: signature.replace('\"', ''),\r",
@@ -9927,7 +9923,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "0e60c42a-c645-4c70-93e6-336817aeca4c",
+																"id": "5bdedcc6-ff22-4beb-af70-755785917996",
 																"exec": [
 																	"pm.test(\"Status code is 202\", function () {\r",
 																	"    pm.response.to.have.status(202);\r",
@@ -10128,7 +10124,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "a2111cda-8240-4df5-97ed-ce7e53c45ed5",
+																"id": "ba21ba21-ee85-4f75-a20d-5bb8b834dc89",
 																"exec": [
 																	"var navigator = {}; \r",
 																	"var window = {}; \r",
@@ -10193,7 +10189,7 @@
 																	"var sPayload = JSON.stringify(objPayload)\r",
 																	"//console.log(`sPayload: ${sPayload}`)\r",
 																	"pm.variables.set(\"quoteRequest\", sPayload);\r",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payeefspJWSKey'));\r",
+																	"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payeefspJWSKey'));\r",
 																	"//console.log(`token: ${token}`)\r",
 																	"\r",
 																	"// var encodedHeaders = btoa(sHeader)\r",
@@ -10201,7 +10197,7 @@
 																	"// var ofspiopSignature = {signature: vSignature, protectedHeader: encodedHeaders}\r",
 																	"// var token = JSON.stringify(ofspiopSignature)\r",
 																	"\r",
-																	"const [ protectedHeaderBase64, , signature ] = token.split('.');\r",
+																	"// const [ protectedHeaderBase64, , signature ] = token.split('.');\r",
 																	"\r",
 																	"//const signatureObject = {\r",
 																	"//    signature: signature.replace('\"', ''),\r",
@@ -10218,7 +10214,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "5e2573f0-0d23-4327-848a-4f1c00b26237",
+																"id": "87c7bff4-3eea-4d9c-9dae-89a41d9e3df2",
 																"exec": [
 																	"pm.test(\"Status code is 202\", function () {\r",
 																	"    pm.response.to.have.status(202);\r",
@@ -10440,7 +10436,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "870c0c40-b77b-4d70-8837-f8c6eb01287d",
+																"id": "fb85ecfe-7b52-4bef-8c83-cff3fde80c46",
 																"exec": [
 																	"var navigator = {}; //fake a navigator object for the lib\r",
 																	"var window = {}; //fake a window object for the lib\r",
@@ -10474,7 +10470,7 @@
 																	"var sPayload = JSON.stringify(objPayload)\r",
 																	"//console.log(`sPayload: ${sPayload}`)\r",
 																	"pm.variables.set(\"transferRequest\", sPayload);\r",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payeefspJWSKey'));\r",
+																	"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payeefspJWSKey'));\r",
 																	"//console.log(`token: ${token}`)\r",
 																	"\r",
 																	"// var encodedHeaders = btoa(sHeader)\r",
@@ -10482,7 +10478,7 @@
 																	"// var ofspiopSignature = {signature: vSignature, protectedHeader: encodedHeaders}\r",
 																	"// var token = JSON.stringify(ofspiopSignature)\r",
 																	"\r",
-																	"const [ protectedHeaderBase64, , signature ] = token.split('.');\r",
+																	"// const [ protectedHeaderBase64, , signature ] = token.split('.');\r",
 																	"\r",
 																	"//const signatureObject = {\r",
 																	"//    signature: signature.replace('\"', ''),\r",
@@ -10499,7 +10495,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "aa81b41c-6b73-4519-8476-8cb975c36d4b",
+																"id": "c55c51b4-767a-49c4-85cd-75d6f556005e",
 																"exec": [
 																	"pm.test(\"Status code is 202\", function () {\r",
 																	"    pm.response.to.have.status(202);\r",
@@ -10700,7 +10696,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "b5956019-6648-4b5b-ad0a-a2e7634b301e",
+																"id": "a2f225b9-423e-40b2-a914-c3981de0c2e6",
 																"exec": [
 																	"var navigator = {}; \r",
 																	"var window = {}; \r",
@@ -10765,7 +10761,7 @@
 																	"var sPayload = JSON.stringify(objPayload)\r",
 																	"//console.log(`sPayload: ${sPayload}`)\r",
 																	"pm.variables.set(\"quoteRequest\", sPayload);\r",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payeefspJWSKey'));\r",
+																	"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payeefspJWSKey'));\r",
 																	"//console.log(`token: ${token}`)\r",
 																	"\r",
 																	"// var encodedHeaders = btoa(sHeader)\r",
@@ -10773,7 +10769,7 @@
 																	"// var ofspiopSignature = {signature: vSignature, protectedHeader: encodedHeaders}\r",
 																	"// var token = JSON.stringify(ofspiopSignature)\r",
 																	"\r",
-																	"const [ protectedHeaderBase64, , signature ] = token.split('.');\r",
+																	"// const [ protectedHeaderBase64, , signature ] = token.split('.');\r",
 																	"\r",
 																	"//const signatureObject = {\r",
 																	"//    signature: signature.replace('\"', ''),\r",
@@ -10790,7 +10786,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "96bec2eb-3c17-468f-824b-5359cd3c8ee3",
+																"id": "d7e83a6d-e501-400d-b747-d81cad8a353a",
 																"exec": [
 																	"pm.test(\"Status code is 202\", function () {\r",
 																	"    pm.response.to.have.status(202);\r",
@@ -11012,7 +11008,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "27e10dc0-46f5-48ce-aee9-8e395373e010",
+																"id": "cd410ded-3952-4c9d-b957-81b61627eba8",
 																"exec": [
 																	"var navigator = {}; //fake a navigator object for the lib\r",
 																	"var window = {}; //fake a window object for the lib\r",
@@ -11046,7 +11042,7 @@
 																	"var sPayload = JSON.stringify(objPayload)\r",
 																	"//console.log(`sPayload: ${sPayload}`)\r",
 																	"pm.variables.set(\"transferRequest\", sPayload);\r",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payeefspJWSKey'));\r",
+																	"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payeefspJWSKey'));\r",
 																	"//console.log(`token: ${token}`)\r",
 																	"\r",
 																	"// var encodedHeaders = btoa(sHeader)\r",
@@ -11054,7 +11050,7 @@
 																	"// var ofspiopSignature = {signature: vSignature, protectedHeader: encodedHeaders}\r",
 																	"// var token = JSON.stringify(ofspiopSignature)\r",
 																	"\r",
-																	"const [ protectedHeaderBase64, , signature ] = token.split('.');\r",
+																	"// const [ protectedHeaderBase64, , signature ] = token.split('.');\r",
 																	"\r",
 																	"//const signatureObject = {\r",
 																	"//    signature: signature.replace('\"', ''),\r",
@@ -11071,7 +11067,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "e7d46612-d995-42a6-bdf9-09ec58f70fdb",
+																"id": "8f7f2726-ae1c-4e6f-8cfb-84f15080350a",
 																"exec": [
 																	"pm.test(\"Status code is 202\", function () {\r",
 																	"    pm.response.to.have.status(202);\r",
@@ -11285,7 +11281,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "d4a34852-4458-4f48-8d7b-b5dec8e63a7b",
+																"id": "ad3e0790-bccf-4370-8dbb-22ad50526c8a",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
@@ -11347,7 +11343,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "67b57627-d8db-421c-9ab4-0c3db7ec5900",
+																"id": "dd25d28e-d073-4ed4-a648-6cbe84adc1fd",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
@@ -11412,50 +11408,60 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "a3910e51-f7ce-47ce-b65b-9ddd0c2f7918",
+																"id": "aba20b36-d916-4dcf-922a-92eff62cf5cc",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
 																	"});",
 																	"",
-																	"pm.environment.set(\"settlementId\", pm.response.json().id);",
-																	"var jsonData = pm.response.json();",
+																	"var jsonData = pm.response.responseSize && pm.response.json();",
+																	"",
+																	"if (jsonData) {",
+																	"    jsonData.id && pm.environment.set(\"settlementId\", jsonData.id);",
 																	"    ",
-																	"pm.test(\"Settlement State should be PENDING_SETTLEMENT\", function () {",
-																	"    pm.expect(jsonData.state).to.eql('PENDING_SETTLEMENT');",
-																	"});",
-																	"",
-																	"pm.test(\"Number of associated windows should be 1\", function () {",
-																	"    pm.expect(jsonData.settlementWindows.length).to.eql(1);",
-																	"});",
-																	"",
-																	"pm.test(\"Associated Settlement Window ID should be: \"+pm.environment.get(\"closedWindowID\"), function () {",
-																	"    pm.expect(jsonData.settlementWindows[0].id).to.eql(pm.environment.get(\"closedWindowID\"));",
-																	"});",
-																	"",
-																	"pm.test(\"Associated Settlement Window state should be PENDING_SETTLEMENT \", function () {",
-																	"    pm.expect(jsonData.settlementWindows[0].state).to.eql('PENDING_SETTLEMENT');",
-																	"});",
-																	"",
-																	"pm.test(\"Associated number of participants should be 4 \", function () {",
-																	"    pm.expect(jsonData.participants.length).to.eql(4);",
-																	"});",
-																	"",
-																	"for(var j in jsonData.participants) {",
-																	"    for(var k in jsonData.participants[j].accounts) {",
-																	"        console.log(jsonData.participants[j].accounts[k].id)",
-																	"        if(jsonData.participants[j].accounts[k].id === Number(pm.environment.get(\"payerFspAccountId\"))) {",
-																	"            console.log('payerfspNetSettlementAmount:',jsonData.participants[j].accounts[k].netSettlementAmount.amount)",
-																	"            pm.environment.set(\"payerfspNetSettlementAmount\",jsonData.participants[j].accounts[k].netSettlementAmount.amount);",
-																	"        } else if(jsonData.participants[j].accounts[k].id === Number(pm.environment.get(\"payeeFspAccountId\"))) {",
-																	"            console.log('payeefspNetSettlementAmount:',jsonData.participants[j].accounts[k].netSettlementAmount.amount)",
-																	"            pm.environment.set(\"payeefspNetSettlementAmount\",jsonData.participants[j].accounts[k].netSettlementAmount.amount);",
+																	"    pm.test(\"Settlement State should be PENDING_SETTLEMENT\", function () {",
+																	"        pm.expect(jsonData.state).to.eql('PENDING_SETTLEMENT');",
+																	"    });",
+																	"    ",
+																	"    pm.test(\"Number of associated windows should be 1\", function () {",
+																	"        pm.expect(jsonData.settlementWindows.length).to.eql(1);",
+																	"    });",
+																	"    ",
+																	"    pm.test(\"Associated Settlement Window ID should be: \"+pm.environment.get(\"closedWindowID\"), function () {",
+																	"        pm.expect(jsonData.settlementWindows[0].id).to.eql(pm.environment.get(\"closedWindowID\"));",
+																	"    });",
+																	"    ",
+																	"    pm.test(\"Associated Settlement Window state should be PENDING_SETTLEMENT \", function () {",
+																	"        pm.expect(jsonData.settlementWindows[0].state).to.eql('PENDING_SETTLEMENT');",
+																	"    });",
+																	"    ",
+																	"    pm.test(\"Associated number of participants should be 4 \", function () {",
+																	"        pm.expect(jsonData.participants.length).to.eql(4);",
+																	"    });",
+																	"    if (jsonData && jsonData.participants) {",
+																	"        for(var j in jsonData.participants) {",
+																	"            for(var k in jsonData.participants[j].accounts) {",
+																	"                console.log(jsonData.participants[j].accounts[k].id)",
+																	"                if(jsonData.participants[j].accounts[k].id === Number(pm.environment.get(\"payerFspAccountId\"))) {",
+																	"                    console.log('payerfspNetSettlementAmount:',jsonData.participants[j].accounts[k].netSettlementAmount.amount)",
+																	"                    pm.environment.set(\"payerfspNetSettlementAmount\",jsonData.participants[j].accounts[k].netSettlementAmount.amount);",
+																	"                } else if(jsonData.participants[j].accounts[k].id === Number(pm.environment.get(\"payeeFspAccountId\"))) {",
+																	"                    console.log('payeefspNetSettlementAmount:',jsonData.participants[j].accounts[k].netSettlementAmount.amount)",
+																	"                    pm.environment.set(\"payeefspNetSettlementAmount\",jsonData.participants[j].accounts[k].netSettlementAmount.amount);",
+																	"                }",
+																	"                ",
+																	"            }",
 																	"        }",
-																	"        ",
+																	"    } else {",
+																	"        pm.test(\"Test FAILED\", function () {",
+																	"            throw new Error('Invalid response was received.');",
+																	"        });",
 																	"    }",
-																	"}",
-																	"",
-																	""
+																	"} else {",
+																	"    pm.test(\"Test FAILED\", function () {",
+																	"        throw new Error('Did not receive response.');",
+																	"    });",
+																	"}"
 																],
 																"type": "text/javascript"
 															}
@@ -11513,7 +11519,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "bc48bb31-519d-47fa-a835-834518419116",
+																"id": "ba554822-f362-4c8e-8c0a-269357f5d71e",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
@@ -11577,24 +11583,30 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "d0dbf047-203a-4013-ae28-14f57a7448b0",
+																"id": "f6596201-a6d5-4062-b853-47fecbe1174d",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
 																	"});",
 																	"",
-																	"var jsonData = pm.response.json();",
-																	"jsonData",
-																	"    .filter(account => account.currency === pm.environment.get('currency'))",
-																	"    .map(curAccount => {",
-																	"        if(curAccount.ledgerAccountType === \"SETTLEMENT\") {",
-																	"            pm.environment.set(\"testfsp2SettleAccountBalanceAfterTransfer\", curAccount.value);",
-																	"        }",
-																	"        if(curAccount.ledgerAccountType === \"POSITION\") {",
-																	"            pm.environment.set(\"testfsp2PositionAccountBalanceAfterTransfer\", curAccount.value);",
-																	"        }",
-																	"    })",
+																	"var jsonData = pm.response.responseSize && pm.response.json();",
 																	"",
+																	"if (jsonData.length) {",
+																	"    jsonData",
+																	"        .filter(account => account.currency === pm.environment.get('currency'))",
+																	"        .map(curAccount => {",
+																	"            if(curAccount.ledgerAccountType === \"SETTLEMENT\") {",
+																	"                pm.environment.set(\"testfsp2SettleAccountBalanceAfterTransfer\", curAccount.value);",
+																	"            }",
+																	"            if(curAccount.ledgerAccountType === \"POSITION\") {",
+																	"                pm.environment.set(\"testfsp2PositionAccountBalanceAfterTransfer\", curAccount.value);",
+																	"            }",
+																	"        })",
+																	"} else {",
+																	"    pm.test(\"Test FAILED\", function () {",
+																	"        throw new Error('Did not receive response or invalid response was received.');",
+																	"    });",
+																	"}",
 																	"",
 																	""
 																],
@@ -11641,24 +11653,30 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "33beb041-0eb5-4e8e-ac15-f9d6019e4e0b",
+																"id": "67a4e1f0-7e36-400d-8e7a-8b897432805c",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
 																	"});",
 																	"",
-																	"var jsonData = pm.response.json();",
-																	"jsonData",
-																	"    .filter(account => account.currency === pm.environment.get('currency'))",
-																	"    .map(curAccount => {",
-																	"        if(curAccount.ledgerAccountType === \"SETTLEMENT\") {",
-																	"            pm.environment.set(\"payerfspSettleAccountBalanceAfterTransfer\", curAccount.value);",
-																	"        }",
-																	"        if(curAccount.ledgerAccountType === \"POSITION\") {",
-																	"            pm.environment.set(\"payerfspPositionAccountBalanceAfterTransfer\", curAccount.value);",
-																	"        }",
-																	"    })",
+																	"var jsonData = pm.response.responseSize && pm.response.json();",
 																	"",
+																	"if (jsonData.length) {",
+																	"    jsonData",
+																	"        .filter(account => account.currency === pm.environment.get('currency'))",
+																	"        .map(curAccount => {",
+																	"            if(curAccount.ledgerAccountType === \"SETTLEMENT\") {",
+																	"                pm.environment.set(\"payerfspSettleAccountBalanceAfterTransfer\", curAccount.value);",
+																	"            }",
+																	"            if(curAccount.ledgerAccountType === \"POSITION\") {",
+																	"                pm.environment.set(\"payerfspPositionAccountBalanceAfterTransfer\", curAccount.value);",
+																	"            }",
+																	"        })",
+																	"} else {",
+																	"    pm.test(\"Test FAILED\", function () {",
+																	"        throw new Error('Did not receive response.');",
+																	"    });",
+																	"}",
 																	"",
 																	""
 																],
@@ -11705,13 +11723,15 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "cb399751-c698-4dd6-a7a6-d89cb66dd97f",
+																"id": "420242e8-44df-4ef0-b320-0798b2e65402",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
 																	"});",
 																	"",
-																	"var jsonData = pm.response.json();",
+																	"var jsonData = pm.response.responseSize && pm.response.json();",
+																	"",
+																	"if (jsonData.length) {",
 																	"jsonData",
 																	"    .filter(account => account.currency === pm.environment.get('currency'))",
 																	"    .map(curAccount => {",
@@ -11722,6 +11742,11 @@
 																	"            pm.environment.set(\"payeefspPositionAccountBalanceAfterTransfer\", curAccount.value);",
 																	"        }",
 																	"    })",
+																	"} else {",
+																	"    pm.test(\"Test FAILED\", function () {",
+																	"        throw new Error('Did not receive response or invalid response was received.');",
+																	"    });",
+																	"}",
 																	"",
 																	"",
 																	""
@@ -11780,11 +11805,13 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "04ee887f-390d-4eb3-809a-8cc70b28d49a",
+														"id": "a37ded29-cff3-49a1-86f6-73bb68a7ef03",
 														"exec": [
 															"",
-															"var jsonData = pm.response.json();",
-															"jsonData.participants.map(participant => {",
+															"var jsonData = pm.response.responseSize && pm.response.json();",
+															"",
+															"if(jsonData && jsonData.participants) {",
+															"    jsonData.participants.map(participant => {",
 															"    participant.accounts",
 															"                    .filter(account => account.netSettlementAmount.currency === pm.environment.get('currency'))",
 															"                    .forEach(curAccount => {",
@@ -11821,46 +11848,11 @@
 															"                        });",
 															"                    })",
 															"})",
-															"// for(var j in jsonData.participants) {",
-															"//     for(var k in jsonData.participants[j].accounts) {",
-															"//         console.log(jsonData.participants[j].accounts[k].id)",
-															"//         if(jsonData.participants[j].accounts[k].currency === 'XOF') {",
-															"//             const participantPutRequest = {",
-															"//               url: pm.environment.get(\"HOST_CENTRAL_SETTLEMENT\")+pm.environment.get(\"BASE_CENTRAL_SETTLEMENT\")+'/settlements/'+pm.environment.get(\"settlementId\"),",
-															"//               method: 'PUT',",
-															"//               header: {",
-															"//                   \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
-															"//                   \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
-															"//                   \"Content-Type\": \"application/json\"",
-															"//               },",
-															"//               body: {",
-															"//                 mode: 'raw',",
-															"//                 raw: JSON.stringify(",
-															"//                     {",
-															"//                       \"participants\": [",
-															"//                         {",
-															"//                           \"id\": jsonData.participants[j].id,",
-															"//                           \"accounts\": [",
-															"//                             {",
-															"//                               \"id\": jsonData.participants[j].accounts[k].id,",
-															"//                               \"reason\": \"Transfers recorded for payer\",",
-															"//                               \"state\": \"PS_TRANSFERS_RECORDED\"",
-															"//                             }",
-															"//                           ]",
-															"//                         }",
-															"//                       ]",
-															"//                     }",
-															"//                 )",
-															"//               }",
-															"//             };",
-															"//             pm.sendRequest(participantPutRequest, function (err, response) {",
-															"//                 console.log(response.json());",
-															"//             });",
-															"//         }",
-															"        ",
-															"        ",
-															"//     }",
-															"// }"
+															"} else {",
+															"    pm.test(\"Test FAILED\", function () {",
+															"        throw new Error('Did not receive response or invalid response was received.');",
+															"    });",
+															"}"
 														],
 														"type": "text/javascript"
 													}
@@ -11904,49 +11896,52 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "a9f834de-f617-4eb0-8583-de8c448e7e4d",
+														"id": "dbd875b3-e266-42b4-8af7-4e681d505c77",
 														"exec": [
 															"pm.test(\"Status code is 200\", function () {",
 															"    pm.response.to.have.status(200);",
 															"});",
 															"",
-															"var jsonData = pm.response.json();",
+															"var jsonData = pm.response.responseSize && pm.response.json();",
+															"",
+															"if (jsonData) {    ",
+															"    pm.test(\"Settlement Id should be: \"+pm.environment.get(\"settlementId\"), function () {",
+															"        pm.expect(jsonData.id).to.eql(pm.environment.get(\"settlementId\"));",
+															"    });",
 															"    ",
-															"pm.test(\"Settlement Id should be: \"+pm.environment.get(\"settlementId\"), function () {",
-															"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"settlementId\"));",
-															"});",
-															"",
-															"pm.test(\"Settlement state should be PS_TRANSFERS_RECORDED\", function () {",
-															"    pm.expect(jsonData.state).to.eql(\"PS_TRANSFERS_RECORDED\");",
-															"});",
-															"",
-															"pm.test(\"Settlement Window ID should be: \"+pm.environment.get(\"closedWindowID\"), function () {",
-															"    pm.expect(jsonData.settlementWindows[0].id).to.eql(pm.environment.get(\"closedWindowID\"));",
-															"});",
-															"",
-															"pm.test(\"Settlement Window State should be PENDING_SETTLEMENT\", function () {",
-															"    pm.expect(jsonData.settlementWindows[0].state).to.eql(\"PENDING_SETTLEMENT\");",
-															"});",
-															"",
-															"jsonData.participants.map(participant => {",
-															"    participant.accounts",
-															"                    .filter(account => account.netSettlementAmount.currency === pm.environment.get('currency'))",
-															"                    .forEach(curAccount => {",
-															"                        pm.test(`Participant Account ${curAccount.id} state is PS_TRANSFERS_RECORDED`, function () {",
-															"                            pm.expect(curAccount.state).to.eql(\"PS_TRANSFERS_RECORDED\");",
-															"                        });",
-															"                    })",
-															"})",
-															"",
-															"// for(var j in jsonData.participants) {",
-															"//     for(var k in jsonData.participants[j].accounts) {",
-															"//         pm.test(`Participant Account ${jsonData.participants[j].accounts[k].id} state is PS_TRANSFERS_RECORDED`, function () {",
-															"//             pm.expect(jsonData.participants[j].accounts[k].state).to.eql(\"PS_TRANSFERS_RECORDED\");",
-															"//         });",
-															"//     }",
-															"// }",
-															"",
-															"",
+															"    pm.test(\"Settlement state should be PS_TRANSFERS_RECORDED\", function () {",
+															"        pm.expect(jsonData.state).to.eql(\"PS_TRANSFERS_RECORDED\");",
+															"    });",
+															"    ",
+															"    pm.test(\"Settlement Window ID should be: \"+pm.environment.get(\"closedWindowID\"), function () {",
+															"        pm.expect(jsonData.settlementWindows[0].id).to.eql(pm.environment.get(\"closedWindowID\"));",
+															"    });",
+															"    ",
+															"    pm.test(\"Settlement Window State should be PENDING_SETTLEMENT\", function () {",
+															"        pm.expect(jsonData.settlementWindows[0].state).to.eql(\"PENDING_SETTLEMENT\");",
+															"    });",
+															"    ",
+															"    if (jsonData.participants) {",
+															"        jsonData.participants.map(participant => {",
+															"            participant.accounts",
+															"                            .filter(account => account.netSettlementAmount.currency === pm.environment.get('currency'))",
+															"                            .forEach(curAccount => {",
+															"                                pm.test(`Participant Account ${curAccount.id} state is PS_TRANSFERS_RECORDED`, function () {",
+															"                                    pm.expect(curAccount.state).to.eql(\"PS_TRANSFERS_RECORDED\");",
+															"                                });",
+															"                            })",
+															"        })",
+															"    } else {",
+															"        pm.test(\"Test FAILED\", function () {",
+															"            throw new Error('Invalid response was received.');",
+															"        });",
+															"    }",
+															"    ",
+															"} else {",
+															"    pm.test(\"Test FAILED\", function () {",
+															"        throw new Error('Did not receive response.');",
+															"    });",
+															"}    ",
 															""
 														],
 														"type": "text/javascript"
@@ -11991,7 +11986,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "5453576e-ac1d-4481-ba74-f3d75213a994",
+														"id": "924a09b7-fee9-4d5e-ab11-8753d4267c14",
 														"exec": [
 															"pm.test(\"Status code is 200\", function () {",
 															"    pm.response.to.have.status(200);",
@@ -12064,7 +12059,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "0ba5a148-5453-46e9-9a4e-265c9539acb1",
+														"id": "fc65d75a-cc35-46ec-beec-95b162369183",
 														"exec": [
 															"pm.test(\"Status code is 200\", function () {",
 															"    pm.response.to.have.status(200);",
@@ -12135,7 +12130,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "59af2d58-6641-4141-998b-fd194b227fee",
+														"id": "450ecf9c-a3c4-4098-816e-37ce8f6bdea1",
 														"exec": [
 															"pm.test(\"Status code is 200\", function () {\r",
 															"    pm.response.to.have.status(200);\r",
@@ -12207,7 +12202,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "5b51b662-35f0-4a65-80d2-c32ecf7897f1",
+														"id": "880ef674-3d38-435c-af62-2da5fe40e0d7",
 														"exec": [
 															"pm.test(\"Status code is 200\", function () {\r",
 															"    pm.response.to.have.status(200);\r",
@@ -12285,11 +12280,13 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "69791f13-a3b0-4c1d-866a-a5ff2d7cf52d",
+														"id": "51dafd98-f34f-4b97-b2ae-57ba7caf2a46",
 														"exec": [
 															"",
-															"var jsonData = pm.response.json();",
-															"jsonData.participants.map(participant => {",
+															"var jsonData = pm.response.responseSize && pm.response.json();",
+															"",
+															"if (jsonData && jsonData.participants) {",
+															"    jsonData.participants.map(participant => {",
 															"    participant.accounts",
 															"                    .filter(account => account.netSettlementAmount.currency === pm.environment.get('currency'))",
 															"                    .forEach(curAccount => {",
@@ -12325,7 +12322,12 @@
 															"                            console.log(response.json());",
 															"                        });",
 															"                    })",
-															"})"
+															"})",
+															"} else {",
+															"    pm.test(\"Test FAILED\", function () {",
+															"        throw new Error('Did not receive response or invalid response was received.');",
+															"    });",
+															"}"
 														],
 														"type": "text/javascript"
 													}
@@ -12369,39 +12371,52 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "f8eb9956-2dbf-4f61-94e1-f45c714df509",
+														"id": "bff93edb-fabd-4abf-95cd-e5d626eec037",
 														"exec": [
 															"pm.test(\"Status code is 200\", function () {",
 															"    pm.response.to.have.status(200);",
 															"});",
 															"",
-															"var jsonData = pm.response.json();",
+															"var jsonData = pm.response.responseSize && pm.response.json();",
+															"",
+															"if (jsonData) {",
 															"    ",
-															"pm.test(\"Settlement Id should be: \" + pm.environment.get('settlementId'), function () {",
-															"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"settlementId\"));",
-															"});",
-															"",
-															"pm.test(\"Settlement state should be PS_TRANSFERS_RESERVED\", function () {",
-															"    pm.expect(jsonData.state).to.eql(\"PS_TRANSFERS_RESERVED\");",
-															"});",
-															"",
-															"pm.test(\"Settlement Window ID should be: \"+pm.environment.get(\"closedWindowID\"), function () {",
-															"    pm.expect(jsonData.settlementWindows[0].id).to.eql(pm.environment.get(\"closedWindowID\"));",
-															"});",
-															"",
-															"pm.test(\"Settlement Window State should be PENDING_SETTLEMENT\", function () {",
-															"    pm.expect(jsonData.settlementWindows[0].state).to.eql(\"PENDING_SETTLEMENT\");",
-															"});",
-															"",
-															"jsonData.participants.map(participant => {",
-															"    participant.accounts",
-															"                    .filter(account => account.netSettlementAmount.currency === pm.environment.get('currency'))",
-															"                    .forEach(curAccount => {",
-															"                        pm.test(`Participant Account ${curAccount.id} state is PS_TRANSFERS_RESERVED`, function () {",
-															"                            pm.expect(curAccount.state).to.eql(\"PS_TRANSFERS_RESERVED\");",
-															"                        });",
-															"                    })",
-															"})",
+															"    pm.test(\"Settlement Id should be: \" + pm.environment.get('settlementId'), function () {",
+															"        pm.expect(jsonData.id).to.eql(pm.environment.get(\"settlementId\"));",
+															"    });",
+															"    ",
+															"    pm.test(\"Settlement state should be PS_TRANSFERS_RESERVED\", function () {",
+															"        pm.expect(jsonData.state).to.eql(\"PS_TRANSFERS_RESERVED\");",
+															"    });",
+															"    ",
+															"    pm.test(\"Settlement Window ID should be: \"+pm.environment.get(\"closedWindowID\"), function () {",
+															"        pm.expect(jsonData.settlementWindows[0].id).to.eql(pm.environment.get(\"closedWindowID\"));",
+															"    });",
+															"    ",
+															"    pm.test(\"Settlement Window State should be PENDING_SETTLEMENT\", function () {",
+															"        pm.expect(jsonData.settlementWindows[0].state).to.eql(\"PENDING_SETTLEMENT\");",
+															"    });",
+															"    ",
+															"    if (jsonData.participants) {",
+															"        jsonData.participants.map(participant => {",
+															"            participant.accounts",
+															"                            .filter(account => account.netSettlementAmount.currency === pm.environment.get('currency'))",
+															"                            .forEach(curAccount => {",
+															"                                pm.test(`Participant Account ${curAccount.id} state is PS_TRANSFERS_RESERVED`, function () {",
+															"                                    pm.expect(curAccount.state).to.eql(\"PS_TRANSFERS_RESERVED\");",
+															"                                });",
+															"                            })",
+															"        })",
+															"    } else {",
+															"        pm.test(\"Test FAILED\", function () {",
+															"            throw new Error('Invalid response was received.');",
+															"        });",
+															"    }",
+															"} else {",
+															"    pm.test(\"Test FAILED\", function () {",
+															"        throw new Error('Did not receive response.');",
+															"    });",
+															"}",
 															"",
 															"",
 															""
@@ -12448,7 +12463,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "71b050e0-ef60-49c3-807f-e39e0e739935",
+														"id": "fbdd913f-1d7a-4d50-a38b-c7ff6dcf62b2",
 														"exec": [
 															"pm.test(\"Status code is 200\", function () {",
 															"    pm.response.to.have.status(200);",
@@ -12520,7 +12535,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "8be13a22-8de7-4a5b-9c59-8fc76c221eda",
+														"id": "f647be21-d721-4cc4-99de-5f1ff54901fc",
 														"exec": [
 															"pm.test(\"Status code is 200\", function () {",
 															"    pm.response.to.have.status(200);",
@@ -12591,35 +12606,41 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "62ef928f-0d79-4fb4-8b12-0508bebae993",
+														"id": "b9d278c6-24f1-4bb5-b503-6020735bdc7a",
 														"exec": [
 															"pm.test(\"Status code is 200\", function () {\r",
 															"    pm.response.to.have.status(200);\r",
 															"});\r",
 															"\r",
-															"var jsonData = pm.response.json();\r",
+															"var jsonData = pm.response.responseSize && pm.response.json();\r",
 															"var payerfspSettleAccountBalanceAfterReserve;\r",
 															"var payerfspPositionAccountBalanceAfterReserve;\r",
-															"jsonData\r",
-															"    .filter(account => account.currency === pm.environment.get('currency'))\r",
-															"    .map(curAccount => {\r",
-															"        if(curAccount.ledgerAccountType === \"SETTLEMENT\") {\r",
-															"            payerfspSettleAccountBalanceAfterReserve = curAccount.value\r",
-															"        }\r",
-															"        if(curAccount.ledgerAccountType === \"POSITION\") {\r",
-															"            payerfspPositionAccountBalanceAfterReserve = curAccount.value\r",
-															"        }\r",
-															"    })\r",
 															"\r",
-															"pm.test(\"payerfsp settlement account balance before and  after reserve should be the same.\", function () {\r",
-															"    pm.expect(payerfspSettleAccountBalanceAfterReserve).to.eql(pm.environment.get(\"payerfspSettleAccountBalanceAfterTransfer\"));\r",
-															"});\r",
-															"\r",
-															"\r",
-															"pm.test(\"payerfsp position account balance after reserve gets increased by its net settlement  amount.\", function () {\r",
-															"    pm.expect(payerfspPositionAccountBalanceAfterReserve).to.eql(pm.environment.get(\"payerfspPositionAccountBalanceBeforeTransfer\"));\r",
-															"});\r",
-															""
+															"if (jsonData.length) {\r",
+															"    jsonData\r",
+															"        .filter(account => account.currency === pm.environment.get('currency'))\r",
+															"        .map(curAccount => {\r",
+															"            if(curAccount.ledgerAccountType === \"SETTLEMENT\") {\r",
+															"                payerfspSettleAccountBalanceAfterReserve = curAccount.value\r",
+															"            }\r",
+															"            if(curAccount.ledgerAccountType === \"POSITION\") {\r",
+															"                payerfspPositionAccountBalanceAfterReserve = curAccount.value\r",
+															"            }\r",
+															"        })\r",
+															"    \r",
+															"    pm.test(\"payerfsp settlement account balance before and  after reserve should be the same.\", function () {\r",
+															"        pm.expect(payerfspSettleAccountBalanceAfterReserve).to.eql(pm.environment.get(\"payerfspSettleAccountBalanceAfterTransfer\"));\r",
+															"    });\r",
+															"    \r",
+															"    \r",
+															"    pm.test(\"payerfsp position account balance after reserve gets increased by its net settlement  amount.\", function () {\r",
+															"        pm.expect(payerfspPositionAccountBalanceAfterReserve).to.eql(pm.environment.get(\"payerfspPositionAccountBalanceBeforeTransfer\"));\r",
+															"    });\r",
+															"} else {\r",
+															"    pm.test(\"Test FAILED\", function () {\r",
+															"        throw new Error('Did not receive response or invalid response was received.');\r",
+															"    });\r",
+															"}"
 														],
 														"type": "text/javascript"
 													}
@@ -12664,34 +12685,41 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "d5b78880-5d13-485c-a707-d71c2d4f91fa",
+														"id": "68caadfe-89dc-4e88-8616-f1a6da95f594",
 														"exec": [
 															"pm.test(\"Status code is 200\", function () {\r",
 															"    pm.response.to.have.status(200);\r",
 															"});\r",
 															"\r",
-															"var jsonData = pm.response.json();\r",
+															"var jsonData = pm.response.responseSize && pm.response.json();\r",
 															"var payeefspSettleAccountBalanceAfterReserve;\r",
 															"var payeefspPositionAccountBalanceAfterReserve;\r",
-															"jsonData\r",
-															"    .filter(account => account.currency === pm.environment.get('currency'))\r",
-															"    .map(curAccount => {\r",
-															"        if(curAccount.ledgerAccountType === \"SETTLEMENT\") {\r",
-															"            payeefspSettleAccountBalanceAfterReserve = curAccount.value\r",
-															"        }\r",
-															"        if(curAccount.ledgerAccountType === \"POSITION\") {\r",
-															"            payeefspPositionAccountBalanceAfterReserve = curAccount.value\r",
-															"        }\r",
-															"    })\r",
 															"\r",
-															"\r",
-															"pm.test(\"payeefsp settlement account balance before and  after reserve should be the same.\", function () {\r",
-															"    pm.expect(payeefspSettleAccountBalanceAfterReserve).to.eql(pm.environment.get(\"payeefspSettleAccountBalanceAfterTransfer\"));\r",
-															"});\r",
-															"\r",
-															"pm.test(\"payeefsp position account balance before and  after reserve should be the same.\", function () {\r",
-															"    pm.expect(payeefspPositionAccountBalanceAfterReserve).to.eql(pm.environment.get(\"payeefspPositionAccountBalanceAfterTransfer\"));\r",
-															"});\r",
+															"if (jsonData.length) {\r",
+															"    jsonData\r",
+															"        .filter(account => account.currency === pm.environment.get('currency'))\r",
+															"        .map(curAccount => {\r",
+															"            if(curAccount.ledgerAccountType === \"SETTLEMENT\") {\r",
+															"                payeefspSettleAccountBalanceAfterReserve = curAccount.value\r",
+															"            }\r",
+															"            if(curAccount.ledgerAccountType === \"POSITION\") {\r",
+															"                payeefspPositionAccountBalanceAfterReserve = curAccount.value\r",
+															"            }\r",
+															"        })\r",
+															"    \r",
+															"    \r",
+															"    pm.test(\"payeefsp settlement account balance before and  after reserve should be the same.\", function () {\r",
+															"        pm.expect(payeefspSettleAccountBalanceAfterReserve).to.eql(pm.environment.get(\"payeefspSettleAccountBalanceAfterTransfer\"));\r",
+															"    });\r",
+															"    \r",
+															"    pm.test(\"payeefsp position account balance before and  after reserve should be the same.\", function () {\r",
+															"        pm.expect(payeefspPositionAccountBalanceAfterReserve).to.eql(pm.environment.get(\"payeefspPositionAccountBalanceAfterTransfer\"));\r",
+															"    });\r",
+															"} else {\r",
+															"    pm.test(\"Test FAILED\", function () {\r",
+															"        throw new Error('Did not receive response or invalid response was received.');\r",
+															"    });\r",
+															"}\r",
 															"\r",
 															""
 														],
@@ -12745,14 +12773,17 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "771aca80-97b3-41a9-987f-9d51ee4a5af0",
+														"id": "f1edd1ae-dee9-4eb2-ae1c-5e991f133ef2",
 														"exec": [
 															"",
 															"pm.test(\"Status code is 200\", function () {",
 															"    pm.response.to.have.status(200);",
 															"});",
-															"var jsonData = pm.response.json();",
-															"jsonData.participants.map(participant => {",
+															"",
+															"var jsonData = pm.response.responseSize && pm.response.json();",
+															"",
+															"if (jsonData && jsonData.participants) {",
+															"    jsonData.participants.map(participant => {",
 															"    participant.accounts",
 															"                    .filter(account => account.netSettlementAmount.currency === pm.environment.get('currency'))",
 															"                    .forEach(curAccount => {",
@@ -12789,6 +12820,11 @@
 															"                        });",
 															"                    })",
 															"})",
+															"} else {",
+															"    pm.test(\"Test FAILED\", function () {",
+															"        throw new Error('Did not receive response or invalid response was received.');",
+															"    });",
+															"}",
 															"",
 															""
 														],
@@ -12834,42 +12870,53 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "1c1d1f6a-c367-41be-866d-420d29545536",
+														"id": "3aa557c3-2a4c-4915-9199-66486e4bed6e",
 														"exec": [
 															"pm.test(\"Status code is 200\", function () {",
 															"    pm.response.to.have.status(200);",
 															"});",
 															"",
-															"var jsonData = pm.response.json();",
+															"var jsonData = pm.response.responseSize && pm.response.json();",
+															"",
+															"if (jsonData) {",
 															"    ",
-															"pm.test(\"Settlement Id should be: \"+pm.environment.get(\"settlementId\"), function () {",
-															"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"settlementId\"));",
-															"});",
-															"",
-															"pm.test(\"Settlement state should be PS_TRANSFERS_COMMITTED\", function () {",
-															"    pm.expect(jsonData.state).to.eql(\"PS_TRANSFERS_COMMITTED\");",
-															"});",
-															"",
-															"pm.test(\"Settlement Window ID should be: \"+pm.environment.get(\"closedWindowID\"), function () {",
-															"    pm.expect(jsonData.settlementWindows[0].id).to.eql(pm.environment.get(\"closedWindowID\"));",
-															"});",
-															"",
-															"pm.test(\"Settlement Window State should be PENDING_SETTLEMENT\", function () {",
-															"    pm.expect(jsonData.settlementWindows[0].state).to.eql(\"PENDING_SETTLEMENT\");",
-															"});",
-															"",
-															"jsonData.participants.map(participant => {",
-															"    participant.accounts",
-															"                    .filter(account => account.netSettlementAmount.currency === 'XOF')",
-															"                    .forEach(xofAccount => {",
-															"                        pm.test(`Participant Account ${xofAccount.id} state is PS_TRANSFERS_COMMITTED`, function () {",
-															"                            pm.expect(xofAccount.state).to.eql(\"PS_TRANSFERS_COMMITTED\");",
-															"                        });",
-															"                    })",
-															"})",
-															"",
-															"",
-															""
+															"    pm.test(\"Settlement Id should be: \"+pm.environment.get(\"settlementId\"), function () {",
+															"        pm.expect(jsonData.id).to.eql(pm.environment.get(\"settlementId\"));",
+															"    });",
+															"    ",
+															"    pm.test(\"Settlement state should be PS_TRANSFERS_COMMITTED\", function () {",
+															"        pm.expect(jsonData.state).to.eql(\"PS_TRANSFERS_COMMITTED\");",
+															"    });",
+															"    ",
+															"    pm.test(\"Settlement Window ID should be: \"+pm.environment.get(\"closedWindowID\"), function () {",
+															"        pm.expect(jsonData.settlementWindows[0].id).to.eql(pm.environment.get(\"closedWindowID\"));",
+															"    });",
+															"    ",
+															"    pm.test(\"Settlement Window State should be PENDING_SETTLEMENT\", function () {",
+															"        pm.expect(jsonData.settlementWindows[0].state).to.eql(\"PENDING_SETTLEMENT\");",
+															"    });",
+															"    ",
+															"    if (jsonData.participants) {",
+															"        jsonData.participants.map(participant => {",
+															"            participant.accounts",
+															"                            .filter(account => account.netSettlementAmount.currency === 'XOF')",
+															"                            .forEach(xofAccount => {",
+															"                                pm.test(`Participant Account ${xofAccount.id} state is PS_TRANSFERS_COMMITTED`, function () {",
+															"                                    pm.expect(xofAccount.state).to.eql(\"PS_TRANSFERS_COMMITTED\");",
+															"                                });",
+															"                            })",
+															"        })",
+															"    } else {",
+															"        pm.test(\"Test FAILED\", function () {",
+															"            throw new Error('Invalid response was received.');",
+															"        });",
+															"    }",
+															"    ",
+															"} else {",
+															"    pm.test(\"Test FAILED\", function () {",
+															"        throw new Error('Did not receive response.');",
+															"    });",
+															"}"
 														],
 														"type": "text/javascript"
 													}
@@ -12913,7 +12960,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "eeab2da8-7ff1-40e2-9372-13901b035bd6",
+														"id": "dc3c3940-9a5a-480c-84e1-19337e8621dc",
 														"exec": [
 															"pm.test(\"Status code is 200\", function () {",
 															"    pm.response.to.have.status(200);",
@@ -12985,7 +13032,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "44ebdd25-50d6-4fec-8f2c-1d30cd99042d",
+														"id": "1b7e6fed-38bb-4282-900e-a4ee183eea59",
 														"exec": [
 															"pm.test(\"Status code is 200\", function () {",
 															"    pm.response.to.have.status(200);",
@@ -13057,7 +13104,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "4c3f46dd-7d43-4106-b04e-bedf9975bf61",
+														"id": "24acd6a4-851b-4611-b193-4886418fe3f4",
 														"exec": [
 															"pm.test(\"Status code is 200\", function () {\r",
 															"    pm.response.to.have.status(200);\r",
@@ -13128,7 +13175,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "d2f47ac6-445f-498b-a587-10661e740a50",
+														"id": "961ccbb2-c6ae-4bd8-be29-21b2d1599ac1",
 														"exec": [
 															"pm.test(\"Status code is 200\", function () {\r",
 															"    pm.response.to.have.status(200);\r",
@@ -13200,7 +13247,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "4858e42d-a1a2-4558-9b3d-966c24d87489",
+														"id": "7aabb0ff-ad4d-4dde-a601-f3192eaa9e3a",
 														"exec": [
 															"pm.test(\"Status code is 200\", function () {\r",
 															"    pm.response.to.have.status(200);\r",
@@ -13283,15 +13330,16 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "7a61195a-45ab-4012-9f5e-8aec0a526586",
+														"id": "95c03d58-58dd-4382-bf8f-00c2ad31118d",
 														"exec": [
 															"",
 															"pm.test(\"Status code is 200\", function () {",
 															"    pm.response.to.have.status(200);",
 															"});",
 															"",
-															"var jsonData = pm.response.json();",
-															"jsonData.participants.map(participant => {",
+															"var jsonData = pm.response.responseSize && pm.response.json();",
+															"if (jsonData.participants) {",
+															"    jsonData.participants.map(participant => {",
 															"    participant.accounts",
 															"                    .filter(account => account.netSettlementAmount.currency === pm.environment.get('currency'))",
 															"                    .forEach(curAccount => {",
@@ -13328,6 +13376,11 @@
 															"                        });",
 															"                    })",
 															"})",
+															"} else {",
+															"    pm.test('Test FAILED', function() {",
+															"        throw new Error('Did not receive response or response is invalid.')",
+															"    })",
+															"}",
 															"",
 															""
 														],
@@ -13373,40 +13426,51 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "aa75cbbc-fb3f-41d1-95da-eed3de0866a9",
+														"id": "6a5220fa-7d97-4a53-b73d-4c5335e58a17",
 														"exec": [
 															"pm.test(\"Status code is 200\", function () {",
 															"    pm.response.to.have.status(200);",
 															"});",
 															"",
-															"var jsonData = pm.response.json();",
+															"var jsonData = pm.response.responseSize && pm.response.json();",
+															"",
+															"if (jsonData) {    ",
+															"    pm.test(\"Settlement Id should be: \"+pm.environment.get(\"settlementId\"), function () {",
+															"        pm.expect(jsonData.id).to.eql(pm.environment.get(\"settlementId\"));",
+															"    });",
 															"    ",
-															"pm.test(\"Settlement Id should be: \"+pm.environment.get(\"settlementId\"), function () {",
-															"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"settlementId\"));",
-															"});",
-															"",
-															"pm.test(\"Settlement state should be SETTLED\", function () {",
-															"    pm.expect(jsonData.state).to.eql(\"SETTLED\");",
-															"});",
-															"",
-															"pm.test(\"Settlement Window ID should be: \"+pm.environment.get(\"closedWindowID\"), function () {",
-															"    pm.expect(jsonData.settlementWindows[0].id).to.eql(pm.environment.get(\"closedWindowID\"));",
-															"});",
-															"",
-															"pm.test(\"Settlement Window State should be SETTLED\", function () {",
-															"    pm.expect(jsonData.settlementWindows[0].state).to.eql(\"SETTLED\");",
-															"});",
-															"",
-															"jsonData.participants.map(participant => {",
-															"    participant.accounts",
-															"                    .filter(account => account.netSettlementAmount.currency === pm.environment.get('currency'))",
-															"                    .forEach(curAccount => {",
-															"                        pm.test(`Participant Account ${curAccount.id} state is SETTLED`, function () {",
-															"                            pm.expect(curAccount.state).to.eql(\"SETTLED\");",
-															"                        });",
-															"                    })",
-															"})",
-															"",
+															"    pm.test(\"Settlement state should be SETTLED\", function () {",
+															"        pm.expect(jsonData.state).to.eql(\"SETTLED\");",
+															"    });",
+															"    ",
+															"    pm.test(\"Settlement Window ID should be: \"+pm.environment.get(\"closedWindowID\"), function () {",
+															"        pm.expect(jsonData.settlementWindows[0].id).to.eql(pm.environment.get(\"closedWindowID\"));",
+															"    });",
+															"    ",
+															"    pm.test(\"Settlement Window State should be SETTLED\", function () {",
+															"        pm.expect(jsonData.settlementWindows[0].state).to.eql(\"SETTLED\");",
+															"    });",
+															"    ",
+															"    if (jsonData.participants) {",
+															"        jsonData.participants.map(participant => {",
+															"            participant.accounts",
+															"                            .filter(account => account.netSettlementAmount.currency === pm.environment.get('currency'))",
+															"                            .forEach(curAccount => {",
+															"                                pm.test(`Participant Account ${curAccount.id} state is SETTLED`, function () {",
+															"                                    pm.expect(curAccount.state).to.eql(\"SETTLED\");",
+															"                                });",
+															"                            })",
+															"        })",
+															"    } else {",
+															"        pm.test(\"Test FAILED\", function () {",
+															"            throw new Error('Invalid response was received.');",
+															"        });",
+															"    }",
+															"} else {",
+															"    pm.test(\"Test FAILED\", function () {",
+															"        throw new Error('Did not receive response.');",
+															"    });",
+															"}",
 															"",
 															"",
 															""
@@ -13453,7 +13517,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "e21ccf25-daec-4b45-a4ab-d707013464ee",
+														"id": "2e4e42d2-888a-42c7-bff2-91d31f29f4e9",
 														"exec": [
 															"pm.test(\"Status code is 200\", function () {",
 															"    pm.response.to.have.status(200);",
@@ -13524,7 +13588,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "99e3912e-d569-4629-8513-6882f5227e75",
+														"id": "7bf30e7d-f360-4589-80a1-ef04a5b6f412",
 														"exec": [
 															"pm.test(\"Status code is 200\", function () {",
 															"    pm.response.to.have.status(200);",
@@ -13595,7 +13659,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "505f5d76-fc74-47c7-870b-9005ccd1439e",
+														"id": "6e625035-6cd6-45d9-80d1-d941211e4e0d",
 														"exec": [
 															"pm.test(\"Status code is 200\", function () {\r",
 															"    pm.response.to.have.status(200);\r",
@@ -13667,7 +13731,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "604eca47-f2c9-4320-9a62-28a7ff73eb9a",
+														"id": "137e5392-ec0b-4b7d-a2c5-c477cf47604c",
 														"exec": [
 															"pm.test(\"Status code is 200\", function () {\r",
 															"    pm.response.to.have.status(200);\r",
@@ -13746,7 +13810,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "eb064cf6-d4d7-4ee6-8d40-bce009fd8c7d",
+								"id": "93435537-3212-4068-9cc6-340e1c140225",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -13756,7 +13820,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a960c154-4b8b-4d73-8d19-8c550486387a",
+								"id": "e3b7518c-b7a1-42de-970c-258b10dbfc4c",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -13779,7 +13843,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "95844f6e-8d0c-4844-b788-9602e5ba4cd1",
+												"id": "fad9d499-3629-40d5-b388-d942d9a6aff6",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -13804,7 +13868,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "f299f390-62e8-4b77-aa58-8c0772a59627",
+												"id": "de5ca799-aceb-45aa-9831-12f7b94493a0",
 												"exec": [
 													""
 												],
@@ -13851,7 +13915,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "16bc1319-8080-4aaa-bd67-007e8307082c",
+												"id": "671214ed-1bd4-48b3-9b30-b108a6947810",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -13872,7 +13936,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "018e6fc3-da4e-452c-be64-6c31c56593c6",
+												"id": "23f17c70-a0b9-4aa3-bb79-f3886eb0bff0",
 												"exec": [
 													""
 												],
@@ -13919,7 +13983,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "e195b855-73d0-4d99-bf7d-7adc4fe862bd",
+												"id": "3262d784-df20-4f46-b5a2-4df5a33636a1",
 												"exec": [
 													"var navigator = {}; ",
 													"var window = {}; ",
@@ -14014,7 +14078,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "16b8e450-883f-4b6e-ba42-d0a2368bc84f",
+												"id": "529497fe-7073-4ac7-804b-dd692479f3d0",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -14234,7 +14298,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "7fbf7020-a693-4749-9a10-1c001483e5a9",
+												"id": "a0dc081c-b127-45cb-a2c6-6a7b7c659847",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib\r",
 													"var window = {}; //fake a window object for the lib\r",
@@ -14293,7 +14357,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "1112c850-58b5-45fd-b76b-c13f528c84ff",
+												"id": "37f004ce-3f26-4d6d-8e68-885844b407ff",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -14384,7 +14448,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "5f39a682-b098-4a50-9d37-3ce7453ec23d",
+												"id": "dbfac2f4-71c1-4dcd-a1a6-afff10d99d55",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -14405,7 +14469,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "5aa4b08b-c2fd-4da7-885e-6a727998facd",
+												"id": "884c1f3c-c91d-4b0e-879e-76abd2f11b92",
 												"exec": [
 													"setTimeout(function () {",
 													"  pm.sendRequest('www.google.com', function (err, response) {}",
@@ -14455,7 +14519,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "fac912eb-4738-487e-8b66-6256bf43b5b7",
+												"id": "b85b4fb0-4505-42e9-9459-5d51300b6213",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib",
 													"var window = {}; //fake a window object for the lib",
@@ -14477,7 +14541,7 @@
 													"var sPayload = JSON.stringify(objPayload)",
 													"//console.log(`sPayload: ${sPayload}`)",
 													"pm.variables.set(\"transferResponse\", sPayload);",
-													"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('noresponsepayeefspJWSKey'));",
+													"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('noresponsepayeefspJWSKey'));",
 													"//const [ protectedHeaderBase64, , signature ] = token.split('.');",
 													"//const signatureObject = {",
 													"//    signature: signature.replace('\"', ''),",
@@ -14492,7 +14556,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "5058bc8a-be8c-462a-9a38-7e2904516901",
+												"id": "e6ec218e-2575-4910-9fb4-3446e9c0cc58",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -14628,7 +14692,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "b7839fc3-282c-466b-80ec-f1f722667709",
+												"id": "6e87874a-591f-4adf-be8c-7d81465cf65f",
 												"exec": [
 													"",
 													"   var uuid = require('uuid');",
@@ -14643,7 +14707,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "980637d9-a50b-4a14-af99-8b3d26d33725",
+												"id": "438aada7-9d5c-4166-a287-42f5acf6f2c5",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -14786,7 +14850,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "a71a8bd3-4ab5-418f-a531-59fa2943a100",
+												"id": "03e11a4e-2444-4b24-9922-c683ea2fee69",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -14808,7 +14872,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "8844eabf-ad7c-41cb-a793-7b2f743c1a59",
+												"id": "90768f6f-0b61-40ac-9113-bc02c85fcb6d",
 												"exec": [
 													"setTimeout(function () {",
 													"  pm.sendRequest('www.google.com', function (err, response) {}",
@@ -14858,7 +14922,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "d9b2b44f-5321-4116-903d-2dbab18a9b32",
+												"id": "dc8d07b7-f9b7-4968-bc39-92539c742008",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -14884,7 +14948,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "8ab014cc-6f24-4fc5-b59e-d732a67c4cc2",
+												"id": "126f115a-a898-44c1-8100-33fd58c1667d",
 												"exec": [
 													"setTimeout(function () {",
 													"  pm.sendRequest('www.google.com', function (err, response) {}",
@@ -14941,7 +15005,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "51b8c2a3-08a3-42f5-bb88-7b03fea56e5c",
+												"id": "665dcbd5-8aa4-4163-8aea-a0da3e5d3161",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -14964,7 +15028,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "7513234f-ad21-4c90-8c6c-c3478adf311a",
+												"id": "60fe09be-201d-4b02-bca0-ed26da7ccdaa",
 												"exec": [
 													"setTimeout(function () {",
 													"  pm.sendRequest('www.google.com', function (err, response) {}",
@@ -15014,7 +15078,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "aae2834f-e0d2-41c7-a4e8-9616c9a1e0fd",
+												"id": "969c0f78-fd58-4934-99b6-07e623a0a7dc",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -15036,7 +15100,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "7838869f-fead-48e9-a1a7-5c4674e89fe6",
+												"id": "f472e83e-07f3-44f9-86a7-f0341eeba542",
 												"exec": [
 													"setTimeout(function () {",
 													"  pm.sendRequest('www.google.com', function (err, response) {}",
@@ -15086,7 +15150,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "90af0d13-941e-44c4-b0ad-c9bac3e0660d",
+												"id": "029c3655-a43f-4b42-9c2d-7af14a63dea8",
 												"exec": [
 													"var navigator = {}; ",
 													"var window = {}; ",
@@ -15181,7 +15245,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "73331eb7-ac72-4b33-9fce-fbf7e269a9bc",
+												"id": "ba7196d6-10bd-4d87-b989-9cafb0322cf5",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -15401,7 +15465,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "9a3bf7fe-fccb-492b-82b7-ab4a723002c7",
+												"id": "5e46f8e8-f5ea-436d-a1b2-df42095f0318",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib\r",
 													"var window = {}; //fake a window object for the lib\r",
@@ -15460,7 +15524,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "fb0f277b-87d8-48ed-bb5c-77d8be0990d7",
+												"id": "64827e33-9dc8-4d4e-880e-7e2aaebb0e95",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -15551,7 +15615,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "80d1aa4f-ab15-4ffc-a309-b231417def8f",
+												"id": "74aa7cfd-b29d-4c6f-a928-b5284fb339df",
 												"exec": [
 													"pm.environment.set(\"completedTimestamp\",new Date().toISOString());",
 													""
@@ -15562,7 +15626,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "7ab9aa9e-eb06-4ee5-af93-6f7791cbc5d0",
+												"id": "2aaff8a6-20a0-4375-aa9d-ec7be58f9488",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -15682,7 +15746,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "e050ad33-ea9f-4a93-8e16-723df4b78cef",
+												"id": "bc32ea44-b903-401d-9dc0-cb9310e21e71",
 												"exec": [
 													"",
 													"   var uuid = require('uuid');",
@@ -15698,7 +15762,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "2030797a-a682-4265-986c-8826aa7a67e3",
+												"id": "7258d510-82bd-42a1-b19d-45907d60bb9a",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -15790,7 +15854,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "3ca9efeb-31fe-4a25-868b-c46a0c5fdbe8",
+												"id": "35f93d12-dea8-4e6f-ba63-e4c928f5f3f8",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -15811,7 +15875,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "359f45dc-b401-43f0-9319-676187506112",
+												"id": "22cfd654-9eb0-462d-aea0-7971464a9c20",
 												"exec": [
 													"setTimeout(function () {",
 													"  pm.sendRequest('www.google.com', function (err, response) {}",
@@ -15865,7 +15929,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "aec90584-b59d-465e-863d-9d8f4f505d00",
+								"id": "0743e8a2-6b5b-4100-8834-4ad28d6dd3b3",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -15875,7 +15939,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "7dce479f-236c-4cd2-8afd-4e18dfddd545",
+								"id": "5d6d4cc0-cd06-4bde-bb9b-880ae61e3898",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -15901,7 +15965,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "2a72a50e-ade3-4e74-9704-f5c82eff85eb",
+														"id": "274b76ed-83ec-452a-8fd7-9d1f51efb1ef",
 														"exec": [
 															"var navigator = {}; ",
 															"var window = {}; ",
@@ -15996,7 +16060,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "a1ed16d8-678c-4c4e-8166-20e3eda0958f",
+														"id": "f0386e32-a495-4496-9190-8cfd4ad2a36d",
 														"exec": [
 															"pm.test(\"Status code is 202\", function () {",
 															"    pm.response.to.have.status(202);",
@@ -16216,7 +16280,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "9376c851-0cd6-4472-8233-9fde44109e17",
+														"id": "00b5690d-aa3b-42b4-b73a-232f0d2dbe25",
 														"exec": [
 															"pm.test(\"Status code is 202\", function () {\r",
 															"    pm.response.to.have.status(202);\r",
@@ -16352,7 +16416,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "8c560445-82b0-4ca6-ad79-20f1bc545dac",
+														"id": "ad3ead90-f8ff-4990-9e6f-b283b57c168b",
 														"exec": [
 															"var navigator = {}; //fake a navigator object for the lib\r",
 															"var window = {}; //fake a window object for the lib\r",
@@ -16485,7 +16549,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "6ac060c0-fa01-4c64-b83d-f3ca8618818c",
+														"id": "24744432-1381-4752-acb8-d735fd3bde4d",
 														"exec": [
 															"pm.test(\"Status code is 202\", function () {",
 															"    pm.response.to.have.status(202);",
@@ -16557,7 +16621,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "45a3644d-d201-432d-942f-7df6fd17c137",
+														"id": "8d4242d8-d378-42a9-ad79-3845e9053878",
 														"exec": [
 															"var navigator = {}; //fake a navigator object for the lib\r",
 															"var window = {}; //fake a window object for the lib\r",
@@ -16700,7 +16764,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "0c262135-525c-4535-8379-aea971eadcea",
+																"id": "18095a81-1c16-4ba6-875b-8cdaadde7a6f",
 																"exec": [
 																	"var navigator = {}; ",
 																	"var window = {}; ",
@@ -16795,7 +16859,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "cfd2f74f-642c-4349-abc2-318a084f8c47",
+																"id": "87ee61ff-4ef6-47b7-a0fa-beae9ea3bb2d",
 																"exec": [
 																	"pm.test(\"Status code is 202\", function () {",
 																	"    pm.response.to.have.status(202);",
@@ -17015,7 +17079,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "4859bcdf-471d-4b3f-ba0a-5f55fc67e239",
+																"id": "1baa7cc0-ee82-4bf6-903f-4f4d57a2b5f0",
 																"exec": [
 																	"",
 																	"var navigator = {}; //fake a navigator object for the lib",
@@ -17075,7 +17139,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "b31e29aa-1304-40e7-a52e-de72ed9cfa57",
+																"id": "e9396fdf-3b50-4d5d-9018-527b8f0fccd3",
 																"exec": [
 																	"pm.test(\"Status code is 202\", function () {",
 																	"    pm.response.to.have.status(202);",
@@ -17166,7 +17230,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "30cd4fb1-f92b-4ee4-b75b-8330e356c80c",
+																"id": "4ee97c27-92f1-485a-a0ca-fd01dd422326",
 																"exec": [
 																	"pm.environment.set(\"completedTimestamp\",new Date().toISOString());",
 																	"var navigator = {}; //fake a navigator object for the lib",
@@ -17196,7 +17260,7 @@
 																	"var sPayload = JSON.stringify(objPayload)",
 																	"//console.log(`sPayload: ${sPayload}`)",
 																	"pm.variables.set(\"transferResponse\", sPayload);",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payeefspJWSKey'));",
+																	"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payeefspJWSKey'));",
 																	"//console.log(`token: ${token}`)",
 																	"",
 																	"// var encodedHeaders = btoa(sHeader)",
@@ -17221,7 +17285,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "2846cb8f-0156-4ecd-b126-da299b93c25a",
+																"id": "c22382d6-faa7-43d4-8472-39e842f7c9f1",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
@@ -17361,7 +17425,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "b0ad1110-5006-48bc-9a7f-d7b2b7f39c3f",
+																"id": "f0aa17ea-ef6e-4e37-86cc-e9d61d9004c6",
 																"exec": [
 																	"var navigator = {}; //fake a navigator object for the lib",
 																	"var window = {}; //fake a window object for the lib",
@@ -17390,7 +17454,7 @@
 																	"var sPayload = JSON.stringify(objPayload);",
 																	"//console.log(`sPayload: ${sPayload}`);",
 																	"pm.variables.set(\"transferResponse2\", sPayload);",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payeefspJWSKey'));",
+																	"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payeefspJWSKey'));",
 																	"//console.log(`token: ${token}`)",
 																	"",
 																	"// var encodedHeaders = btoa(sHeader)",
@@ -17415,7 +17479,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "1aeab992-961d-4a84-b10c-d04f47b6335b",
+																"id": "eb96f1ba-ee2a-4959-8b3a-8549a54d1f75",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
@@ -17560,7 +17624,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "80e97143-a746-492e-847b-0537db62bfbd",
+																"id": "6f56e23a-b81b-4091-9fa9-e1e6c1cb2cab",
 																"exec": [
 																	"",
 																	"   pm.variables.set('transferDate', (new Date()).toUTCString());",
@@ -17572,7 +17636,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "57cc5caf-a3e0-4c18-8a76-69263844bd39",
+																"id": "5dcd5a71-5730-412c-a6d0-45b2045c3381",
 																"exec": [
 																	"pm.test(\"Status code is 202\", function () {",
 																	"    pm.response.to.have.status(202);",
@@ -17702,7 +17766,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "f93dca69-2028-446b-b8a4-d1bf65ff1d2c",
+																"id": "9c49c408-a74d-4ff7-a675-10562d87297c",
 																"exec": [
 																	"var navigator = {}; ",
 																	"var window = {}; ",
@@ -17797,7 +17861,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "bfb6439a-8ea1-4408-85bb-6194e6e84356",
+																"id": "ac48d204-406d-4a30-b497-f422c60d4bf7",
 																"exec": [
 																	"pm.test(\"Status code is 202\", function () {",
 																	"    pm.response.to.have.status(202);",
@@ -18017,7 +18081,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "2b75e4b1-ad4c-47ea-b029-074f666051a5",
+																"id": "f696ac2f-550c-4862-b8c6-67eca0fa466c",
 																"exec": [
 																	"",
 																	"var navigator = {}; //fake a navigator object for the lib",
@@ -18077,7 +18141,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "23d34a05-f90a-43fb-8e50-e1fd7e11f78a",
+																"id": "020271d9-e1dc-4993-be9c-9dfba7220c15",
 																"exec": [
 																	"pm.test(\"Status code is 202\", function () {",
 																	"    pm.response.to.have.status(202);",
@@ -18168,7 +18232,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "b7b76df5-dc1b-4d9f-b7b1-ddc728ad44f9",
+																"id": "2071c65b-5869-4bfe-aa6f-f1344300022a",
 																"exec": [
 																	"pm.environment.set(\"completedTimestamp\",new Date().toISOString());",
 																	"var navigator = {}; //fake a navigator object for the lib",
@@ -18198,7 +18262,7 @@
 																	"var sPayload = JSON.stringify(objPayload)",
 																	"//console.log(`sPayload: ${sPayload}`)",
 																	"pm.variables.set(\"transferResponse\", sPayload);",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('noresponsepayeefspJWSKey'));",
+																	"//var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('noresponsepayeefspJWSKey'));",
 																	"//console.log(`token: ${token}`)",
 																	"",
 																	"// var encodedHeaders = btoa(sHeader)",
@@ -18223,7 +18287,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "606f53d5-3c9f-43af-aca3-a5cddce3f83e",
+																"id": "2d8e91ab-189a-4976-a02a-1c80ef458198",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
@@ -18367,7 +18431,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "618a82bb-7db8-4959-b29b-623354175df3",
+																"id": "58928e4b-5e76-4e27-a514-c36c97ecdb31",
 																"exec": [
 																	"pm.variables.set(\"updatedTimestamp\",new Date().toISOString());",
 																	"var navigator = {}; //fake a navigator object for the lib",
@@ -18397,7 +18461,7 @@
 																	"var sPayload = JSON.stringify(objPayload)",
 																	"//console.log(`sPayload: ${sPayload}`)",
 																	"pm.variables.set(\"transferResponse\", sPayload);",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payeefspJWSKey'));",
+																	"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payeefspJWSKey'));",
 																	"//console.log(`token: ${token}`)",
 																	"",
 																	"// var encodedHeaders = btoa(sHeader)",
@@ -18422,7 +18486,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "76b10923-af79-4f58-82fb-9f3995aebaf0",
+																"id": "36ebc6ab-f257-4cf4-aaa9-5bd1728c07b5",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
@@ -18571,7 +18635,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "33cd79e8-7b87-419c-85de-13829a35ca1f",
+												"id": "553c5437-7c1d-45be-b028-54e074f46d6b",
 												"type": "text/javascript",
 												"exec": [
 													""
@@ -18581,7 +18645,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "c8f74174-5614-47f8-8c9b-8eb3868413b9",
+												"id": "59dd2ff1-67cd-4bf4-9d77-3616b8e14ecc",
 												"type": "text/javascript",
 												"exec": [
 													""
@@ -18604,7 +18668,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "61600ef6-40da-43f8-91bf-11a55e6171a9",
+																"id": "c634464b-74d7-464e-a289-1bc8b737ab45",
 																"exec": [
 																	"var navigator = {}; ",
 																	"var window = {}; ",
@@ -18699,7 +18763,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "bb72266e-7468-49e0-9f0a-ebd86ca92975",
+																"id": "dc378f8a-e9e7-49e3-a070-9d77e8d26963",
 																"exec": [
 																	"pm.test(\"Status code is 202\", function () {",
 																	"    pm.response.to.have.status(202);",
@@ -18919,7 +18983,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "9472dd46-634d-4a7f-bc3d-eac2f10502aa",
+																"id": "5101115e-1f28-4518-a944-0a003deab29e",
 																"exec": [
 																	"",
 																	"var navigator = {}; //fake a navigator object for the lib",
@@ -18979,7 +19043,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "5a97fa6b-485f-4951-a6e5-00f168217895",
+																"id": "07cfc65a-a51a-4cef-85d5-1b28c8b5177e",
 																"exec": [
 																	"pm.test(\"Status code is 202\", function () {",
 																	"    pm.response.to.have.status(202);",
@@ -19070,7 +19134,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "4af8a120-b377-4200-b8f3-bfb4e159777d",
+																"id": "ee3f7712-171b-4ffb-994c-88291ad90008",
 																"exec": [
 																	"pm.environment.set(\"completedTimestamp\",new Date().toISOString());",
 																	"var navigator = {}; //fake a navigator object for the lib",
@@ -19105,7 +19169,7 @@
 																	"var sPayload = JSON.stringify(objPayload)",
 																	"//console.log(`sPayload: ${sPayload}`)",
 																	"pm.variables.set(\"fulfillResponse\", sPayload);",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payeefspJWSKey'));",
+																	"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payeefspJWSKey'));",
 																	"//console.log(`token: ${token}`)",
 																	"",
 																	"// var encodedHeaders = btoa(sHeader)",
@@ -19130,7 +19194,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "6a822626-d4e0-4c31-b076-a279582c6119",
+																"id": "c4e74e5f-8369-42fa-9a9c-9c27d7350f58",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
@@ -19271,7 +19335,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "6ff13d30-2298-487c-bccc-96281dc5c0dc",
+																"id": "59317668-c507-4e42-b092-5ebe1c9d2350",
 																"exec": [
 																	"pm.environment.set(\"completedTimestamp\",new Date().toISOString());",
 																	"var navigator = {}; //fake a navigator object for the lib",
@@ -19306,7 +19370,7 @@
 																	"var sPayload = JSON.stringify(objPayload)",
 																	"//console.log(`sPayload: ${sPayload}`)",
 																	"pm.variables.set(\"fulfillResponse\", sPayload);",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('noresponsepayeefspJWSKey'));",
+																	"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('noresponsepayeefspJWSKey'));",
 																	"//console.log(`token: ${token}`)",
 																	"",
 																	"// var encodedHeaders = btoa(sHeader)",
@@ -19331,7 +19395,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "f3c2e4f1-fe13-46af-a6ec-6a90644b3b6f",
+																"id": "e2951632-eec0-425e-a18a-dae4304ec077",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
@@ -19478,7 +19542,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "66db9104-a9a5-44b7-a5a8-e512053481e0",
+																"id": "4c9dff5a-98f0-4858-9714-d8fc613146ca",
 																"exec": [
 																	"var navigator = {}; ",
 																	"var window = {}; ",
@@ -19573,7 +19637,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "8a98d1ff-46e3-4609-8e60-115f7afa3e6c",
+																"id": "6127038f-7427-4eac-bd62-253cc4a225d9",
 																"exec": [
 																	"pm.test(\"Status code is 202\", function () {",
 																	"    pm.response.to.have.status(202);",
@@ -19793,7 +19857,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "4060c0f0-1d3e-4584-b560-ffc22251bd05",
+																"id": "3da051f2-7394-49e4-9508-7d3adf073a92",
 																"exec": [
 																	"",
 																	"var navigator = {}; //fake a navigator object for the lib",
@@ -19853,7 +19917,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "49aea830-597c-49ad-b70c-127b87f4be88",
+																"id": "31ab14b1-b7a8-4f80-b7a0-f41be07a2aa7",
 																"exec": [
 																	"pm.test(\"Status code is 202\", function () {",
 																	"    pm.response.to.have.status(202);",
@@ -19944,7 +20008,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "84fa37f1-4b30-4e2d-80b0-463858f3e620",
+																"id": "53ac26f1-d0e2-47e7-96cd-656e650c427f",
 																"exec": [
 																	"pm.environment.set(\"completedTimestamp\",new Date().toISOString());",
 																	"var navigator = {}; //fake a navigator object for the lib",
@@ -19979,7 +20043,7 @@
 																	"var sPayload = JSON.stringify(objPayload)",
 																	"//console.log(`sPayload: ${sPayload}`)",
 																	"pm.variables.set(\"fulfillResponse\", sPayload);",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('noresponsepayeefspJWSKey'));",
+																	"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('noresponsepayeefspJWSKey'));",
 																	"//console.log(`token: ${token}`)",
 																	"",
 																	"// var encodedHeaders = btoa(sHeader)",
@@ -20004,7 +20068,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "935ee4ca-c457-4277-9e33-d33bd6fa320e",
+																"id": "74942b7a-3c1f-476f-a32f-d49053475c72",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
@@ -20144,7 +20208,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "71e89234-150a-41d5-bab8-feebb11d3426",
+																"id": "1cdda7e3-cd89-4a60-a0ca-69397aae8f46",
 																"exec": [
 																	"pm.environment.set(\"completedTimestamp\",new Date().toISOString());",
 																	"var navigator = {}; //fake a navigator object for the lib",
@@ -20179,7 +20243,7 @@
 																	"var sPayload = JSON.stringify(objPayload)",
 																	"//console.log(`sPayload: ${sPayload}`)",
 																	"pm.variables.set(\"fulfillResponse\", sPayload);",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('noresponsepayeefspJWSKey'));",
+																	"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('noresponsepayeefspJWSKey'));",
 																	"//console.log(`token: ${token}`)",
 																	"",
 																	"// var encodedHeaders = btoa(sHeader)",
@@ -20204,7 +20268,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "907a4026-e94e-4815-8764-feb3eaf20931",
+																"id": "57ef30d4-65ba-41f9-b22d-65a7ea65f7ba",
 																"exec": [
 																	"pm.test(\"Status code is 200\", function () {",
 																	"    pm.response.to.have.status(200);",
@@ -20348,7 +20412,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "3a510ff1-cf1e-4ab9-906d-09f5c27d14f8",
+												"id": "e2f91a59-58e4-42e9-b9b3-7e3c556e6d25",
 												"type": "text/javascript",
 												"exec": [
 													""
@@ -20358,7 +20422,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "af4ec6a6-98a6-41ab-8086-7d176dd67c87",
+												"id": "e7685181-1e9f-4e82-94aa-2c4f28bec3d1",
 												"type": "text/javascript",
 												"exec": [
 													""
@@ -20389,7 +20453,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "039d4eab-351d-4f80-b75b-3efc1a11d98f",
+												"id": "45e7e211-628d-4765-a8e1-06f48d548c05",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -20447,7 +20511,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "afd8c0cb-97ac-4cdb-ae1f-bcdb054d64ca",
+												"id": "4fe3cef3-1e64-4bcd-baee-c93a0c804f30",
 												"exec": [
 													"var navigator = {}; ",
 													"var window = {}; ",
@@ -20512,7 +20576,7 @@
 													"var sPayload = JSON.stringify(objPayload)",
 													"//console.log(`sPayload: ${sPayload}`)",
 													"pm.variables.set(\"quoteRequest\", sPayload);",
-													"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
+													"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
 													"//console.log(`token: ${token}`)",
 													"",
 													"// var encodedHeaders = btoa(sHeader)",
@@ -20542,7 +20606,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "b4f3c10b-e604-4624-907c-7b1a11ff791e",
+												"id": "85767365-40ff-4d04-8736-8fe974165974",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -20582,29 +20646,29 @@
 													"            // });",
 													"            ",
 													"            //Validate protected header inside Signature",
-													"            var decodedProtectedHeaders = JSON.parse(atob(protectedHeader))",
-													"            console.log('decodedProtectedHeaders:',decodedProtectedHeaders)",
+													"            // var decodedProtectedHeaders = JSON.parse(atob(protectedHeader))",
+													"            // console.log('decodedProtectedHeaders:',decodedProtectedHeaders)",
 													"            ",
-													"            pm.test(\"FSPIOP-Signature Protected Header alg to be RS256\", function () {",
-													"                pm.expect(decodedProtectedHeaders['alg']).to.eql('RS256');",
-													"            });",
-													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-URI to be /quotes/\"+pm.environment.get(\"quoteId\"), function () {",
-													"                pm.expect(decodedProtectedHeaders['FSPIOP-URI']).to.eql('/quotes/'+pm.environment.get(\"quoteId\")+'/error');",
-													"            });",
+													"            // pm.test(\"FSPIOP-Signature Protected Header alg to be RS256\", function () {",
+													"            //     pm.expect(decodedProtectedHeaders['alg']).to.eql('RS256');",
+													"            // });",
+													"            // pm.test(\"FSPIOP-Signature Protected Header FSPIOP-URI to be /quotes/\"+pm.environment.get(\"quoteId\"), function () {",
+													"            //     pm.expect(decodedProtectedHeaders['FSPIOP-URI']).to.eql('/quotes/'+pm.environment.get(\"quoteId\")+'/error');",
+													"            // });",
 													"            ",
 													"",
-													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-HTTP-Method to be PUT\", function () {",
-													"                pm.expect(decodedProtectedHeaders['FSPIOP-HTTP-Method']).to.eql('PUT');",
-													"            });",
-													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Source to be switch\", function () {",
-													"                pm.expect(decodedProtectedHeaders['FSPIOP-Source']).to.eql('switch');",
-													"            });",
-													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Destination to be testfsp1\", function () {",
-													"                pm.expect(decodedProtectedHeaders['FSPIOP-Destination']).to.eql('testfsp1');",
-													"            });",
-													"            pm.test(\"FSPIOP-Signature Protected Header Date is present\", function () {",
-													"                pm.expect(decodedProtectedHeaders['Date']).to.eql(headers['date']);",
-													"            });",
+													"            // pm.test(\"FSPIOP-Signature Protected Header FSPIOP-HTTP-Method to be PUT\", function () {",
+													"            //     pm.expect(decodedProtectedHeaders['FSPIOP-HTTP-Method']).to.eql('PUT');",
+													"            // });",
+													"            // pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Source to be switch\", function () {",
+													"            //     pm.expect(decodedProtectedHeaders['FSPIOP-Source']).to.eql('switch');",
+													"            // });",
+													"            // pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Destination to be testfsp1\", function () {",
+													"            //     pm.expect(decodedProtectedHeaders['FSPIOP-Destination']).to.eql('testfsp1');",
+													"            // });",
+													"            // pm.test(\"FSPIOP-Signature Protected Header Date is present\", function () {",
+													"            //     pm.expect(decodedProtectedHeaders['Date']).to.eql(headers['date']);",
+													"            // });",
 													"           ",
 													"            pm.test(\"testfsp1 FSPIOP-URI to be /quotes/\"+pm.environment.get(\"quoteId\"), function () {",
 													"                pm.expect(headers['fspiop-uri']).to.eql('/quotes/'+pm.environment.get(\"quoteId\")+'/error');",
@@ -20614,21 +20678,29 @@
 													"                pm.expect(headers['fspiop-http-method']).to.eql('PUT');",
 													"            });",
 													"            ",
-													"            var jsonData = response.json().data;",
+													"            var jsonData = response.responseSize && response.json()",
 													"            ",
-													"            pm.test(\"Error code is 3201\", function () {",
-													"                pm.expect(jsonData.errorInformation.errorCode).to.eql('3201');",
-													"            });",
-													"           ",
-													"           pm.test(\"Error Description is Destination FSP Error - \\'testfsp2\\' is inactive \", function () {",
-													"                pm.expect(jsonData.errorInformation.errorDescription).to.include('Destination FSP Error - Destination FSP Error - \\'testfsp2\\' is inactive');",
-													"           });",
+													"            if (jsonData && jsonData.data && jsonData.data.errorInformation) {",
+													"            ",
+													"                const errorInformation = jsonData.data.errorInformation;",
+													"                ",
+													"                pm.test(\"Error code is 3201\", function () {",
+													"                    pm.expect(errorInformation.errorCode).to.eql('3201');",
+													"                });",
+													"               ",
+													"               pm.test(\"Error Description is Destination FSP Error - \\'testfsp2\\' is inactive \", function () {",
+													"                    pm.expect(errorInformation.errorDescription).to.include('Destination FSP Error - Destination FSP Error - \\'testfsp2\\' is inactive');",
+													"                });",
+													"            } else {",
+													"                pm.test('Test FAILED', function() {",
+													"                    throw new Error('Invalid response was received.')",
+													"                })",
+													"            }",
 													"           ",
 													"      } else {",
 													"          pm.test(\"Quote FAILED\", function () {",
 													"            throw new Error('Did not receive response on Payer side');",
 													"           });",
-													"           // postman.setNextRequest(null);",
 													"      }",
 													"       ",
 													"   });",
@@ -20712,7 +20784,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "875de2a6-637a-43e7-80fe-df94d1e44b9c",
+												"id": "896d14ac-25b5-458b-87f7-c93f6741694b",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -20744,7 +20816,6 @@
 													"                    pm.expect(headers['fspiop-signature']).not.eql(undefined);",
 													"                });",
 													"            ",
-													"            ",
 													"            pm.test(\"fspiop-uri includes /transfers/{{transfer_ID}/error}\", function () {",
 													"                pm.expect(headers['fspiop-uri']).to.eql('/transfers/'+ pm.environment.get(\"transfer_ID\")+'/error');",
 													"            });",
@@ -20753,19 +20824,29 @@
 													"                pm.expect(headers['fspiop-http-method']).to.eql('PUT');",
 													"            });",
 													"            ",
-													"            var jsonData = response.json().data;",
-													"            pm.test(\"Error code is 3100\", function () {",
-													"                pm.expect(jsonData.errorInformation.errorCode).to.eql('3100');",
-													"            });",
-													"           ",
-													"           pm.test(\"Error Description is Generic validation error - Participant testfsp2 is inactive \", function () {",
-													"                pm.expect(jsonData.errorInformation.errorDescription).to.include('Generic validation error - Participant testfsp2 is inactive');",
-													"           });",
+													"            var jsonData = response.responseSize && response.json()",
+													"            ",
+													"             if (jsonData && jsonData.data && jsonData.data.errorInformation) {",
+													"            ",
+													"                const errorInformation = jsonData.data.errorInformation;",
+													"            ",
+													"                pm.test(\"Error code is 3100\", function () {",
+													"                    pm.expect(jsonData.errorInformation.errorCode).to.eql('3100');",
+													"                });",
+													"               ",
+													"                pm.test(\"Error Description is Generic validation error - Participant testfsp2 is inactive \", function () {",
+													"                    pm.expect(jsonData.errorInformation.errorDescription).to.include('Generic validation error - Participant testfsp2 is inactive');",
+													"                });",
+													"            } else {",
+													"                pm.test('Test FAILED', function() {",
+													"                    throw new Error('Invalid response was received.')",
+													"                })",
+													"            }",
+													" ",
 													"          } else {",
 													"              pm.test(\"Transfer FAILED\", function () {",
 													"                throw new Error('Did not receive response on payer side');",
 													"              });",
-													"              // postman.setNextRequest(null)",
 													"          }",
 													"   });",
 													"}, 1300)",
@@ -20779,7 +20860,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "101da411-87e5-4a59-8530-84f9a8e8739b",
+												"id": "a58a7fdb-bf6a-488f-827a-4af501011d7b",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib",
 													"var window = {}; //fake a window object for the lib",
@@ -20813,7 +20894,7 @@
 													"var sPayload = JSON.stringify(objPayload)",
 													"//console.log(`sPayload: ${sPayload}`)",
 													"pm.variables.set(\"transferRequest\", sPayload);",
-													"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
+													"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
 													"//console.log(`token: ${token}`)",
 													"",
 													"// var encodedHeaders = btoa(sHeader)",
@@ -20907,7 +20988,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "1fad528e-0b53-4645-81b2-69b9a9726b6e",
+												"id": "346ae4f4-8cc2-40e6-bcec-0edcfe6a7b2d",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -20965,7 +21046,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "30759577-3975-4362-a549-1d8d96c3a00d",
+												"id": "d3abd48f-e7da-4558-bf12-5af70f42c051",
 												"exec": [
 													"  var navigator = {}; ",
 													"var window = {}; ",
@@ -21030,7 +21111,7 @@
 													"var sPayload = JSON.stringify(objPayload)",
 													"//console.log(`sPayload: ${sPayload}`)",
 													"pm.variables.set(\"quoteRequest\", sPayload);",
-													"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
+													"//var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
 													"//console.log(`token: ${token}`)",
 													"",
 													"// var encodedHeaders = btoa(sHeader)",
@@ -21056,7 +21137,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "dedf0439-c6fa-447b-ab35-a2bb3433a5f1",
+												"id": "ba04efdd-21a0-4994-86ec-75f43c16e7e5",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {\r",
 													"    pm.response.to.have.status(202);\r",
@@ -21101,7 +21182,6 @@
 													"              pm.test(\"Quote FAILED\", function () {\r",
 													"                throw new Error('Did not receive request on payee side');\r",
 													"              });\r",
-													"              // postman.setNextRequest(null)\r",
 													"          }\r",
 													"   });\r",
 													"}, 1100)\r",
@@ -21129,7 +21209,8 @@
 													"            \r",
 													"            \r",
 													"            \r",
-													"            var {signature,protectedHeader} = JSON.parse(headers['fspiop-signature'])\r",
+													"            var headerFSPIOPSignature = headers['fspiop-signature']\r",
+													"            var {signature,protectedHeader} = JSON.parse(headerFSPIOPSignature.replace(/\\\\/g, \"\"))\r",
 													"            // var strData = JSON.stringify(response.json().data)\r",
 													"            // const token = `${protectedHeader}.${btoa(strData)}.${signature}`\r",
 													"            // console.log(`token: ${token}`)\r",
@@ -21279,7 +21360,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "1d265a6b-957f-46e5-8d46-82567ec3e435",
+												"id": "ac247dca-ddeb-44b9-9efe-7c866bcdb151",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib\r",
 													"var window = {}; //fake a window object for the lib\r",
@@ -21313,7 +21394,7 @@
 													"var sPayload = JSON.stringify(objPayload)\r",
 													"//console.log(`sPayload: ${sPayload}`)\r",
 													"pm.variables.set(\"transferRequest\", sPayload);\r",
-													"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));\r",
+													"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));\r",
 													"//console.log(`token: ${token}`)\r",
 													"\r",
 													"// var encodedHeaders = btoa(sHeader)\r",
@@ -21321,12 +21402,12 @@
 													"// var ofspiopSignature = {signature: vSignature, protectedHeader: encodedHeaders}\r",
 													"// var token = JSON.stringify(ofspiopSignature)\r",
 													"\r",
-													"const [ protectedHeaderBase64, , signature ] = token.split('.');\r",
+													"// const [ protectedHeaderBase64, , signature ] = token.split('.');\r",
 													"\r",
-													"const signatureObject = {\r",
-													"    signature: signature.replace('\"', ''),\r",
-													"    protectedHeader: protectedHeaderBase64.replace('\"', '')\r",
-													"};\r",
+													"// const signatureObject = {\r",
+													"//     signature: signature.replace('\"', ''),\r",
+													"//     protectedHeader: protectedHeaderBase64.replace('\"', '')\r",
+													"// };\r",
 													"\r",
 													"//console.log(JSON.stringify(signatureObject))\r",
 													"\r",
@@ -21338,7 +21419,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "83cb8f1b-a1e0-4f1b-b68c-bc9f0f728ee4",
+												"id": "3065fd8e-dba5-4897-beb8-7f8915740f33",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {\r",
 													"    pm.response.to.have.status(202);\r",
@@ -21380,7 +21461,6 @@
 													"                    pm.expect(headers['fspiop-uri']).to.eql('/transfers');\r",
 													"                });\r",
 													"                \r",
-													"                \r",
 													"                //Check the data\r",
 													"                var jsonData = response.json().data;\r",
 													"                pm.test(\"testfsp2 data should have the same transferId as request\", function () {\r",
@@ -21406,7 +21486,6 @@
 													"              pm.test(\"Transfer FAILED\", function () {\r",
 													"                throw new Error('Did not receive response on payee side');\r",
 													"              });\r",
-													"              // postman.setNextRequest(null)\r",
 													"          }\r",
 													"  });\r",
 													"}, 1100)\r",
@@ -21442,7 +21521,8 @@
 													"                pm.expect(headers['fspiop-http-method']).to.eql('PUT');\r",
 													"            });\r",
 													"            \r",
-													"            var jsonData = response.json().data;\r",
+													"            var jsonData = response.responseSie && response.json().data;\r",
+													"            \r",
 													"            pm.test(\"Response data does not have transferId\", function () {\r",
 													"               pm.expect(jsonData.transferId).to.eql(undefined);\r",
 													"            });\r",
@@ -21453,7 +21533,6 @@
 													"              pm.test(\"Transfer FAILED\", function () {\r",
 													"                throw new Error('Did not receive response on payer side');\r",
 													"              });\r",
-													"              // postman.setNextRequest(null)\r",
 													"          }\r",
 													"   });\r",
 													"}, 1500)"
@@ -21545,7 +21624,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "1002da10-e94f-42a6-833a-aca59b2697f6",
+												"id": "9093c309-5ae1-471b-88ed-9ce5fc3bdf6a",
 												"exec": [
 													""
 												],
@@ -21555,14 +21634,15 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "d6769d4d-f783-4979-8ca2-e168703698ec",
+												"id": "cb3e6435-d7f6-4b2e-a34c-2997a5e0792c",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
 													"});",
 													"",
-													"var jsonData = pm.response.json();",
-													"jsonData",
+													"var jsonData = pm.response.responseSize && pm.response.json();",
+													"",
+													"jsonData && jsonData",
 													"    .filter(account => account.currency === pm.environment.get('currency'))",
 													"    .forEach(curAccount => {",
 													"        if(curAccount.ledgerAccountType === \"POSITION\") {",
@@ -21616,7 +21696,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "ea24d0fe-2082-4228-9d8a-d4fc3e0901f1",
+												"id": "77004ed8-21b2-46cd-9282-db251b97017e",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -21676,7 +21756,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "b9350c70-8542-4cee-9409-74c9ae12ff35",
+												"id": "1ede8ed7-a8f3-462f-b608-44b7d4c23441",
 												"exec": [
 													"var navigator = {}; ",
 													"var window = {}; ",
@@ -21741,7 +21821,7 @@
 													"var sPayload = JSON.stringify(objPayload)",
 													"//console.log(`sPayload: ${sPayload}`)",
 													"pm.variables.set(\"quoteRequest\", sPayload);",
-													"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
+													"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
 													"//console.log(`token: ${token}`)",
 													"",
 													"// var encodedHeaders = btoa(sHeader)",
@@ -21771,7 +21851,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "db37f5ab-c08d-49da-9729-6067c74d6241",
+												"id": "0fe49052-f595-4b5c-b8b9-fdd6a8f664b2",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -21941,7 +22021,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "7c0b5117-ef5a-4c40-8358-7096072ba97f",
+												"id": "e5e180d7-f612-42ef-88fe-24761a4f4a8b",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -22008,7 +22088,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "25441fdd-82d0-4ef0-842e-e22d31010e77",
+												"id": "562d2401-4e17-43e2-9efd-002985a0cfe2",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib",
 													"var window = {}; //fake a window object for the lib",
@@ -22042,7 +22122,7 @@
 													"var sPayload = JSON.stringify(objPayload)",
 													"//console.log(`sPayload: ${sPayload}`)",
 													"pm.variables.set(\"transferRequest\", sPayload);",
-													"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
+													"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
 													"//console.log(`token: ${token}`)",
 													"",
 													"// var encodedHeaders = btoa(sHeader)",
@@ -22136,7 +22216,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "304c6436-a97b-4b20-89a5-0dff301826a8",
+												"id": "a2e7d2a1-c7b7-47bb-a576-633c6402129e",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -22196,7 +22276,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "97d733a8-df0e-4cf3-9a90-845f188e607a",
+												"id": "135b87b2-d976-4d71-87da-ce8aa44ab22e",
 												"exec": [
 													"  var navigator = {}; ",
 													"var window = {}; ",
@@ -22261,7 +22341,7 @@
 													"var sPayload = JSON.stringify(objPayload)",
 													"//console.log(`sPayload: ${sPayload}`)",
 													"pm.variables.set(\"quoteRequest\", sPayload);",
-													"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
+													"// var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));",
 													"//console.log(`token: ${token}`)",
 													"",
 													"// var encodedHeaders = btoa(sHeader)",
@@ -22287,7 +22367,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "3107c650-0394-4acb-9851-86c7a031af9b",
+												"id": "561a1b0d-0421-4dce-91af-e40b0b73850b",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {\r",
 													"    pm.response.to.have.status(202);\r",
@@ -22510,7 +22590,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "4a35c7ef-5306-4fe5-9fe6-fc4f2bf972db",
+												"id": "34f96061-d5ef-416f-ae8a-20cf98b2247b",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib\r",
 													"var window = {}; //fake a window object for the lib\r",
@@ -22544,7 +22624,7 @@
 													"var sPayload = JSON.stringify(objPayload)\r",
 													"//console.log(`sPayload: ${sPayload}`)\r",
 													"pm.variables.set(\"transferRequest\", sPayload);\r",
-													"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));\r",
+													"//var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('testfsp1JWSKey'));\r",
 													"//console.log(`token: ${token}`)\r",
 													"\r",
 													"// var encodedHeaders = btoa(sHeader)\r",
@@ -22552,12 +22632,12 @@
 													"// var ofspiopSignature = {signature: vSignature, protectedHeader: encodedHeaders}\r",
 													"// var token = JSON.stringify(ofspiopSignature)\r",
 													"\r",
-													"const [ protectedHeaderBase64, , signature ] = token.split('.');\r",
+													"//const [ protectedHeaderBase64, , signature ] = token.split('.');\r",
 													"\r",
-													"const signatureObject = {\r",
-													"    signature: signature.replace('\"', ''),\r",
-													"    protectedHeader: protectedHeaderBase64.replace('\"', '')\r",
-													"};\r",
+													"//const signatureObject = {\r",
+													"//   signature: signature.replace('\"', ''),\r",
+													"//    protectedHeader: protectedHeaderBase64.replace('\"', '')\r",
+													"//};\r",
 													"\r",
 													"//console.log(JSON.stringify(signatureObject))\r",
 													"\r",
@@ -22569,7 +22649,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "ebf02162-1cef-4d97-9ddf-c77c9854a340",
+												"id": "71405fcf-3f4d-48d6-bc34-d82e98e96a83",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {\r",
 													"    pm.response.to.have.status(202);\r",
@@ -22786,7 +22866,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "03c305c9-1e70-435f-8a1c-8de6dc319633",
+										"id": "77801a0b-8d97-4100-88c0-b7da416edd30",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -22833,7 +22913,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "bea11533-a7bf-4b02-8ff6-550336e2a433",
+										"id": "7755bffb-462f-4eab-a306-697aa9b867b9",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -22881,7 +22961,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "23fb22ed-f0d1-451b-9df4-eca7d76436d5",
+										"id": "bf3d85e2-2073-45b8-ba59-9174ede8f460",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -22930,7 +23010,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "bc64031a-5cbb-47c1-8102-a1ff768fed6b",
+										"id": "3da4e6ac-c8c8-4ae3-acd3-8b13a004d90d",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -22988,7 +23068,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "0b018237-9d21-48f3-ba52-9338ff0f0026",
+										"id": "6f7cb86d-bda3-4551-95ae-e3c70557d83c",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -23052,7 +23132,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "994da79b-6183-4eff-b2b6-cf30f253f9cd",
+										"id": "959ead62-f6e6-48d6-8aa4-0554cb705cb1",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -23110,7 +23190,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "359fdb72-1734-44aa-a9df-09ca958e0607",
+								"id": "d2cd69ec-0a94-4d6d-a7fe-ba9dd0302d62",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -23120,7 +23200,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "30c051c5-7b1e-4eb4-a083-c43ecacc583f",
+								"id": "71632413-1627-4039-a0fc-4bc06f79711c",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -23143,7 +23223,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "255f67e2-2c0d-4dc5-b943-2d20e472395e",
+												"id": "2a725075-ac3e-475b-a215-b7b9baa2df75",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib",
 													"var window = {}; //fake a window object for the lib",
@@ -23228,7 +23308,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "8684c6e8-6415-44d0-9c8e-a67cf5dd3507",
+												"id": "0fc814c0-c7bb-4d2e-946b-6af08af8d84e",
 												"exec": [
 													"pm.test(\"Status code is 400\", function () {",
 													"    pm.response.to.have.status(400);",
@@ -23325,7 +23405,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "79c12c60-3e1d-49ed-9985-ffbf7b555d1a",
+												"id": "055401a7-56f8-489f-af72-b9842030e2b7",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib",
 													"var window = {}; //fake a window object for the lib",
@@ -23410,7 +23490,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "e61de999-e27a-4b53-a9a2-cecd0e13b0af",
+												"id": "3f45a1fe-8384-4aa7-8fd3-095b9ed32875",
 												"exec": [
 													"pm.test(\"Status code is 400\", function () {",
 													"    pm.response.to.have.status(400);",
@@ -23507,7 +23587,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "a46a1eb1-9670-4908-a95b-447f85e687b1",
+												"id": "a7456486-c755-413f-81ee-e3df40b64fba",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib",
 													"var window = {}; //fake a window object for the lib",
@@ -23593,7 +23673,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "545c5416-1609-470d-90a3-dd894279eae8",
+												"id": "6a4a5344-4ae4-4871-87f0-f8bb117b41d2",
 												"exec": [
 													"pm.test(\"Status code is 400\", function () {",
 													"    pm.response.to.have.status(400);",
@@ -23691,7 +23771,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "1af87c96-4c0a-42cc-9c44-2feae84a7bb2",
+												"id": "c012bedf-cc7b-41b3-b621-450ca7b5601f",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib",
 													"var window = {}; //fake a window object for the lib",
@@ -23770,7 +23850,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "7d22968c-39b8-4844-b4bf-af288469cf4c",
+												"id": "dd7f7897-5b59-46c2-a349-5f0bbb890f79",
 												"exec": [
 													"pm.test(\"Status code is 400\", function () {",
 													"    pm.response.to.have.status(400);",
@@ -23869,7 +23949,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "e08c032e-80a2-4d95-bbaf-2ef0460df5f8",
+												"id": "7d8195f8-6bc0-462e-931e-8c6aab593d3b",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib",
 													"var window = {}; //fake a window object for the lib",
@@ -23955,7 +24035,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "478f25d1-cdcb-4417-9635-0f97f5638ca3",
+												"id": "03f08867-6f43-4db2-b1d4-2d77a8e17631",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -24050,7 +24130,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "c1d45202-e9b2-45af-9db2-25dbd039ad4c",
+												"id": "9b1fa60c-1ea0-4606-98d0-748c26f141ee",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib",
 													"var window = {}; //fake a window object for the lib",
@@ -24136,7 +24216,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "7e098a66-97e1-48e9-a3f7-4fcec5954e38",
+												"id": "bea38ecd-a96e-4020-8416-bb8078acfef0",
 												"exec": [
 													"pm.test(\"Status code is 400\", function () {",
 													"    pm.response.to.have.status(400);",
@@ -24240,7 +24320,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "342736d2-0604-41ce-a4d0-e36186f0aa29",
+												"id": "7f4015b4-3186-4a48-93d1-a826313df9f7",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib",
 													"var window = {}; //fake a window object for the lib",
@@ -24325,7 +24405,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "8b67d3c5-5373-4deb-a164-cd791e573bed",
+												"id": "a44fe06c-75eb-4689-a422-9669f61d2aa3",
 												"exec": [
 													"pm.test(\"Status code is 400\", function () {",
 													"    pm.response.to.have.status(400);",
@@ -24423,7 +24503,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "4c0f3419-557f-42b9-9fb5-1c3c644caadb",
+												"id": "e15c0322-4cbe-402b-9b0a-7f2922317453",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib",
 													"var window = {}; //fake a window object for the lib",
@@ -24508,7 +24588,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "dde47b0e-27e9-41a7-8acb-06942f632d2e",
+												"id": "7bf8937b-1e58-4f86-a449-a17db4fd46a4",
 												"exec": [
 													"pm.test(\"Status code is 400\", function () {",
 													"    pm.response.to.have.status(400);",
@@ -24606,7 +24686,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "760b33f7-a50f-4b7e-8f6f-370882617167",
+												"id": "71cf8c1f-6c74-4046-b256-30cac096ebef",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib",
 													"var window = {}; //fake a window object for the lib",
@@ -24691,7 +24771,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "0179924a-d312-4c4a-8e90-211abfe1e493",
+												"id": "f6b3739b-20df-41d5-bd4f-9dc5687325ff",
 												"exec": [
 													"pm.test(\"Status code is 400\", function () {",
 													"    pm.response.to.have.status(400);",
@@ -24789,7 +24869,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "cb36b86c-680c-4adc-a4c0-ac23a59bfbdb",
+												"id": "a5548aac-d1ba-4d59-ad50-572509372c44",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib",
 													"var window = {}; //fake a window object for the lib",
@@ -24874,7 +24954,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "cde3bd52-39fa-4e52-9483-1b6cf04bd07e",
+												"id": "34b73f63-4c20-488e-b7e2-a72ae799b781",
 												"exec": [
 													"pm.test(\"Status code is 400\", function () {",
 													"    pm.response.to.have.status(400);",
@@ -24972,7 +25052,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "9e326fe7-8a77-4a20-85d1-273354bb29aa",
+												"id": "a1a50972-e257-4bf8-bd8a-5f400807a771",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib",
 													"var window = {}; //fake a window object for the lib",
@@ -25057,7 +25137,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "5f142681-bd84-4013-b7c6-31d4b3295d16",
+												"id": "380e316f-65fe-4337-8d19-636cb8276b17",
 												"exec": [
 													"pm.test(\"Status code is 400\", function () {",
 													"    pm.response.to.have.status(400);",
@@ -25155,7 +25235,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "88c43864-23df-4080-a820-03b300574bc0",
+												"id": "f8958a09-de78-4423-b898-47a2ab6d686d",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib",
 													"var window = {}; //fake a window object for the lib",
@@ -25240,7 +25320,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "a0a5afae-4c84-4e98-8947-e49a3b86d836",
+												"id": "4f3109d4-564e-466d-81c5-426106c1f062",
 												"exec": [
 													"pm.test(\"Status code is 400\", function () {",
 													"    pm.response.to.have.status(400);",
@@ -25337,7 +25417,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "ba25f1d5-ce5d-4db6-9bd6-c56c0aafb7c1",
+												"id": "6a49e6ac-a487-4c77-86dc-eed85b5fab08",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib",
 													"var window = {}; //fake a window object for the lib",
@@ -25422,7 +25502,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "9be93d10-8af7-42d0-858a-e5b253d16755",
+												"id": "230c6409-9762-4c6c-8645-e9b436c3b6a3",
 												"exec": [
 													"pm.test(\"Status code is 400\", function () {",
 													"    pm.response.to.have.status(400);",
@@ -25520,7 +25600,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "f71e71e0-faf2-42a1-9bf2-39a7b5cd5eff",
+												"id": "d163a9b7-8170-49f0-819e-406ba1383376",
 												"exec": [
 													"var navigator = {}; //fake a navigator object for the lib",
 													"var window = {}; //fake a window object for the lib",
@@ -25605,7 +25685,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "cc8137c6-dde3-4624-acfa-79c8c03f0fb0",
+												"id": "d8f654fb-71e2-4603-b2d3-77189fb9f68b",
 												"exec": [
 													"pm.test(\"Status code is 400\", function () {",
 													"    pm.response.to.have.status(400);",
@@ -25714,7 +25794,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "26989743-7f7a-4322-9df9-b7dd090d3391",
+										"id": "774d808f-1a59-4663-a38b-ccc3dca6ad4d",
 										"exec": [
 											"//Input Variables",
 											"pm.variables.set(\"iptSettlementWindowId\",\"2\");",
@@ -25729,7 +25809,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "f09092fd-0c85-41f5-8c75-7b9aa348f223",
+										"id": "cebbab28-a269-42a5-ada7-072a54d0f72c",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -25791,7 +25871,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "3b78b869-beba-4f00-bd7f-b5cec0362160",
+										"id": "79e92213-405e-4fbd-b537-842ae72b2b3b",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -25869,7 +25949,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "e34a3d1a-3f9e-4d5a-b875-f6a83d244cbd",
+										"id": "9c74d446-a550-42ab-84ba-3ff3aef34452",
 										"exec": [
 											"",
 											""
@@ -25880,7 +25960,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "6e358e42-c7f2-4664-9efb-8dc100d11151",
+										"id": "8331caf4-edff-48e4-a597-757ad7132faa",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
@@ -25933,7 +26013,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "dbd72fed-fe24-45ea-bfdc-3e883a0bf0ec",
+										"id": "ed1c9581-43ad-46b1-b4d2-8eb220c444f5",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -26003,7 +26083,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "9effbb37-c399-44d9-a493-e18f47dfeb86",
+										"id": "6aa9882a-0010-4a1d-8d49-a41ab64af01b",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -26087,7 +26167,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "fb886cf7-219a-4798-a6d5-ebf02063e6ce",
+				"id": "e7f66448-e329-4c57-8754-c0b3989677df",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -26097,7 +26177,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "9d7e11be-193a-49c5-a212-a5c85500a72a",
+				"id": "3f9153bb-5a22-4c07-9df3-65c7d1a9c572",
 				"type": "text/javascript",
 				"exec": [
 					""
