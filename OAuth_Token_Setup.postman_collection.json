@@ -1,0 +1,534 @@
+{
+	"info": {
+		"_postman_id": "ac2f1602-6b93-42c7-b3e0-ec15a185b910",
+		"name": "OAuth_Token_Setup",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "payerfsp token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "63726439-aab5-4fbf-a79a-29e922898241",
+						"exec": [
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.environment.set(\"PAYERFSP_BEARER_TOKEN\", pm.response.json().access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{PAYERFSP_CONSUMER_SECRET}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{PAYERFSP_CONSUMER_KEY}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{HOST_SWITCH}}/token",
+					"host": [
+						"{{HOST_SWITCH}}"
+					],
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "payeefsp token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9f4f76c2-a5ad-46c4-90bb-de9a1a9cb022",
+						"exec": [
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.environment.set(\"PAYEEFSP_BEARER_TOKEN\", pm.response.json().access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{PAYEEFSP_CONSUMER_SECRET}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{PAYEEFSP_CONSUMER_KEY}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "text/plain",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST_SWITCH}}/token",
+					"host": [
+						"{{HOST_SWITCH}}"
+					],
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "hub_operator token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e7520765-966f-4ad5-974a-8cbafce89a48",
+						"exec": [
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.environment.set(\"HUB_OPERATOR_BEARER_TOKEN\", pm.response.json().access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{HUB_OPERATOR_CONSUMER_SECRET}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{HUB_OPERATOR_CONSUMER_KEY}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{HOST_SWITCH}}/token",
+					"host": [
+						"{{HOST_SWITCH}}"
+					],
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "noresponsepayeefsp token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "51014879-7427-4781-bf33-d90357f8c4c8",
+						"exec": [
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.environment.set(\"NORESPONSEPAYEEFSP_BEARER_TOKEN\", pm.response.json().access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "{{NORESPONSEPAYEEFSP_CONSUMER_KEY}}",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{NORESPONSEPAYEEFSP_CONSUMER_SECRET}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{HOST_SWITCH}}/token",
+					"host": [
+						"{{HOST_SWITCH}}"
+					],
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "testfsp1 token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e06e6875-e909-4985-9bd8-b7854237d311",
+						"exec": [
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.environment.set(\"TESTFSP1_BEARER_TOKEN\", pm.response.json().access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{TESTFSP1_CONSUMER_SECRET}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{TESTFSP1_CONSUMER_KEY}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{HOST_SWITCH}}/token",
+					"host": [
+						"{{HOST_SWITCH}}"
+					],
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "testfsp2 token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "13cfb8b1-f6d1-4525-96aa-f52820fbec9c",
+						"exec": [
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.environment.set(\"TESTFSP2_BEARER_TOKEN\", pm.response.json().access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{TESTFSP2_CONSUMER_SECRET}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{TESTFSP2_CONSUMER_KEY}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{HOST_SWITCH}}/token",
+					"host": [
+						"{{HOST_SWITCH}}"
+					],
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "testfsp3 token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "86751a73-adee-4c59-9960-536500ec0e26",
+						"exec": [
+							"",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});pm.environment.set(\"TESTFSP3_BEARER_TOKEN\", pm.response.json().access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{TESTFSP3_CONSUMER_SECRET}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{TESTFSP3_CONSUMER_KEY}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{HOST_SWITCH}}/token",
+					"host": [
+						"{{HOST_SWITCH}}"
+					],
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "testfsp4 token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "edcce119-dd52-4135-921d-6761cc959b7b",
+						"exec": [
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});pm.environment.set(\"TESTFSP4_BEARER_TOKEN\", pm.response.json().access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{TESTFSP4_CONSUMER_SECRET}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{TESTFSP4_CONSUMER_KEY}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{HOST_SWITCH}}/token",
+					"host": [
+						"{{HOST_SWITCH}}"
+					],
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

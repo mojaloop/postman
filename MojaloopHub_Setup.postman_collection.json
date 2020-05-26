@@ -1,0 +1,516 @@
+{
+	"info": {
+		"_postman_id": "5038b9dd-5746-480b-807c-9cb297f95481",
+		"name": "MojaloopHub_Setup",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Hub Account",
+			"item": [
+				{
+					"name": "Add Hub Account-HUB_MULTILATERAL_SETTLEMENT",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"type": "text",
+								"value": "hub_operator"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"HUB_MULTILATERAL_SETTLEMENT\",\n  \"currency\": \"{{currency}}\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/Hub/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"Hub",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Hub Account-HUB_RECONCILIATION",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "hub_operator",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"HUB_RECONCILIATION\",\n  \"currency\": \"{{currency}}\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/Hub/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"Hub",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hub Set Email-SETTLEMENT_TRANSFER_POSITION_CHANGE_EMAIL",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cache-Control",
+								"value": "no-cache"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "hub_operator",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"SETTLEMENT_TRANSFER_POSITION_CHANGE_EMAIL\",\n  \"value\": \"{{HUB_OPERATOR_EMAIL}}\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/Hub/endpoints",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"Hub",
+								"endpoints"
+							]
+						},
+						"description": "Generated from a curl request: \ncurl -i -X POST     http://test-central-ledger.mojaloop.test/admin/participants/testfsp2/initialPositionAndLimits     -H 'Cache-Control: no-cache'     -H 'Content-Type: application/json'     -d '{\n    \\\"currency\\\": \\\"USD\\\",\n    \\\"limit\\\": {\n      \\\"type\\\": \\\"NET_DEBIT_CAP\\\",\n      \\\"value\\\": 1000\n    },\n    \\\"initialPosition\\\": 0\n  }'"
+					},
+					"response": [
+						{
+							"name": "2. Create Initial Position and Limits",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Cache-Control",
+										"value": "no-cache"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"currency\": \"USD\",\n    \"limit\": {\n      \"type\": \"NET_DEBIT_CAP\",\n      \"value\": 1000\n    },\n    \"initialPosition\": 0\n  }"
+								},
+								"url": {
+									"raw": "http://test-central-ledger.mojaloop.live/admin/participants/testfsp/initialPositionAndLimits",
+									"protocol": "http",
+									"host": [
+										"test-central-ledger",
+										"mojaloop",
+										"live"
+									],
+									"path": [
+										"admin",
+										"participants",
+										"testfsp",
+										"initialPositionAndLimits"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Hub Set Email-NET_DEBIT_CAP_ADJUSTMENT_EMAIL",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cache-Control",
+								"value": "no-cache"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "hub_operator",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"NET_DEBIT_CAP_ADJUSTMENT_EMAIL\",\n  \"value\": \"sridevi.miriyala@modusbox.com\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/hub/endpoints",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"hub",
+								"endpoints"
+							]
+						},
+						"description": "Generated from a curl request: \ncurl -i -X POST     http://test-central-ledger.mojaloop.test/admin/participants/testfsp2/initialPositionAndLimits     -H 'Cache-Control: no-cache'     -H 'Content-Type: application/json'     -d '{\n    \\\"currency\\\": \\\"USD\\\",\n    \\\"limit\\\": {\n      \\\"type\\\": \\\"NET_DEBIT_CAP\\\",\n      \\\"value\\\": 1000\n    },\n    \\\"initialPosition\\\": 0\n  }'"
+					},
+					"response": [
+						{
+							"name": "2. Create Initial Position and Limits",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Cache-Control",
+										"value": "no-cache"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"currency\": \"USD\",\n    \"limit\": {\n      \"type\": \"NET_DEBIT_CAP\",\n      \"value\": 1000\n    },\n    \"initialPosition\": 0\n  }"
+								},
+								"url": {
+									"raw": "http://test-central-ledger.mojaloop.live/admin/participants/testfsp/initialPositionAndLimits",
+									"protocol": "http",
+									"host": [
+										"test-central-ledger",
+										"mojaloop",
+										"live"
+									],
+									"path": [
+										"admin",
+										"participants",
+										"testfsp",
+										"initialPositionAndLimits"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Hub Set Email-NET_DEBIT_CAP_THRESHOLD_BREACH_EMAIL",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cache-Control",
+								"value": "no-cache"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "hub_operator",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"NET_DEBIT_CAP_THRESHOLD_BREACH_EMAIL\",\n  \"value\": \"sridevi.miriyala@modusbox.com\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/Hub/endpoints",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"Hub",
+								"endpoints"
+							]
+						},
+						"description": "Generated from a curl request: \ncurl -i -X POST     http://test-central-ledger.mojaloop.test/admin/participants/testfsp2/initialPositionAndLimits     -H 'Cache-Control: no-cache'     -H 'Content-Type: application/json'     -d '{\n    \\\"currency\\\": \\\"USD\\\",\n    \\\"limit\\\": {\n      \\\"type\\\": \\\"NET_DEBIT_CAP\\\",\n      \\\"value\\\": 1000\n    },\n    \\\"initialPosition\\\": 0\n  }'"
+					},
+					"response": [
+						{
+							"name": "2. Create Initial Position and Limits",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Cache-Control",
+										"value": "no-cache"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"currency\": \"USD\",\n    \"limit\": {\n      \"type\": \"NET_DEBIT_CAP\",\n      \"value\": 1000\n    },\n    \"initialPosition\": 0\n  }"
+								},
+								"url": {
+									"raw": "http://test-central-ledger.mojaloop.live/admin/participants/testfsp/initialPositionAndLimits",
+									"protocol": "http",
+									"host": [
+										"test-central-ledger",
+										"mojaloop",
+										"live"
+									],
+									"path": [
+										"admin",
+										"participants",
+										"testfsp",
+										"initialPositionAndLimits"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Oracle Onboarding",
+			"item": [
+				{
+					"name": "Register MSISDN Oracle",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.participants+json;version=1"
+							},
+							{
+								"key": "Cache-Control",
+								"value": "no-cache"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.interoperability.participants+json;version=1.0"
+							},
+							{
+								"key": "Date",
+								"value": ""
+							},
+							{
+								"key": "Postman-Token",
+								"value": "003d55c1-2ebc-4e25-b9da-26bf053a8a5c"
+							},
+							{
+								"key": "cache-control",
+								"value": "no-cache"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"oracleIdType\": \"MSISDN\",\n  \"endpoint\": {\n    \"value\": \"{{HOST_SIMULATOR}}/oracle\",\n    \"endpointType\": \"URL\"\n  },\n  \"currency\": \"{{currency}}\",\n  \"isDefault\": true\n}"
+						},
+						"url": {
+							"raw": "{{HOST_ACCOUNT_LOOKUP_ADMIN}}/oracles",
+							"host": [
+								"{{HOST_ACCOUNT_LOOKUP_ADMIN}}"
+							],
+							"path": [
+								"oracles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register BUSINESS Oracle",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.participants+json;version=1"
+							},
+							{
+								"key": "Cache-Control",
+								"value": "no-cache"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.interoperability.participants+json;version=1.0"
+							},
+							{
+								"key": "Date",
+								"value": ""
+							},
+							{
+								"key": "Postman-Token",
+								"value": "003d55c1-2ebc-4e25-b9da-26bf053a8a5c"
+							},
+							{
+								"key": "cache-control",
+								"value": "no-cache"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"oracleIdType\": \"BUSINESS\",\n  \"endpoint\": {\n    \"value\": \"{{HOST_SIMULATOR}}/oracle\",\n    \"endpointType\": \"URL\"\n  },\n  \"currency\": \"{{currency}}\",\n  \"isDefault\": true\n}"
+						},
+						"url": {
+							"raw": "{{HOST_ACCOUNT_LOOKUP_ADMIN}}/oracles",
+							"host": [
+								"{{HOST_ACCOUNT_LOOKUP_ADMIN}}"
+							],
+							"path": [
+								"oracles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register ALIAS Oracle",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.interoperability.participants+json;version=1"
+							},
+							{
+								"key": "Cache-Control",
+								"value": "no-cache"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.interoperability.participants+json;version=1.0"
+							},
+							{
+								"key": "Date",
+								"value": ""
+							},
+							{
+								"key": "Postman-Token",
+								"value": "003d55c1-2ebc-4e25-b9da-26bf053a8a5c"
+							},
+							{
+								"key": "cache-control",
+								"value": "no-cache"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"oracleIdType\": \"ALIAS\",\n  \"endpoint\": {\n    \"value\": \"{{HOST_SIMULATOR}}/oracle\",\n    \"endpointType\": \"URL\"\n  },\n  \"currency\": \"{{currency}}\",\n  \"isDefault\": true\n}"
+						},
+						"url": {
+							"raw": "{{HOST_ACCOUNT_LOOKUP_ADMIN}}/oracles",
+							"host": [
+								"{{HOST_ACCOUNT_LOOKUP_ADMIN}}"
+							],
+							"path": [
+								"oracles"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
