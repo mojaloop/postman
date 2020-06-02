@@ -699,7 +699,7 @@
 					"name": "p2p_money_transfer",
 					"item": [
 						{
-							"name": "(BUG) p2p_happy_path_RECEIVE_quote",
+							"name": "p2p_happy_path_RECEIVE_quote",
 							"item": [
 								{
 									"name": "Download JWS Signature Generation Package",
@@ -18253,7 +18253,7 @@
 																	"var sPayload = JSON.stringify(objPayload)",
 																	"console.log(`sPayload: ${sPayload}`)",
 																	"pm.variables.set(\"transferResponse\", sPayload);",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('noresponsepayeefspJWSKey'));",
+																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payeefspJWSKey'));",
 																	"//console.log(`token: ${token}`)",
 																	"",
 																	"// var encodedHeaders = btoa(sHeader)",
@@ -18648,7 +18648,7 @@
 									"_postman_isSubFolder": true
 								},
 								{
-									"name": "fulfill_reject (not complete)",
+									"name": "fulfill_reject",
 									"item": [
 										{
 											"name": "positive",
@@ -19361,7 +19361,7 @@
 																	"var sPayload = JSON.stringify(objPayload)",
 																	"console.log(`sPayload: ${sPayload}`)",
 																	"pm.variables.set(\"fulfillResponse\", sPayload);",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('noresponsepayeefspJWSKey'));",
+																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payeefspJWSKey'));",
 																	"//console.log(`token: ${token}`)",
 																	"",
 																	"// var encodedHeaders = btoa(sHeader)",
@@ -20034,7 +20034,7 @@
 																	"var sPayload = JSON.stringify(objPayload)",
 																	"console.log(`sPayload: ${sPayload}`)",
 																	"pm.variables.set(\"fulfillResponse\", sPayload);",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('noresponsepayeefspJWSKey'));",
+																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payeefspJWSKey'));",
 																	"//console.log(`token: ${token}`)",
 																	"",
 																	"// var encodedHeaders = btoa(sHeader)",
@@ -20234,7 +20234,7 @@
 																	"var sPayload = JSON.stringify(objPayload)",
 																	"console.log(`sPayload: ${sPayload}`)",
 																	"pm.variables.set(\"fulfillResponse\", sPayload);",
-																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('noresponsepayeefspJWSKey'));",
+																	"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payeefspJWSKey'));",
 																	"//console.log(`token: ${token}`)",
 																	"",
 																	"// var encodedHeaders = btoa(sHeader)",
@@ -22043,7 +22043,7 @@
 													"            });",
 													"           ",
 													"           pm.test(\"Error Description is GENERIC VALIDATION ERROR \", function () {",
-													"                pm.expect(jsonData.errorInformation.errorDescription).to.include('Generic validation error - Participant testfsp2 XOF account is inactive');",
+													"                pm.expect(jsonData.errorInformation.errorDescription).to.include(`Generic validation error - Participant testfsp2 ${pm.environment.get('currency')} account is inactive`);",
 													"           });",
 													"          } else {",
 													"              pm.test(\"Transfer FAILED\", function () {",
@@ -23296,7 +23296,7 @@
 													"",
 													"pm.test(\"ERROR msg is Missing Payer firstName\", function () {",
 													"    var jsonData = pm.response.json();",
-													"    pm.expect(jsonData.errorInformation.errorDescription).to.eql(\"Missing mandatory element - firstName is required\");",
+													"    pm.expect(jsonData.errorInformation.errorDescription).to.eql(`Missing mandatory element - Quote request ${pm.environment.get('quoteId')} failed: firstName is required`);",
 													"});"
 												],
 												"type": "text/javascript"
@@ -23478,7 +23478,7 @@
 													"",
 													"pm.test(\"ERROR Description is Missing Payer lastName\", function () {",
 													"    var jsonData = pm.response.json();",
-													"    pm.expect(jsonData.errorInformation.errorDescription).to.eql(\"Missing mandatory element - lastName is required\");",
+													"    pm.expect(jsonData.errorInformation.errorDescription).to.eql(`Missing mandatory element - Quote request ${pm.environment.get('quoteId')} failed: lastName is required`);",
 													"});"
 												],
 												"type": "text/javascript"
@@ -23838,7 +23838,7 @@
 													"",
 													"pm.test(\"ERROR msg is Missing Payer personalInfo\", function () {",
 													"    var jsonData = pm.response.json();",
-													"    pm.expect(jsonData.errorInformation.errorDescription).to.eql(\"Missing mandatory element - PartyPersonalInfo is required\");",
+													"    pm.expect(jsonData.errorInformation.errorDescription).to.eql(`Missing mandatory element - Quote request ${pm.environment.get('quoteId')} failed: PartyPersonalInfo is required`);",
 													"});",
 													"",
 													""
@@ -24576,8 +24576,7 @@
 													"",
 													"pm.test(\"ERROR msg is Malformed Payer DOB\", function () {",
 													"    var jsonData = pm.response.json();",
-													"    pm.expect(jsonData.errorInformation.errorDescription).to.eql(\"Malformed syntax - Malformed Payer dateOfBirth\"",
-													");",
+													"    pm.expect(jsonData.errorInformation.errorDescription).to.eql(`Malformed syntax - Quote request ${pm.environment.get('quoteId')} failed: Malformed Payer dateOfBirth`);",
 													"});"
 												],
 												"type": "text/javascript"
@@ -25308,7 +25307,7 @@
 													"",
 													"pm.test(\"ERROR msg is Missing Payer DOB\", function () {",
 													"    var jsonData = pm.response.json();",
-													"    pm.expect(jsonData.errorInformation.errorDescription).to.eql(\"Missing mandatory element - dateOfBirth is required\");",
+													"    pm.expect(jsonData.errorInformation.errorDescription).to.eql(`Missing mandatory element - Quote request ${pm.environment.get('quoteId')} failed: dateOfBirth is required`);",
 													"});"
 												],
 												"type": "text/javascript"
@@ -25982,82 +25981,6 @@
 									"path": [
 										"settlementWindows",
 										"{{openSettlementWindowId}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "200 - param - participantId",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "585af456-dce1-4aae-86ca-c2bb209ab9f4",
-										"exec": [
-											"pm.test(\"Status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
-											"});",
-											"",
-											"var jsonData = pm.response.json();",
-											"pm.test(\"Should have atleast one entry\", function () {",
-											"    pm.expect(jsonData).to.be.an('array').that.is.not.empty;",
-											"});",
-											"",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [
-									{
-										"key": "FSPIOP-Source",
-										"value": "{{hub_operator}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows?participantId={{participantidset}}",
-									"host": [
-										"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
-									],
-									"path": [
-										"settlementWindows"
-									],
-									"query": [
-										{
-											"key": "state",
-											"value": "OPEN",
-											"description": "Available values : OPEN, CLOSED, PENDING_SETTLEMENT, SETTLED, NOT_SETTLED",
-											"disabled": true
-										},
-										{
-											"key": "fromDateTime",
-											"value": "",
-											"disabled": true
-										},
-										{
-											"key": "toDateTime",
-											"value": "",
-											"disabled": true
-										},
-										{
-											"key": "participantId",
-											"value": "{{participantidset}}"
-										}
 									]
 								}
 							},
