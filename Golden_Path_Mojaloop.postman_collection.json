@@ -26070,6 +26070,46 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "tear_down_setup",
+			"item": [
+				{
+					"name": "remove-un_necessary-environment-vars",
+					"item": [
+						{
+							"name": "Sample request",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8fbce646-53b3-44c9-82c9-cb21e77f4dae",
+										"exec": [
+											"pm.environment.unset('jrsassign');"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "google.com",
+									"host": [
+										"google",
+										"com"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"event": [
@@ -26249,6 +26289,12 @@
 					"        pm.environment.set('NORESPONSEPAYEEFSP_BEARER_TOKEN', jsonData.access_token);",
 					"    });",
 					"",
+					"}",
+					"",
+					"if(!pm.environment.get('jrsassign')) {",
+					"    pm.sendRequest('http://kjur.github.io/jsrsasign/jsrsasign-latest-all-min.js', function (err, response) {",
+					"        pm.environment.set('jrsassign', response.text());",
+					"    });",
 					"}"
 				]
 			}
