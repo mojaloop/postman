@@ -7407,7 +7407,7 @@
 									},
 									{
 										"key": "FSPIOP-Destination",
-										"value": "noresponsepayeefsp"
+										"value": "{{payeefsp}}"
 									}
 								],
 								"body": {
@@ -7938,7 +7938,7 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"name": "payee_abort_v1.1",
+					"name": "payee_abort_v1.1 - payee should be 'norseponsepayeefsp'",
 					"item": [
 						{
 							"name": "Store Payerfsp position before prepare",
@@ -8125,7 +8125,7 @@
 									},
 									{
 										"key": "Date",
-										"value": "{{dateHeader}}"
+										"value": "{{transferDate}}"
 									},
 									{
 										"key": "FSPIOP-Source",
@@ -8179,10 +8179,7 @@
 									"script": {
 										"id": "cdcda528-13ec-4a9c-8ca4-0df130d9bc55",
 										"exec": [
-											"setTimeout(function () {",
-											"  pm.sendRequest('www.google.com', function (err, response) {}",
-											"    );",
-											"}, 3000)"
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -8222,7 +8219,7 @@
 							"response": []
 						},
 						{
-							"name": "Send Payee Abort should do nothing but log in fulfil handler",
+							"name": "Send Payee Abort - should do nothing but log in fulfil handler",
 							"event": [
 								{
 									"listen": "test",
@@ -8293,7 +8290,7 @@
 									{
 										"key": "FSPIOP-Source",
 										"type": "text",
-										"value": "noresponsepayeefsp"
+										"value": "{{payeefsp}}"
 									},
 									{
 										"key": "FSPIOP-Destination",
@@ -8336,9 +8333,9 @@
 									"script": {
 										"id": "879e0c2a-872c-451e-83f3-cfdbdaddd707",
 										"exec": [
-											"// pm.test(\"Status code is 200\", function () {",
-											"//     pm.response.to.have.status(200);",
-											"// });",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
 											"",
 											"setTimeout(function () {",
 											"  pm.sendRequest(pm.environment.get(\"HOST_SIMULATOR\")+\"/payerfsp/callbacks/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
@@ -8346,18 +8343,18 @@
 											"              //Check headers",
 											"              var headers = response.json().headers;",
 											"              ",
-											"                pm.test(\"fspiop-source is {{payeefsp}}\", function () {",
-											"                    pm.expect(headers['fspiop-source']).to.eql('{{payeefsp}}');",
+											"                pm.test(\"fspiop-source is payeefsp\", function () {",
+											"                    pm.expect(headers['fspiop-source']).to.eql(pm.environment.get('payeefsp'));",
 											"                });",
 											"                ",
 											"                pm.test(\"fspiop-destination is payerfsp\", function () {",
-											"                    pm.expect(headers['fspiop-destination']).to.eql('payerfsp');",
+											"                    pm.expect(headers['fspiop-destination']).to.eql(pm.environment.get('payerfsp'));",
 											"                });",
 											"                ",
 											"                //Uncomment after JWS is implemented",
-											"                pm.test(\"payeefsp fspiop-signature is same as sent in the request\", function () {",
-											"                    pm.expect(headers['fspiop-signature']).to.eql(pm.environment.get(\"fspiop-signature\"));",
-											"                });",
+											"                // pm.test(\"payeefsp fspiop-signature is same as sent in the request\", function () {",
+											"                //     pm.expect(headers['fspiop-signature']).to.eql(pm.environment.get(\"fspiop-signature\"));",
+											"                // });",
 											"                ",
 											"                ",
 											"                pm.test(\"payeefsp content-type is same as sent in the request\", function () {",
@@ -8433,7 +8430,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"errorInformation\": {\n\t\t\"errorCode\": \"5101\",\n\t\t\"errorDescription\": \"Payee transaction limit reached\",\n\t\t\"extensionList\": {\n\t\t\t\"extension\": [{\n\t\t\t\t\"key\": \"errorDetail\",\n\t\t\t\t\"value\": \"This is an abort extension\"\n\t\t\t}]\n\t\t}\n\t}\n}"
+									"raw": "{\n\t\"errorInformation\": {\n\t\t\"errorCode\": \"5101\",\n\t\t\"errorDescription\": \"Payee transaction limit reached\",\n\t\t\"extensionList\": {\n\t\t\t\"extension\": [{\n\t\t\t\t\"key\": \"errorDetail\",\n\t\t\t\t\"value\": \"This is an abort extension\"\n\t\t\t}]\n\t\t}\n\t}\n}",
+									"options": {
+										"raw": {}
+									}
 								},
 								"url": {
 									"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers/{{transfer_ID}}/error",
@@ -8539,7 +8539,7 @@
 									},
 									{
 										"key": "FSPIOP-Destination",
-										"value": "{{payeefsp}}",
+										"value": "noresponsepayeefsp",
 										"disabled": true
 									}
 								],
@@ -8585,10 +8585,7 @@
 									"script": {
 										"id": "3cf9c141-ce55-41dd-ba3e-0e923afcc381",
 										"exec": [
-											"setTimeout(function () {",
-											"  pm.sendRequest('www.google.com', function (err, response) {}",
-											"    );",
-											"}, 10000)"
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -8656,10 +8653,7 @@
 									"script": {
 										"id": "ec927638-b535-42ed-be6d-7c5ccf46a0bf",
 										"exec": [
-											"setTimeout(function () {",
-											"  pm.sendRequest('www.google.com', function (err, response) {}",
-											"    );",
-											"}, 10000)"
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -8681,7 +8675,7 @@
 									{
 										"key": "FSPIOP-Source",
 										"type": "text",
-										"value": "{{payerfsp}}"
+										"value": "{{payeefsp}}"
 									}
 								],
 								"url": {
