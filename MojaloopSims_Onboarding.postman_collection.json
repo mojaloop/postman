@@ -1,71 +1,11 @@
 {
 	"info": {
-		"_postman_id": "e9dd2689-7c17-4416-ac76-c6f2efe088c0",
+		"_postman_id": "289d9d35-77b9-4aeb-910d-9908f54938a7",
 		"name": "MojaloopSims_Onboarding",
 		"description": "Author: Sridevi Miriyala\nPurpose: Used to add new FSP and relevant Callback Information. \nIn this collection we onboarded HUB accounts for the corresponding currency, payerfsp, payeefsp, testfsp1, testfsp2 sims.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
-		{
-			"name": "Settlement Models Copy",
-			"item": [
-				{
-					"name": "Create settlement model DEFERREDNET",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"DEFERREDNET\",\n  \"settlementGranularity\": \"NET\",\n  \"settlementInterchange\": \"MULTILATERAL\",\n  \"settlementDelay\": \"DEFERRED\",\n  \"requireLiquidityCheck\": true,\n  \"ledgerAccountType\": \"POSITION\",\n  \"autoPositionReset\": true\n}"
-						},
-						"url": {
-							"raw": "{{HOST_CENTRAL_LEDGER}}/settlementModels",
-							"host": [
-								"{{HOST_CENTRAL_LEDGER}}"
-							],
-							"path": [
-								"settlementModels"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create settlement model DEFERRED NET USD",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"DEFERREDNETUSD\",\n  \"settlementGranularity\": \"NET\",\n  \"settlementInterchange\": \"MULTILATERAL\",\n  \"settlementDelay\": \"DEFERRED\",\n  \"currency\": \"USD\",\n  \"requireLiquidityCheck\": true,\n  \"ledgerAccountType\": \"POSITION\",\n  \"autoPositionReset\": true\n}"
-						},
-						"url": {
-							"raw": "{{HOST_CENTRAL_LEDGER}}/settlementModels",
-							"host": [
-								"{{HOST_CENTRAL_LEDGER}}"
-							],
-							"path": [
-								"settlementModels"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
 		{
 			"name": "FSP Onboarding",
 			"item": [
@@ -81,7 +21,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "ee09778b-f193-4a9a-8951-b50bfdef113a",
+												"id": "29742c70-d9cf-4c84-84e5-4540eb8b3838",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -138,7 +78,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "ab82b0ec-d3c6-4315-b01e-479f3b8c2695",
+												"id": "d5cf075d-62c7-4dd8-a259-bb3100bcccc0",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -197,7 +137,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "8db348a4-ecb7-4763-9451-6da44b2e9973",
+												"id": "0a943ffa-76af-481f-9dc5-2b2ac5ed0872",
 												"exec": [
 													"var uuid = require('uuid');",
 													"var generatedUUID = uuid.v4();",
@@ -231,7 +171,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "03249ad5-bd09-42ff-a099-544dcfa0a903",
+												"id": "baa92e44-a631-4196-8593-91cfd9d4c352",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -348,7 +288,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "bd84d417-bbb3-4fdf-ba71-893d1ff0e2ac",
+												"id": "5302f0ff-3630-4a2a-b559-e4637d3dbfb0",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -402,7 +342,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "73faf56b-20c4-4958-8cff-0a98861a7b2d",
+												"id": "e01059f4-ed62-4920-ba5e-710a61bc7505",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -461,7 +401,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "3ba15ada-28a9-4f4e-a57d-ac1467300539",
+												"id": "bbcbc73c-6567-4321-90f1-6fb62974bc82",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -515,7 +455,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "8f72138a-eb3f-448a-9579-077769de11f3",
+												"id": "f07b3b59-b2fd-4082-8ae6-9c407bad6d1a",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -569,7 +509,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "5012e013-3259-4b74-bf91-ecedf35682b9",
+												"id": "38f2cdb5-2de8-4aaa-905a-71f0000bbbfe",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -623,7 +563,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "36399f7e-1648-4044-b346-8ca5214de78d",
+												"id": "c6156ef3-2128-483b-bb01-76a8bcbc5d40",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -677,7 +617,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "32b12b4c-9dd7-4ab5-99e0-da26915e06ba",
+												"id": "f8b90175-50a3-4aba-b56c-1a8b877bc322",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -731,7 +671,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "248db4fd-65c2-41be-8aba-45ec78a1a20a",
+												"id": "43bfba47-506d-4a9f-9684-9aa9a35bf40c",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -785,7 +725,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "7ec53a8b-dea3-48fa-88f2-68a09c9db028",
+												"id": "59094572-3ce6-40a7-b554-b1ef01a9ae1f",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -844,7 +784,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "5ca51d25-d4b7-4119-ad91-c2837e995e41",
+												"id": "b65be181-5fad-4032-97d8-c087e589993d",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -903,7 +843,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "73524189-50d3-4e5c-bd40-fd96a7b5796b",
+												"id": "d3d5b0d8-f6d7-4a35-841b-673b7c187d8b",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -962,7 +902,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "7ad66871-e3bd-40a8-86d4-7af66b26d19d",
+												"id": "4f06beab-9538-4251-8745-78a76f5cdcc1",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -1021,7 +961,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "0b9144ed-6aa5-4625-9610-aac267e72d1b",
+												"id": "2578ef3e-a4f9-4658-8c7f-86040d16b389",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -1359,7 +1299,7 @@
 							"name": "oracle_registration",
 							"item": [
 								{
-									"name": "Register {{payerfspMSISDN}} in MSISDN Oracle",
+									"name": "Add {{payerfspMSISDN}} in MSISDN Oracle",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -1436,116 +1376,12 @@
 							"name": "add_users",
 							"item": [
 								{
-									"name": "Add SubId Users to ALS ",
-									"item": [
-										{
-											"name": "payerfsp",
-											"item": [
-												{
-													"name": "Add SubId User - 27713803920 - 100",
-													"event": [
-														{
-															"listen": "prerequest",
-															"script": {
-																"id": "cdf558ee-080b-4f81-a6f1-b07729805ae1",
-																"exec": [
-																	""
-																],
-																"type": "text/javascript"
-															}
-														},
-														{
-															"listen": "test",
-															"script": {
-																"id": "c4f70a65-25f6-42fe-b293-1156b6f2ace2",
-																"exec": [
-																	"pm.test(\"Status code is 202\", function () {",
-																	"    pm.response.to.have.status(202);",
-																	"});"
-																],
-																"type": "text/javascript"
-															}
-														}
-													],
-													"request": {
-														"method": "POST",
-														"header": [
-															{
-																"key": "Content-Type",
-																"value": "application/vnd.interoperability.participants+json;version=1.0"
-															},
-															{
-																"key": "Accept",
-																"value": "application/vnd.interoperability.participants+json;version=1",
-																"type": "text"
-															},
-															{
-																"key": "Date",
-																"value": "{{transferDate}}",
-																"type": "text"
-															},
-															{
-																"key": "FSPIOP-Source",
-																"value": "{{payerfsp}}",
-																"type": "text"
-															}
-														],
-														"body": {
-															"mode": "raw",
-															"raw": "{\n \"fspId\": \"{{payerfsp}}\",\n \"currency\": \"USD\"\n}\n"
-														},
-														"url": {
-															"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/27713803920/100",
-															"host": [
-																"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
-															],
-															"path": [
-																"participants",
-																"MSISDN",
-																"27713803920",
-																"100"
-															]
-														}
-													},
-													"response": []
-												}
-											],
-											"protocolProfileBehavior": {},
-											"_postman_isSubFolder": true
-										}
-									],
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "68a41ddd-b9dc-4fe7-847f-ee7a56c403e1",
-												"type": "text/javascript",
-												"exec": [
-													""
-												]
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"id": "e6a93b95-8415-4c7c-84fe-9a1dcc89c158",
-												"type": "text/javascript",
-												"exec": [
-													""
-												]
-											}
-										}
-									],
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
-								},
-								{
 									"name": "Add {{payerfspMSISDN}} to payerfsp",
 									"event": [
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "5cbd59ff-0a81-4257-9e62-8726b5efc36e",
+												"id": "be5e2fd0-4621-4845-bd56-9964ca7e6edc",
 												"exec": [
 													"pm.environment.set('fullName', 'SimFirst SimLast');",
 													"pm.environment.set('firstName', 'SimFirst');",
@@ -1559,7 +1395,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "a131e8e4-a354-4b1a-a130-301885e28989",
+												"id": "aaa98434-b6a4-44be-b726-1eea1aed3403",
 												"exec": [
 													"pm.test(\"Successful POST request\", function () {",
 													"    pm.expect(pm.response.code).to.be.oneOf([204,200, 500]);",
@@ -1598,43 +1434,6 @@
 									},
 									"response": [
 										{
-											"name": "An error occured processing the request",
-											"originalRequest": {
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n    \"displayName\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"middleName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"dateOfBirth\": \"<string>\",\n    \"merchantClassificationCode\": \"<string>\"\n}"
-												},
-												"url": {
-													"raw": "{{baseUrl}}/repository/parties",
-													"host": [
-														"{{baseUrl}}"
-													],
-													"path": [
-														"repository",
-														"parties"
-													]
-												}
-											},
-											"status": "Internal Server Error",
-											"code": 500,
-											"_postman_previewlanguage": "Text",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "text/plain"
-												}
-											],
-											"cookie": [],
-											"body": ""
-										},
-										{
 											"name": "The party was created",
 											"originalRequest": {
 												"method": "POST",
@@ -1670,8 +1469,113 @@
 											],
 											"cookie": [],
 											"body": ""
+										},
+										{
+											"name": "An error occured processing the request",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"displayName\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"middleName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"dateOfBirth\": \"<string>\",\n    \"merchantClassificationCode\": \"<string>\"\n}"
+												},
+												"url": {
+													"raw": "{{baseUrl}}/repository/parties",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"repository",
+														"parties"
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "Text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
 										}
 									]
+								},
+								{
+									"name": "Add SubId User - 27713803920 - 100",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "c8ed8493-0f58-4f3f-8cdb-33eb18e5ccd8",
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "838dd545-1f85-4dab-9517-bbfa05652c72",
+												"exec": [
+													"pm.test(\"Status code is 202\", function () {",
+													"    pm.response.to.have.status(202);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.participants+json;version=1.0"
+											},
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.participants+json;version=1",
+												"type": "text"
+											},
+											{
+												"key": "Date",
+												"value": "{{transferDate}}",
+												"type": "text"
+											},
+											{
+												"key": "FSPIOP-Source",
+												"value": "{{payerfsp}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n \"fspId\": \"{{payerfsp}}\",\n \"currency\": \"USD\"\n}\n"
+										},
+										"url": {
+											"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/27713803920/100",
+											"host": [
+												"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+											],
+											"path": [
+												"participants",
+												"MSISDN",
+												"27713803920",
+												"100"
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -1693,7 +1597,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "d19217d4-5395-49d2-9360-737b074adada",
+												"id": "48d7f8e1-bb37-490e-8202-23b3553e92e9",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -1750,7 +1654,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "5f2ce67a-cf83-47cf-8768-72d8500aad69",
+												"id": "33b80e14-2ebf-4fa9-b753-9ad516f1c144",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -1809,7 +1713,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "6118beaa-039c-4d4c-9412-d9005a203ec2",
+												"id": "3fab1329-c3e3-456c-abba-cc699f4ead1b",
 												"exec": [
 													"var uuid = require('uuid');",
 													"var generatedUUID = uuid.v4();",
@@ -1844,7 +1748,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "7284ab4b-39f3-47df-a316-b527e7ed6606",
+												"id": "9a36e4a4-0a3c-4567-b07c-a07559450bf8",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -1962,7 +1866,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "42056e2a-67e5-448f-861d-62ee1f37b92d",
+												"id": "937c7abd-0953-4777-be01-c4a1872f1ea2",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -2016,7 +1920,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "f671d9fb-9486-4b83-ac52-e6c5e54558f2",
+												"id": "8d1bbfb7-fa84-4a91-84a0-a8a8d81260cc",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -2075,7 +1979,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "937694ce-d5ac-4b75-9e5d-df5f2e6cb9a1",
+												"id": "11ff0073-3905-4028-850d-b3eb4433e887",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -2129,7 +2033,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "6bceff7e-9e0c-4b50-b60a-2875d409dc71",
+												"id": "54d246fd-0cc2-480b-9dab-a2b686ca6a99",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -2183,7 +2087,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "3dbf48f6-32cd-47d4-bf8d-31cf96f1ea45",
+												"id": "32dd383c-4e82-4e0c-8bc8-7b92a3399dff",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -2237,7 +2141,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "bdfa3c7d-c5e8-4dc4-bcb2-ceab685f11b1",
+												"id": "037fb57b-8998-45b1-84f2-e8116b5d767b",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -2291,7 +2195,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "233d18f0-9380-4048-aea2-7b3a7fd24e3c",
+												"id": "b8053396-731a-404a-97b8-766177262219",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -2345,7 +2249,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "2f5eee21-c3e5-48f0-9df8-1e093ae57acb",
+												"id": "aa6cf2ae-b17b-4b7e-a8a8-503ffff46048",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -2399,7 +2303,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "dbb23072-85c4-49f7-b1a0-f78a2f1aacfb",
+												"id": "a309b323-53f6-4bc1-bd7a-7db01bf38b9d",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -2458,7 +2362,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "1b909ef7-4422-4350-a605-9b83e10eafed",
+												"id": "c9c83795-40d1-4b26-be73-c347ec38c779",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -2517,7 +2421,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "9001d247-30ef-4181-9017-bfdbb26144f0",
+												"id": "6dcd73b5-a63f-47ba-9101-378a781d2422",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -2575,7 +2479,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "8f3166bb-f3e6-40c7-94de-5db02db21677",
+												"id": "ce7651c7-2f45-4e38-9ab4-b580733dfe4a",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -2633,7 +2537,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "87e666bc-5ea1-4fd1-b84c-6290742b1148",
+												"id": "f6e64c54-fed3-4219-a03c-276ff8be42ba",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -2970,7 +2874,7 @@
 							"name": "oracle_registration",
 							"item": [
 								{
-									"name": "Register {{payeefspMSISDN}} in MSISDN Oracle",
+									"name": "Add {{payeefspMSISDN}} in MSISDN Oracle",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -3052,12 +2956,12 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "a15825d7-597c-432a-bf06-f220c5475149",
+												"id": "d65ca9f1-ebdc-484f-9c31-74abf8fd17de",
 												"exec": [
-													"pm.environment.set('fullName', 'SimFirst SimLast');",
-													"pm.environment.set('firstName', 'SimFirst');",
-													"pm.environment.set('middleName', 'SimMiddle');",
-													"pm.environment.set('lastName', 'SimLast');",
+													"pm.environment.set('fullName', 'PayeeFirst PayeeLast');",
+													"pm.environment.set('firstName', 'PayeeFirst');",
+													"pm.environment.set('middleName', 'PayeeMiddle');",
+													"pm.environment.set('lastName', 'PayeeLast');",
 													"pm.environment.set('dob', '2010-10-10');"
 												],
 												"type": "text/javascript"
@@ -3066,7 +2970,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "40901ea4-aced-4c97-9753-3d1725e81347",
+												"id": "5e5c13c7-e933-4b31-85ce-359631cfacbf",
 												"exec": [
 													"pm.test(\"Successful POST request\", function () {",
 													"    pm.expect(pm.response.code).to.be.oneOf([204,200, 500]);",
@@ -3299,6 +3203,74 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "Add SubId User - 27713803921 - 200",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "d29348d2-cb92-488e-9c58-5c8e80c0f799",
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "96bfc395-2026-48d9-bd4d-423a1f3cbcea",
+												"exec": [
+													"pm.test(\"Status code is 202\", function () {",
+													"    pm.response.to.have.status(202);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.participants+json;version=1.0"
+											},
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.participants+json;version=1",
+												"type": "text"
+											},
+											{
+												"key": "Date",
+												"value": "{{transferDate}}",
+												"type": "text"
+											},
+											{
+												"key": "FSPIOP-Source",
+												"value": "{{payeefsp}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n \"fspId\": \"{{payeefsp}}\",\n \"currency\": \"USD\"\n}\n"
+										},
+										"url": {
+											"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/27713803921/200",
+											"host": [
+												"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+											],
+											"path": [
+												"participants",
+												"MSISDN",
+												"27713803921",
+												"200"
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -3320,7 +3292,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "a0be5123-99d7-4fbe-960e-b32d9234ac48",
+												"id": "5af7d8ea-6831-4e41-a95a-213147fd3d35",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -3377,7 +3349,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "b4d2cd8d-7dd3-49ac-8648-533820aec731",
+												"id": "40fa9b6a-0b18-4117-b6a2-9f7122bc1041",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -3436,7 +3408,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "ea8a03fd-51f3-4313-8173-e1c9c1278f04",
+												"id": "eb63cea0-b387-4e90-b2f6-2fd96a98e9b1",
 												"exec": [
 													"var uuid = require('uuid');",
 													"var generatedUUID = uuid.v4();",
@@ -3470,7 +3442,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "d2181c16-80b2-4a71-bddf-8fe925d136f7",
+												"id": "53cbfe54-3607-4da1-a138-e21ad1eac20f",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -3557,7 +3529,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "d5bed168-6318-4f37-9e18-12391acac7a7",
+												"id": "1073ca10-0224-46fb-ad70-6feb874d7a71",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -3616,7 +3588,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "73821ec6-d5fe-4eb7-8ec3-4d1c3337b07d",
+												"id": "eb6d510c-e7f1-4273-b279-f7b18779fdca",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -3966,7 +3938,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "2beb09a3-4cd1-4651-84d6-2687b6ef6c00",
+												"id": "09d5d5df-96d8-4ff8-b0ea-c5a6ae99bade",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -4022,7 +3994,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "c7446ed4-44f6-44bf-b240-2f00508241a7",
+												"id": "23547a63-9635-43d1-9648-52ec5a9f5fea",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -4080,7 +4052,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "8f6dae57-26b3-433c-a94b-ba7c6e047a82",
+												"id": "b8fc748f-4785-4f72-b449-12d4bc88a40d",
 												"exec": [
 													"var uuid = require('uuid');",
 													"var generatedUUID = uuid.v4();",
@@ -4115,7 +4087,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "adac788b-e80d-4211-b478-bdd91aed7f22",
+												"id": "ec4cc01f-b365-442d-8b7c-c5cca98a308f",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -4232,7 +4204,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "0fa25913-01fe-4ee5-9c09-2c19deeb32cf",
+												"id": "be10b6e8-5f28-4e79-b48f-939077e9b2c6",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -4291,7 +4263,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "df9743b7-32ec-40d6-a1b4-8c6d17558caa",
+												"id": "95d5df7b-8b23-49e4-8def-5b6a8e9252f4",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -4307,7 +4279,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "{{TESTFSP1_BEARER_TOKEN}}",
+													"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 													"type": "string"
 												}
 											]
@@ -4345,7 +4317,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "30dfb6cd-3038-41bf-8e8c-b5e2410f6ce7",
+												"id": "db33fcdb-8f65-411b-85ad-35cc3621483b",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -4361,7 +4333,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "{{TESTFSP1_BEARER_TOKEN}}",
+													"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 													"type": "string"
 												}
 											]
@@ -4399,7 +4371,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "ed50b155-2391-4c31-aeb9-ed60568f1de7",
+												"id": "7426aaf5-1829-40aa-9b97-bed0fbbdc367",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -4415,7 +4387,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "{{TESTFSP1_BEARER_TOKEN}}",
+													"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 													"type": "string"
 												}
 											]
@@ -4453,7 +4425,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "926fc1ee-9e57-414b-92f4-42905d70f850",
+												"id": "9ecad2dd-daad-4e6c-b452-0a0381fc272b",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -4469,7 +4441,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "{{TESTFSP1_BEARER_TOKEN}}",
+													"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 													"type": "string"
 												}
 											]
@@ -4507,7 +4479,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "50b546ad-8e61-4aa1-a858-b522947ab9f8",
+												"id": "1539e9fc-317a-4dc2-8664-c3f7056cc33e",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -4523,7 +4495,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "{{TESTFSP1_BEARER_TOKEN}}",
+													"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 													"type": "string"
 												}
 											]
@@ -4561,7 +4533,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "eb9ca33c-6fc2-479c-8c2c-c4bef859fb4d",
+												"id": "694ebd05-4d98-4f2e-91e2-4ec8bd285a6a",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -4577,7 +4549,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "{{TESTFSP1_BEARER_TOKEN}}",
+													"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 													"type": "string"
 												}
 											]
@@ -4615,7 +4587,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "16a2dfba-3a9e-4364-9a73-18222cab25c6",
+												"id": "4fb0fc0c-423f-4cc4-891d-3f0a7c87a63b",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -4673,7 +4645,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "4bb7ca46-6019-4c3e-a67b-7a4955e7beee",
+												"id": "4b8d8b93-1a3e-4d91-a25e-6371adb6c86a",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -4731,7 +4703,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "2aa1fe6e-af4e-4f5f-8ac6-86b675e6739d",
+												"id": "e90a1df5-4e17-4737-bd9f-e1f946c65734",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -4789,7 +4761,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "ec6d2ca9-1f29-4df8-a69a-b6778e53c1d9",
+												"id": "3e44e1c7-cba4-4236-8a9a-412c4337a4ae",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -5121,6 +5093,224 @@
 							],
 							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
+						},
+						{
+							"name": "oracle_registration",
+							"item": [
+								{
+									"name": "Add testfsp1 in MSISDN Oracle",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.participants+json;version=1"
+											},
+											{
+												"key": "Connection",
+												"value": "keep-alive"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.participants+json;version=1.0"
+											},
+											{
+												"key": "Date",
+												"value": ""
+											},
+											{
+												"key": "FSPIOP-Source",
+												"value": "hub_operator"
+											},
+											{
+												"key": "Postman-Token",
+												"value": "7aa4c9f3-1738-49f0-8904-7821e2336692,4127ff87-7d17-483c-8e3e-f0b562a16d84"
+											},
+											{
+												"key": "User-Agent",
+												"value": "PostmanRuntime/7.11.0"
+											},
+											{
+												"key": "accept-encoding",
+												"value": "gzip, deflate"
+											},
+											{
+												"key": "cache-control",
+												"value": "no-cache"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"fspId\": \"testfsp1\",\n    \"currency\": \"{{currency}}\"\n}"
+										},
+										"url": {
+											"raw": "{{MSISDN_ORACLE_ENDPOINT}}/participants/MSISDN/{{testfsp1MSISDN}}",
+											"host": [
+												"{{MSISDN_ORACLE_ENDPOINT}}"
+											],
+											"path": [
+												"participants",
+												"MSISDN",
+												"{{testfsp1MSISDN}}"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "add_users",
+							"item": [
+								{
+									"name": "Add {{testfsp1MSISDN}} to testfsp1",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "e953f81b-682a-4e2e-a5b0-c44fc730e5b6",
+												"exec": [
+													"pm.environment.set('fullName', 'Testfsp1First Testfsp1Last');",
+													"pm.environment.set('firstName', 'Testfsp1First');",
+													"pm.environment.set('middleName', 'Testfsp1Middle');",
+													"pm.environment.set('lastName', 'Testfsp1Last');",
+													"pm.environment.set('dob', '2010-10-10');"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "3238625d-f524-440e-82a9-300baf8f4f8c",
+												"exec": [
+													"pm.test(\"Successful POST request\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([204,200, 500]);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"displayName\": \"{{fullName}}\",\n    \"firstName\": \"{{firstName}}\",\n    \"middleName\": \"{{middleName}}\",\n    \"lastName\": \"{{lastName}}\",\n    \"dateOfBirth\": \"{{dob}}\",\n    \"idType\": \"MSISDN\",\n    \"idValue\": \"{{testfsp1MSISDN}}\"\n}"
+										},
+										"url": {
+											"raw": "{{PAYEEFSP_BACKEND_TESTAPI_URL}}/repository/parties",
+											"host": [
+												"{{PAYEEFSP_BACKEND_TESTAPI_URL}}"
+											],
+											"path": [
+												"repository",
+												"parties"
+											]
+										},
+										"description": "Create a party in payeefsp. So that GET /parties can be successful."
+									},
+									"response": [
+										{
+											"name": "An error occured processing the request",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"displayName\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"middleName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"dateOfBirth\": \"<string>\",\n    \"merchantClassificationCode\": \"<string>\"\n}"
+												},
+												"url": {
+													"raw": "{{baseUrl}}/repository/parties",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"repository",
+														"parties"
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "Text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "The party was created",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"displayName\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"middleName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"dateOfBirth\": \"<string>\",\n    \"merchantClassificationCode\": \"<string>\"\n}"
+												},
+												"url": {
+													"raw": "{{baseUrl}}/repository/parties",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"repository",
+														"parties"
+													]
+												}
+											},
+											"status": "No Content",
+											"code": 204,
+											"_postman_previewlanguage": "Text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
 						}
 					],
 					"protocolProfileBehavior": {},
@@ -5138,7 +5328,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "37133757-c560-4e9c-ad5c-2f79fa8ef512",
+												"id": "f905a05a-3620-4a6d-8267-f413249f041c",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -5194,7 +5384,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "f4f34101-e0f8-4306-8037-5e18f519b01a",
+												"id": "d064825a-f784-4d6f-b0fd-e25d9a2cbc40",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -5252,7 +5442,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "6f73d1dd-f628-4cdc-b430-54052bc239d4",
+												"id": "a2d9532c-dd0d-45f4-9b34-7d5372ae88c3",
 												"exec": [
 													"var uuid = require('uuid');",
 													"var generatedUUID = uuid.v4();",
@@ -5287,7 +5477,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "6928cde1-6972-42e5-8dc6-4b722c28b492",
+												"id": "dfbdff29-2444-4bb7-9a17-4d49d98757e5",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -5404,7 +5594,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "329e1ef2-5bba-4dd5-b3b3-239c613854f6",
+												"id": "8c1c8500-e271-473c-b691-29a8e6c63653",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -5420,7 +5610,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "{{TESTFSP2_BEARER_TOKEN}}",
+													"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 													"type": "string"
 												}
 											]
@@ -5458,7 +5648,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "e5b1225c-256f-49fe-931d-2b147bf5fe66",
+												"id": "35a8881d-7925-412d-8d02-3f842e05d3ce",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -5474,7 +5664,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "{{TESTFSP2_BEARER_TOKEN}}",
+													"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 													"type": "string"
 												}
 											]
@@ -5512,7 +5702,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "9d8083c0-2733-487f-bca2-651f5eec8fef",
+												"id": "36650072-ed3d-4dc8-86f8-05b9a279f51b",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -5528,7 +5718,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "{{TESTFSP2_BEARER_TOKEN}}",
+													"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 													"type": "string"
 												}
 											]
@@ -5566,7 +5756,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "cc973984-d4e7-4c89-8bbb-0d66547edec1",
+												"id": "bba698d6-095f-4bc6-98fa-8c7b3d66bb17",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -5582,7 +5772,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "{{TESTFSP2_BEARER_TOKEN}}",
+													"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 													"type": "string"
 												}
 											]
@@ -5620,7 +5810,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "099d4de8-c9e9-4601-8db5-72f457b15817",
+												"id": "b57a8542-d5da-4730-addb-31061b4389b9",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -5636,7 +5826,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "{{TESTFSP2_BEARER_TOKEN}}",
+													"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 													"type": "string"
 												}
 											]
@@ -5674,7 +5864,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "a9a457d4-72b9-4d81-b989-f71681b032fa",
+												"id": "92b97c26-e4d6-4993-922a-4e1908af0205",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -5690,7 +5880,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "{{TESTFSP2_BEARER_TOKEN}}",
+													"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 													"type": "string"
 												}
 											]
@@ -5728,7 +5918,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "4dedb4c9-ca56-4851-be27-af99eed1d1fe",
+												"id": "df783b71-0523-4583-b202-d3ab217416cb",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -5744,7 +5934,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "{{TESTFSP2_BEARER_TOKEN}}",
+													"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
 													"type": "string"
 												}
 											]
@@ -5782,7 +5972,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "ff41c4ce-a6a0-4b65-8012-e3d6be41d966",
+												"id": "07945dd5-df2b-4c0c-b8fa-2d6c01439862",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -5840,7 +6030,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "ba351e7d-c9b8-4a0a-bf71-dee895a45f2d",
+												"id": "821d0ce2-2607-4f8a-87a8-9045709c781d",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -5898,7 +6088,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "4fccdb44-434b-48eb-a511-a26a2476e870",
+												"id": "33066a5b-1506-4de6-a4bc-ac329b85d137",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -5956,7 +6146,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "27e30618-9a31-46fa-b710-e581f068508b",
+												"id": "2fbf3d75-52ea-41df-9b3f-db75bc6580a1",
 												"exec": [
 													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
@@ -6288,361 +6478,75 @@
 							],
 							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
-						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "Add Users to Simulators",
-			"item": [
-				{
-					"name": "payeefsp",
-					"item": [
-						{
-							"name": "Add {{merchantId}} to payeefsp",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "399b1943-0581-46ba-9c17-8db5a9cddba6",
-										"exec": [
-											"pm.environment.set('fullName', 'SimFirst SimLast');",
-											"pm.environment.set('firstName', 'SimFirst');",
-											"pm.environment.set('middleName', 'SimMiddle');",
-											"pm.environment.set('lastName', 'SimLast');",
-											"pm.environment.set('dob', '2010-10-10');"
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"id": "82e273ec-71c0-44b4-8c06-501742480f27",
-										"exec": [
-											"pm.test(\"Successful POST request\", function () {",
-											"    pm.expect(pm.response.code).to.be.oneOf([204,200, 500]);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"displayName\": \"{{fullName}}\",\n    \"firstName\": \"{{firstName}}\",\n    \"middleName\": \"{{middleName}}\",\n    \"lastName\": \"{{lastName}}\",\n    \"dateOfBirth\": \"{{dob}}\",\n    \"idType\": \"BUSINESS\",\n    \"idValue\": \"{{merchantId}}\"\n}"
-								},
-								"url": {
-									"raw": "{{PAYEEFSP_BACKEND_TESTAPI_URL}}/repository/parties",
-									"host": [
-										"{{PAYEEFSP_BACKEND_TESTAPI_URL}}"
-									],
-									"path": [
-										"repository",
-										"parties"
-									]
-								},
-								"description": "Create a party in payeefsp. So that GET /parties can be successful."
-							},
-							"response": [
-								{
-									"name": "An error occured processing the request",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"displayName\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"middleName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"dateOfBirth\": \"<string>\",\n    \"merchantClassificationCode\": \"<string>\"\n}"
-										},
-										"url": {
-											"raw": "{{baseUrl}}/repository/parties",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"repository",
-												"parties"
-											]
-										}
-									},
-									"status": "Internal Server Error",
-									"code": 500,
-									"_postman_previewlanguage": "Text",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "text/plain"
-										}
-									],
-									"cookie": [],
-									"body": ""
-								},
-								{
-									"name": "The party was created",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"displayName\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"middleName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"dateOfBirth\": \"<string>\",\n    \"merchantClassificationCode\": \"<string>\"\n}"
-										},
-										"url": {
-											"raw": "{{baseUrl}}/repository/parties",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"repository",
-												"parties"
-											]
-										}
-									},
-									"status": "No Content",
-									"code": 204,
-									"_postman_previewlanguage": "Text",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "text/plain"
-										}
-									],
-									"cookie": [],
-									"body": ""
-								}
-							]
 						},
 						{
-							"name": "Add {{aliasId}} to payeefsp",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "305ee8d0-27d4-4238-864b-27b1e0ae5174",
-										"exec": [
-											"pm.environment.set('fullName', 'SimFirst SimLast');",
-											"pm.environment.set('firstName', 'SimFirst');",
-											"pm.environment.set('middleName', 'SimMiddle');",
-											"pm.environment.set('lastName', 'SimLast');",
-											"pm.environment.set('dob', '2010-10-10');"
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"id": "37011e47-57ce-4d9d-b7c8-e6b3c60e7822",
-										"exec": [
-											"pm.test(\"Successful POST request\", function () {",
-											"    pm.expect(pm.response.code).to.be.oneOf([204,200, 500]);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"displayName\": \"{{fullName}}\",\n    \"firstName\": \"{{firstName}}\",\n    \"middleName\": \"{{middleName}}\",\n    \"lastName\": \"{{lastName}}\",\n    \"dateOfBirth\": \"{{dob}}\",\n    \"idType\": \"ALIAS\",\n    \"idValue\": \"{{aliasID}}\"\n}"
-								},
-								"url": {
-									"raw": "{{PAYEEFSP_BACKEND_TESTAPI_URL}}/repository/parties",
-									"host": [
-										"{{PAYEEFSP_BACKEND_TESTAPI_URL}}"
-									],
-									"path": [
-										"repository",
-										"parties"
-									]
-								},
-								"description": "Create a party in payeefsp. So that GET /parties can be successful."
-							},
-							"response": [
-								{
-									"name": "The party was created",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"displayName\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"middleName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"dateOfBirth\": \"<string>\",\n    \"merchantClassificationCode\": \"<string>\"\n}"
-										},
-										"url": {
-											"raw": "{{baseUrl}}/repository/parties",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"repository",
-												"parties"
-											]
-										}
-									},
-									"status": "No Content",
-									"code": 204,
-									"_postman_previewlanguage": "Text",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "text/plain"
-										}
-									],
-									"cookie": [],
-									"body": ""
-								},
-								{
-									"name": "An error occured processing the request",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"displayName\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"middleName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"dateOfBirth\": \"<string>\",\n    \"merchantClassificationCode\": \"<string>\"\n}"
-										},
-										"url": {
-											"raw": "{{baseUrl}}/repository/parties",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"repository",
-												"parties"
-											]
-										}
-									},
-									"status": "Internal Server Error",
-									"code": 500,
-									"_postman_previewlanguage": "Text",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "text/plain"
-										}
-									],
-									"cookie": [],
-									"body": ""
-								}
-							]
-						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "Add SubId Users to ALS Copy",
-					"item": [
-						{
-							"name": "payerfsp",
+							"name": "oracle_registration",
 							"item": [
 								{
-									"name": "Add SubId User - 27713803920 - 100",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "b46abbeb-3964-4a71-9843-a4026a0102b1",
-												"exec": [
-													""
-												],
-												"type": "text/javascript"
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"id": "648dd4e2-35d5-4b09-8cf8-9e524af8568b",
-												"exec": [
-													"pm.test(\"Status code is 202\", function () {",
-													"    pm.response.to.have.status(202);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
+									"name": "Add testfsp2 in MSISDN Oracle",
 									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
 										"method": "POST",
 										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.participants+json;version=1"
+											},
+											{
+												"key": "Connection",
+												"value": "keep-alive"
+											},
 											{
 												"key": "Content-Type",
 												"value": "application/vnd.interoperability.participants+json;version=1.0"
 											},
 											{
-												"key": "Accept",
-												"value": "application/vnd.interoperability.participants+json;version=1",
-												"type": "text"
-											},
-											{
 												"key": "Date",
-												"value": "{{transferDate}}",
-												"type": "text"
+												"value": ""
 											},
 											{
 												"key": "FSPIOP-Source",
-												"value": "{{payerfsp}}",
-												"type": "text"
+												"value": "hub_operator"
+											},
+											{
+												"key": "Postman-Token",
+												"value": "7aa4c9f3-1738-49f0-8904-7821e2336692,4127ff87-7d17-483c-8e3e-f0b562a16d84"
+											},
+											{
+												"key": "User-Agent",
+												"value": "PostmanRuntime/7.11.0"
+											},
+											{
+												"key": "accept-encoding",
+												"value": "gzip, deflate"
+											},
+											{
+												"key": "cache-control",
+												"value": "no-cache"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n \"fspId\": \"{{payerfsp}}\",\n \"currency\": \"USD\"\n}\n"
+											"raw": "{\n    \"fspId\": \"testfsp2\",\n    \"currency\": \"{{currency}}\"\n}"
 										},
 										"url": {
-											"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/27713803920/100",
+											"raw": "{{MSISDN_ORACLE_ENDPOINT}}/participants/MSISDN/{{testfsp2MSISDN}}",
 											"host": [
-												"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+												"{{MSISDN_ORACLE_ENDPOINT}}"
 											],
 											"path": [
 												"participants",
 												"MSISDN",
-												"27713803920",
-												"100"
+												"{{testfsp2MSISDN}}"
 											]
 										}
 									},
@@ -6653,17 +6557,21 @@
 							"_postman_isSubFolder": true
 						},
 						{
-							"name": "payeefsp",
+							"name": "add_users",
 							"item": [
 								{
-									"name": "Add SubId User - 27713803921 - 200",
+									"name": "Add {{testfsp2MSISDN}} to testfsp2",
 									"event": [
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "ba6f5a2a-0365-41c3-befe-d68dd1505e21",
+												"id": "aa9c166b-a210-46c4-98d1-f593835225ea",
 												"exec": [
-													""
+													"pm.environment.set('fullName', 'Testfsp2First Testfsp2Last');",
+													"pm.environment.set('firstName', 'Testfsp2First');",
+													"pm.environment.set('middleName', 'Testfsp2Middle');",
+													"pm.environment.set('lastName', 'Testfsp2Last');",
+													"pm.environment.set('dob', '2010-10-10');"
 												],
 												"type": "text/javascript"
 											}
@@ -6671,10 +6579,10 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "edb71cc2-783a-481f-95d6-454503bd6009",
+												"id": "ffb4dfc8-d88d-43bb-a76e-d005a0a93493",
 												"exec": [
-													"pm.test(\"Status code is 202\", function () {",
-													"    pm.response.to.have.status(202);",
+													"pm.test(\"Successful POST request\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([204,200, 500]);",
 													"});"
 												],
 												"type": "text/javascript"
@@ -6682,46 +6590,108 @@
 										}
 									],
 									"request": {
+										"auth": {
+											"type": "noauth"
+										},
 										"method": "POST",
 										"header": [
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.participants+json;version=1.0"
-											},
-											{
-												"key": "Accept",
-												"value": "application/vnd.interoperability.participants+json;version=1",
-												"type": "text"
-											},
-											{
-												"key": "Date",
-												"value": "{{transferDate}}",
-												"type": "text"
-											},
-											{
-												"key": "FSPIOP-Source",
-												"value": "{{payeefsp}}",
-												"type": "text"
+												"value": "application/json"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n \"fspId\": \"{{payeefsp}}\",\n \"currency\": \"USD\"\n}\n"
+											"raw": "{\n    \"displayName\": \"{{fullName}}\",\n    \"firstName\": \"{{firstName}}\",\n    \"middleName\": \"{{middleName}}\",\n    \"lastName\": \"{{lastName}}\",\n    \"dateOfBirth\": \"{{dob}}\",\n    \"idType\": \"MSISDN\",\n    \"idValue\": \"{{testfsp2MSISDN}}\"\n}"
 										},
 										"url": {
-											"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/participants/MSISDN/27713803921/200",
+											"raw": "{{PAYEEFSP_BACKEND_TESTAPI_URL}}/repository/parties",
 											"host": [
-												"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+												"{{PAYEEFSP_BACKEND_TESTAPI_URL}}"
 											],
 											"path": [
-												"participants",
-												"MSISDN",
-												"27713803921",
-												"200"
+												"repository",
+												"parties"
 											]
-										}
+										},
+										"description": "Create a party in payeefsp. So that GET /parties can be successful."
 									},
-									"response": []
+									"response": [
+										{
+											"name": "An error occured processing the request",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"displayName\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"middleName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"dateOfBirth\": \"<string>\",\n    \"merchantClassificationCode\": \"<string>\"\n}"
+												},
+												"url": {
+													"raw": "{{baseUrl}}/repository/parties",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"repository",
+														"parties"
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "Text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "The party was created",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"displayName\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"middleName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"dateOfBirth\": \"<string>\",\n    \"merchantClassificationCode\": \"<string>\"\n}"
+												},
+												"url": {
+													"raw": "{{baseUrl}}/repository/parties",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"repository",
+														"parties"
+													]
+												}
+											},
+											"status": "No Content",
+											"code": 204,
+											"_postman_previewlanguage": "Text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -6739,7 +6709,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "042435a0-117b-4cea-84b5-ef6bbd2613b6",
+				"id": "65d7dd9e-bff7-430b-9f3e-b7acdbcadf53",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -6749,7 +6719,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "1426dc03-ecdf-47c4-89d6-c3062a28a3c3",
+				"id": "5616a81f-a7b3-47ec-b953-b38ae45d9025",
 				"type": "text/javascript",
 				"exec": [
 					""
