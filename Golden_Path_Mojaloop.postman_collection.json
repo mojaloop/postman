@@ -830,7 +830,7 @@
 													"        });",
 													"        ",
 													"        pm.test(\"payeefsp accept should be application/vnd.interoperability.parties+json;version=1\", function () {",
-													"            pm.expect(headers['accept']).to.eql('application/vnd.interoperability.parties+json;version=1');",
+													"            pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.parties\\+json;version=1(\\.0)?/);",
 													"        });",
 													"        ",
 													"        ",
