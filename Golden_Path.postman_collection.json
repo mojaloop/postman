@@ -1623,7 +1623,7 @@
 											"                });",
 											"                ",
 											"                pm.test(\"payeefsp content-typeis same as sent in the request\", function () {",
-											"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.quotes+json;version=1.1');",
+											"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.quotes+json;version=1.0');",
 											"                });",
 											"                ",
 											"          } else {",
@@ -1649,7 +1649,7 @@
 											"                pm.expect(headers['fspiop-destination']).to.eql('payerfsp');",
 											"            });",
 											"            ",
-											"            pm.test(\"payerfsp content-type should be application/vnd.interoperability.quotes+json;version=1.1\", function () {",
+											"            pm.test(\"payerfsp content-type should be application/vnd.interoperability.quotes+json;version=1.0\", function () {",
 											"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.quotes+json;version=1.0');",
 											"            });",
 											"            ",
@@ -1792,7 +1792,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{payerMSISDN}}\",\n      \"fspId\": \"payerfsp\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"reservetransferpayee\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
+									"raw": "{\n  \"quoteId\": \"{{quoteId}}\",\n  \"transactionId\": \"{{transactionId}}\",\n  \"payer\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"{{payerMSISDN}}\",\n      \"fspId\": \"{{payerfsp}}\"\n    },\n    \"personalInfo\": {\n      \"complexName\": {\n        \"firstName\": \"Mats\",\n        \"lastName\": \"Hagman\"\n      },\n      \"dateOfBirth\": \"1983-10-25\"\n    }\n  },\n  \"payee\": {\n    \"partyIdInfo\": {\n      \"partyIdType\": \"MSISDN\",\n      \"partyIdentifier\": \"22556999125\",\n      \"fspId\": \"reservetransferpayee\"\n    }\n  },\n  \"amountType\": \"SEND\",\n  \"amount\": {\n    \"amount\": \"{{transferAmount}}\",\n    \"currency\": \"{{currency}}\"\n  },\n  \"transactionType\": {\n    \"scenario\": \"TRANSFER\",\n    \"initiator\": \"PAYER\",\n    \"initiatorType\": \"CONSUMER\"\n  },\n  \"note\": \"hej\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
@@ -1921,8 +1921,8 @@
 											"                pm.expect(headers['fspiop-destination']).to.eql('payerfsp');",
 											"            });",
 											"            ",
-											"            pm.test(\"payerfsp content-type should be application/vnd.interoperability.transfers+json;version=1.1\", function () {",
-											"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.1');",
+											"            pm.test(\"payerfsp content-type should be application/vnd.interoperability.transfers+json;version=1.0\", function () {",
+											"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
 											"            });",
 											"            ",
 											"            pm.test(\"payerfsp accept is empty\", function () {",
