@@ -6,4 +6,4 @@ then
   exit 1
 fi
 
-newman run --delay-request=2000 --folder='payerfsp (p2p transfers)' --environment=$1 ML_OSS_Setup_LegacySim.postman_collection.json
+newman run --delay-request=2000 --folder='payeefsp (p2p transfers)' --environment=$1 ML_OSS_Setup_LegacySim.postman_collection.json
