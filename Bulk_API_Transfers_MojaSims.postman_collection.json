@@ -943,7 +943,7 @@
 											"    }",
 											"  });",
 											"",
-											"    pm.sendRequest(pm.environment.get(\"HOST_LEGACY_SIMULATOR\") + \"/bulkTransfersNegative/callbacks/\" + pm.environment.get(\"bulkTransferId\"), function (err, response) {",
+											"  pm.sendRequest(pm.environment.get(\"HOST_LEGACY_SIMULATOR\") + \"/bulkTransfersNegative/callbacks/\" + pm.environment.get(\"bulkTransferId\"), function (err, response) {",
 											"    if (response.responseSize !== 0) {",
 											"      const jsonResponse = response.json();",
 											"",
@@ -1133,8 +1133,8 @@
 											"      pm.test(\"date header should be set\", function () {",
 											"        pm.expect(headers.date).to.be.ok;",
 											"      });",
-											"      pm.test(\"fspiop-source should be noresponsepayeefsp\", function () {",
-											"        pm.expect(headers[\"fspiop-source\"]).to.eql('noresponsepayeefsp');",
+											"      pm.test(\"fspiop-source should be switch\", function () {",
+											"        pm.expect(headers[\"fspiop-source\"]).to.eql('switch');",
 											"      });",
 											"      pm.test(\"fspiop-destination should be payerfsp\", function () {",
 											"        pm.expect(headers[\"fspiop-destination\"]).to.eql('payerfsp');",
@@ -1203,6 +1203,139 @@
 										"key": "FSPIOP-Signature",
 										"type": "text",
 										"value": "~~{{payerfsp}}~~"
+									},
+									{
+										"key": "FSPIOP-URI",
+										"type": "text",
+										"value": "/bulkTransfers/{{bulkTransferId}}"
+									},
+									{
+										"key": "FSPIOP-HTTP-Method",
+										"type": "text",
+										"value": "GET"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{HOST_BULK_ADAPTER}}/bulkTransfers/{{bulkTransferId}}",
+									"host": [
+										"{{HOST_BULK_ADAPTER}}"
+									],
+									"path": [
+										"bulkTransfers",
+										"{{bulkTransferId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Bulk Transfer - PayeeFSP",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "9df93746-5c19-44a1-acbc-40f54acd0fc2",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "c7d1a407-c393-448d-995e-aef4796fd4a3",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});",
+											"",
+											"setTimeout(function () {",
+											"   pm.sendRequest(pm.environment.get(\"HOST_LEGACY_SIMULATOR\") + \"/bulkTransfersNegative/callbacks/\" + pm.environment.get(\"bulkTransferId\"), function (err, response) {",
+											"    if (response.responseSize !== 0) {",
+											"      const jsonResponse = response.json();",
+											"",
+											"      const headers = jsonResponse.headers",
+											"      pm.test(\"date header should be set\", function () {",
+											"        pm.expect(headers.date).to.be.ok;",
+											"      });",
+											"      pm.test(\"fspiop-source should be switch\", function () {",
+											"        pm.expect(headers[\"fspiop-source\"]).to.eql('switch');",
+											"      });",
+											"      pm.test(\"fspiop-destination should be noresponsepayeefsp\", function () {",
+											"        pm.expect(headers[\"fspiop-destination\"]).to.eql('noresponsepayeefsp');",
+											"      });",
+											"      pm.test(\"fspiop-http-method should be PUT\", function () {",
+											"        pm.expect(headers[\"fspiop-http-method\"]).to.eql('PUT');",
+											"      });",
+											"      pm.test(`fspiop-uri should be /noresponsepayeefsp/bulkTransfers/${pm.environment.get('bulkTransferId')}/error`, function () {",
+											"        pm.expect(headers[\"fspiop-uri\"]).to.eql(`/noresponsepayeefsp/bulkTransfers/${pm.environment.get('bulkTransferId')}/error`);",
+											"      });",
+											"      pm.test(\"accept header should be undefined\", function () {",
+											"        pm.expect(headers[\"accept\"]).to.eql(undefined);",
+											"      });",
+											"      pm.test(\"fspiop-signature should not be set\", function () {",
+											"        pm.expect(headers[\"fspiop-signature\"]).to.eql(undefined);",
+											"      });",
+											"",
+											"      const data = jsonResponse.data",
+											"      pm.test('Request body should be errorInformation', function () {",
+											"        pm.expect(data).to.eql({",
+											"          errorInformation: {",
+											"            errorCode: \"5100\",",
+											"            errorDescription: \"An error occured\"",
+											"          }",
+											"        })",
+											"      })",
+											"    } else {",
+											"      pm.test(\"Transfer FAILED\", function () {",
+											"        throw new Error('Did not receive response');",
+											"      });",
+											"    }",
+											"  });",
+											"}, 1000)",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+									},
+									{
+										"key": "Date",
+										"value": "{{headerDate}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.interoperability.transfers+json;version=1"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "noresponsepayeefsp"
+									},
+									{
+										"key": "FSPIOP-Destination",
+										"value": "switch"
+									},
+									{
+										"key": "FSPIOP-Signature",
+										"type": "text",
+										"value": "~~noresponsepayeefsp~~"
 									},
 									{
 										"key": "FSPIOP-URI",
@@ -1810,8 +1943,8 @@
 											"              pm.test(\"date header should be set\", function () {",
 											"                pm.expect(headers.date).to.be.ok;",
 											"              });",
-											"              pm.test(\"fspiop-source should be payeefsp\", function () {",
-											"                pm.expect(headers[\"fspiop-source\"]).to.eql('payeefsp');",
+											"              pm.test(\"fspiop-source should be switch\", function () {",
+											"                pm.expect(headers[\"fspiop-source\"]).to.eql('switch');",
 											"              });",
 											"              pm.test(\"fspiop-destination should be payerfsp\", function () {",
 											"                pm.expect(headers[\"fspiop-destination\"]).to.eql('payerfsp');",
@@ -1823,7 +1956,7 @@
 											"                pm.expect(headers[\"fspiop-uri\"]).to.eql(\"/payerfsp/bulkTransfers/\" + pm.environment.get(\"bulkTransferId\"));",
 											"              });",
 											"              pm.test(\"fspiop-signature should be set\", function () {",
-											"                pm.expect(headers[\"fspiop-signature\"]).to.be.ok;",
+											"                pm.expect(headers[\"fspiop-signature\"]).to.eql(undefined);",
 											"              });",
 											"              ",
 											"             ",
