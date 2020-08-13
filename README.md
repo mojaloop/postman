@@ -78,7 +78,7 @@ Is the base url that Postman uses to communicate with the [`mojaloop/account-loo
 
 ## 3. Testing
 
-The collections can be run as they are via Postman but for a more detailed setup of a complete stand-alone test environment (QA and Regression Testing Framework) please refer to the detailed explanation in the Mojaloop documentation  [here](https://github.com/mojaloop/documentation/blob/master/contributors-guide/tools-and-technologies/automated-testing.md "Automated Testing")
+The collections can be run as they are via Postman but for a more detailed setup of a complete stand-alone test environment (QA and Regression Testing Framework) please refer to the detailed explanation in the Mojaloop documentation  [here](https://docs.mojaloop.io/documentation/contributors-guide/tools-and-technologies/automated-testing.html "Automated Testing")
 
 
 ## 4. Support Scripts for Docker-compose
