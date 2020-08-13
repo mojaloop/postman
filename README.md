@@ -1,36 +1,83 @@
-# Postman collections for Mojaloop
+# Postman Collections for Mojaloop
+[![Git Commit](https://img.shields.io/github/last-commit/mojaloop/postman.svg?style=flat)](https://github.com/mojaloop/postman/commits/master)
+[![Git Releases](https://img.shields.io/github/release/mojaloop/postman.svg?style=flat)](https://github.com/mojaloop/postman/releases)
+<!-- [![CircleCI](https://circleci.com/gh/mojaloop/postman.svg?style=svg)](https://app.circleci.com/pipelines/github/mojaloop/postman) -->
 
-- Github [Repo link](https://github.com/mojaloop/postman)
+[Postman](https://www.postman.com/) is a UI and CLI based API Development tool. The Mojaloop Community uses Postman for writing and running End to End tests.
 
+
+## Contents
+- [1. Collections](#1-collections)
+- [2. Environments](#2-environments)
+- [3. Testing](#3-testing)
+- [4. Support Scripts for Docker-compose](#4-support-scripts-for-docker-compose)
+    - [4.1 Prerequisites](#41-prerequisites)
+    - [4.2 Pre-loading Test Data](#42-pre-loading-test-data)
+    - [4.3 Running Example Requests](#43-running-example-requests)
+- [5. Tools + Utils](#5-tools--utils)
 
 ## 1. Collections
-There are 4 Postman Collections in the repository:
-- OSS-New-Deployment-FSP-Setup.postman_collection
-- Golden_Path.postman_collection
-- OSS-API-Tests.postman_collection
-- OSS-Feature-Tests.postman_collection
 
-The first collection that needs to be run, in order to set up the database after a clean install, is OSS-New-Deployment-FSP-Setup. The sequence in which you can run the other collections after that is not important, it really depends on the type of test required.
+> **Note:** *Make sure to always check the [Helm Release Notes](https://github.com/mojaloop/helm/releases) for the postman collection you should be using for your given deployment version.*
 
-The Golden_Path is an end-to-end regression test pack which does a complete test of all the deployed functionality. This test can be run manually but is actually designed to be run from the start, in an automated fashion, right through to the end, as response values are being passed from one request to the next.
+Postman Collections are sets of organized API calls, which can either be run one at a time, or en masse using the [Postman Collection Runner](https://learning.postman.com/docs/running-collections/intro-to-collection-runs/)
 
-OSS-API-Tests is a more ad-hoc and manual test pack where any request can be run to test a particular API.
+While this repo contains a number of different Postman Collections for the various testing needs of the community - the most important collections for getting your Mojaloop deployment up and running are:
 
-OSS-Feature-Tests contains tests which isolates individual features to be tested and by implication spans one or more APIs at a time.
+- [MojaloopHub_Setup.postman_collection.json](MojaloopHub_Setup.postman_collection.json)
+- [MojaloopSims_Onboarding.postman_collection.json](MojaloopSims_Onboarding.postman_collection.json)
+- [Golden_Path_Mojaloop.postman_collection.json](Golden_Path_Mojaloop.postman_collection.json)
 
-Import the Collections into your Postman Client:
-- [OSS-New-Deployment-FSP-Setup](OSS-New-Deployment-FSP-Setup.postman_collection.json)
-- [Golden_Path](Golden_Path.postman_collection.json)
-- [OSS-API-Tests](OSS-API-Tests.postman_collection)
-- [OSS-Feature-Tests](OSS-Feature-Tests.postman_collection)
+
+### 1.1 MojaloopHub_Setup
+
+`MojaloopHub_Setup` sets up an empty Mojaloop hub, including things such as the Hub's currency, the settlement accounts.
+
+### 1.2 MojaloopSims_Onboarding
+
+`MojaloopSims_Onboarding` sets up the DFSP simulators, and configures things such as the endpoint urls so that the Mojaloop hub knows where to send request callbacks.
+
+### 1.3 Golden_Path_Mojaloop
+
+The `Golden_Path_Mojaloop` collection is an end-to-end regression test pack which does a complete test of all the deployed functionality. This test can be run manually but is actually designed to be run from the start, in an automated fashion, right through to the end, as response values are being passed from one request to the next.
+
+> ***Note:** *As of `mojaloop/helm:v10.1.0` We have enabled users to configure the deployment to use either the Legacy Simulators or the new Mojaloop Simulators. See [Helm Release Notes](https://github.com/mojaloop/helm/releases) for more information depending on your `mojaloop/helm` version. If you are deploying with the legacy simulators, then you will want to use [ML_OSS_Setup_LegacySim](ML_OSS_Setup_LegacySim.postman_collection.json) for the DFSP setup and [ML_OSS_Golden_Path_LegacySim](ML_OSS_Golden_Path_LegacySim.postman_collection.json) for the golden path tests, instead.
 
 
 ## 2. Environments
-Import the Environment Config and make rhe required changes to reflect the correct endpoints to the mojaloop deployment required to be tested. This environemt file contains all the required variables and placeholders needed by all the collections, but the examples for endpoints provided, point to a local mojaloop installation with the standard Ingress exposed local endpoints:
-- [Local Development](./environments/Mojaloop-Local.postman_environment.json)
+
+A postman environment contains the environment variables that are required by the various collections. You can customize an Environment to suit your deployment needs. 
+
+This repository maintains the following environment files:
+- [Local Development](./environments/Mojaloop-Local.postman_environment.json) - Configuration for local development
+- [Local Docker-Compose](./environments/Mojaloop-Local-Docker-Compose.postman_environment.json) - Configuration for a docker-compose based Mojaloop installation
+
+
+### 2.1 Customizing the an Environment for your needs
+
+Most of the environment variables will be what you need out of the box, but the main configuration we find deployers needing to do is around the Endpoint configuration. 
+
+For example, the variable `HOST_ACCOUNT_LOOKUP_ADMIN`:
+
+```json
+{
+  "key": "HOST_ACCOUNT_LOOKUP_ADMIN",
+  "value": "http://account-lookup-service-admin.local",
+  "enabled": true
+},
+```
+
+Is the base url that Postman uses to communicate with the [`mojaloop/account-lookup-service`]()
+
+
+2 Major things that will change this configuration will be:
+
+1. Your ingress settings on the Mojaloop Deployment. If you have changed the ingress settings in your Helm [`values.yml`](https://github.com/mojaloop/helm/blob/master/mojaloop/values.yaml) file, you will need to change this environment variable to reflect 
+2. Your `/etc/hosts` configuration. See the [deployment guide](https://docs.mojaloop.io/documentation/deployment-guide/#52-verifying-mojaloop-deployment) for how we use the `/etc/hosts` file to redirect hosts such as `account-lookup-service-admin.local` to point to a local or remote Mojaloop hub.
 
 
 ## 3. Testing
+
 The collections can be run as they are via Postman but for a more detailed setup of a complete stand-alone test environment (QA and Regression Testing Framework) please refer to the detailed explanation in the Mojaloop documentation  [here](https://github.com/mojaloop/documentation/blob/master/contributors-guide/tools-and-technologies/automated-testing.md "Automated Testing")
 
 
@@ -141,48 +188,8 @@ OSS-New-Deployment-FSP-Setup
 4. Click **Send**
 5. You can check the logs, database, etc to see the transfer state, status changes, positions and other such information.
 
-## 5. Running inside a locally deployed Kubernetes cluster of Mojaloop
-The available docker image can be used in order to deploy the tests inside a running local K8s cluster as a standalone `pod`, by using a `pod.yaml` file like the following example:
 
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: postman
-spec:
-  containers:
-    - name: postman-tests
-      image: mojaloop/postman
-      command: ["/bin/sh"]
-      args: ["-c", "newman run Golden_Path.postman_collection.json \
-      -e environments/Mojaloop-Local.postman_environment.json \
-      --env-var HOST_QUOTING_SERVICE='foo' \
-      --env-var HOST_CENTRAL_LEDGER='bar' \
-      --bail"]
-  restartPolicy: Never
-```
-
-and pushing it inside the K8s cluster with a command like:
-```shell script
-kubectl create -f ./pod.yaml
-```
-
-The command (in the part `args` of the above yaml definition) could be changed to whatever suits the needs of the user and the logs of it can be viewed by running:
-
-```shell script
-kubectl logs postman-tests
-```
-
-The `pod` can be deleted with:
-```shell script
-kubectl delete -f ./pod.yaml
-```
-or
-```shell script
-kubectl delete pods postman-tests
-```
-
-## Tools + Utils
+## 5. Tools + Utils
 
 ### orderEnvironment
 
