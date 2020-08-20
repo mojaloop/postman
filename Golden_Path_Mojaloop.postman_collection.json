@@ -14624,7 +14624,7 @@
 													"",
 													"pm.variables.set('transferDate', (new Date()).toUTCString());",
 													"",
-													"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 5000))",
+													"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 4000))",
 													"",
 													"var oHeader = {alg: \"RS256\", \"FSPIOP-Source\":\"payerfsp\",\"FSPIOP-Destination\":\"noresponsepayeefsp\", \"FSPIOP-URI\":\"/transfers\", \"FSPIOP-HTTP-Method\":\"POST\", \"Date\":pm.variables.get('transferDate')};",
 													"var sHeader = JSON.stringify(oHeader);",
@@ -14868,7 +14868,7 @@
 													"              });",
 													"          }",
 													"   });",
-													"}, 6000)",
+													"}, 7000)",
 													"",
 													""
 												],
