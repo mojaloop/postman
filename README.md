@@ -204,3 +204,15 @@ For example:
 ```
 
 This little step will make using Postman just that bit easier...
+
+### To compare two postman environments
+
+You can use the script `postman-environments-compare.js` to compare two postman environment files by each key.
+
+Usage: node postman-environments-compare.js <first-file> <second-file>
+
+The script can return the following
+- Items those exist only in first file
+- Items those exist only in second file
+- Items those exist in both files
+- Items which are common but with different values
