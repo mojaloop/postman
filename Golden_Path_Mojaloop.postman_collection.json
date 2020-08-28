@@ -4977,7 +4977,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.participants+json;version=1"
+										"value": "application/vnd.interoperability.transfers+json;version=1"
 									},
 									{
 										"key": "Content-Type",
@@ -5155,7 +5155,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.participants+json;version=1"
+										"value": "application/vnd.interoperability.transfers+json;version=1"
 									},
 									{
 										"key": "Content-Type",
@@ -5281,7 +5281,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.participants+json;version=1"
+										"value": "application/vnd.interoperability.transfers+json;version=1"
 									},
 									{
 										"key": "Content-Type",
@@ -15695,6 +15695,11 @@
 												"key": "FSPIOP-Destination",
 												"type": "text",
 												"value": "{{payerfsp}}"
+											},
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transfers+json;version=1",
+												"type": "text"
 											}
 										],
 										"body": {
@@ -25791,8 +25796,8 @@
 											"",
 											"var jsonData = pm.response.json();",
 											"",
-											"pm.test(\"Expected Settlement Window Id should be: \"+pm.variables.get(\"closedWindowID\"), function () {",
-											"    pm.expect(jsonData.settlementWindowId).to.eql(pm.variables.get(\"closedWindowID\"));",
+											"pm.test(\"Expected Settlement Window Id should be: \"+pm.environment.get(\"closedWindowID\"), function () {",
+											"    pm.expect(jsonData.settlementWindowId).to.eql(pm.environment.get(\"closedWindowID\"));",
 											"});",
 											"",
 											"pm.test(\"Expected Settlement State should be SETTLED\", function () {",
