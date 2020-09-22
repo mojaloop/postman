@@ -33172,6 +33172,978 @@
 					"_postman_isSubFolder": true
 				},
 				{
+					"name": "Accented character tests",
+					"item": [
+						{
+							"name": "p2p_happy_path_RECEIVE_quote",
+							"item": [
+								{
+									"name": "Add {{payeefspMSISDN}} to payeefsp",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "7ebb3431-5c04-4dbb-8245-d1188c8a9eb6",
+												"exec": [
+													"pm.environment.set('fullName', 'Seán François Nuñez');",
+													"pm.environment.set('firstName', 'Seán');",
+													"pm.environment.set('middleName', 'François');",
+													"pm.environment.set('lastName', 'Nuñez');",
+													"pm.environment.set('dob', '2000-01-01');",
+													"",
+													"pm.environment.set('accented-msisdn', '97039819999');"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "e381a28a-8011-403f-8080-35bea49450f3",
+												"exec": [
+													"pm.test(\"Successful POST request\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([204, 500]);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"displayName\": \"{{fullName}}\",\n    \"firstName\": \"{{firstName}}\",\n    \"middleName\": \"{{middleName}}\",\n    \"lastName\": \"{{lastName}}\",\n    \"dateOfBirth\": \"{{dob}}\",\n    \"idType\": \"MSISDN\",\n    \"idValue\": \"{{accented-msisdn}}\"\n}"
+										},
+										"url": {
+											"raw": "{{PAYEEFSP_BACKEND_TESTAPI_URL}}/repository/parties",
+											"host": [
+												"{{PAYEEFSP_BACKEND_TESTAPI_URL}}"
+											],
+											"path": [
+												"repository",
+												"parties"
+											]
+										},
+										"description": "Create a party in payeefsp. So that GET /parties can be successful."
+									},
+									"response": []
+								},
+								{
+									"name": "Add {{payerfspMSISDN}} in MSISDN Oracle",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.participants+json;version=1"
+											},
+											{
+												"key": "Connection",
+												"value": "keep-alive"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.participants+json;version=1.0"
+											},
+											{
+												"key": "Date",
+												"value": ""
+											},
+											{
+												"key": "FSPIOP-Source",
+												"value": "hub_operator"
+											},
+											{
+												"key": "Postman-Token",
+												"value": "7aa4c9f3-1738-49f0-8904-7821e2336692,4127ff87-7d17-483c-8e3e-f0b562a16d84"
+											},
+											{
+												"key": "User-Agent",
+												"value": "PostmanRuntime/7.11.0"
+											},
+											{
+												"key": "accept-encoding",
+												"value": "gzip, deflate"
+											},
+											{
+												"key": "cache-control",
+												"value": "no-cache"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"fspId\": \"payeefsp\",\n    \"currency\": \"{{currency}}\"\n}"
+										},
+										"url": {
+											"raw": "{{MSISDN_ORACLE_ENDPOINT}}/participants/MSISDN/97039819999",
+											"host": [
+												"{{MSISDN_ORACLE_ENDPOINT}}"
+											],
+											"path": [
+												"participants",
+												"MSISDN",
+												"97039819999"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Party - MSISDN",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "b17e391c-04e0-4aba-8f8e-82ff4aafcffb",
+												"exec": [
+													"pm.test(\"Status code is 202\", function () {",
+													"    pm.response.to.have.status(202);",
+													"});",
+													"",
+													"//Check data on payee side",
+													"setTimeout(function () {",
+													"  pm.sendRequest(pm.environment.get(\"PAYEEFSP_SDK_TESTAPI_URL\")+\"/requests/\"+\"97039819999\", function (err, response) {",
+													"       ",
+													"       if(response.responseSize !== 0) { ",
+													"       //Checking headers",
+													"        var headers = response.json().headers;",
+													"        pm.test(\"payeefsp fspiop-source is payerfsp\", function () {",
+													"            pm.expect(headers['fspiop-source']).to.eql('payerfsp');",
+													"        });",
+													"        ",
+													"        pm.test(\"payeefsp fspiop-destination is payeefsp\", function () {",
+													"            pm.expect(headers['fspiop-destination']).to.eql('payeefsp');",
+													"        });",
+													"        ",
+													"        pm.test(\"payeefsp content-type should be application/vnd.interoperability.parties+json;version=1.0\", function () {",
+													"            pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.parties+json;version=1.0');",
+													"        });",
+													"        ",
+													"        pm.test(\"payeefsp accept should be application/vnd.interoperability.parties+json;version=1.0\", function () {",
+													"            pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.parties\\+json;version=1(\\.0)?/);",
+													"        });",
+													"        ",
+													"        ",
+													"        pm.test.skip(\"payeefsp FSPIOP-URI to be /parties\", function () {",
+													"            pm.expect(headers['fspiop-uri']).to.eql('/parties');",
+													"        });",
+													"        ",
+													"        pm.test.skip(\"payeefsp fspiop-http-method is GET\", function () {",
+													"            pm.expect(headers['fspiop-http-method']).to.eql('GET');",
+													"        });",
+													"        ",
+													"        ",
+													"        ",
+													"       } else {",
+													"           pm.test(\"Parties FAILED - payeeFSP\", function () {",
+													"            throw new Error('Did not receive response');",
+													"           });",
+													"           ",
+													"       }",
+													"      ",
+													"    });",
+													"}, 100)",
+													"",
+													"//Check data on payer side",
+													"setTimeout(function () {",
+													"  pm.sendRequest(pm.environment.get(\"PAYERFSP_SDK_TESTAPI_URL\")+\"/callbacks/\"+ \"97039819999\", function (err, response) {",
+													"       ",
+													"       if(response.responseSize !== 0) { ",
+													"       //Checking headers",
+													"        var headers = response.json().headers;",
+													"        pm.test(\"payerfsp fspiop-source is payeefsp\", function () {",
+													"            pm.expect(headers['fspiop-source']).to.eql('payeefsp');",
+													"        });",
+													"        ",
+													"        pm.test(\"payerfsp fspiop-destination is payerfsp\", function () {",
+													"            pm.expect(headers['fspiop-destination']).to.eql('payerfsp');",
+													"        });",
+													"        ",
+													"        pm.test(\"payerfsp content-type should be application/vnd.interoperability.parties+json;version=1.0\", function () {",
+													"            pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.parties+json;version=1.0');",
+													"        });",
+													"        ",
+													"        pm.test(\"payerfsp accept is empty\", function () {",
+													"            pm.expect(headers['accept']).to.eql(undefined);",
+													"        });",
+													"        ",
+													"        ",
+													"        ",
+													"        //Validate protected header inside Signature",
+													"        var {signature,protectedHeader} = JSON.parse(headers['fspiop-signature'])",
+													"        var decodedProtectedHeaders = JSON.parse(atob(protectedHeader))",
+													"        console.log('decodedProtectedHeaders:',decodedProtectedHeaders)",
+													"        ",
+													"        // pm.test(\"FSPIOP-Signature signature is returned\", function () {",
+													"        //     pm.expect(signature).to.eql(pm.environment.get(\"payeefsp-signature\"));",
+													"        // });",
+													"        ",
+													"        pm.test(\"FSPIOP-Signature Protected Header alg to be RS256\", function () {",
+													"            pm.expect(decodedProtectedHeaders['alg']).to.eql('RS256');",
+													"        });",
+													"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-URI to be /parties/MSISDN/\"+pm.environment.get(\"payeefspMSISDN\"), function () {",
+													"            pm.expect(decodedProtectedHeaders['FSPIOP-URI']).to.eql('/parties/MSISDN/'+\"97039819999\");",
+													"        });",
+													"        ",
+													"",
+													"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-HTTP-Method to be PUT\", function () {",
+													"            pm.expect(decodedProtectedHeaders['FSPIOP-HTTP-Method']).to.eql('PUT');",
+													"        });",
+													"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Source to be mojaloop-sdk\", function () {",
+													"            pm.expect(decodedProtectedHeaders['FSPIOP-Source']).to.eql('payeefsp');",
+													"        });",
+													"        pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Destination to be payerfsp\", function () {",
+													"            pm.expect(decodedProtectedHeaders['FSPIOP-Destination']).to.eql('payerfsp');",
+													"        });",
+													"        pm.test(\"FSPIOP-Signature Protected Header Date is present\", function () {",
+													"            pm.expect(decodedProtectedHeaders['Date']).to.not.eql(undefined);",
+													"        });",
+													"       ",
+													"        //pm.test(\"payerfsp FSPIOP-URI to be /parties/MSISDN/\"+pm.environment.get(\"pathfinderMSISDN\"), function () {",
+													"        //    pm.expect(headers['fspiop-uri']).to.eql('/parties/MSISDN/'+pm.environment.get(\"pathfinderMSISDN\"));",
+													"        //});",
+													"        ",
+													"        pm.test(\"payerfsp fspiop-http-method is PUT\", function () {",
+													"            pm.expect(headers['fspiop-http-method']).to.eql('PUT');",
+													"        });",
+													"        ",
+													"        //Checking data",
+													"        var jsonData = response.json().data;",
+													"       pm.test(\"Expected receiver first name is: \"+pm.variables.get(\"expectedFirstName\"), function () {",
+													"           pm.expect(jsonData.party.personalInfo.complexName.firstName).to.eql(pm.variables.get(\"expectedFirstName\"));",
+													"        });",
+													"        pm.test(\"Expected receiver last name is: \"+pm.variables.get(\"expectedLastName\"), function () {",
+													"          pm.expect(jsonData.party.personalInfo.complexName.lastName).to.eql(pm.variables.get(\"expectedLastName\"));",
+													"        });",
+													"        pm.test(\"Expected receiver DOB: \"+pm.variables.get(\"expectedDOB\"), function () {",
+													"          pm.expect(jsonData.party.personalInfo.dateOfBirth).to.eql(pm.variables.get(\"expectedDOB\"));",
+													"        });  ",
+													"        ",
+													"       } else {",
+													"           pm.test(\"Parties FAILED - payerFSP\", function () {",
+													"            throw new Error('Did not receive response');",
+													"           });",
+													"           ",
+													"       }",
+													"      ",
+													"    });",
+													"}, 200)",
+													"",
+													"",
+													"",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "0e94da8f-1846-4bf3-9caa-9bddbe5d4f45",
+												"exec": [
+													"pm.variables.set('expectedFullName', 'Seán Nuñez');",
+													"pm.variables.set('expectedFirstName', 'Seán');",
+													"pm.variables.set('expectedLastName', 'Nuñez');",
+													"pm.variables.set('expectedDOB', '2000-01-01');"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{PAYERFSP_BEARER_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.parties+json;version=1.0"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.parties+json;version=1.0"
+											},
+											{
+												"key": "FSPIOP-Source",
+												"value": "{{payerfsp}}"
+											},
+											{
+												"key": "Date",
+												"value": "{{dateHeader}}"
+											},
+											{
+												"key": "",
+												"value": "",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{HOST_ACCOUNT_LOOKUP_SERVICE}}/parties/MSISDN/97039819999",
+											"host": [
+												"{{HOST_ACCOUNT_LOOKUP_SERVICE}}"
+											],
+											"path": [
+												"parties",
+												"MSISDN",
+												"97039819999"
+											]
+										},
+										"description": "Author: Sridevi Miriyala\n\nThe payer is requesting the information of the payee. The response shd include payee's firstname, lastname, DOB."
+									},
+									"response": []
+								},
+								{
+									"name": "Send Quote - RECEIVE",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "f78f9654-b59d-4761-9a32-538db870aca5",
+												"exec": [
+													"var navigator = {}; ",
+													"var window = {}; ",
+													"eval(pm.environment.get('jrsassign'));",
+													"",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"pm.environment.set('quoteId', generatedUUID);",
+													"generatedUUID = uuid.v4();",
+													"pm.environment.set('transactionId', generatedUUID);",
+													"",
+													"pm.variables.set('quoteDate', (new Date()).toUTCString());",
+													"pm.variables.set('payerName', 'Seán Nuñez');",
+													"pm.variables.set('payerMSISDN', '918381008987');",
+													"",
+													"pm.variables.set('expectedPayeeFirstName', 'Seán');",
+													"pm.variables.set('expectedPayeeLastName', 'Nuñez');",
+													"pm.variables.set('expectedPayeeDOB', '2000-01-01');",
+													"",
+													"var oHeader = {alg: \"RS256\", \"FSPIOP-Source\":\"payerfsp\",\"FSPIOP-Destination\":\"payeefsp\", \"FSPIOP-URI\":\"/quotes\", \"FSPIOP-HTTP-Method\":\"POST\", \"Date\":pm.variables.get('quoteDate')};",
+													"var sHeader = JSON.stringify(oHeader);",
+													"console.log(`sHeader: ${sHeader}`)",
+													"",
+													"var objPayload = {",
+													"  \"quoteId\": pm.environment.get('quoteId'),",
+													"  \"transactionId\": pm.environment.get('transactionId'),",
+													"  \"payer\": {",
+													"    \"partyIdInfo\": {",
+													"      \"partyIdType\": \"MSISDN\",",
+													"      \"partyIdentifier\": pm.variables.get('payerMSISDN'),",
+													"      \"fspId\": \"payerfsp\"",
+													"    },",
+													"    \"personalInfo\": {",
+													"      \"complexName\": {",
+													"        \"firstName\": \"Renée\",",
+													"        \"lastName\": \"Mátyás\"",
+													"      },",
+													"      \"dateOfBirth\": \"2000-02-02\"",
+													"    }",
+													"  },",
+													"  \"payee\": {",
+													"    \"partyIdInfo\": {",
+													"      \"partyIdType\": \"MSISDN\",",
+													"      \"partyIdentifier\": pm.environment.get('payeefspMSISDN'),",
+													"      \"fspId\": \"payeefsp\"",
+													"    }",
+													"  },",
+													"  \"amountType\": \"RECEIVE\",",
+													"  \"amount\": {",
+													"    \"amount\": \"60\",",
+													"    \"currency\": pm.environment.get('currency')",
+													"  },",
+													"  \"transactionType\": {",
+													"    \"scenario\": \"TRANSFER\",",
+													"    \"initiator\": \"PAYER\",",
+													"    \"initiatorType\": \"CONSUMER\"",
+													"  },",
+													"  \"note\": \"hej\"",
+													"}",
+													"",
+													"var sPayload = JSON.stringify(objPayload)",
+													"console.log(`sPayload: ${sPayload}`)",
+													"pm.variables.set(\"quoteRequest\", sPayload);",
+													"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payerfspJWSKey'));",
+													"console.log(`token: ${token}`)",
+													"",
+													"// var encodedHeaders = btoa(sHeader)",
+													"",
+													"// var ofspiopSignature = {signature: vSignature, protectedHeader: encodedHeaders}",
+													"// var token = JSON.stringify(ofspiopSignature)",
+													"",
+													"const [ protectedHeaderBase64, , signature ] = token.split('.');",
+													"",
+													"const signatureObject = {",
+													"    signature: signature.replace('\"', ''),",
+													"    protectedHeader: protectedHeaderBase64.replace('\"', '')",
+													"};",
+													"",
+													"console.log(JSON.stringify(signatureObject))",
+													"",
+													"pm.variables.set('fspiopSignature',JSON.stringify(signatureObject))",
+													"",
+													"",
+													"",
+													"",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "96ba1bbc-0051-46b7-ac7d-8bc4d17ccab2",
+												"exec": [
+													"pm.test(\"Status code is 202\", function () {",
+													"    pm.response.to.have.status(202);",
+													"});",
+													"",
+													"setTimeout(function () {",
+													"  pm.sendRequest(pm.environment.get(\"PAYEEFSP_SDK_TESTAPI_URL\")+\"/requests/\"+pm.variables.get(\"quoteId\"), function (err, response) {",
+													"          if(response.responseSize !== 0) {",
+													"              ",
+													"              //Check the Headers",
+													"              var headers = response.json().headers;",
+													"              ",
+													"                pm.test(\"payeefsp fspiop-source is payerfsp\", function () {",
+													"                    pm.expect(headers['fspiop-source']).to.eql('payerfsp');",
+													"                });",
+													"                ",
+													"                pm.test(\"payeefsp fspiop-destination is payeefsp\", function () {",
+													"                    pm.expect(headers['fspiop-destination']).to.eql('payeefsp');",
+													"                });",
+													"                ",
+													"                pm.test(\"payeefsp fspiop-signature is same as sent in the request\", function () {",
+													"                    pm.expect(headers['fspiop-signature']).to.eql(pm.variables.get(\"fspiopSignature\"));",
+													"                });",
+													"                ",
+													"                pm.test(\"payeefsp accept is same as sent in the request\", function () {",
+													"                    pm.expect(headers['accept']).to.eql('application/vnd.interoperability.quotes+json;version=1.0');",
+													"                });",
+													"                ",
+													"                pm.test(\"payeefsp content-typeis same as sent in the request\", function () {",
+													"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.quotes+json;version=1.0');",
+													"                });",
+													"                ",
+													"                pm.test(\"payeefsp fspiop-uri is /quotes\", function () {",
+													"                    pm.expect(headers['fspiop-uri']).to.eql('/quotes');",
+													"                });",
+													"                ",
+													"                pm.test(\"payeefsp fspiop-http-method is POST\", function () {",
+													"                    pm.expect(headers['fspiop-http-method']).to.eql('POST');",
+													"                });",
+													"                ",
+													"          } else {",
+													"              pm.test(\"Quote FAILED\", function () {",
+													"                throw new Error('Did not receive request on payee side');",
+													"              });",
+													"              // postman.setNextRequest(null)",
+													"          }",
+													"   });",
+													"}, 1100)",
+													"",
+													"setTimeout(function () {",
+													"  pm.sendRequest(pm.environment.get(\"PAYERFSP_SDK_TESTAPI_URL\")+\"/callbacks/\"+pm.environment.get(\"quoteId\"), function (err, response) {",
+													"      if(response.responseSize !== 0) {",
+													"          //Checking headers",
+													"            var headers = response.json().headers;",
+													"            pm.test(\"payerfsp fspiop-source is payeefsp\", function () {",
+													"                pm.expect(headers['fspiop-source']).to.eql('payeefsp');",
+													"            });",
+													"            ",
+													"            pm.test(\"payerfsp fspiop-destination is payerfsp\", function () {",
+													"                pm.expect(headers['fspiop-destination']).to.eql('payerfsp');",
+													"            });",
+													"            ",
+													"            pm.test(\"payerfsp content-type should be application/vnd.interoperability.quotes+json;version=1.0\", function () {",
+													"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.quotes+json;version=1.0');",
+													"            });",
+													"            ",
+													"            pm.test(\"payerfsp accept is empty\", function () {",
+													"                pm.expect(headers['accept']).to.eql(undefined);",
+													"            });",
+													"            ",
+													"            ",
+													"            ",
+													"            var {signature,protectedHeader} = JSON.parse(headers['fspiop-signature'])",
+													"            // var strData = JSON.stringify(response.json().data)",
+													"            // const token = `${protectedHeader}.${btoa(strData)}.${signature}`",
+													"            // console.log(`token: ${token}`)",
+													"            // var isValid = KJUR.jws.JWS.verify(token, pm.environment.get('goldenpayeefspJWSPubKey'), {alg: ['RS256']})",
+													"            // console.log(`isValid: ${isValid}`)",
+													"            // pm.test(\"Check if the response is JWS valid\", function () {",
+													"            //     pm.expect(isValid).to.eql(true);",
+													"            // });",
+													"            ",
+													"            //Validate protected header inside Signature",
+													"            var decodedProtectedHeaders = JSON.parse(atob(protectedHeader))",
+													"            console.log('decodedProtectedHeaders:',decodedProtectedHeaders)",
+													"            ",
+													"            pm.test(\"FSPIOP-Signature Protected Header alg to be RS256\", function () {",
+													"                pm.expect(decodedProtectedHeaders['alg']).to.eql('RS256');",
+													"            });",
+													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-URI to be /quotes/\"+pm.environment.get(\"quoteId\"), function () {",
+													"                pm.expect(decodedProtectedHeaders['FSPIOP-URI']).to.eql('/quotes/'+pm.environment.get(\"quoteId\"));",
+													"            });",
+													"            ",
+													"",
+													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-HTTP-Method to be PUT\", function () {",
+													"                pm.expect(decodedProtectedHeaders['FSPIOP-HTTP-Method']).to.eql('PUT');",
+													"            });",
+													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Source to be goldenpayeefsp\", function () {",
+													"                pm.expect(decodedProtectedHeaders['FSPIOP-Source']).to.eql('payeefsp');",
+													"            });",
+													"            pm.test(\"FSPIOP-Signature Protected Header FSPIOP-Destination to be payerfsp\", function () {",
+													"                pm.expect(decodedProtectedHeaders['FSPIOP-Destination']).to.eql('payerfsp');",
+													"            });",
+													"            pm.test(\"FSPIOP-Signature Protected Header Date is present\", function () {",
+													"                pm.expect(decodedProtectedHeaders['Date']).to.eql(headers['date']);",
+													"            });",
+													"           ",
+													"            pm.test(\"payerfsp FSPIOP-URI to be /quotes/\"+pm.environment.get(\"quoteId\"), function () {",
+													"                pm.expect(headers['fspiop-uri']).to.eql('/quotes/'+pm.environment.get(\"quoteId\"));",
+													"            });",
+													"            ",
+													"            pm.test(\"payerfsp fspiop-http-method is PUT\", function () {",
+													"                pm.expect(headers['fspiop-http-method']).to.eql('PUT');",
+													"            });",
+													"            ",
+													"            var jsonData = response.json().data;",
+													"            ",
+													"            pm.test(\"Response quoteId is  null\", function () {",
+													"                pm.expect(jsonData.quoteId).to.eql(undefined);",
+													"                ",
+													"            });",
+													"          ",
+													"            pm.test(\"Response ilpPacket is not null\", function () {",
+													"                pm.expect(jsonData.ilpPacket).not.equal(undefined);",
+													"                pm.environment.set(\"ilpPacket\", jsonData.ilpPacket);",
+													"            });",
+													"       ",
+													"           pm.test(\"Response condition is not null\", function () {",
+													"               pm.expect(jsonData.condition).not.equal(undefined);",
+													"               pm.environment.set(\"condition\", jsonData.condition);",
+													"           });",
+													"      } else {",
+													"          pm.test(\"Quote FAILED\", function () {",
+													"            throw new Error('Did not receive response on Payer side');",
+													"           });",
+													"      }",
+													"       ",
+													"   });",
+													"}, 1000)",
+													"",
+													"",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{PAYERFSP_BEARER_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+											},
+											{
+												"key": "Date",
+												"value": "{{quoteDate}}"
+											},
+											{
+												"key": "FSPIOP-Source",
+												"value": "payerfsp"
+											},
+											{
+												"key": "FSPIOP-Destination",
+												"value": "payeefsp"
+											},
+											{
+												"key": "FSPIOP-Signature",
+												"type": "text",
+												"value": "{{fspiopSignature}}"
+											},
+											{
+												"key": "FSPIOP-HTTP-Method",
+												"type": "text",
+												"value": "POST"
+											},
+											{
+												"key": "FSPIOP-URI",
+												"type": "text",
+												"value": "/quotes"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{{quoteRequest}}"
+										},
+										"url": {
+											"raw": "{{HOST_QUOTING_SERVICE}}/quotes",
+											"host": [
+												"{{HOST_QUOTING_SERVICE}}"
+											],
+											"path": [
+												"quotes"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Send Transfer - RECEIVE",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "94721e85-43cd-468b-a9df-b08660e202dc",
+												"exec": [
+													"pm.test(\"Status code is 202\", function () {",
+													"    pm.response.to.have.status(202);",
+													"});",
+													"",
+													"// //Check the request that Switch forwards to payeefsp",
+													"setTimeout(function () {",
+													"  pm.sendRequest(pm.environment.get(\"PAYEEFSP_SDK_TESTAPI_URL\")+\"/requests/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
+													"          if(response.responseSize !== 0) {",
+													"              ",
+													"              //Check the Headers",
+													"              var headers = response.json().headers;",
+													"              ",
+													"                pm.test(\"payeefsp fspiop-source is goldenpayerfsp\", function () {",
+													"                    pm.expect(headers['fspiop-source']).to.eql('payerfsp');",
+													"                });",
+													"                ",
+													"                pm.test(\"payeefsp fspiop-destination is goldenpayeefsp\", function () {",
+													"                    pm.expect(headers['fspiop-destination']).to.eql('payeefsp');",
+													"                });",
+													"                ",
+													"                pm.test(\"payeefsp content-typeis same as sent in the request\", function () {",
+													"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
+													"                });",
+													"                ",
+													"                pm.test(\"payeefsp accept is same as sent in the request\", function () {",
+													"                    pm.expect(headers['accept']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
+													"                });",
+													"                ",
+													"                pm.test(\"payeefsp fspiop-signature is same as sent in the request\", function () {",
+													"                    pm.expect(headers['fspiop-signature']).to.eql(pm.variables.get(\"fspiopSignature\"));",
+													"                });",
+													"                ",
+													"                pm.test(\"payeefsp fspiop-http-method is POST\", function () {",
+													"                    pm.expect(headers['fspiop-http-method']).to.eql('POST');",
+													"                });",
+													"                ",
+													"                pm.test(\"payeefsp fspiop-uri is /transfers\", function () {",
+													"                    pm.expect(headers['fspiop-uri']).to.eql('/transfers');",
+													"                });",
+													"                ",
+													"                ",
+													"                //Check the data",
+													"                var jsonData = response.json().data;",
+													"                pm.test(\"payeefsp data should have the same transferId as request\", function () {",
+													"                  pm.expect(jsonData.transferId).to.eql(pm.environment.get(\"transfer_ID\"));",
+													"                });",
+													"                pm.test(\"payeefsp data should have the same payerfspId as request\", function () {",
+													"                  pm.expect(jsonData.payerFsp).to.eql('payerfsp');",
+													"                });",
+													"                pm.test(\"payeefsp data should have the same payeefspId as request\", function () {",
+													"                  pm.expect('payeefsp');",
+													"                });",
+													"                pm.test(\"payeefsp data should have the same amount as request\", function () {",
+													"                  pm.expect(jsonData.amount.amount).to.eql('10');",
+													"                });",
+													"                pm.test(\"payeefsp data should have the same currency as request\", function () {",
+													"                  pm.expect(jsonData.amount.currency).to.eql(pm.environment.get(\"currency\"));",
+													"                });",
+													"                pm.test(\"payeefsp data should have the same expiration as request\", function () {",
+													"                  pm.expect(jsonData.expiration).to.eql(pm.environment.get(\"transferExpiration\"));",
+													"                });",
+													"                pm.test(\"payeefsp data should have the same ilpPacket as request\", function () {",
+													"                  pm.expect(jsonData.ilpPacket).to.eql(pm.environment.get(\"ilpPacket\"));",
+													"                });",
+													"                pm.test(\"payeefsp data should have the same condition as request\", function () {",
+													"                  pm.expect(jsonData.condition).to.eql(pm.environment.get(\"condition\"));",
+													"                });",
+													"                ",
+													"          } else {",
+													"              pm.test(\"Transfer FAILED\", function () {",
+													"                throw new Error('Did not receive response on payee side');",
+													"              });",
+													"              // postman.setNextRequest(null)",
+													"          }",
+													"  });",
+													"}, 1100)",
+													"",
+													"//Check the callback response that Switch forwards to payerfsp",
+													"setTimeout(function () {",
+													"  pm.sendRequest(pm.environment.get(\"PAYERFSP_SDK_TESTAPI_URL\")+\"/callbacks/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
+													"          if(response.responseSize !== 0) {",
+													"            //Checking headers",
+													"            var headers = response.json().headers;",
+													"            pm.test(\"payerfsp fspiop-source is goldenpayeefsp \", function () {",
+													"                pm.expect(headers['fspiop-source']).to.eql('payeefsp');",
+													"            });",
+													"            ",
+													"            pm.test(\"payerfsp fspiop-destination is goldenpayerfsp\", function () {",
+													"                pm.expect(headers['fspiop-destination']).to.eql('payerfsp');",
+													"            });",
+													"            ",
+													"            pm.test(\"payerfsp content-type should be application/vnd.interoperability.transfers+json;version=1.0\", function () {",
+													"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
+													"            });",
+													"            ",
+													"            pm.test(\"payerfsp accept is empty\", function () {",
+													"                pm.expect(headers['accept']).to.eql(undefined);",
+													"            });",
+													"            ",
+													"            pm.test(\"payerfsp fspiop-signature is not empty\", function () {",
+													"                    pm.expect(headers['fspiop-signature']).not.eql(undefined);",
+													"                });",
+													"            ",
+													"            ",
+													"            pm.test(\"payerfsp fspiop-uri includes /transfers/{{transfer_ID}}\", function () {",
+													"                pm.expect(headers['fspiop-uri']).to.eql('/transfers/'+ pm.environment.get(\"transfer_ID\"));",
+													"            });",
+													"            ",
+													"            pm.test(\"payerfsp fspiop-http-method is PUT\", function () {",
+													"                pm.expect(headers['fspiop-http-method']).to.eql('PUT');",
+													"            });",
+													"            ",
+													"            var jsonData = response.json().data;",
+													"            pm.test(\"Response data does not have transferId\", function () {",
+													"               pm.expect(jsonData.transferId).to.eql(undefined);",
+													"            });",
+													"            pm.test(\"Response status is COMMITTED\", function () {",
+													"                pm.expect(jsonData.transferState).to.eql('COMMITTED');",
+													"            });",
+													"          } else {",
+													"              pm.test(\"Transfer FAILED\", function () {",
+													"                throw new Error('Did not receive response on payer side');",
+													"              });",
+													"              // postman.setNextRequest(null)",
+													"          }",
+													"   });",
+													"}, 1300)",
+													"",
+													"",
+													"setTimeout(function () {",
+													"  pm.sendRequest(pm.environment.get(\"PAYEEFSP_SDK_TESTAPI_URL\")+\"/callbacks/\"+pm.environment.get(\"transfer_ID\"), function (err, response) {",
+													"       pm.test(\"payeefsp does not receive additional final notification\", function () {",
+													"            pm.expect(response.text()).to.eql('');",
+													"        });",
+													"       ",
+													"      ",
+													"    });",
+													"}, 2000)",
+													"",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "1ec51047-5be9-489a-932f-b0a560abc169",
+												"exec": [
+													"var navigator = {}; //fake a navigator object for the lib",
+													"var window = {}; //fake a window object for the lib",
+													"eval(pm.environment.get('jrsassign'));",
+													"",
+													"var uuid = require('uuid');",
+													"var generatedUUID = uuid.v4();",
+													"pm.environment.set('transfer_ID', pm.environment.get('transactionId'));",
+													"",
+													"",
+													"pm.variables.set('transferDate', (new Date()).toUTCString());",
+													"",
+													"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 60000))",
+													"",
+													"var oHeader = {alg: \"RS256\", \"FSPIOP-Source\":\"payerfsp\",\"FSPIOP-Destination\":\"payeefsp\", \"FSPIOP-URI\":\"/transfers\", \"FSPIOP-HTTP-Method\":\"POST\", \"Date\":pm.variables.get('transferDate')};",
+													"var sHeader = JSON.stringify(oHeader);",
+													"console.log(`sHeader: ${sHeader}`)",
+													"",
+													"var objPayload = {",
+													"  \"transferId\": pm.environment.get('transfer_ID'),",
+													"  \"payerFsp\": \"payerfsp\",",
+													"  \"payeeFsp\": \"payeefsp\",",
+													"  \"amount\": {",
+													"    \"amount\": \"10\",",
+													"    \"currency\": pm.environment.get('currency')",
+													"  },",
+													"  \"expiration\": pm.environment.get('transferExpiration'),",
+													"  \"ilpPacket\": pm.environment.get('ilpPacket'),",
+													"  \"condition\": pm.environment.get('condition')",
+													"}",
+													"var sPayload = JSON.stringify(objPayload)",
+													"console.log(`sPayload: ${sPayload}`)",
+													"pm.variables.set(\"transferRequest\", sPayload);",
+													"var token = KJUR.jws.JWS.sign(\"RS256\", sHeader, sPayload, pm.environment.get('payerfspJWSKey'));",
+													"//console.log(`token: ${token}`)",
+													"",
+													"// var encodedHeaders = btoa(sHeader)",
+													"",
+													"// var ofspiopSignature = {signature: vSignature, protectedHeader: encodedHeaders}",
+													"// var token = JSON.stringify(ofspiopSignature)",
+													"",
+													"const [ protectedHeaderBase64, , signature ] = token.split('.');",
+													"",
+													"const signatureObject = {",
+													"    signature: signature.replace('\"', ''),",
+													"    protectedHeader: protectedHeaderBase64.replace('\"', '')",
+													"};",
+													"",
+													"console.log(JSON.stringify(signatureObject))",
+													"",
+													"pm.variables.set('fspiopSignature',JSON.stringify(signatureObject))"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{PAYERFSP_BEARER_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+											},
+											{
+												"key": "Date",
+												"value": "{{transferDate}}"
+											},
+											{
+												"key": "FSPIOP-Source",
+												"value": "payerfsp"
+											},
+											{
+												"key": "FSPIOP-Destination",
+												"value": "payeefsp"
+											},
+											{
+												"key": "FSPIOP-Signature",
+												"type": "text",
+												"value": "{{fspiopSignature}}"
+											},
+											{
+												"key": "FSPIOP-URI",
+												"type": "text",
+												"value": "/transfers"
+											},
+											{
+												"key": "FSPIOP-HTTP-Method",
+												"type": "text",
+												"value": "POST"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{{transferRequest}}"
+										},
+										"url": {
+											"raw": "{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}/transfers",
+											"host": [
+												"{{HOST_SWITCH_TRANSFERS}}{{BASE_PATH_SWITCH_TRANSFERS}}"
+											],
+											"path": [
+												"transfers"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						}
+					],
+					"description": "Author: Sridevi Miriyala",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "fbb299ef-2d3c-4714-a3fd-9a79d88553e6",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3070d121-77ca-4194-874f-ab90c449e930",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
 					"name": "Check Settlements Error #956",
 					"event": [
 						{
