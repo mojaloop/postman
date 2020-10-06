@@ -22,7 +22,9 @@
 
 Postman Collections are sets of organized API calls, which can either be run one at a time, or en masse using the [Postman Collection Runner](https://learning.postman.com/docs/running-collections/intro-to-collection-runs/)
 
-While this repo contains a number of different Postman Collections for the various testing needs of the community - the most important collections for getting your Mojaloop deployment up and running are:
+While this repo contains a number of different Postman Collections for the various testing needs of the community - the most important collections for getting your Mojaloop deployment up and running are below:
+
+If the environment is configured to use Mojaloop Simulator, these collections need to be used, in that order.
 
 - [MojaloopHub_Setup.postman_collection.json](MojaloopHub_Setup.postman_collection.json)
 - [MojaloopSims_Onboarding.postman_collection.json](MojaloopSims_Onboarding.postman_collection.json)
