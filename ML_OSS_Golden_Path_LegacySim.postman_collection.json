@@ -8940,8 +8940,13 @@
 											"          if(response.responseSize !== 0) {",
 											"              var jsonData = response.json();",
 											"              ",
-											"              pm.test(\"Response status is ABORTED\", function () {",
-											"                pm.expect(jsonData.transferState).to.eql('ABORTED');",
+											"              pm.test(\"Response Error Code is 3303\", function () {",
+											"                pm.expect(jsonData.errorInformation.errorCode).to.eql('3303');",
+											"              });",
+											"              ",
+											"              pm.test(\"Response Error Desription is 'Transfer Expired'\", function () {",
+											"                pm.expect(jsonData.errorInformation.errorDescription).to.include('Transfer expired');",
+											"                //pm.expect(jsonData.errorInformation.errorDescription).to.eql('Payee transaction limit reached');",
 											"              });",
 											"          } else {",
 											"              pm.test(\"Transfer FAILED\", function () {",
@@ -9031,7 +9036,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "65295097-6794-4602-9daa-1a744efdc2c5",
+										"id": "cb18afb2-895e-4baf-994b-5a2df546fff5",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -9042,8 +9047,11 @@
 											"//     pm.response.to.be.header(\"Content-Type\", \"application/vnd.interoperability.transfers+json;version=1.0\");",
 											"// });",
 											"",
-											"pm.test(\"Response status is ABORTED\", function () {",
-											"    pm.expect(pm.response.json().transferState).to.eql('ABORTED');",
+											"pm.test(\"Error code is 3303 and description 'Transfer expired' \", function () {",
+											"    pm.expect(pm.response.json().errorInformation.errorCode).to.eql('3303');",
+											"    ",
+											"    pm.expect(pm.response.json().errorInformation.errorDescription).to.include('Transfer expired');",
+											"  ",
 											"});"
 										],
 										"type": "text/javascript"
@@ -21269,125 +21277,8 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.authorizations+json;version=1.0",
-												"type": "text"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/vnd.interoperability.authorizations+json;version=1.0",
-												"type": "text"
-											},
-											{
-												"key": "Date",
-												"value": "{{transactionRequestDate}}",
-												"type": "text"
-											},
-											{
-												"key": "fspiop-source",
-												"value": "{{payeefsp}}",
 												"type": "text",
-												"disabled": true
-											},
-											{
-												"key": "fspiop-destination",
-												"value": "{{payerfsp}}",
-												"type": "text",
-												"disabled": true
-											},
-											{
-												"key": "fspiop-signature",
-												"value": "{{fspiop-signature}}",
-												"type": "text",
-												"disabled": true
-											},
-											{
-												"key": "fspiop-uri",
-												"value": "/transactionRequests",
-												"type": "text",
-												"disabled": true
-											},
-											{
-												"key": "fspiop-http-method",
-												"value": "PUT",
-												"type": "text",
-												"disabled": true
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"authenticationInfo\": {\n    \"authentication\": \"OTP\",\n    \"authenticationValue\": \"234567\"\n  },\n  \"responseType\": \"REJECTED\"\n}",
-											"options": {
-												"raw": {}
-											}
-										},
-										"url": {
-											"raw": "{{HOST_TRANSACTION_REQUESTS_SERVICE}}/authorizations/{{transactionRequestId}}",
-											"host": [
-												"{{HOST_TRANSACTION_REQUESTS_SERVICE}}"
-											],
-											"path": [
-												"authorizations",
-												"{{transactionRequestId}}"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Check authorization with accept header missing",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"id": "052adc1e-628a-4705-a2b2-62c9a9f507de",
-												"exec": [
-													"const jsonData = pm.response.json();",
-													"",
-													"pm.test(\"Status code is 400\", function () {",
-													"    pm.response.to.have.status(400);",
-													"});",
-													"",
-													"pm.test(\"Check authorization - Missing mandatory element - accept header missing\", function () {",
-													"    pm.expect(jsonData.errorInformation.errorDescription).to.include('accept' && '');",
-													"});",
-													"",
-													"pm.test(\"Check authorization - Missing mandatory element - Error code 3102\", function () {",
-													"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3102');",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										},
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "da66b636-3784-4276-a3db-e72837556d6f",
-												"exec": [
-													"pm.environment.set('transactionRequestDate', (new Date()).toUTCString());",
-													"",
-													"var uuid = require('uuid');",
-													"var generatedUUID = uuid.v4();",
-													"",
-													"pm.environment.set('transactionRequestId', generatedUUID);"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"protocolProfileBehavior": {
-										"disabledSystemHeaders": {
-											"accept": true,
-											"accept-encoding": true
-										}
-									},
-									"request": {
-										"method": "PUT",
-										"header": [
-											{
-												"key": "Accept",
-												"type": "text",
-												"value": "application/vnd.interoperability.transactionRequests+json;version=1.0",
-												"disabled": true
+												"value": "application/vnd.interoperability.authorizations+json;version=1.0"
 											},
 											{
 												"key": "Content-Type",
