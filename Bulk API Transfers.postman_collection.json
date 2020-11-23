@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "72839516-983d-4b59-ac68-18705641ba78",
+		"_postman_id": "f7858142-3600-4ba1-84ea-e440fcd04156",
 		"name": "Bulk API Transfers",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -17,7 +17,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "73a00886-5e04-46b2-8fab-105169b25638",
+										"id": "a9797404-9f22-43d6-8cf4-7ad96f671007",
 										"exec": [
 											"const uuid = require('uuid');",
 											"",
@@ -38,6 +38,8 @@
 											"pm.environment.set(\"headerDate\", headerDate);",
 											"pm.environment.set(\"expirationDate\", expirationDate);",
 											"pm.environment.set(\"completedTimestamp\", completedTimestamp);",
+											"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");",
+											"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");",
 											""
 										],
 										"type": "text/javascript"
@@ -59,7 +61,7 @@
 									},
 									{
 										"key": "Accept",
-										"value": "{{contentType}}"
+										"value": "{{acceptHeader}}"
 									},
 									{
 										"key": "FSPIOP-Source",
@@ -107,7 +109,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "624606b5-1250-46e5-8616-f0627f85a240",
+										"id": "406b17e6-e4ed-4090-b47b-56e53ad17243",
 										"exec": [
 											"const delay = 1000 * 3600 * 24 * 0",
 											"const now = new Date();",
@@ -116,6 +118,8 @@
 											"",
 											"pm.environment.set(\"headerDate\", headerDate);",
 											"pm.environment.set(\"completedTimestamp\", completedTimestamp);",
+											"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");",
+											"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");",
 											""
 										],
 										"type": "text/javascript"
@@ -137,7 +141,7 @@
 									},
 									{
 										"key": "Accept",
-										"value": "{{contentType}}"
+										"value": "{{acceptHeader}}"
 									},
 									{
 										"key": "FSPIOP-Source",
@@ -196,7 +200,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "177cdc3a-3779-4f53-b9b9-7b685cbe6daa",
+												"id": "96164d66-e344-46bb-8d56-b177cd9dcd3e",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -215,7 +219,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "39c2a18c-fb1b-4320-8b02-5ee900eec9cf",
+												"id": "2280ff66-1d4f-48b5-8795-157409fcc818",
 												"exec": [
 													""
 												],
@@ -262,7 +266,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "12e35d94-266c-482e-b49c-9e85f82c57b5",
+												"id": "aa029bab-4145-4bea-be9d-d61a4356f924",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -281,7 +285,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "69c7eb5a-a0b5-4271-96ef-a0be95c435f8",
+												"id": "fc33d31e-20b2-420f-b4c7-0e83105446fb",
 												"exec": [
 													""
 												],
@@ -328,7 +332,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "108ebdbe-8b03-49c7-90a9-a53d97b5f643",
+												"id": "3e77bd62-de86-4c3b-8666-8e843c22e8f9",
 												"exec": [
 													"const uuid = require('uuid');",
 													"",
@@ -357,7 +361,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "dbf5ad80-ebc0-464c-a368-564bb3f7c520",
+												"id": "ab794ab6-2b2e-4b91-a1cf-8f8de2cfcfda",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -431,7 +435,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "5a3c4083-51d0-4fc9-b7a5-5c6b1c05687a",
+												"id": "03290612-fffe-49bd-af9d-283b79004af8",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -450,7 +454,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "8b8a4d1d-3507-4556-8329-5a45244ef469",
+												"id": "2bcda748-8f45-40c2-98a3-f10c338a1e38",
 												"exec": [
 													""
 												],
@@ -497,7 +501,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "b353cbe1-b255-459b-b4cc-4208039cb8a2",
+												"id": "f3eff5a7-c23d-43a7-97e1-21ab1f850bf2",
 												"exec": [
 													""
 												],
@@ -507,7 +511,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "6743ccbe-fec2-4d56-a94b-b71f2a5924d7",
+												"id": "f664fb6c-1049-4280-b054-c7b82ac553c2",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -601,9 +605,10 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "d664130c-bf16-485a-9e18-414edf76d53f",
+												"id": "5aa20f90-c041-4ef0-9313-379831344e9b",
 												"exec": [
-													""
+													"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");",
+													"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");"
 												],
 												"type": "text/javascript"
 											}
@@ -611,7 +616,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "c1c40127-966a-4257-b0a2-0b74b236cf3c",
+												"id": "6c424564-52a6-4668-b5ae-78b4d6e1e345",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -666,7 +671,7 @@
 												"key": "Content-Type",
 												"name": "Content-Type",
 												"type": "text",
-												"value": "application/vnd.interoperability.transfers+json;version=1"
+												"value": "{{contentType}}"
 											},
 											{
 												"key": "Date",
@@ -682,6 +687,11 @@
 												"key": "FSPIOP-Destination",
 												"type": "text",
 												"value": "{{payerfsp}}"
+											},
+											{
+												"key": "Accept",
+												"value": "{{acceptHeader}}",
+												"type": "text"
 											}
 										],
 										"body": {
@@ -711,7 +721,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "111d4f8b-f63c-4e31-875c-212631c98f65",
+												"id": "3f760d87-41c1-4a06-b6ab-185412b62da6",
 												"exec": [
 													""
 												],
@@ -721,7 +731,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "fb93183e-9060-416e-978b-a01cb603f6be",
+												"id": "aa732ad1-d22c-4d73-a1d7-c15dbcc9263b",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -802,7 +812,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "8be1f033-de75-459e-aeba-ecbad505086e",
+												"id": "c3428918-6218-42c9-9518-35b4f74d9fbc",
 												"exec": [
 													"// if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
 													"//    var uuid = require('uuid');",
@@ -820,7 +830,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "5145656f-9b51-449f-98de-d9f6d28360c8",
+												"id": "7823a2b9-9d01-462a-a3b5-8c29c638e704",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -899,7 +909,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "6f90e47e-2ba8-4234-85ad-581b7b8f55df",
+												"id": "58a0d48e-a85c-4dcc-a427-4cfed25b71dd",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -919,7 +929,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "b7695c33-b088-4a9f-b79b-c2e52513fd93",
+												"id": "21180c3c-f334-494d-8ebb-00486c482b35",
 												"exec": [
 													""
 												],
@@ -966,7 +976,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "79c49346-19b7-41ea-a035-3e44b3d51b1c",
+												"id": "f3fcbe62-11d9-4c91-bf8b-ef3b6712a0ea",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -986,7 +996,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "9b69a786-8e5e-4f58-a31d-49e6e923cdae",
+												"id": "75f7f516-4ed3-4a00-80b5-87dfffa42d8e",
 												"exec": [
 													""
 												],
@@ -1040,7 +1050,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "14bcdb92-3b01-49aa-a006-2759e9f21396",
+												"id": "4819afe9-1511-494b-98d7-71ded8ef8796",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -1059,7 +1069,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "0b87899b-616a-4106-8ace-3e831aab7b6f",
+												"id": "48794310-6d77-464a-85fd-5685f9fb973c",
 												"exec": [
 													""
 												],
@@ -1106,7 +1116,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "ec263382-a43c-450b-9ed0-1540333a4089",
+												"id": "74cd8ba6-c236-4c76-9f5c-61dd7669d95b",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -1125,7 +1135,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "08586c78-675c-441a-84c1-9d7324ea755f",
+												"id": "da92f3ef-ce0d-46f4-8b63-218d3ac54905",
 												"exec": [
 													""
 												],
@@ -1172,7 +1182,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "4a57880e-7c1f-4de7-bddb-90fd7b60eed1",
+												"id": "49c0c60a-90ea-4a19-baaa-673c248a3993",
 												"exec": [
 													"const uuid = require('uuid');",
 													"",
@@ -1193,6 +1203,8 @@
 													"pm.environment.set(\"headerDate\", headerDate);",
 													"pm.environment.set(\"expirationDate\", expirationDate);",
 													"pm.environment.set(\"completedTimestamp\", completedTimestamp);",
+													"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");",
+													"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");",
 													""
 												],
 												"type": "text/javascript"
@@ -1201,7 +1213,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "9671e1d2-c84c-4081-96c7-e26b9e1e126a",
+												"id": "0c360d62-ef8b-47f2-9321-54a1e5d1370a",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -1231,11 +1243,11 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.bulkTransfers+json;version=1"
+												"value": "{{acceptHeader}}"
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.bulkTransfers+json;version=1.0"
+												"value": "{{contentType}}"
 											},
 											{
 												"key": "Date",
@@ -1275,7 +1287,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "228a36ea-8fcc-4600-bb4b-4efb628b7bf3",
+												"id": "0293d726-0c09-471b-b449-e0c7d6119fe9",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -1294,7 +1306,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "92c8c7a5-fb00-4861-9536-e7d047a237e6",
+												"id": "5c9577b0-861b-451c-8d69-7edef2ed5d36",
 												"exec": [
 													""
 												],
@@ -1341,7 +1353,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "b0c3eae8-686c-49ff-b329-dbfa67723827",
+												"id": "9083230f-6df5-474b-9acc-636c04762828",
 												"exec": [
 													""
 												],
@@ -1351,7 +1363,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "70f26d5b-6d53-4dc4-87a5-abeadcd70e71",
+												"id": "2b865ce5-cf4c-4fe6-8157-43d7e6f3aab5",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -1443,7 +1455,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "35b29495-59ee-48f4-90f9-9008df26eabc",
+												"id": "ec4d71f3-8a53-4fb2-b665-b62b30dcf5cf",
 												"exec": [
 													"// if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
 													"//    var uuid = require('uuid');",
@@ -1461,7 +1473,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "f7051880-93ac-4b2a-8db7-8d5722de9dbc",
+												"id": "0912e32a-6d14-45a1-9fb6-98acefc332f0",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -1540,7 +1552,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "f1af2928-3436-4a6d-808b-a85252ced49f",
+												"id": "b242566c-9fa1-4992-b13e-f03868c0ead2",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -1560,7 +1572,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "f5bf526e-cc7c-4605-aff9-a60369cbd35d",
+												"id": "984d1ae2-d2fc-42e2-a37f-af822eaa6caf",
 												"exec": [
 													""
 												],
@@ -1607,7 +1619,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "559b3e88-07b2-4890-9bd7-6f1a75c62e3c",
+												"id": "b50c536b-ce21-4163-985e-fc8ebe57a27b",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -1627,7 +1639,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "de21f516-4bfc-4941-90ed-804cbf405c8c",
+												"id": "0f5ebe25-bcba-4f9b-8561-186599d291c3",
 												"exec": [
 													""
 												],
@@ -1682,7 +1694,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "325ed9cc-3697-43d2-94ae-29cd0423bb15",
+								"id": "664acb88-f4f7-45de-92cd-241a68246db9",
 								"exec": [
 									""
 								],
@@ -1720,7 +1732,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "f375cdb2-e636-4769-9551-bf9951d2a4bc",
+										"id": "af7bf9b9-4d79-49b2-b59d-0613f8ee2b51",
 										"exec": [
 											"var uuid = require('uuid');",
 											"var generatedUUID = uuid.v4();",
@@ -1735,7 +1747,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "0e0f276e-ec2d-4890-8feb-22c990b1d2ba",
+										"id": "c2820fba-17fa-4e5a-9f5d-7f9601e9f80e",
 										"exec": [
 											""
 										],
@@ -1805,7 +1817,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "1cef56cc-81ba-4507-a2c2-d679c6ae8391",
+										"id": "e33d4025-3ed6-48fa-8a36-225a77d70a69",
 										"exec": [
 											"var uuid = require('uuid');",
 											"var generatedUUID = uuid.v4();",
