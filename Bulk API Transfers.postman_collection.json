@@ -356,6 +356,8 @@
 													"pm.environment.set(\"headerDate\", headerDate);",
 													"pm.environment.set(\"expirationDate\", expirationDate);",
 													"pm.environment.set(\"completedTimestamp\", completedTimestamp);",
+													"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");",
+													"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");",
 													""
 												],
 												"type": "text/javascript"
@@ -394,11 +396,11 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.bulkTransfers+json;version=1"
+												"value": "{{contentType}}"
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.bulkTransfers+json;version=1.0"
+												"value": "{{acceptHeader}}"
 											},
 											{
 												"key": "Date",
@@ -817,15 +819,8 @@
 											"script": {
 												"id": "5e0fd692-dc5c-4066-8be2-2410c9189d51",
 												"exec": [
-													"// if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
-													"//    var uuid = require('uuid');",
-													"//    var generatedUUID = uuid.v4();",
-													"//    pm.environment.set('transferId', generatedUUID);",
-													"// }",
-													"",
-													"// if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-													"//    pm.environment.set('transferDate', (new Date()).toUTCString());",
-													"// }"
+													"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");",
+													"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");"
 												],
 												"type": "text/javascript"
 											}
@@ -878,11 +873,11 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.bulkTransfers+json;version=1"
+												"value": "{{acceptHeader}}"
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.bulkTransfers+json;version=1.0"
+												"value": "{{contentType}}"
 											},
 											{
 												"key": "Date",
@@ -1460,15 +1455,8 @@
 											"script": {
 												"id": "2e4d6815-b4d8-4c0a-aa2d-dc73e6ffb127",
 												"exec": [
-													"// if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
-													"//    var uuid = require('uuid');",
-													"//    var generatedUUID = uuid.v4();",
-													"//    pm.environment.set('transferId', generatedUUID);",
-													"// }",
-													"",
-													"// if (pm.environment.get('CONFIG_GENERATE_NEW_PREPARE_DATE') === 'true') {",
-													"//    pm.environment.set('transferDate', (new Date()).toUTCString());",
-													"// }"
+													"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");",
+													"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");"
 												],
 												"type": "text/javascript"
 											}
@@ -1521,11 +1509,11 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.bulkTransfers+json;version=1"
+												"value": "{{acceptHeader}}"
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.bulkTransfers+json;version=1.0"
+												"value": "{{contentType}}"
 											},
 											{
 												"key": "Date",
