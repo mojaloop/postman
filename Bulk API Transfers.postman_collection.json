@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f7858142-3600-4ba1-84ea-e440fcd04156",
+		"_postman_id": "3d92d472-8184-4e2b-b01a-6e84e0ddeb70",
 		"name": "Bulk API Transfers",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -17,7 +17,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "a9797404-9f22-43d6-8cf4-7ad96f671007",
+										"id": "658adde9-94aa-4627-9af2-57fd42357527",
 										"exec": [
 											"const uuid = require('uuid');",
 											"",
@@ -38,6 +38,9 @@
 											"pm.environment.set(\"headerDate\", headerDate);",
 											"pm.environment.set(\"expirationDate\", expirationDate);",
 											"pm.environment.set(\"completedTimestamp\", completedTimestamp);",
+											"pm.environment.set(\"amount\", 1);",
+											"pm.environment.set(\"amount2\", 1);",
+											"pm.environment.set(\"currency2\", \"USD\");",
 											"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");",
 											"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");",
 											""
@@ -89,7 +92,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{ \n    \"bulkTransferId\": \"{{bulkTransferId}}\",\n    \"bulkQuoteId\": \"{{bulkQuoteId}}\",\n    \"payeeFsp\": \"{{payeeFsp}}\",\n    \"payerFsp\": \"{{payerFsp}}\",\n    \"individualTransfers\":\n    [ {\n        \"transferId\": \"{{transferId}}\",\n        \"transferAmount\": {\n            \"currency\": \"{{currency}}\",\n            \"amount\": \"{{amount}}\"\n        },\n        \"ilpPacket\": \"{{ilpPacket}}\",\n        \"condition\": \"{{condition}}\",\n        \"extensionList\": { \"extension\": [\n            { \"key\": \"{{extKey1}}t1\", \"value\": \"{{extValue1}}t1\"},\n            { \"key\": \"{{extKey2}}t1\", \"value\": \"{{extValue2}}t1\"}\n        ] }\n      },\n      {\n        \"transferId\": \"{{transferId2}}\",\n        \"transferAmount\": {\n            \"currency\": \"{{currency2}}\",\n            \"amount\": \"{{amount2}}\"\n        },\n        \"ilpPacket\": \"{{ilpPacket2}}\",\n        \"condition\": \"{{condition2}}\"\n    } ],\n    \"expiration\": \"{{expirationDate}}\"\n}"
+									"raw": "{ \n    \"bulkTransferId\": \"{{bulkTransferId}}\",\n    \"bulkQuoteId\": \"{{bulkQuoteId}}\",\n    \"payeeFsp\": \"{{payeefsp}}\",\n    \"payerFsp\": \"{{payerfsp}}\",\n    \"individualTransfers\":\n    [ {\n        \"transferId\": \"{{transferId}}\",\n        \"transferAmount\": {\n            \"currency\": \"{{currency}}\",\n            \"amount\": \"{{amount}}\"\n        },\n        \"ilpPacket\": \"{{validIlpPacket2}}\",\n        \"condition\": \"{{validCondition2}}\",\n        \"extensionList\": { \"extension\": [\n            { \"key\": \"extKey1\", \"value\": \"extValue1\"},\n            { \"key\": \"extKey2\", \"value\": \"extValue2\"}\n        ] }\n      },\n       {\n        \"transferId\": \"{{transferId2}}\",\n        \"transferAmount\": {\n            \"currency\": \"{{currency2}}\",\n            \"amount\": \"{{amount2}}\"\n        },\n        \"ilpPacket\": \"{{validIlpPacket2}}\",\n        \"condition\": \"{{validCondition2}}\"\n    } ],\n    \"expiration\": \"{{expirationDate}}\"\n}"
 								},
 								"url": {
 									"raw": "{{HOST_BULK_ADAPTER}}/bulkTransfers",
@@ -109,7 +112,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "406b17e6-e4ed-4090-b47b-56e53ad17243",
+										"id": "2ac81476-4343-4f26-9e75-687a4ee18188",
 										"exec": [
 											"const delay = 1000 * 3600 * 24 * 0",
 											"const now = new Date();",
@@ -200,7 +203,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "96164d66-e344-46bb-8d56-b177cd9dcd3e",
+												"id": "ef780180-5050-4ad2-b762-b5552f68b7ca",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -219,7 +222,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "2280ff66-1d4f-48b5-8795-157409fcc818",
+												"id": "3d645dce-59f7-4868-a486-614d63b7dfbd",
 												"exec": [
 													""
 												],
@@ -266,7 +269,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "aa029bab-4145-4bea-be9d-d61a4356f924",
+												"id": "b6e831b8-f2f3-4bcf-b124-b8121129e774",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -285,7 +288,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "fc33d31e-20b2-420f-b4c7-0e83105446fb",
+												"id": "94854df2-0dd5-4a76-8f89-af70edb4248d",
 												"exec": [
 													""
 												],
@@ -332,7 +335,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "3e77bd62-de86-4c3b-8666-8e843c22e8f9",
+												"id": "9457caaf-fff4-4a29-ba39-2b5f5a9f8748",
 												"exec": [
 													"const uuid = require('uuid');",
 													"",
@@ -361,7 +364,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "ab794ab6-2b2e-4b91-a1cf-8f8de2cfcfda",
+												"id": "1ce8bf70-6fae-4652-bcf9-acfbe4db46be",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -435,7 +438,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "03290612-fffe-49bd-af9d-283b79004af8",
+												"id": "14f4071c-8ffa-4c00-b084-c392e65c96bc",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -454,7 +457,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "2bcda748-8f45-40c2-98a3-f10c338a1e38",
+												"id": "f67eb03b-e31b-43c0-9c1d-721dfc4f07f5",
 												"exec": [
 													""
 												],
@@ -501,7 +504,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "f3eff5a7-c23d-43a7-97e1-21ab1f850bf2",
+												"id": "c9fb5aee-0297-4402-b8f4-7e28144e9a6c",
 												"exec": [
 													""
 												],
@@ -511,7 +514,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "f664fb6c-1049-4280-b054-c7b82ac553c2",
+												"id": "cfcea55c-3ae8-4889-a3fc-6bd0c0ac6e5f",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -605,7 +608,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "5aa20f90-c041-4ef0-9313-379831344e9b",
+												"id": "6b3b1682-f847-4ed7-82e6-6656a458f330",
 												"exec": [
 													"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");",
 													"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");"
@@ -616,7 +619,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "6c424564-52a6-4668-b5ae-78b4d6e1e345",
+												"id": "be36ebf8-1f1e-425b-829b-693d63533450",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -721,7 +724,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "3f760d87-41c1-4a06-b6ab-185412b62da6",
+												"id": "be158eed-2af2-4bb8-89a8-e2d08cd04392",
 												"exec": [
 													""
 												],
@@ -731,7 +734,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "aa732ad1-d22c-4d73-a1d7-c15dbcc9263b",
+												"id": "c935744b-f321-4a26-ad35-736ef8b363fc",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -812,7 +815,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "c3428918-6218-42c9-9518-35b4f74d9fbc",
+												"id": "5e0fd692-dc5c-4066-8be2-2410c9189d51",
 												"exec": [
 													"// if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
 													"//    var uuid = require('uuid');",
@@ -830,7 +833,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "7823a2b9-9d01-462a-a3b5-8c29c638e704",
+												"id": "dfd489cd-2dcd-49a5-ae4d-16e39e4ccb68",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -909,7 +912,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "58a0d48e-a85c-4dcc-a427-4cfed25b71dd",
+												"id": "64516fbc-eef5-4add-a336-f192b3954825",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -929,7 +932,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "21180c3c-f334-494d-8ebb-00486c482b35",
+												"id": "58168856-55c1-4710-96d7-6971e061477b",
 												"exec": [
 													""
 												],
@@ -976,7 +979,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "f3fcbe62-11d9-4c91-bf8b-ef3b6712a0ea",
+												"id": "62350057-26ac-457c-b21b-ec6249198cf6",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -996,7 +999,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "75f7f516-4ed3-4a00-80b5-87dfffa42d8e",
+												"id": "99bce6fe-261a-4fe3-ba60-98593955632c",
 												"exec": [
 													""
 												],
@@ -1050,7 +1053,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "4819afe9-1511-494b-98d7-71ded8ef8796",
+												"id": "0d05d23a-095a-4e17-a7b3-b4d70c4656df",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -1069,7 +1072,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "48794310-6d77-464a-85fd-5685f9fb973c",
+												"id": "c9783ecd-58e2-4c21-96a6-a6136e9eb6e9",
 												"exec": [
 													""
 												],
@@ -1116,7 +1119,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "74cd8ba6-c236-4c76-9f5c-61dd7669d95b",
+												"id": "290af66a-5150-4443-9d57-93c960159d1b",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -1135,7 +1138,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "da92f3ef-ce0d-46f4-8b63-218d3ac54905",
+												"id": "c089d9ac-9306-40d8-8603-0be9eca83acf",
 												"exec": [
 													""
 												],
@@ -1182,7 +1185,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "49c0c60a-90ea-4a19-baaa-673c248a3993",
+												"id": "101c97a4-8303-4b7e-a587-136556439bf7",
 												"exec": [
 													"const uuid = require('uuid');",
 													"",
@@ -1213,7 +1216,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "0c360d62-ef8b-47f2-9321-54a1e5d1370a",
+												"id": "6ab8bb72-0b94-4c46-a01a-aaa28fff2284",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -1264,7 +1267,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{ \n    \"bulkTransferId\": \"{{bulkTransferId}}\",\n    \"bulkQuoteId\": \"{{bulkQuoteId}}\",\n    \"payeeFsp\": \"{{payeefsp}}\",\n    \"payerFsp\": \"{{payerFsp}}\",\n    \"individualTransfers\":\n    [ {\n        \"transferId\": \"{{transferId}}\",\n        \"transferAmount\": {\n            \"currency\": \"{{currency}}\",\n            \"amount\": \"{{amount}}\"\n        },\n        \"ilpPacket\": \"{{ilpPacket}}\",\n        \"condition\": \"{{condition}}\",\n        \"extensionList\": { \"extension\": [\n            { \"key\": \"{{extKey1}}t1\", \"value\": \"{{extValue1}}t1\"},\n            { \"key\": \"{{extKey2}}t1\", \"value\": \"{{extValue2}}t1\"}\n        ] }\n      },\n      {\n        \"transferId\": \"{{transferId2}}\",\n        \"transferAmount\": {\n            \"currency\": \"AED\",\n            \"amount\": \"{{amount2}}\"\n        },\n        \"ilpPacket\": \"{{ilpPacket2}}\",\n        \"condition\": \"{{condition2}}\"\n    } ],\n    \"expiration\": \"{{expirationDate}}\"\n}",
+											"raw": "{ \n    \"bulkTransferId\": \"{{bulkTransferId}}\",\n    \"bulkQuoteId\": \"{{bulkQuoteId}}\",\n    \"payeeFsp\": \"{{payeefsp}}\",\n    \"payerFsp\": \"{{payerfsp}}\",\n    \"individualTransfers\":\n    [ {\n        \"transferId\": \"{{transferId}}\",\n        \"transferAmount\": {\n            \"currency\": \"{{currency}}\",\n            \"amount\": \"{{amount}}\"\n        },\n        \"ilpPacket\": \"{{validIlpPacket2}}\",\n        \"condition\": \"{{validCondition2}}\",\n        \"extensionList\": { \"extension\": [\n            { \"key\": \"extKey1\", \"value\": \"extValue1\"},\n            { \"key\": \"extKey2\", \"value\": \"extValue2\"}\n        ] }\n      },\n       {\n        \"transferId\": \"{{transferId2}}\",\n        \"transferAmount\": {\n            \"currency\": \"{{currency2}}\",\n            \"amount\": \"{{amount2}}\"\n        },\n        \"ilpPacket\": \"{{validIlpPacket2}}\",\n        \"condition\": \"{{validCondition2}}\"\n    } ],\n    \"expiration\": \"{{expirationDate}}\"\n}",
 											"options": {
 												"raw": {}
 											}
@@ -1287,7 +1290,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "0293d726-0c09-471b-b449-e0c7d6119fe9",
+												"id": "5d90bb23-54b7-404d-96df-a82eeed6232f",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -1306,7 +1309,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "5c9577b0-861b-451c-8d69-7edef2ed5d36",
+												"id": "ed1dc976-8de6-4db4-8135-debfcac2dbb8",
 												"exec": [
 													""
 												],
@@ -1353,7 +1356,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "9083230f-6df5-474b-9acc-636c04762828",
+												"id": "6fe99567-23c0-4c58-b065-27e6f28a1400",
 												"exec": [
 													""
 												],
@@ -1363,7 +1366,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "2b865ce5-cf4c-4fe6-8157-43d7e6f3aab5",
+												"id": "47de6fa4-904b-4f76-85e5-e7b95704ba41",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -1455,7 +1458,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "ec4d71f3-8a53-4fb2-b665-b62b30dcf5cf",
+												"id": "2e4d6815-b4d8-4c0a-aa2d-dc73e6ffb127",
 												"exec": [
 													"// if (pm.environment.get('CONFIG_GENERATE_NEW_TRANSFER_UUID_ON_PREPARE') === 'true') {",
 													"//    var uuid = require('uuid');",
@@ -1473,7 +1476,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "0912e32a-6d14-45a1-9fb6-98acefc332f0",
+												"id": "d6008e16-ecec-43e5-9d9f-09a521ba1356",
 												"exec": [
 													"pm.test(\"Status code is 202\", function () {",
 													"    pm.response.to.have.status(202);",
@@ -1552,7 +1555,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "b242566c-9fa1-4992-b13e-f03868c0ead2",
+												"id": "6a739336-4130-4a78-b6cc-ab9c9a4eb1e2",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -1572,7 +1575,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "984d1ae2-d2fc-42e2-a37f-af822eaa6caf",
+												"id": "dfc97318-0f95-4deb-96e9-7620a1aa31a2",
 												"exec": [
 													""
 												],
@@ -1619,7 +1622,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "b50c536b-ce21-4163-985e-fc8ebe57a27b",
+												"id": "09b30392-4e6e-466e-8bf8-48b6a2c10e30",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -1639,7 +1642,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "0f5ebe25-bcba-4f9b-8561-186599d291c3",
+												"id": "90f05540-5a8c-4287-988d-f28898d803de",
 												"exec": [
 													""
 												],
@@ -1694,7 +1697,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "664acb88-f4f7-45de-92cd-241a68246db9",
+								"id": "721da93c-9741-4621-b8cb-3eee4624e303",
 								"exec": [
 									""
 								],
@@ -1732,7 +1735,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "af7bf9b9-4d79-49b2-b59d-0613f8ee2b51",
+										"id": "98e90a5d-bb11-4f51-ae1c-043fa08043ea",
 										"exec": [
 											"var uuid = require('uuid');",
 											"var generatedUUID = uuid.v4();",
@@ -1747,7 +1750,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "c2820fba-17fa-4e5a-9f5d-7f9601e9f80e",
+										"id": "e03b571f-471e-49c5-ab90-c9c9adb2c0f5",
 										"exec": [
 											""
 										],
@@ -1817,7 +1820,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "e33d4025-3ed6-48fa-8a36-225a77d70a69",
+										"id": "15595112-3d8d-4d6a-9a2a-6e61c78881ca",
 										"exec": [
 											"var uuid = require('uuid');",
 											"var generatedUUID = uuid.v4();",

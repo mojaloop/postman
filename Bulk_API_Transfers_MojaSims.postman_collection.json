@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a6401943-d87a-48cf-a117-e1fb78b85fd7",
+		"_postman_id": "b110cd47-4602-4222-a0e1-225c037fe953",
 		"name": "Bulk_API_Transfers_MojaSims",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -14,7 +14,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "9c4e449b-871d-4233-a1c9-28cd9ffd0692",
+								"id": "f627305e-3674-4d51-8061-93d3ca1f46eb",
 								"exec": [
 									"const uuid = require('uuid');",
 									"",
@@ -48,7 +48,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "5ae6a6e0-7755-4a9f-a039-6c385af664ea",
+								"id": "e63bb466-6039-4072-8f68-ade47f5b4136",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -294,9 +294,10 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "5655cb66-b327-4fb7-adf1-38ae773daeef",
+								"id": "050511e2-57aa-4fdd-94ad-484bce3ce949",
 								"exec": [
-									""
+									"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");",
+									"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");"
 								],
 								"type": "text/javascript"
 							}
@@ -304,7 +305,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c79ab4f5-d985-488d-a715-37933ca39607",
+								"id": "384c9d2d-4000-4b63-8aa9-079a8478367d",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -377,7 +378,7 @@
 								"key": "Content-Type",
 								"name": "Content-Type",
 								"type": "text",
-								"value": "application/vnd.interoperability.transfers+json;version=1.0"
+								"value": "{{contentType}}"
 							},
 							{
 								"key": "Date",
@@ -385,7 +386,7 @@
 							},
 							{
 								"key": "Accept",
-								"value": "application/vnd.interoperability.transfers+json;version=1"
+								"value": "{{acceptHeader}}"
 							},
 							{
 								"key": "FSPIOP-Source",
@@ -434,9 +435,10 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "769d66c4-4c24-4c94-9e16-b10672b4f8c3",
+								"id": "62f9d290-b584-43a5-a653-d8717843b2c4",
 								"exec": [
-									""
+									"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");",
+									"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");"
 								],
 								"type": "text/javascript"
 							}
@@ -444,7 +446,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "64959f68-016a-4771-8b14-fdef073aafc3",
+								"id": "ca44b1e3-554d-4178-b30d-24bb611c32da",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -516,7 +518,7 @@
 								"key": "Content-Type",
 								"name": "Content-Type",
 								"type": "text",
-								"value": "application/vnd.interoperability.transfers+json;version=1.0"
+								"value": "{{contentType}}"
 							},
 							{
 								"key": "Date",
@@ -524,7 +526,7 @@
 							},
 							{
 								"key": "Accept",
-								"value": "application/vnd.interoperability.transfers+json;version=1"
+								"value": "{{acceptHeader}}"
 							},
 							{
 								"key": "FSPIOP-Source",
@@ -582,7 +584,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "ad77ab6e-1a01-46f2-ab4b-a0e29024872e",
+										"id": "e29a4211-8c19-4271-afd1-72deafc0b9e1",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -601,7 +603,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "afd7282e-3702-4fc1-af28-a8833f95aabc",
+										"id": "47303550-3485-40c3-93dd-df8927ae0c3a",
 										"exec": [
 											""
 										],
@@ -648,7 +650,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "f9f53a9b-8080-4177-961b-ba77342679ca",
+										"id": "ce87ec90-9d2d-4e67-bd92-9762ca723183",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -667,7 +669,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "54edfe2c-8697-4a54-bc86-56d91b030ef1",
+										"id": "ce7b493d-6544-42cd-afd6-2df96123edd5",
 										"exec": [
 											""
 										],
@@ -714,7 +716,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "82a4c9c5-6971-4dec-9f37-931686f6e7b9",
+										"id": "b8cebd41-e52f-4a08-abc2-f862f9430762",
 										"exec": [
 											"const uuid = require('uuid');",
 											"",
@@ -750,7 +752,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "00859e27-0238-47fe-a1b4-0e43e38c2e39",
+										"id": "6adb333f-031b-473c-a395-1bd8e59662e0",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -820,7 +822,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "4774ec4b-5abc-48cc-a5ff-7d1dd7ecb76e",
+										"id": "25163402-6ba2-455a-88d3-36a9cc10d27f",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -839,7 +841,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "e79ed7cd-a2e4-4126-a36d-64204f674685",
+										"id": "04e1ca32-5311-4fe2-8ce3-7b45cffc76a5",
 										"exec": [
 											""
 										],
@@ -886,9 +888,9 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "f8165a1c-3b26-44f4-9336-3e73d3c396f5",
+										"id": "5fd13acb-7e04-436a-9208-27cd3718b97a",
 										"exec": [
-											""
+											"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");"
 										],
 										"type": "text/javascript"
 									}
@@ -896,7 +898,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "8b6450d5-823d-41eb-b0ea-f4580f37deb5",
+										"id": "be251cba-ae0b-40b6-afc6-d0fa75b02cdf",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"  pm.response.to.have.status(200);",
@@ -1067,7 +1069,7 @@
 										"key": "Content-Type",
 										"name": "Content-Type",
 										"type": "text",
-										"value": "application/vnd.interoperability.bulkTransfers+json;version=1.0"
+										"value": "{{contentType}}"
 									},
 									{
 										"key": "Date",
@@ -1112,9 +1114,10 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "96ff1045-f6f5-4d6b-86a1-8419d3bffe2d",
+										"id": "fd4b6fe4-3608-4788-99fa-afcbaacc37d7",
 										"exec": [
-											""
+											"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");",
+											"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");"
 										],
 										"type": "text/javascript"
 									}
@@ -1122,7 +1125,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "421b7e1a-3d82-41ff-867c-1eb61f2cfe9a",
+										"id": "0d79695f-d615-4c81-957e-e0a8e892b447",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"  pm.response.to.have.status(202);",
@@ -1185,7 +1188,7 @@
 										"key": "Content-Type",
 										"name": "Content-Type",
 										"type": "text",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{contentType}}"
 									},
 									{
 										"key": "Date",
@@ -1193,7 +1196,7 @@
 									},
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.transfers+json;version=1"
+										"value": "{{acceptHeader}}"
 									},
 									{
 										"key": "FSPIOP-Source",
@@ -1242,9 +1245,10 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "1d617bb8-0264-4c51-b9e1-9c04ba7b2448",
+										"id": "477d3da3-443a-4b1d-9076-caa5d920b6c0",
 										"exec": [
-											""
+											"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");",
+											"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");"
 										],
 										"type": "text/javascript"
 									}
@@ -1252,7 +1256,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "83c87af5-6fdc-4f54-a19f-55b9b7e92e76",
+										"id": "c8343f12-dfa2-4514-9f2d-1e7ff7ad6530",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -1318,7 +1322,7 @@
 										"key": "Content-Type",
 										"name": "Content-Type",
 										"type": "text",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{contentType}}"
 									},
 									{
 										"key": "Date",
@@ -1326,7 +1330,7 @@
 									},
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.transfers+json;version=1"
+										"value": "{{acceptHeader}}"
 									},
 									{
 										"key": "FSPIOP-Source",
@@ -1375,7 +1379,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7856c753-b86b-4ce2-a1d3-e385b31c4eaf",
+										"id": "61ec402f-3344-4154-be24-4779772a4d39",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -1395,7 +1399,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "4722f865-75cb-42e7-b737-e632c29a7f43",
+										"id": "8c8837aa-bb6a-4218-85bf-2c70dc054d0d",
 										"exec": [
 											""
 										],
@@ -1442,7 +1446,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "0ab6c7db-423f-4323-88e5-6cc9b9faa8e5",
+										"id": "809567a3-e059-4bb9-a898-50d4be36a828",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -1462,7 +1466,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "bab412b4-ee86-418a-af5d-04714f140e5c",
+										"id": "0635d29a-6563-4b48-b601-9ea3fc2c6f88",
 										"exec": [
 											""
 										],
@@ -1516,7 +1520,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "801e703c-bf3d-47c3-8215-46b4ac2cb487",
+										"id": "00c6b857-1070-47e4-9c6e-a3becc251d7e",
 										"exec": [
 											"const uuid = require('uuid');",
 											"",
@@ -1549,7 +1553,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "1090bb1f-c306-4fba-94aa-0213a96e3483",
+										"id": "7343516f-cc0d-4f05-809d-322f45c5385a",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -1785,7 +1789,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "3526a9f9-93a2-4b4e-8fd6-db2bcd752059",
+										"id": "2d13da76-6266-473c-b0b0-79bbd44aa5ee",
 										"exec": [
 											""
 										],
@@ -1795,7 +1799,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "c105f1ae-749a-439e-b3cf-adce66c3c3cd",
+										"id": "eff33f76-ee35-42b9-8872-e51d6762753d",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -1923,7 +1927,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "e49f7d09-5e05-4023-accc-f8f3a6daeb68",
+										"id": "02447c8c-6320-4341-ba65-c6f4a9f991d3",
 										"exec": [
 											""
 										],
@@ -1933,7 +1937,522 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7253dba3-dd3d-48b2-bc1a-f03a0153918b",
+										"id": "955eb80a-5bb7-443e-b185-20379d937855",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});",
+											"",
+											"setTimeout(function () {",
+											"  pm.sendRequest(pm.environment.get(\"PAYERFSP_SDK_TESTAPI_URL\")+\"/callbacks/\"+pm.environment.get(\"bulkTransferId\"), function (err, response) {",
+											"          if(response.responseSize !== 0) {",
+											"              const jsonResponse = response.json();",
+											"              ",
+											"              const headers = jsonResponse.headers",
+											"              pm.test(\"date header should be set\", function () {",
+											"                pm.expect(headers.date).to.be.ok;",
+											"              });",
+											"              pm.test(\"fspiop-source should be switch\", function () {",
+											"                pm.expect(headers[\"fspiop-source\"]).to.eql('switch');",
+											"              });",
+											"              pm.test(\"fspiop-destination should be payerfsp\", function () {",
+											"                pm.expect(headers[\"fspiop-destination\"]).to.eql('payerfsp');",
+											"              });",
+											"              pm.test(\"fspiop-http-method should be PUT\", function () {",
+											"                pm.expect(headers[\"fspiop-http-method\"]).to.eql('PUT');",
+											"              });",
+											"              pm.test(\"fspiop-uri should be /payerfsp/bulkTransfers/\" + pm.environment.get(\"bulkTransferId\"), function () {",
+											"                pm.expect(headers[\"fspiop-uri\"]).to.eql(\"/payerfsp/bulkTransfers/\" + pm.environment.get(\"bulkTransferId\"));",
+											"              });",
+											"              pm.test(\"fspiop-signature should be set\", function () {",
+											"                pm.expect(headers[\"fspiop-signature\"]).to.eql(undefined);",
+											"              });",
+											"              ",
+											"             ",
+											"              const data = jsonResponse.data",
+											"              pm.test(\"Bulk transfer state should be COMPLETED on Payer side\", function () {",
+											"                pm.expect(data.bulkTransferState).to.eql('COMPLETED');",
+											"              });",
+											"              pm.test(\"Completed timestamp should be set\", function () {",
+											"                pm.expect(data.completedTimestamp).to.be.ok;",
+											"              });",
+											"              pm.test(\"All individual transfer results (fulfilments) should be returned\", function () {",
+											"                pm.expect(data.individualTransferResults.length).to.eql(2);",
+											"              });",
+											"              const transfer1 = data.individualTransferResults.find(t => t.transferId === pm.environment.get(\"transferId\"));",
+											"              pm.test(\"1st individual transfer should have fulfilment\", function () {",
+											"                  pm.expect(transfer1.fulfilment).to.be.ok",
+											"              });",
+											"              const transfer2 = data.individualTransferResults.find(t => t.transferId === pm.environment.get(\"transferId2\"));",
+											"              pm.test(\"2nd individual transfer should not have fulfilment\", function () {",
+											"                  pm.expect(transfer2.fulfilment).to.eql(undefined)",
+											"              });",
+											"              pm.test(\"2nd individual transfer should contain valid error information\", function() {",
+											"                pm.expect(transfer2.errorInformation.errorCode).to.eql(\"3100\");",
+											"                pm.expect(transfer2.errorInformation.errorDescription).to.eql(\"Generic validation error - Participant payerfsp AED account not found\");",
+											"              })",
+											"          } else {",
+											"              pm.test(\"Transfer FAILED\", function () {",
+											"                throw new Error('Did not receive response');",
+											"              });",
+											"              ",
+											"          }",
+											"   });",
+											"}, 1000)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+									},
+									{
+										"key": "Date",
+										"value": "{{headerDate}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.interoperability.transfers+json;version=1"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "{{payerfsp}}"
+									},
+									{
+										"key": "FSPIOP-Destination",
+										"value": "switch"
+									},
+									{
+										"key": "FSPIOP-Signature",
+										"type": "text",
+										"value": "~~{{payerfsp}}~~"
+									},
+									{
+										"key": "FSPIOP-URI",
+										"type": "text",
+										"value": "/bulkTransfers/{{bulkTransferId}}"
+									},
+									{
+										"key": "FSPIOP-HTTP-Method",
+										"type": "text",
+										"value": "GET"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{HOST_BULK_ADAPTER}}/bulkTransfers/{{bulkTransferId}}",
+									"host": [
+										"{{HOST_BULK_ADAPTER}}"
+									],
+									"path": [
+										"bulkTransfers",
+										"{{bulkTransferId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "FSPIOP headers",
+					"item": [
+						{
+							"name": "POST Bulk Transfer - Wrong Accept Header",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "38181271-78b9-4f84-a2a9-c3a27736ec80",
+										"exec": [
+											"const uuid = require('uuid');",
+											"",
+											"const delay = 1000 * 3600 * 24",
+											"const bulkTransferId = uuid.v4();",
+											"const bulkQuoteId = uuid.v4();",
+											"const transferId = uuid.v4();",
+											"const transferId2 = uuid.v4();",
+											"const now = new Date();",
+											"const headerDate = now.toUTCString();",
+											"const expirationDate = new Date(now.getTime() + delay).toISOString();",
+											"const completedTimestamp = now.toISOString();",
+											"",
+											"pm.environment.set(\"bulkTransferId\", bulkTransferId);",
+											"pm.environment.set(\"bulkQuoteId\", bulkQuoteId);",
+											"pm.environment.set(\"transferId\", transferId);",
+											"pm.environment.set(\"transferId2\", transferId2);",
+											"pm.environment.set(\"headerDate\", headerDate);",
+											"pm.environment.set(\"expirationDate\", expirationDate);",
+											"pm.environment.set(\"completedTimestamp\", completedTimestamp);",
+											"pm.environment.set(\"amount\", 1);",
+											"pm.environment.set(\"amount2\", 1);",
+											"pm.environment.set(\"currency2\", \"USD\");",
+											"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.transfers+json;version=1\");",
+											"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "fd1be23c-8ac2-4501-9448-477b25617737",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"Scheme validation error is returned\", function () {",
+											"    const res = pm.response.json();",
+											"    pm.expect(res.errorInformation.errorCode).to.eql('3101');",
+											"    pm.expect(res.errorInformation.errorDescription).to.eql('Malformed syntax - Invalid accept header');",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "{{contentType}}"
+									},
+									{
+										"key": "Date",
+										"value": "{{headerDate}}"
+									},
+									{
+										"key": "Accept",
+										"value": "{{acceptHeader}}"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "{{payerfsp}}"
+									},
+									{
+										"key": "FSPIOP-Destination",
+										"value": "{{payeefsp}}"
+									},
+									{
+										"key": "FSPIOP-Signature",
+										"type": "text",
+										"value": "~~{{payerfsp}}~~"
+									},
+									{
+										"key": "FSPIOP-URI",
+										"type": "text",
+										"value": "/bulkTransfers"
+									},
+									{
+										"key": "FSPIOP-HTTP-Method",
+										"value": "POST",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \n    \"bulkTransferId\": \"{{bulkTransferId}}\",\n    \"bulkQuoteId\": \"{{bulkQuoteId}}\",\n    \"payeeFsp\": \"{{payeefsp}}\",\n    \"payerFsp\": \"{{payerfsp}}\",\n    \"individualTransfers\":\n    [ {\n        \"transferId\": \"{{transferId}}\",\n        \"transferAmount\": {\n            \"currency\": \"{{currency}}\",\n            \"amount\": \"{{amount}}\"\n        },\n        \"ilpPacket\": \"{{validIlpPacket2}}\",\n        \"condition\": \"{{validCondition2}}\",\n        \"extensionList\": { \"extension\": [\n            { \"key\": \"extKey1\", \"value\": \"extValue1\"},\n            { \"key\": \"extKey2\", \"value\": \"extValue2\"}\n        ] }\n      },\n       {\n        \"transferId\": \"{{transferId2}}\",\n        \"transferAmount\": {\n            \"currency\": \"AED\",\n            \"amount\": \"{{amount2}}\"\n        },\n        \"ilpPacket\": \"{{validIlpPacket2}}\",\n        \"condition\": \"{{validCondition2}}\"\n    } ],\n    \"expiration\": \"{{expirationDate}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_BULK_ADAPTER}}/bulkTransfers",
+									"host": [
+										"{{HOST_BULK_ADAPTER}}"
+									],
+									"path": [
+										"bulkTransfers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Bulk Transfer - Wrong Content-Type Header",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "92dd7487-5969-49d9-9b56-60498921fa63",
+										"exec": [
+											"const uuid = require('uuid');",
+											"",
+											"const delay = 1000 * 3600 * 24",
+											"const bulkTransferId = uuid.v4();",
+											"const bulkQuoteId = uuid.v4();",
+											"const transferId = uuid.v4();",
+											"const transferId2 = uuid.v4();",
+											"const now = new Date();",
+											"const headerDate = now.toUTCString();",
+											"const expirationDate = new Date(now.getTime() + delay).toISOString();",
+											"const completedTimestamp = now.toISOString();",
+											"",
+											"pm.environment.set(\"bulkTransferId\", bulkTransferId);",
+											"pm.environment.set(\"bulkQuoteId\", bulkQuoteId);",
+											"pm.environment.set(\"transferId\", transferId);",
+											"pm.environment.set(\"transferId2\", transferId2);",
+											"pm.environment.set(\"headerDate\", headerDate);",
+											"pm.environment.set(\"expirationDate\", expirationDate);",
+											"pm.environment.set(\"completedTimestamp\", completedTimestamp);",
+											"pm.environment.set(\"amount\", 1);",
+											"pm.environment.set(\"amount2\", 1);",
+											"pm.environment.set(\"currency2\", \"USD\");",
+											"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");",
+											"pm.environment.set(\"contentType\", \"application/vnd.interoperability.transfers+json;version=1.0\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "c2e58670-1ac3-4a9f-8b53-40b7019c3964",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"Scheme validation error is returned\", function () {",
+											"    const res = pm.response.json();",
+											"    pm.expect(res.errorInformation.errorCode).to.eql('3101');",
+											"    pm.expect(res.errorInformation.errorDescription).to.eql('Malformed syntax - Invalid content-type header');",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "{{contentType}}"
+									},
+									{
+										"key": "Date",
+										"value": "{{headerDate}}"
+									},
+									{
+										"key": "Accept",
+										"value": "{{acceptHeader}}"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "{{payerfsp}}"
+									},
+									{
+										"key": "FSPIOP-Destination",
+										"value": "{{payeefsp}}"
+									},
+									{
+										"key": "FSPIOP-Signature",
+										"type": "text",
+										"value": "~~{{payerfsp}}~~"
+									},
+									{
+										"key": "FSPIOP-URI",
+										"type": "text",
+										"value": "/bulkTransfers"
+									},
+									{
+										"key": "FSPIOP-HTTP-Method",
+										"type": "text",
+										"value": "POST"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \n    \"bulkTransferId\": \"{{bulkTransferId}}\",\n    \"bulkQuoteId\": \"{{bulkQuoteId}}\",\n    \"payeeFsp\": \"{{payeefsp}}\",\n    \"payerFsp\": \"{{payerfsp}}\",\n    \"individualTransfers\":\n    [ {\n        \"transferId\": \"{{transferId}}\",\n        \"transferAmount\": {\n            \"currency\": \"{{currency}}\",\n            \"amount\": \"{{amount}}\"\n        },\n        \"ilpPacket\": \"{{validIlpPacket2}}\",\n        \"condition\": \"{{validCondition2}}\",\n        \"extensionList\": { \"extension\": [\n            { \"key\": \"extKey1\", \"value\": \"extValue1\"},\n            { \"key\": \"extKey2\", \"value\": \"extValue2\"}\n        ] }\n      },\n       {\n        \"transferId\": \"{{transferId2}}\",\n        \"transferAmount\": {\n            \"currency\": \"AED\",\n            \"amount\": \"{{amount2}}\"\n        },\n        \"ilpPacket\": \"{{validIlpPacket2}}\",\n        \"condition\": \"{{validCondition2}}\"\n    } ],\n    \"expiration\": \"{{expirationDate}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_BULK_ADAPTER}}/bulkTransfers",
+									"host": [
+										"{{HOST_BULK_ADAPTER}}"
+									],
+									"path": [
+										"bulkTransfers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Bulk Transfer - PayeeFSP",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "d249677c-0bd1-4cb5-ba7e-71e885cd18e7",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "bf86e329-93a4-4af6-bb6c-b9887ae8cef2",
+										"exec": [
+											"pm.test(\"Status code is 202\", function () {",
+											"    pm.response.to.have.status(202);",
+											"});",
+											"",
+											"setTimeout(function () {",
+											"  pm.sendRequest(pm.environment.get(\"PAYEEFSP_SDK_TESTAPI_URL\")+\"/callbacks/\"+pm.environment.get(\"bulkTransferId\"), function (err, response) {",
+											"          if(response.responseSize !== 0) {",
+											"              const jsonResponse = response.json();",
+											"              ",
+											"              const headers = jsonResponse.headers",
+											"              pm.test(\"date header should be set\", function () {",
+											"                pm.expect(headers.date).to.be.ok;",
+											"              });",
+											"              pm.test(\"fspiop-source should be switch\", function () {",
+											"                pm.expect(headers[\"fspiop-source\"]).to.eql('switch');",
+											"              });",
+											"              pm.test(\"fspiop-destination should be payeefsp\", function () {",
+											"                pm.expect(headers[\"fspiop-destination\"]).to.eql('payeefsp');",
+											"              });",
+											"              pm.test(\"fspiop-http-method should be PUT\", function () {",
+											"                pm.expect(headers[\"fspiop-http-method\"]).to.eql('PUT');",
+											"              });",
+											"              pm.test(\"fspiop-uri should be /payeefsp/bulkTransfers/\" + pm.environment.get(\"bulkTransferId\"), function () {",
+											"                pm.expect(headers[\"fspiop-uri\"]).to.eql(\"/payeefsp/bulkTransfers/\" + pm.environment.get(\"bulkTransferId\"));",
+											"              });",
+											"              pm.test(\"fspiop-signature should not be set\", function () {",
+											"                pm.expect(headers[\"fspiop-signature\"]).to.eql(undefined);",
+											"              });",
+											"              ",
+											"             ",
+											"              const data = jsonResponse.data",
+											"              pm.test(\"Bulk Transfer state should be COMPLETED on Payee side\", function () {",
+											"                pm.expect(data.bulkTransferState).to.eql('COMPLETED');",
+											"              });",
+											"              pm.test(\"Completed timestamp should be set\", function () {",
+											"                pm.expect(data.completedTimestamp).to.be.ok;",
+											"              });",
+											"              pm.test(\"Only one (1) individual transfer result (fulfilment) should be returned\", function () {",
+											"                pm.expect(data.individualTransferResults.length).to.eql(1);",
+											"              });",
+											"              pm.test(\"Individual transfer result should have transferId\", function () {",
+											"                pm.expect(data.individualTransferResults[0].transferId).to.be.ok;",
+											"              });",
+											"              pm.test(\"Individual transfer result should have fulfilment\", function () {",
+											"                pm.expect(data.individualTransferResults[0].fulfilment).to.be.ok;",
+											"              });",
+											"          } else {",
+											"              pm.test(\"Transfer FAILED\", function () {",
+											"                throw new Error('Did not receive response');",
+											"              });",
+											"          }",
+											"   });",
+											"}, 1000)",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+									},
+									{
+										"key": "Date",
+										"value": "{{headerDate}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.interoperability.transfers+json;version=1"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "{{payeefsp}}"
+									},
+									{
+										"key": "FSPIOP-Destination",
+										"value": "switch"
+									},
+									{
+										"key": "FSPIOP-Signature",
+										"type": "text",
+										"value": "~~{{payeefsp}}~~"
+									},
+									{
+										"key": "FSPIOP-URI",
+										"type": "text",
+										"value": "/bulkTransfers/{{bulkTransferId}}"
+									},
+									{
+										"key": "FSPIOP-HTTP-Method",
+										"type": "text",
+										"value": "GET"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{HOST_BULK_ADAPTER}}/bulkTransfers/{{bulkTransferId}}",
+									"host": [
+										"{{HOST_BULK_ADAPTER}}"
+									],
+									"path": [
+										"bulkTransfers",
+										"{{bulkTransferId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Bulk Transfer - PayerFSP",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "94fe821b-5a9a-4893-8aec-ef575a1b8fe2",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "8184ee40-9d8a-4dc2-ac3b-0d4dcbeb681c",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -2074,7 +2593,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "7abcfaf7-f010-4be1-ad05-5bd8fd2cf825",
+						"id": "daa7d1c0-2b47-489c-abc7-d5abac72016c",
 						"exec": [
 							""
 						],
