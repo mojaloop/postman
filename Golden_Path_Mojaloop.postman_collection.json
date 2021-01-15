@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "8033c182-36df-4fc6-b9fc-f53ca7a99169",
-		"name": "Golden_Path_Mojaloop_10.6.0",
+		"_postman_id": "c9d52ca3-4d1a-4b0d-a691-7f7e49f0e537",
+		"name": "Golden_Path_Mojaloop",
 		"description": "Author: Sridevi Miriyala\nDescription: Golden Path Tests using Mojaloop Simulators",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -3933,7 +3933,7 @@
 											"for (var i in jsonData){",
 											"    if(jsonData[i].currency === pm.environment.get('currency')) {",
 											"  pm.test(\"Position before and after the transfer should be the same\", function () {",
-											"    pm.expect(jsonData[i].value).to.eql(pm.environment.get(\"payerfspUSDPositionBeforeTransfer\"));",
+											"    pm.expect(jsonData[i].value).to.eql(pm.environment.get(`payerfsp${pm.environment.get('currency')}PositionBeforeTransfer`));",
 											"  });",
 											"    }",
 											"   ",
