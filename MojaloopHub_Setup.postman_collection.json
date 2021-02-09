@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4f49527b-33e8-4f16-95b7-1f90100104e5",
+		"_postman_id": "16205d0b-7a31-4bd3-b3f5-d7139571badc",
 		"name": "MojaloopHub_Setup",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -364,8 +364,7 @@
 						}
 					]
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Settlement Models",
@@ -449,8 +448,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Oracle Onboarding",
@@ -497,7 +495,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"oracleIdType\": \"MSISDN\",\n  \"endpoint\": {\n    \"value\": \"{{HOST_SIMULATOR}}/oracle\",\n    \"endpointType\": \"URL\"\n  },\n  \"currency\": \"{{currency}}\",\n  \"isDefault\": true\n}"
+							"raw": "{\n  \"oracleIdType\": \"MSISDN\",\n  \"endpoint\": {\n    \"value\": \"{{MSISDN_ORACLE_ENDPOINT}}\",\n    \"endpointType\": \"URL\"\n  },\n  \"currency\": \"{{currency}}\",\n  \"isDefault\": true\n}"
 						},
 						"url": {
 							"raw": "{{HOST_ACCOUNT_LOOKUP_ADMIN}}/oracles",
@@ -553,7 +551,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"oracleIdType\": \"BUSINESS\",\n  \"endpoint\": {\n    \"value\": \"{{HOST_SIMULATOR}}/oracle\",\n    \"endpointType\": \"URL\"\n  },\n  \"currency\": \"{{currency}}\",\n  \"isDefault\": true\n}"
+							"raw": "{\n  \"oracleIdType\": \"BUSINESS\",\n  \"endpoint\": {\n    \"value\": \"{{MERCHANT_ORACLE_ENDPOINT}}\",\n    \"endpointType\": \"URL\"\n  },\n  \"currency\": \"{{currency}}\",\n  \"isDefault\": true\n}"
 						},
 						"url": {
 							"raw": "{{HOST_ACCOUNT_LOOKUP_ADMIN}}/oracles",
@@ -609,7 +607,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"oracleIdType\": \"ALIAS\",\n  \"endpoint\": {\n    \"value\": \"{{HOST_SIMULATOR}}/oracle\",\n    \"endpointType\": \"URL\"\n  },\n  \"currency\": \"{{currency}}\",\n  \"isDefault\": true\n}"
+							"raw": "{\n  \"oracleIdType\": \"ALIAS\",\n  \"endpoint\": {\n    \"value\": \"{{ALIAS_ORACLE_ENDPOINT}}\",\n    \"endpointType\": \"URL\"\n  },\n  \"currency\": \"{{currency}}\",\n  \"isDefault\": true\n}"
 						},
 						"url": {
 							"raw": "{{HOST_ACCOUNT_LOOKUP_ADMIN}}/oracles",
@@ -623,15 +621,13 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		}
 	],
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "dc749716-89f0-4247-9100-14f72c14271c",
 				"type": "text/javascript",
 				"exec": [
 					"if (pm.environment.get('WS02_OAUTH_ENABLED') === 'true') {",
@@ -901,13 +897,11 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "9768ba94-1d0d-4bad-a4c5-fac0106f1c70",
 				"type": "text/javascript",
 				"exec": [
 					""
 				]
 			}
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
