@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4f49527b-33e8-4f16-95b7-1f90100104e5",
+		"_postman_id": "9cfe35ae-f2d6-43a0-a9bf-856d7aa4344f",
 		"name": "MojaloopHub_Setup",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -364,8 +364,7 @@
 						}
 					]
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Settlement Models",
@@ -398,7 +397,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"DEFERREDNET\",\n  \"settlementGranularity\": \"NET\",\n  \"settlementInterchange\": \"MULTILATERAL\",\n  \"settlementDelay\": \"DEFERRED\",\n  \"requireLiquidityCheck\": true,\n  \"ledgerAccountType\": \"POSITION\",\n  \"autoPositionReset\": true\n}"
+							"raw": "{\n  \"name\": \"DEFERREDNET\",\n  \"settlementGranularity\": \"NET\",\n  \"settlementInterchange\": \"MULTILATERAL\",\n  \"settlementDelay\": \"DEFERRED\",\n  \"requireLiquidityCheck\": true,\n  \"ledgerAccountType\": \"POSITION\",\n  \"autoPositionReset\": true,\n  \"currency\": \"USD\",\n  \"settlementAccountType\": \"SETTLEMENT\"\n}"
 						},
 						"url": {
 							"raw": "{{HOST_CENTRAL_LEDGER}}/settlementModels",
@@ -439,8 +438,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Oracle Onboarding",
@@ -583,15 +581,13 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		}
 	],
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "dc749716-89f0-4247-9100-14f72c14271c",
 				"type": "text/javascript",
 				"exec": [
 					"if (pm.environment.get('WS02_OAUTH_ENABLED') === 'true') {",
@@ -861,13 +857,11 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "9768ba94-1d0d-4bad-a4c5-fac0106f1c70",
 				"type": "text/javascript",
 				"exec": [
 					""
 				]
 			}
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

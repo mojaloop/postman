@@ -1,0 +1,2699 @@
+{
+	"info": {
+		"_postman_id": "28b6166d-5ed9-4a2f-af56-4dafe7910463",
+		"name": "[CGS] Demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Close any window before transfers",
+			"item": [
+				{
+					"name": "Get Existing Open Window",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"State should be OPEN\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData[0].state).to.eql('OPEN');",
+									"    pm.environment.set(\"openWindowID\", jsonData[0].settlementWindowId);",
+									"    console.log('openWindowID',pm.environment.get(\"openWindowID\"));",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"value": "hub_operator",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows?state=OPEN",
+							"host": [
+								"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
+							],
+							"path": [
+								"settlementWindows"
+							],
+							"query": [
+								{
+									"key": "state",
+									"value": "OPEN"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Close Existing Window",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{hub_operator}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"state\": \"CLOSED\",\n  \"reason\": \"string\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows/{{openWindowID}}",
+							"host": [
+								"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
+							],
+							"path": [
+								"settlementWindows",
+								"{{openWindowID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "This will allow us to not leave any window unsettled. Means eachwindow that we close using this collection will be gone through the whole manual settlement process and the positions gets reset.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "settlement || position Account Balances Before Transfers",
+			"item": [
+				{
+					"name": "testfsp1 balances",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"jsonData",
+									"    .filter(account => account.currency === pm.environment.get('currency'))",
+									"    .forEach(curAccount => {",
+									"        if(curAccount.ledgerAccountType === \"SETTLEMENT\") {",
+									"            pm.environment.set(\"testfsp1SettleAccountBalanceBeforeTransfer\", curAccount.value);",
+									"        }",
+									"        if(curAccount.ledgerAccountType === \"POSITION\") {",
+									"            pm.environment.set(\"testfsp1PositionAccountBalanceBeforeTransfer\", curAccount.value);",
+									"    /*        pm.test(\"testfsp1 position account balance is 0\", function () {",
+									"                pm.expect(curAccount.value).to.eql(0);",
+									"            });*/",
+									"        }",
+									"    })",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{hub_operator}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"testfsp1",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "testfsp3 balances",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"jsonData",
+									"    .filter(account => account.currency === pm.environment.get('currency'))",
+									"    .forEach(curAccount => {",
+									"        if(curAccount.ledgerAccountType === \"SETTLEMENT\") {",
+									"            pm.environment.set(\"testfsp3SettleAccountBalanceBeforeTransfer\", curAccount.value);",
+									"        }",
+									"        if(curAccount.ledgerAccountType === \"POSITION\") {",
+									"            pm.environment.set(\"testfsp3PositionAccountBalanceBeforeTransfer\", curAccount.value);",
+									"    /*        pm.test(\"testfsp2 position account balance is 0\", function () {",
+									"                pm.expect(curAccount.value).to.eql(0);",
+									"            });*/",
+									"        }",
+									"    })",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"type": "text",
+								"value": "{{hub_operator}}"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"testfsp3",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "HUB balances",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"jsonData",
+									"    .filter(account => account.currency === pm.environment.get('currency'))",
+									"    .forEach(curAccount => {",
+									"        if(curAccount.ledgerAccountType === \"HUB_RECONCILIATION\") {",
+									"            pm.environment.set(\"hubReconciliationAccountBalanceBeforeTransfer\", curAccount.value);",
+									"        }",
+									"        if(curAccount.ledgerAccountType === \"HUB_MULTILATERAL_SETTLEMENT\") {",
+									"            pm.environment.set(\"hubMultilateralAccountBalanceBeforeTransfer\", curAccount.value);",
+									"        }",
+									"    })",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"type": "text",
+								"value": "{{hub_operator}}"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/Hub/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"Hub",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "run transfers ",
+			"item": [
+				{
+					"name": "testfsp1/accounts (settlement,...) balances BEFORE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"jsonData",
+									"    .filter(account => account.currency === pm.environment.get('currency'))",
+									"    .forEach(curAccount => {",
+									"        if(curAccount.ledgerAccountType === \"SETTLEMENT\") {",
+									"            pm.environment.set(\"testfsp1SettlementBalanceBefore\", curAccount.value);",
+									"        }",
+									"        if(curAccount.ledgerAccountType === \"POSITION\") {",
+									"            pm.environment.set(\"testfsp1PositionBalanceBefore\", curAccount.value);",
+									"        }",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE\") {",
+									"            pm.environment.set(\"testfsp1InterchFeeBalanceBefore\", curAccount.value);",
+									"        }",
+									"    })",
+									"    ",
+									"console.log('extracted testfsp1 settlement balance before transfers',pm.environment.get(\"testfsp1SettlementBalanceBefore\"));",
+									"",
+									"console.log('extracted testfsp1 positions balance before transfers',pm.environment.get(\"testfsp1PositionBalanceBefore\"));",
+									"",
+									"console.log('extracted testfsp1 interchange fee balance before transfers',pm.environment.get(\"testfsp1InterchFeeBalanceBefore\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"type": "text",
+								"value": "{{hub_operator}}"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"testfsp1",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "testfsp3/accounts (settlement,...) balances BEFORE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"jsonData",
+									"    .filter(account => account.currency === pm.environment.get('currency'))",
+									"    .forEach(curAccount => {",
+									"        if(curAccount.ledgerAccountType === \"SETTLEMENT\") {",
+									"            pm.environment.set(\"testfsp3SettlementBalanceBefore\", curAccount.value);",
+									"        }",
+									"        if(curAccount.ledgerAccountType === \"POSITION\") {",
+									"            pm.environment.set(\"testfsp3PositionBalanceBefore\", curAccount.value);",
+									"        }",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE\") {",
+									"            pm.environment.set(\"testfsp3InterchFeeBalanceBefore\", curAccount.value);",
+									"        }",
+									"    })",
+									"    ",
+									"console.log('extracted testfsp3 settlement balance before transfers',pm.environment.get(\"testfsp3SettlementBalanceBefore\"));",
+									"",
+									"console.log('extracted testfsp3 positions balance before transfers',pm.environment.get(\"testfsp3PositionBalanceBefore\"));",
+									"",
+									"console.log('extracted testfsp3 interchange fee balance before transfers',pm.environment.get(\"testfsp3InterchFeeBalanceBefore\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"type": "text",
+								"value": "{{hub_operator}}"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"testfsp3",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /scenarios testfsp3  -> testfsp1 w2w SEND [15.00 USD]",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var uuid = require('uuid');",
+									"var generatedUUID = uuid.v4();",
+									"pm.environment.set('quoteId', generatedUUID);",
+									"pm.environment.set('transfer_ID', pm.environment.get('transactionId'));",
+									"",
+									"",
+									"pm.variables.set('transferDate', (new Date()).toUTCString());",
+									"",
+									"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))",
+									"",
+									"//pm.variables.set('payerName', 'PayerFirst PayerLast');",
+									"",
+									"//pm.variables.set('expectedPayeeFirstName', 'PayeeFirst');",
+									"//pm.variables.set('expectedPayeeLastName', 'PayeeLast');",
+									"//pm.variables.set('expectedPayeeDOB', '2010-10-10');",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"transfer state is completed\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.scenario1.result.currentState).to.eql(\"COMPLETED\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/vnd.interoperability.transfers+json;version=1",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/vnd.interoperability.transfers+json;version=1.0",
+								"disabled": true
+							},
+							{
+								"key": "Date",
+								"type": "text",
+								"value": "{{transferDate}}",
+								"disabled": true
+							},
+							{
+								"key": "FSPIOP-Source",
+								"type": "text",
+								"value": "{{testfsp3}}",
+								"disabled": true
+							},
+							{
+								"key": "FSPIOP-Destination",
+								"type": "text",
+								"value": "{{testfsp1}}",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"name\": \"scenario1\",\n        \"operation\": \"postTransfers\",\n        \"body\": {\n            \"from\": {\n                \"displayName\": \"testfsp3WalletFname testfsp3WalletLname\",\n                \"idType\": \"MSISDN\",\n                \"idValue\": \"{{testfsp3MSISDN}}\",\n                \"extensionList\":\n                [{\"key\":\"accountType\", \n                \"value\":\"Wallet\"}\n                ]\n            },\n            \"to\": {\n                \"idType\": \"MSISDN\",\n                \"idValue\": \"{{testfsp1MSISDN}}\"\n            },\n            \"amountType\": \"SEND\",\n            \"currency\": \"{{currency}}\",\n            \"amount\": \"15\",\n            \"transactionType\": \"TRANSFER\",\n            \"initiatorType\":\"CONSUMER\",\n            \"note\": \"test payment 2020-06-26 11:52AM\",\n            \"homeTransactionId\": \"123ABC\"\n        }\n    },\n    {\n        \"name\": \"scenario2\",\n        \"operation\": \"putTransfers\",\n        \n        \"params\": {\n            \"transferId\": \"{{scenario1.result.transferId}}\"\n        },\n        \"body\": {\n            \"acceptQuote\": true\n        }\n    }\n]"
+						},
+						"url": {
+							"raw": "{{TESTFSP3_BACKEND_TESTAPI_URL}}/scenarios",
+							"host": [
+								"{{TESTFSP3_BACKEND_TESTAPI_URL}}"
+							],
+							"path": [
+								"scenarios"
+							]
+						},
+						"description": "sending transfer testfsp3 to testfsp1 wallet-to-wallet"
+					},
+					"response": []
+				},
+				{
+					"name": "[negative] POST /scenarios testfsp3  -> testfsp1 w2w SEND",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var uuid = require('uuid');",
+									"var generatedUUID = uuid.v4();",
+									"pm.environment.set('quoteId', generatedUUID);",
+									"pm.environment.set('transfer_ID', pm.environment.get('transactionId'));",
+									"",
+									"",
+									"pm.variables.set('transferDate', (new Date()).toUTCString());",
+									"",
+									"pm.environment.set(\"transferExpiration\",new Date(new Date().getTime() + 600000))",
+									"",
+									"//pm.variables.set('payerName', 'PayerFirst PayerLast');",
+									"",
+									"//pm.variables.set('expectedPayeeFirstName', 'PayeeFirst');",
+									"//pm.variables.set('expectedPayeeLastName', 'PayeeLast');",
+									"//pm.variables.set('expectedPayeeDOB', '2010-10-10');",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"result.statusCode == 400\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.scenario1.result.statusCode).to.eql(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/vnd.interoperability.transfers+json;version=1",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/vnd.interoperability.transfers+json;version=1.0",
+								"disabled": true
+							},
+							{
+								"key": "Date",
+								"type": "text",
+								"value": "{{transferDate}}",
+								"disabled": true
+							},
+							{
+								"key": "FSPIOP-Source",
+								"type": "text",
+								"value": "{{testfsp3}}",
+								"disabled": true
+							},
+							{
+								"key": "FSPIOP-Destination",
+								"type": "text",
+								"value": "{{testfsp1}}",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"name\": \"scenario1\",\n        \"operation\": \"postTransfers\",\n        \"body\": {\n            \"from\": {\n                \"displayName\": \"testfsp3WalletFname testfsp3WalletLname\",\n\n                \"idValue\": \"{{testfsp3MSISDN}}\",\n                \"extensionList\":\n                [{\"key\":\"accountType\", \n                \"value\":\"Wallet\"}\n                ]\n            },\n            \"to\": {\n                \"idValue\": \"{{testfsp1MSISDN}}\"\n            },\n            \"amountType\": \"SEND\",\n            \"currency\": \"{{currency}}\",\n            \"amount\": \"15\",\n            \"transactionType\": \"TRANSFER\",\n            \"initiatorType\":\"CONSUMER\",\n            \"note\": \"test payment 2020-06-26 11:52AM\",\n            \"homeTransactionId\": \"123ABC\"\n        }\n    },\n    {\n        \"name\": \"scenario2\",\n        \"operation\": \"putTransfers\",\n        \n        \"params\": {\n            \"transferId\": \"{{scenario1.result.transferId}}\"\n        },\n        \"body\": {\n            \"acceptQuote\": true\n        }\n    }\n]"
+						},
+						"url": {
+							"raw": "{{TESTFSP3_BACKEND_TESTAPI_URL}}/scenarios",
+							"host": [
+								"{{TESTFSP3_BACKEND_TESTAPI_URL}}"
+							],
+							"path": [
+								"scenarios"
+							]
+						},
+						"description": "request that is supposed to fail; transfer without idType"
+					},
+					"response": []
+				},
+				{
+					"name": "testfsp3/accounts (settlement, position) AFTER [15.00 USD] transfer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"var jsonData = pm.response.json();",
+									"jsonData",
+									"    .filter(account => account.currency === pm.environment.get('currency'))",
+									"    .forEach(curAccount => {",
+									"        if(curAccount.ledgerAccountType === \"SETTLEMENT\") {",
+									"            pm.environment.set(\"testfsp3SettlementBalanceAfterTransfer1\", curAccount.value);",
+									"        }",
+									"        if(curAccount.ledgerAccountType === \"POSITION\") {",
+									"            pm.environment.set(\"testfsp3PositionBalanceAfterTransfer1\", curAccount.value);",
+									"        }",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE\") {",
+									"            pm.environment.set(\"testfsp3InterchFeeBalanceAfterTransfer1Transfer1\", curAccount.value);",
+									"        }",
+									"    })",
+									"",
+									"var transferAmount = 15;",
+									"var testfsp3SettlementBalanceAfterExpected = Number.parseFloat(pm.environment.get(\"testfsp3SettlementBalanceBefore\")) - Number.parseFloat(transferAmount);",
+									"",
+									" testfsp3SettlementBalanceAfterExpected = testfsp3SettlementBalanceAfterExpected.toFixed(2);",
+									"",
+									"var testfsp3SettlementBalanceAfterActual = Number.parseFloat(pm.environment.get(\"testfsp3SettlementBalanceAfterTransfer1\")).toFixed(2);",
+									"",
+									"console.log('extracted testfsp3 settlement balance before transfers',pm.environment.get(\"testfsp3SettlementBalanceBefore\"));",
+									"console.log('extracted testfsp3 settlement balance after first transfer ACTUAL',testfsp3SettlementBalanceAfterActual);",
+									"console.log('calculated testfsp3 settlement balance before transfers '+pm.environment.get(\"testfsp3SettlementBalanceBefore\") +' transfer amount -'+transferAmount, testfsp3SettlementBalanceAfterExpected);",
+									"",
+									"console.log('test fsp3 positions account before',pm.environment.get(\"testfsp3PositionBalanceBefore\"));",
+									"console.log('test fsp3 positions account after',pm.environment.get(\"testfsp3PositionBalanceAfterTransfer1\"));",
+									"",
+									"",
+									"pm.test(\"Check that settlement account value changes by transfer amount \"+transferAmount, ",
+									"    function () {",
+									"            pm.expect(Number(testfsp3SettlementBalanceAfterExpected)).to.eql(Number(testfsp3SettlementBalanceAfterActual));",
+									"        });",
+									"pm.test(\"Check that position account value remains unchanged\", ",
+									"function () {",
+									"            pm.expect(Number(pm.environment.get(\"testfsp3PositionBalanceBefore\"))).to.eql(Number(pm.environment.get(\"testfsp3PositionBalanceAfterTransfer1\")));",
+									"        });       ",
+									"",
+									"// check for interchage fee change",
+									"console.log('test fsp1 interchange fee account value after transfer 1',pm.environment.get(\"testfsp3InterchFeeBalanceAfterTransfer1Transfer1\"));",
+									" ",
+									"var testfsp3_actual_interchange_transfer1 =  Number.parseFloat(pm.environment.get(\"testfsp3InterchFeeBalanceAfterTransfer1Transfer1\")) - Number.parseFloat(pm.environment.get(\"testfsp3InterchFeeBalanceBefore\"))",
+									"testfsp3_actual_interchange_transfer1 = testfsp3_actual_interchange_transfer1.toFixed(2);",
+									"var testfsp3_expected_interchange_transfer1 = 0.09; ",
+									"",
+									"pm.test(\"check that interchange fee have been changed by \"+testfsp3_expected_interchange_transfer1,",
+									"function () {",
+									"            pm.expect(Number(testfsp3_actual_interchange_transfer1)).to.eql(Number(testfsp3_expected_interchange_transfer1));",
+									"        });  "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"type": "text",
+								"value": "{{hub_operator}}"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"testfsp3",
+								"accounts"
+							]
+						},
+						"description": "account vals tests AFTER single transfer"
+					},
+					"response": []
+				},
+				{
+					"name": "testfsp1/accounts (settlement, position) AFTER [15.00 USD] transfer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"var jsonData = pm.response.json();",
+									"jsonData",
+									"    .filter(account => account.currency === pm.environment.get('currency'))",
+									"    .forEach(curAccount => {",
+									"        if(curAccount.ledgerAccountType === \"SETTLEMENT\") {",
+									"            pm.environment.set(\"testfsp1SettlementBalanceAfter\", curAccount.value);",
+									"        }",
+									"        if(curAccount.ledgerAccountType === \"POSITION\") {",
+									"            pm.environment.set(\"testfsp1PositionBalanceAfter\", curAccount.value);",
+									"        }",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE\") {",
+									"            pm.environment.set(\"testfsp1InterchFeeBalanceAfterTransfer1\", curAccount.value);",
+									"        }",
+									"    })",
+									"",
+									"var transferAmount = 15;",
+									"var testfsp1SettlementBalanceAfterExpected = Number.parseFloat(pm.environment.get(\"testfsp1SettlementBalanceBefore\")) + Number.parseFloat(transferAmount);",
+									"",
+									" testfsp1SettlementBalanceAfterExpected = testfsp1SettlementBalanceAfterExpected.toFixed(2);",
+									"",
+									"var testfsp1SettlementBalanceAfterActual = Number.parseFloat(pm.environment.get(\"testfsp1SettlementBalanceAfter\")).toFixed(2);",
+									"",
+									"console.log('extracted testfsp1 settlement balance before transfers',pm.environment.get(\"testfsp1SettlementBalanceBefore\"));",
+									"console.log('extracted testfsp1 settlement balance after transfers ACTUAL',pm.environment.get(\"testfsp1SettlementBalanceAfter\"));",
+									"console.log('calculated testfsp1 settlement balance before transfers '+pm.environment.get(\"testfsp1SettlementBalanceBefore\") +' transfer amount +'+transferAmount, testfsp1SettlementBalanceAfterExpected);",
+									"",
+									"console.log('test fsp1 positions account before',pm.environment.get(\"testfsp1PositionBalanceBefore\"));",
+									"console.log('test fsp1 positions account after',pm.environment.get(\"testfsp1PositionBalanceAfter\"));",
+									"",
+									"",
+									"pm.test(\"Check that settlement account value changes by transfer amount \"+transferAmount, ",
+									"    function () {",
+									"            pm.expect(Number(testfsp1SettlementBalanceAfterExpected)).to.eql(Number(testfsp1SettlementBalanceAfterActual));",
+									"        });",
+									"pm.test(\"Check that position account value remains unchanged\", ",
+									"function () {",
+									"            pm.expect(Number(pm.environment.get(\"testfsp1PositionBalanceBefore\"))).to.eql(Number(pm.environment.get(\"testfsp1PositionBalanceAfter\")));",
+									"        });       ",
+									"",
+									"// check for interchage fee change",
+									"console.log('test fsp1 interchange fee account value after transfer 1',pm.environment.get(\"testfsp1InterchFeeBalanceAfterTransfer1\"));",
+									" ",
+									"var testfsp1_actual_interchange_transfer1 =  Number.parseFloat(pm.environment.get(\"testfsp1InterchFeeBalanceAfterTransfer1\")) - Number.parseFloat(pm.environment.get(\"testfsp1InterchFeeBalanceBefore\"))",
+									"testfsp1_actual_interchange_transfer1 = testfsp1_actual_interchange_transfer1.toFixed(2);",
+									"var testfsp1_expected_interchange_transfer1 = -0.09; ",
+									"",
+									"pm.test(\"check that interchange fee have been changed by \"+testfsp1_expected_interchange_transfer1,",
+									"function () {",
+									"            pm.expect(Number(testfsp1_actual_interchange_transfer1)).to.eql(Number(testfsp1_expected_interchange_transfer1));",
+									"        });  "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"type": "text",
+								"value": "{{hub_operator}}"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"testfsp1",
+								"accounts"
+							]
+						},
+						"description": "account vals tests AFTER single transfer"
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Create Settlement ",
+			"item": [
+				{
+					"name": "Get Existing Open Window",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"State should be OPEN\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData[0].state).to.eql('OPEN');",
+									"    pm.environment.set(\"openWindowID\", jsonData[0].settlementWindowId);",
+									"    console.log('openWindowID',pm.environment.get(\"openWindowID\"));",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{hub_operator}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows?state=OPEN",
+							"host": [
+								"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
+							],
+							"path": [
+								"settlementWindows"
+							],
+							"query": [
+								{
+									"key": "state",
+									"value": "OPEN"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Close Existing Window",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"New window State should be OPEN\", function () {",
+									"    console.log(pm.response.json());",
+									"    pm.expect(pm.response.json().state).to.eql('OPEN');",
+									"    pm.environment.set(\"newOpenWindowID\", pm.response.json().settlementWindowId);",
+									"    pm.environment.set(\"closedWindowID\",  pm.environment.get(\"openWindowID\"));",
+									"    console.log('newOpenWindowID',pm.environment.get(\"newOpenWindowID\"));",
+									"    console.log('closedWindowID',pm.environment.get(\"closedWindowID\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{hub_operator}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"state\": \"CLOSED\",\n  \"reason\": \"string\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlementWindows/{{openWindowID}}",
+							"host": [
+								"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
+							],
+							"path": [
+								"settlementWindows",
+								"{{openWindowID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Settlement for Closed Window INTERCHANGEFEE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.environment.set(\"settlementId\", pm.response.json().id);",
+									"var jsonData = pm.response.json();",
+									"    ",
+									"pm.test(\"Settlement State should be PENDING_SETTLEMENT\", function () {",
+									"    pm.expect(jsonData.state).to.eql('PENDING_SETTLEMENT');",
+									"});",
+									"",
+									"pm.test(\"Number of associated windows should be 1\", function () {",
+									"    pm.expect(jsonData.settlementWindows.length).to.eql(1);",
+									"});",
+									"",
+									"pm.test(\"Associated Settlement Window ID should be: \"+pm.environment.get(\"closedWindowID\"), function () {",
+									"    pm.expect(jsonData.settlementWindows[0].id).to.eql(pm.environment.get(\"closedWindowID\"));",
+									"});",
+									"",
+									"pm.test(\"Associated Settlement Window state should be PENDING_SETTLEMENT \", function () {",
+									"    pm.expect(jsonData.settlementWindows[0].state).to.eql('PENDING_SETTLEMENT');",
+									"});",
+									"",
+									"pm.test(\"Associated number of participants should be 2 \", function () {",
+									"    pm.expect(jsonData.participants.length).to.eql(2);",
+									"});",
+									"",
+									"for(var j in jsonData.participants) {",
+									"    for(var k in jsonData.participants[j].accounts) {",
+									"        console.log(jsonData.participants[j].accounts[k].id)",
+									"        if(jsonData.participants[j].accounts[k].id === Number(pm.environment.get(\"payerFspAccountId\"))) {",
+									"            console.log('payerfspNetSettlementAmount:',jsonData.participants[j].accounts[k].netSettlementAmount.amount)",
+									"            pm.environment.set(\"payerfspNetSettlementAmount\",jsonData.participants[j].accounts[k].netSettlementAmount.amount);",
+									"        } else if(jsonData.participants[j].accounts[k].id === Number(pm.environment.get(\"payeeFspAccountId\"))) {",
+									"            console.log('payeefspNetSettlementAmount:',jsonData.participants[j].accounts[k].netSettlementAmount.amount)",
+									"            pm.environment.set(\"payeefspNetSettlementAmount\",jsonData.participants[j].accounts[k].netSettlementAmount.amount);",
+									"        }",
+									"        ",
+									"    }",
+									"}",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "FSPIOP-Source",
+								"type": "text",
+								"value": "{{hub_operator}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"settlementModel\": \"INTERCHANGEFEE\",\n  \"reason\": \"TESTING\",\n  \"settlementWindows\": [\n    {\n      \"id\": {{closedWindowID}}\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements",
+							"host": [
+								"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
+							],
+							"path": [
+								"settlements"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Store Settlement&Position Account Balances After Transfers",
+			"item": [
+				{
+					"name": "testfsp1 balances",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"jsonData",
+									"    .filter(account => account.currency === pm.environment.get('currency'))",
+									"    .forEach(curAccount => {",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE_SETTLEMENT\") {",
+									"            pm.environment.set(\"testfsp1SettleAccountBalanceAfterTransfer\", curAccount.value);",
+									"        }",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE\") {",
+									"            pm.environment.set(\"testfsp1PositionAccountBalanceAfterTransfer\", curAccount.value);",
+									"        }",
+									"    })",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{hub_operator}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"testfsp1",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "testfsp3 balances",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"jsonData",
+									"    .filter(account => account.currency === pm.environment.get('currency'))",
+									"    .map(curAccount => {",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE_SETTLEMENT\") {",
+									"            pm.environment.set(\"testfsp3SettleAccountBalanceAfterTransfer\", curAccount.value);",
+									"        }",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE\") {",
+									"            pm.environment.set(\"testfsp3PositionAccountBalanceAfterTransfer\", curAccount.value);",
+									"        }",
+									"    })",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{hub_operator}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"testfsp3",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Prepare Settlement",
+			"item": [
+				{
+					"name": "Prepare Settlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"var jsonData = pm.response.json();",
+									"jsonData.participants.map(participant => {",
+									"  participant.accounts",
+									"    .filter(account => account.netSettlementAmount.currency === pm.environment.get('currency'))",
+									"    .forEach(curAccount => {",
+									"      const participantPutRequest = {",
+									"        url: pm.environment.get(\"HOST_CENTRAL_SETTLEMENT\") + pm.environment.get(\"BASE_CENTRAL_SETTLEMENT\") + '/settlements/' + pm.environment.get(\"settlementId\"),",
+									"        method: 'PUT',",
+									"        header: {",
+									"          \"Authorization\": \"Bearer \" + pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+									"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+									"          \"Content-Type\": \"application/json\"",
+									"        },",
+									"        body: {",
+									"          mode: 'raw',",
+									"          raw: JSON.stringify(",
+									"            {",
+									"              \"participants\": [",
+									"                {",
+									"                  \"id\": participant.id,",
+									"                  \"accounts\": [",
+									"                    {",
+									"                      \"id\": curAccount.id,",
+									"                      \"reason\": \"Transfers recorded for payer\",",
+									"                      \"state\": \"PS_TRANSFERS_RECORDED\"",
+									"                    }",
+									"                  ]",
+									"                }",
+									"              ]",
+									"            }",
+									"          )",
+									"        }",
+									"      };",
+									"      pm.sendRequest(participantPutRequest, function (err, response) {",
+									"        console.log(response.json());",
+									"      });",
+									"    })",
+									"})",
+									"// for(var j in jsonData.participants) {",
+									"//     for(var k in jsonData.participants[j].accounts) {",
+									"//         console.log(jsonData.participants[j].accounts[k].id)",
+									"//         if(jsonData.participants[j].accounts[k].currency === 'XOF') {",
+									"//             const participantPutRequest = {",
+									"//               url: pm.environment.get(\"HOST_CENTRAL_SETTLEMENT\")+pm.environment.get(\"BASE_CENTRAL_SETTLEMENT\")+'/settlements/'+pm.environment.get(\"settlementId\"),",
+									"//               method: 'PUT',",
+									"//               header: {",
+									"//                   \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+									"//                   \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+									"//                   \"Content-Type\": \"application/json\"",
+									"//               },",
+									"//               body: {",
+									"//                 mode: 'raw',",
+									"//                 raw: JSON.stringify(",
+									"//                     {",
+									"//                       \"participants\": [",
+									"//                         {",
+									"//                           \"id\": jsonData.participants[j].id,",
+									"//                           \"accounts\": [",
+									"//                             {",
+									"//                               \"id\": jsonData.participants[j].accounts[k].id,",
+									"//                               \"reason\": \"Transfers recorded for payer\",",
+									"//                               \"state\": \"PS_TRANSFERS_RECORDED\"",
+									"//                             }",
+									"//                           ]",
+									"//                         }",
+									"//                       ]",
+									"//                     }",
+									"//                 )",
+									"//               }",
+									"//             };",
+									"//             pm.sendRequest(participantPutRequest, function (err, response) {",
+									"//                 console.log(response.json());",
+									"//             });",
+									"//         }",
+									"",
+									"",
+									"//     }",
+									"// }"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{hub_operator}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
+							"host": [
+								"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
+							],
+							"path": [
+								"settlements",
+								"{{settlementId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check state for participants after prepare",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"    ",
+									"pm.test(\"Settlement Id should be: \"+pm.environment.get(\"settlementId\"), function () {",
+									"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"settlementId\"));",
+									"});",
+									"",
+									"pm.test(\"Settlement state should be PS_TRANSFERS_RECORDED\", function () {",
+									"    pm.expect(jsonData.state).to.eql(\"PS_TRANSFERS_RECORDED\");",
+									"});",
+									"",
+									"pm.test(\"Settlement Window ID should be: \"+pm.environment.get(\"closedWindowID\"), function () {",
+									"    pm.expect(jsonData.settlementWindows[0].id).to.eql(pm.environment.get(\"closedWindowID\"));",
+									"});",
+									"",
+									"pm.test(\"Settlement Window State should be PENDING_SETTLEMENT\", function () {",
+									"    pm.expect(jsonData.settlementWindows[0].state).to.eql(\"PENDING_SETTLEMENT\");",
+									"});",
+									"",
+									"jsonData.participants.map(participant => {",
+									"    participant.accounts",
+									"                    .filter(account => account.netSettlementAmount.currency === pm.environment.get('currency'))",
+									"                    .forEach(curAccount => {",
+									"                        pm.test(`Participant Account ${curAccount.id} state is PS_TRANSFERS_RECORDED`, function () {",
+									"                            pm.expect(curAccount.state).to.eql(\"PS_TRANSFERS_RECORDED\");",
+									"                        });",
+									"                    })",
+									"})",
+									"",
+									"// for(var j in jsonData.participants) {",
+									"//     for(var k in jsonData.participants[j].accounts) {",
+									"//         pm.test(`Participant Account ${jsonData.participants[j].accounts[k].id} state is PS_TRANSFERS_RECORDED`, function () {",
+									"//             pm.expect(jsonData.participants[j].accounts[k].state).to.eql(\"PS_TRANSFERS_RECORDED\");",
+									"//         });",
+									"//     }",
+									"// }",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{hub_operator}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
+							"host": [
+								"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
+							],
+							"path": [
+								"settlements",
+								"{{settlementId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "testfsp1 settlement&position accont balance after prepare",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"var testfsp1SettleAccountBalanceAfterPrepare;",
+									"var testfsp1PositionAccountBalanceAfterPrepare;",
+									"jsonData",
+									"    .filter(account => account.currency === pm.environment.get('currency'))",
+									"    .forEach(curAccount => {",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE_SETTLEMENT\") {",
+									"            testfsp1SettleAccountBalanceAfterPrepare = curAccount.value",
+									"        }",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE\") {",
+									"            testfsp1PositionAccountBalanceAfterPrepare = curAccount.value",
+									"        }",
+									"    })",
+									"",
+									"",
+									"pm.test(\"Testfsp1 settlement account balance before and  after prepare should be the same.\", function () {",
+									"    pm.expect(testfsp1SettleAccountBalanceAfterPrepare).to.eql(pm.environment.get(\"testfsp1SettleAccountBalanceAfterTransfer\"));",
+									"});",
+									"",
+									"",
+									"pm.test(\"Testfsp1 position account balance before and  after prepare should be the same.\", function () {",
+									"    pm.expect(testfsp1PositionAccountBalanceAfterPrepare).to.eql(pm.environment.get(\"testfsp1PositionAccountBalanceAfterTransfer\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{hub_operator}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"testfsp1",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "testfsp3 settlement&position accont balance after prepare",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"var testfsp2SettleAccountBalanceAfterPrepare;",
+									"var testfsp2PositionAccountBalanceAfterPrepare;",
+									"jsonData",
+									"    .filter(account => account.currency === pm.environment.get('currency'))",
+									"    .forEach(curAccount => {",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE_SETTLEMENT\") {",
+									"            testfsp2SettleAccountBalanceAfterPrepare = curAccount.value",
+									"        }",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE\") {",
+									"            testfsp2PositionAccountBalanceAfterPrepare = curAccount.value",
+									"        }",
+									"    })",
+									"",
+									"pm.test(\"Testfsp2 settlement account balance before and  after prepare should be the same.\", function () {",
+									"    pm.expect(testfsp2SettleAccountBalanceAfterPrepare).to.eql(pm.environment.get(\"testfsp3SettleAccountBalanceAfterTransfer\"));",
+									"});",
+									"",
+									"pm.test(\"Testfsp2 position account balance before and  after prepare should be the same.\", function () {",
+									"    pm.expect(testfsp2PositionAccountBalanceAfterPrepare).to.eql(pm.environment.get(\"testfsp3PositionAccountBalanceAfterTransfer\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"type": "text",
+								"value": "{{hub_operator}}"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"testfsp3",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reserve Settlement",
+			"item": [
+				{
+					"name": "Reserve Settlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"jsonData.participants.map(participant => {",
+									"  participant.accounts",
+									"    .filter(account => account.netSettlementAmount.currency === pm.environment.get('currency'))",
+									"    .forEach(curAccount => {",
+									"      const participantPutRequest = {",
+									"        url: pm.environment.get(\"HOST_CENTRAL_SETTLEMENT\") + pm.environment.get(\"BASE_CENTRAL_SETTLEMENT\") + '/settlements/' + pm.environment.get(\"settlementId\"),",
+									"        method: 'PUT',",
+									"        header: {",
+									"          \"Authorization\": \"Bearer \" + pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+									"          \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+									"          \"Content-Type\": \"application/json\"",
+									"        },",
+									"        body: {",
+									"          mode: 'raw',",
+									"          raw: JSON.stringify(",
+									"            {",
+									"              \"participants\": [",
+									"                {",
+									"                  \"id\": participant.id,",
+									"                  \"accounts\": [",
+									"                    {",
+									"                      \"id\": curAccount.id,",
+									"                      \"reason\": \"Transfers reserved\",",
+									"                      \"state\": \"PS_TRANSFERS_RESERVED\"",
+									"                    }",
+									"                  ]",
+									"                }",
+									"              ]",
+									"            }",
+									"          )",
+									"        }",
+									"      };",
+									"      pm.sendRequest(participantPutRequest, function (err, response) {",
+									"        console.log(response.json());",
+									"      });",
+									"    })",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"type": "text",
+								"value": "{{hub_operator}}"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
+							"host": [
+								"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
+							],
+							"path": [
+								"settlements",
+								"{{settlementId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check state for participants after reserve",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"    ",
+									"pm.test(\"Settlement Id should be: \" + pm.environment.get('settlementId'), function () {",
+									"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"settlementId\"));",
+									"});",
+									"",
+									"pm.test(\"Settlement state should be PS_TRANSFERS_RESERVED\", function () {",
+									"    pm.expect(jsonData.state).to.eql(\"PS_TRANSFERS_RESERVED\");",
+									"});",
+									"",
+									"pm.test(\"Settlement Window ID should be: \"+pm.environment.get(\"closedWindowID\"), function () {",
+									"    pm.expect(jsonData.settlementWindows[0].id).to.eql(pm.environment.get(\"closedWindowID\"));",
+									"});",
+									"",
+									"pm.test(\"Settlement Window State should be PENDING_SETTLEMENT\", function () {",
+									"    pm.expect(jsonData.settlementWindows[0].state).to.eql(\"PENDING_SETTLEMENT\");",
+									"});",
+									"",
+									"jsonData.participants.map(participant => {",
+									"    participant.accounts",
+									"                    .filter(account => account.netSettlementAmount.currency === pm.environment.get('currency'))",
+									"                    .forEach(curAccount => {",
+									"                        pm.test(`Participant Account ${curAccount.id} state is PS_TRANSFERS_RESERVED`, function () {",
+									"                            pm.expect(curAccount.state).to.eql(\"PS_TRANSFERS_RESERVED\");",
+									"                        });",
+									"                    })",
+									"})",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{hub_operator}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
+							"host": [
+								"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
+							],
+							"path": [
+								"settlements",
+								"{{settlementId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "testfsp1 settlement&position accont balance after reserve",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"var testfsp1SettleAccountBalanceAfterReserve;",
+									"var testfsp1PositionAccountBalanceAfterReserve;",
+									"jsonData",
+									"    .filter(account => account.currency === pm.environment.get('currency'))",
+									"    .forEach(curAccount => {",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE_SETTLEMENT\") {",
+									"            testfsp1SettleAccountBalanceAfterReserve = curAccount.value",
+									"        }",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE\") {",
+									"            testfsp1PositionAccountBalanceAfterReserve = curAccount.value",
+									"        }",
+									"    })",
+									"",
+									"",
+									"pm.test(\"Testfsp1 settlement account balance before and  after reserve should be the same.\", function () {",
+									"    pm.expect(testfsp1SettleAccountBalanceAfterReserve).to.eql(pm.environment.get(\"testfsp1SettleAccountBalanceAfterTransfer\"));",
+									"});",
+									"",
+									"pm.test(\"Testfsp1 position account balance before and  after reserve should be the same.\", function () {",
+									"    pm.expect(testfsp1PositionAccountBalanceAfterReserve).to.eql(pm.environment.get(\"testfsp1PositionAccountBalanceAfterTransfer\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{hub_operator}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"testfsp1",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "testfsp3 settlement&position accont balance after reserve",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"var testfsp2SettleAccountBalanceAfterReserve;",
+									"var testfsp2PositionAccountBalanceAfterReserve;",
+									"jsonData",
+									"    .filter(account => account.currency === pm.environment.get('currency'))",
+									"    .forEach(curAccount => {",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE_SETTLEMENT\") {",
+									"            testfsp2SettleAccountBalanceAfterReserve = curAccount.value",
+									"        }",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE\") {",
+									"            testfsp2PositionAccountBalanceAfterReserve = curAccount.value",
+									"        }",
+									"    })",
+									"",
+									"pm.test(\"Testfsp2 settlement account balance before and  after reserve should be the same.\", function () {",
+									"    pm.expect(testfsp2SettleAccountBalanceAfterReserve).to.eql(pm.environment.get(\"testfsp3SettleAccountBalanceBeforeTransfer\"));",
+									"});",
+									"",
+									"pm.test(\"Testfsp2 position account balance after reserve gets increased by its net settlement  amount.\", function () {",
+									"    pm.expect(testfsp2PositionAccountBalanceAfterReserve).to.eql(pm.environment.get(\"testfsp3PositionAccountBalanceBeforeTransfer\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"type": "text",
+								"value": "{{hub_operator}}"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"testfsp3",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Commit Settlement",
+			"item": [
+				{
+					"name": "Commit Settlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"var jsonData = pm.response.json();",
+									"jsonData.participants.map(participant => {",
+									"    participant.accounts",
+									"                    .filter(account => account.netSettlementAmount.currency === pm.environment.get('currency'))",
+									"                    .forEach(curAccount => {",
+									"                        const participantPutRequest = {",
+									"                          url: pm.environment.get(\"HOST_CENTRAL_SETTLEMENT\")+pm.environment.get(\"BASE_CENTRAL_SETTLEMENT\")+'/settlements/'+pm.environment.get(\"settlementId\"),",
+									"                          method: 'PUT',",
+									"                          header: {",
+									"                              \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+									"                              \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+									"                              \"Content-Type\": \"application/json\"",
+									"                          },",
+									"                          body: {",
+									"                            mode: 'raw',",
+									"                            raw: JSON.stringify(",
+									"                                {",
+									"                                  \"participants\": [",
+									"                                    {",
+									"                                      \"id\": participant.id,",
+									"                                      \"accounts\": [",
+									"                                        {",
+									"                                          \"id\": curAccount.id,",
+									"                                          \"reason\": \"Transfers committed\",",
+									"                                          \"state\": \"PS_TRANSFERS_COMMITTED\"",
+									"                                        }",
+									"                                      ]",
+									"                                    }",
+									"                                  ]",
+									"                                }",
+									"                            )",
+									"                          }",
+									"                        };",
+									"                        pm.sendRequest(participantPutRequest, function (err, response) {",
+									"                            console.log(response.json());",
+									"                        });",
+									"                    })",
+									"})",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"type": "text",
+								"value": "{{hub_operator}}"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
+							"host": [
+								"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
+							],
+							"path": [
+								"settlements",
+								"{{settlementId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check state for participants after commit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"    ",
+									"pm.test(\"Settlement Id should be: \"+pm.environment.get(\"settlementId\"), function () {",
+									"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"settlementId\"));",
+									"});",
+									"",
+									"pm.test(\"Settlement state should be PS_TRANSFERS_COMMITTED\", function () {",
+									"    pm.expect(jsonData.state).to.eql(\"PS_TRANSFERS_COMMITTED\");",
+									"});",
+									"",
+									"pm.test(\"Settlement Window ID should be: \"+pm.environment.get(\"closedWindowID\"), function () {",
+									"    pm.expect(jsonData.settlementWindows[0].id).to.eql(pm.environment.get(\"closedWindowID\"));",
+									"});",
+									"",
+									"pm.test(\"Settlement Window State should be PENDING_SETTLEMENT\", function () {",
+									"    pm.expect(jsonData.settlementWindows[0].state).to.eql(\"PENDING_SETTLEMENT\");",
+									"});",
+									"",
+									"jsonData.participants.map(participant => {",
+									"    participant.accounts",
+									"                    .filter(account => account.netSettlementAmount.currency === 'XOF')",
+									"                    .forEach(xofAccount => {",
+									"                        pm.test(`Participant Account ${xofAccount.id} state is PS_TRANSFERS_COMMITTED`, function () {",
+									"                            pm.expect(xofAccount.state).to.eql(\"PS_TRANSFERS_COMMITTED\");",
+									"                        });",
+									"                    })",
+									"})",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{hub_operator}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
+							"host": [
+								"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
+							],
+							"path": [
+								"settlements",
+								"{{settlementId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "testfsp1 settlement&position accont balance after commit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"var testfsp1SettleAccountBalanceAfterCommit;",
+									"var testfsp1PositionAccountBalanceAfterCommit;",
+									"jsonData",
+									"    .filter(account => account.currency === pm.environment.get('currency'))",
+									"    .forEach(curAccount => {",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE_SETTLEMENT\") {",
+									"            testfsp1SettleAccountBalanceAfterCommit = curAccount.value",
+									"        }",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE\") {",
+									"            testfsp1PositionAccountBalanceAfterCommit = curAccount.value",
+									"        }",
+									"    })",
+									"",
+									"",
+									"pm.test(\"Testfsp1 settlement account balance before and  after commit should be the same.\", function () {",
+									"    pm.expect(testfsp1SettleAccountBalanceAfterCommit).to.eql(pm.environment.get(\"testfsp1SettleAccountBalanceAfterTransfer\"));",
+									"});",
+									"",
+									"pm.test(\"Testfsp1 position account balance after commit should be reduced by its net settlement amount.\", function () {",
+									"    pm.expect(testfsp1PositionAccountBalanceAfterCommit).to.eql(pm.environment.get(\"testfsp1PositionAccountBalanceBeforeTransfer\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{hub_operator}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"testfsp1",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "testfsp3 settlement&position accont balance after commit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"var testfsp2SettleAccountBalanceAfterCommit;",
+									"var testfsp2PositionAccountBalanceAfterCommit;",
+									"jsonData",
+									"    .filter(account => account.currency === pm.environment.get('currency'))",
+									"    .forEach(curAccount => {",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE_SETTLEMENT\") {",
+									"            testfsp2SettleAccountBalanceAfterCommit = curAccount.value",
+									"        }",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE\") {",
+									"            testfsp2PositionAccountBalanceAfterCommit = curAccount.value",
+									"        }",
+									"    })",
+									"",
+									"pm.test(\"Testfsp2 settlement account balance before and  after commit should be the same.\", function () {",
+									"    pm.expect(testfsp2SettleAccountBalanceAfterCommit).to.eql(pm.environment.get(\"testfsp3SettleAccountBalanceBeforeTransfer\"));",
+									"});",
+									"",
+									"pm.test(\"Testfsp2 position account balance before and after commit should be the same.\", function () {",
+									"    pm.expect(testfsp2PositionAccountBalanceAfterCommit).to.eql(pm.environment.get(\"testfsp3PositionAccountBalanceBeforeTransfer\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{hub_operator}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"testfsp3",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "hub account balance check",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"var hubReconciliationAccountBalanceAfterCommit;\r",
+									"var hubMultilateralAccountBalanceAfterCommit;\r",
+									"jsonData\r",
+									"    .filter(account => account.currency === pm.environment.get('currency'))\r",
+									"    .forEach(curAccount => {\r",
+									"        if(curAccount.ledgerAccountType === \"HUB_RECONCILIATION\") {\r",
+									"            hubReconciliationAccountBalanceAfterCommit = curAccount.value;\r",
+									"        }\r",
+									"        if(curAccount.ledgerAccountType === \"HUB_MULTILATERAL_SETTLEMENT\") {\r",
+									"            hubMultilateralAccountBalanceAfterCommit = curAccount.value;\r",
+									"        }\r",
+									"    })\r",
+									"\r",
+									"\r",
+									"pm.test(\"hub reconciliation account balance before transfer and  after commit should be the same.\", function () {\r",
+									"    pm.expect(hubReconciliationAccountBalanceAfterCommit).to.eql(pm.environment.get(\"hubReconciliationAccountBalanceBeforeTransfer\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"hub multilateral account balance before transfer and  after commit should be the same.\", function () {\r",
+									"    pm.expect(hubMultilateralAccountBalanceAfterCommit).to.eql(pm.environment.get(\"hubMultilateralAccountBalanceBeforeTransfer\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{hub_operator}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/Hub/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"Hub",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Settle Settlement",
+			"item": [
+				{
+					"name": "Settle Settlement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"jsonData.participants.map(participant => {",
+									"    participant.accounts",
+									"                    .filter(account => account.netSettlementAmount.currency === pm.environment.get('currency'))",
+									"                    .forEach(curAccount => {",
+									"                        const participantPutRequest = {",
+									"                          url: pm.environment.get(\"HOST_CENTRAL_SETTLEMENT\")+pm.environment.get(\"BASE_CENTRAL_SETTLEMENT\")+'/settlements/'+pm.environment.get(\"settlementId\"),",
+									"                          method: 'PUT',",
+									"                          header: {",
+									"                              \"Authorization\":\"Bearer \"+pm.environment.get(\"HUB_OPERATOR_BEARER_TOKEN\"),",
+									"                              \"FSPIOP-Source\": pm.environment.get(\"hub_operator\"),",
+									"                              \"Content-Type\": \"application/json\"",
+									"                          },",
+									"                          body: {",
+									"                            mode: 'raw',",
+									"                            raw: JSON.stringify(",
+									"                                {",
+									"                                  \"participants\": [",
+									"                                    {",
+									"                                      \"id\": participant.id,",
+									"                                      \"accounts\": [",
+									"                                        {",
+									"                                          \"id\": curAccount.id,",
+									"                                          \"reason\": \"Transfers settled for payer\",",
+									"                                          \"state\": \"SETTLED\"",
+									"                                        }",
+									"                                      ]",
+									"                                    }",
+									"                                  ]",
+									"                                }",
+									"                            )",
+									"                          }",
+									"                        };",
+									"                        pm.sendRequest(participantPutRequest, function (err, response) {",
+									"                            console.log(response.json());",
+									"                        });",
+									"                    })",
+									"})",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"type": "text",
+								"value": "{{hub_operator}}"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
+							"host": [
+								"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
+							],
+							"path": [
+								"settlements",
+								"{{settlementId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check state for participants after settle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"    ",
+									"pm.test(\"Settlement Id should be: \"+pm.environment.get(\"settlementId\"), function () {",
+									"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"settlementId\"));",
+									"});",
+									"",
+									"pm.test(\"Settlement state should be SETTLED\", function () {",
+									"    pm.expect(jsonData.state).to.eql(\"SETTLED\");",
+									"});",
+									"",
+									"pm.test(\"Settlement Window ID should be: \"+pm.environment.get(\"closedWindowID\"), function () {",
+									"    pm.expect(jsonData.settlementWindows[0].id).to.eql(pm.environment.get(\"closedWindowID\"));",
+									"});",
+									"",
+									"pm.test(\"Settlement Window State should be SETTLED\", function () {",
+									"    pm.expect(jsonData.settlementWindows[0].state).to.eql(\"SETTLED\");",
+									"});",
+									"",
+									"jsonData.participants.map(participant => {",
+									"    participant.accounts",
+									"                    .filter(account => account.netSettlementAmount.currency === pm.environment.get('currency'))",
+									"                    .forEach(curAccount => {",
+									"                        pm.test(`Participant Account ${curAccount.id} state is SETTLED`, function () {",
+									"                            pm.expect(curAccount.state).to.eql(\"SETTLED\");",
+									"                        });",
+									"                    })",
+									"})",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{hub_operator}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}/settlements/{{settlementId}}",
+							"host": [
+								"{{HOST_CENTRAL_SETTLEMENT}}{{BASE_CENTRAL_SETTLEMENT}}"
+							],
+							"path": [
+								"settlements",
+								"{{settlementId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "testfsp1 settlement&position accont balance after settle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"var testfsp1SettleAccountBalanceAfterSettle;",
+									"var testfsp1PositionAccountBalanceAfterSettle;",
+									"jsonData",
+									"    .filter(account => account.currency === pm.environment.get('currency'))",
+									"    .forEach(curAccount => {",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE_SETTLEMENT\") {",
+									"            testfsp1SettleAccountBalanceAfterSettle = curAccount.value",
+									"        }",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE\") {",
+									"            testfsp1PositionAccountBalanceAfterSettle = curAccount.value",
+									"        }",
+									"    })",
+									"",
+									"pm.test(\"Testfsp1 settlement account balance before and  after settle should be the same.\", function () {",
+									"    pm.expect(testfsp1SettleAccountBalanceAfterSettle).to.eql(pm.environment.get(\"testfsp1SettleAccountBalanceBeforeTransfer\"));",
+									"});",
+									"",
+									"pm.test(\"Testfsp1 position account balance before and  after settle should be the same.\", function () {",
+									"    pm.expect(testfsp1PositionAccountBalanceAfterSettle).to.eql(pm.environment.get(\"testfsp1PositionAccountBalanceBeforeTransfer\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{hub_operator}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp1/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"testfsp1",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "testfsp2 settlement&position accont balance after settle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"var testfsp2SettleAccountBalanceAfterCommit;",
+									"var testfsp2PositionAccountBalanceAfterCommit;",
+									"jsonData",
+									"    .filter(account => account.currency === pm.environment.get('currency'))",
+									"    .forEach(curAccount => {",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE_SETTLEMENT\") {",
+									"            testfsp2SettleAccountBalanceAfterCommit = curAccount.value",
+									"        }",
+									"        if(curAccount.ledgerAccountType === \"INTERCHANGE_FEE\") {",
+									"            testfsp2PositionAccountBalanceAfterCommit = curAccount.value",
+									"        }",
+									"    })",
+									"",
+									"pm.test(\"Testfsp2 settlement account balance before and  after commit should be the same.\", function () {",
+									"    pm.expect(testfsp2SettleAccountBalanceAfterCommit).to.eql(pm.environment.get(\"testfsp2SettleAccountBalanceBeforeTransfer\"));",
+									"});",
+									"",
+									"pm.test(\"Testfsp2 position account balance before and  after commit should be the same.\", function () {",
+									"    pm.expect(testfsp2PositionAccountBalanceAfterCommit).to.eql(pm.environment.get(\"testfsp2PositionAccountBalanceBeforeTransfer\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "FSPIOP-Source",
+								"value": "{{hub_operator}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}/participants/testfsp3/accounts",
+							"host": [
+								"{{HOST_CENTRAL_LEDGER}}{{BASE_CENTRAL_LEDGER_ADMIN}}"
+							],
+							"path": [
+								"participants",
+								"testfsp3",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
