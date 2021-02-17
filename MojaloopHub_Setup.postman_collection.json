@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "9cfe35ae-f2d6-43a0-a9bf-856d7aa4344f",
+		"_postman_id": "5f6e8079-e433-49b9-9ebc-730a946544b8",
 		"name": "MojaloopHub_Setup",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -397,44 +397,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"DEFERREDNET\",\n  \"settlementGranularity\": \"NET\",\n  \"settlementInterchange\": \"MULTILATERAL\",\n  \"settlementDelay\": \"DEFERRED\",\n  \"requireLiquidityCheck\": true,\n  \"ledgerAccountType\": \"POSITION\",\n  \"autoPositionReset\": true,\n  \"currency\": \"USD\",\n  \"settlementAccountType\": \"SETTLEMENT\"\n}"
-						},
-						"url": {
-							"raw": "{{HOST_CENTRAL_LEDGER}}/settlementModels",
-							"host": [
-								"{{HOST_CENTRAL_LEDGER}}"
-							],
-							"path": [
-								"settlementModels"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create settlement model DEFERRED NET USD",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{HUB_OPERATOR_BEARER_TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"DEFERREDNETUSD\",\n  \"settlementGranularity\": \"NET\",\n  \"settlementInterchange\": \"MULTILATERAL\",\n  \"settlementDelay\": \"DEFERRED\",\n  \"currency\": \"USD\",\n  \"requireLiquidityCheck\": true,\n  \"ledgerAccountType\": \"POSITION\",\n  \"autoPositionReset\": true\n}"
+							"raw": "{\n  \"name\": \"DEFERREDNET\",\n  \"settlementGranularity\": \"NET\",\n  \"settlementInterchange\": \"MULTILATERAL\",\n  \"settlementDelay\": \"DEFERRED\",\n  \"requireLiquidityCheck\": true,\n  \"ledgerAccountType\": \"POSITION\",\n  \"autoPositionReset\": true,\n  \"currency\": \"{{currency}}\",\n  \"settlementAccountType\": \"SETTLEMENT\"\n}"
 						},
 						"url": {
 							"raw": "{{HOST_CENTRAL_LEDGER}}/settlementModels",
