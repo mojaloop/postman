@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "36c41da5-8731-40af-b505-11fa40fe8ad8",
+		"_postman_id": "a9bf1144-5b20-44e0-87ab-7b895b484f38",
 		"name": "Golden_Path_Mojaloop",
 		"description": "Author: Sridevi Miriyala\nDescription: Golden Path Tests using Mojaloop Simulators",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -3641,43 +3641,6 @@
 									},
 									"response": [
 										{
-											"name": "An error occured processing the request",
-											"originalRequest": {
-												"method": "POST",
-												"header": [
-													{
-														"key": "Content-Type",
-														"value": "application/json"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n    \"displayName\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"middleName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"dateOfBirth\": \"<string>\",\n    \"merchantClassificationCode\": \"<string>\"\n}"
-												},
-												"url": {
-													"raw": "{{baseUrl}}/repository/parties",
-													"host": [
-														"{{baseUrl}}"
-													],
-													"path": [
-														"repository",
-														"parties"
-													]
-												}
-											},
-											"status": "Internal Server Error",
-											"code": 500,
-											"_postman_previewlanguage": "Text",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "text/plain"
-												}
-											],
-											"cookie": [],
-											"body": ""
-										},
-										{
 											"name": "The party was created",
 											"originalRequest": {
 												"method": "POST",
@@ -3704,6 +3667,43 @@
 											},
 											"status": "No Content",
 											"code": 204,
+											"_postman_previewlanguage": "Text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "An error occured processing the request",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"displayName\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"middleName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"dateOfBirth\": \"<string>\",\n    \"merchantClassificationCode\": \"<string>\"\n}"
+												},
+												"url": {
+													"raw": "{{baseUrl}}/repository/parties",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"repository",
+														"parties"
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
 											"_postman_previewlanguage": "Text",
 											"header": [
 												{
@@ -37748,17 +37748,26 @@
 												"exec": [
 													"const jsonData = pm.response.json();",
 													"",
+													"const WS02_OAUTH_ENABLED = pm.environment.get(\"WS02_OAUTH_ENABLED\") && (pm.environment.get(\"WS02_OAUTH_ENABLED\")===\"true\" || pm.environment.get(\"WS02_OAUTH_ENABLED\") && pm.environment.get(\"WS02_OAUTH_ENABLED\")===\"1\") ? true : false;",
+													"",
 													"pm.test(\"Status code is 400\", function () {",
 													"    pm.response.to.have.status(400);",
 													"});",
-													"",
-													"pm.test(\"Check authorization - Missing mandatory element -  Content-type \", function () {",
-													"    pm.expect(jsonData.errorInformation.errorDescription).to.eql('Missing mandatory element - Content-type is required');",
-													"});",
-													"",
-													"pm.test(\"Check authorization - Missing mandatory element - Error code 3102\", function () {",
-													"    pm.expect(jsonData.errorInformation.errorCode).to.eql('3102');",
-													"});",
+													"if (WS02_OAUTH_ENABLED) { ",
+													"    pm.test(\"Check authorization - Malformed syntax - Invalid content-type header\", function () {",
+													"        pm.expect(jsonData.errorInformation.errorDescription).to.eql('Malformed syntax - Invalid content-type header');",
+													"    });",
+													"    pm.test(\"Check authorization - Malformed syntax - Error code 3101\", function () {",
+													"        pm.expect(jsonData.errorInformation.errorCode).to.eql('3101');",
+													"    });",
+													"} else {",
+													"    pm.test(\"Check authorization - Missing mandatory element -  Content-type\", function () {",
+													"        pm.expect(jsonData.errorInformation.errorDescription).to.eql('Missing mandatory element - Content-type is required');",
+													"    });",
+													"    pm.test(\"Check authorization - Missing mandatory element - Error code 3102\", function () {",
+													"        pm.expect(jsonData.errorInformation.errorCode).to.eql('3102');",
+													"    });",
+													"}",
 													""
 												],
 												"type": "text/javascript"
