@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "fa26b7c0-7f6d-4f6c-b0a0-2459728e19ab",
+		"_postman_id": "b110cd47-4602-4222-a0e1-225c037fe953",
 		"name": "Bulk_API_Transfers_MojaSims",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -14,7 +14,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "df4681a3-f2f5-4c17-8be4-6ab8ffdd2b53",
+								"id": "f627305e-3674-4d51-8061-93d3ca1f46eb",
 								"exec": [
 									"const uuid = require('uuid');",
 									"",
@@ -38,6 +38,8 @@
 									"pm.environment.set(\"amount\", 1);",
 									"pm.environment.set(\"amount2\", 1);",
 									"pm.environment.set(\"currency2\", \"USD\");",
+									"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");",
+									"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");",
 									""
 								],
 								"type": "text/javascript"
@@ -46,7 +48,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "5c4d2931-e95c-4733-ad83-4fe2c1b5f501",
+								"id": "e63bb466-6039-4072-8f68-ade47f5b4136",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -236,7 +238,7 @@
 								"key": "Content-Type",
 								"name": "Content-Type",
 								"type": "text",
-								"value": "application/vnd.interoperability.transfers+json;version=1.0"
+								"value": "{{contentType}}"
 							},
 							{
 								"key": "Date",
@@ -244,7 +246,7 @@
 							},
 							{
 								"key": "Accept",
-								"value": "application/vnd.interoperability.transfers+json;version=1"
+								"value": "{{acceptHeader}}"
 							},
 							{
 								"key": "FSPIOP-Source",
@@ -292,9 +294,10 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "ce87a620-8bb0-469d-9737-5d812a2fa047",
+								"id": "050511e2-57aa-4fdd-94ad-484bce3ce949",
 								"exec": [
-									""
+									"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");",
+									"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");"
 								],
 								"type": "text/javascript"
 							}
@@ -302,7 +305,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f2abc17e-4adb-47e7-bf22-d7a5669aaa41",
+								"id": "384c9d2d-4000-4b63-8aa9-079a8478367d",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -375,7 +378,7 @@
 								"key": "Content-Type",
 								"name": "Content-Type",
 								"type": "text",
-								"value": "application/vnd.interoperability.transfers+json;version=1.0"
+								"value": "{{contentType}}"
 							},
 							{
 								"key": "Date",
@@ -383,7 +386,7 @@
 							},
 							{
 								"key": "Accept",
-								"value": "application/vnd.interoperability.transfers+json;version=1"
+								"value": "{{acceptHeader}}"
 							},
 							{
 								"key": "FSPIOP-Source",
@@ -432,9 +435,10 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "30dfd0e0-2d28-478f-8a79-1d349a89ff39",
+								"id": "62f9d290-b584-43a5-a653-d8717843b2c4",
 								"exec": [
-									""
+									"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");",
+									"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");"
 								],
 								"type": "text/javascript"
 							}
@@ -442,7 +446,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "cef5ff14-4a55-4c33-83aa-615262437d1b",
+								"id": "ca44b1e3-554d-4178-b30d-24bb611c32da",
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
@@ -514,7 +518,7 @@
 								"key": "Content-Type",
 								"name": "Content-Type",
 								"type": "text",
-								"value": "application/vnd.interoperability.transfers+json;version=1.0"
+								"value": "{{contentType}}"
 							},
 							{
 								"key": "Date",
@@ -522,7 +526,7 @@
 							},
 							{
 								"key": "Accept",
-								"value": "application/vnd.interoperability.transfers+json;version=1"
+								"value": "{{acceptHeader}}"
 							},
 							{
 								"key": "FSPIOP-Source",
@@ -580,7 +584,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "ba929378-dadc-48a1-a174-241fd3d70544",
+										"id": "e29a4211-8c19-4271-afd1-72deafc0b9e1",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -599,7 +603,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "d0f5a671-92fe-45c7-8904-f03ad1509512",
+										"id": "47303550-3485-40c3-93dd-df8927ae0c3a",
 										"exec": [
 											""
 										],
@@ -646,7 +650,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "ecf595c4-f37f-439e-b68b-28f4ec523944",
+										"id": "ce87ec90-9d2d-4e67-bd92-9762ca723183",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -665,7 +669,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "c5c42c37-06a7-43d6-8935-1930d917d808",
+										"id": "ce7b493d-6544-42cd-afd6-2df96123edd5",
 										"exec": [
 											""
 										],
@@ -712,7 +716,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "d2830a85-8b68-4c5e-a2dd-b2242d1ec1d4",
+										"id": "b8cebd41-e52f-4a08-abc2-f862f9430762",
 										"exec": [
 											"const uuid = require('uuid');",
 											"",
@@ -738,6 +742,8 @@
 											"pm.environment.set(\"amount\", amount);",
 											"pm.environment.set(\"amount2\", amount2);",
 											"pm.environment.set(\"currency2\", \"USD\");",
+											"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");",
+											"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");",
 											""
 										],
 										"type": "text/javascript"
@@ -746,7 +752,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7e49ecf0-3fe3-42a0-84a3-13e198aa05ef",
+										"id": "6adb333f-031b-473c-a395-1bd8e59662e0",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -772,11 +778,11 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.bulkTransfers+json;version=1"
+										"value": "{{acceptHeader}}"
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.bulkTransfers+json;version=1.0"
+										"value": "{{contentType}}"
 									},
 									{
 										"key": "Date",
@@ -816,7 +822,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "6a7be3e7-9ac1-4906-820d-b46ecd339b2a",
+										"id": "25163402-6ba2-455a-88d3-36a9cc10d27f",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -835,7 +841,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "f154bf8b-58fb-45db-91f6-761cb72b743e",
+										"id": "04e1ca32-5311-4fe2-8ce3-7b45cffc76a5",
 										"exec": [
 											""
 										],
@@ -882,9 +888,10 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "ba350872-15d9-42aa-8cb7-62932bb8691f",
+										"id": "5fd13acb-7e04-436a-9208-27cd3718b97a",
 										"exec": [
-											""
+											"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");",
+											"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");"
 										],
 										"type": "text/javascript"
 									}
@@ -892,7 +899,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "81093143-263d-4236-bea0-54f994c1f5a0",
+										"id": "be251cba-ae0b-40b6-afc6-d0fa75b02cdf",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"  pm.response.to.have.status(200);",
@@ -1063,7 +1070,7 @@
 										"key": "Content-Type",
 										"name": "Content-Type",
 										"type": "text",
-										"value": "application/vnd.interoperability.bulkTransfers+json;version=1.0"
+										"value": "{{contentType}}"
 									},
 									{
 										"key": "Date",
@@ -1079,6 +1086,11 @@
 										"key": "FSPIOP-Destination",
 										"type": "text",
 										"value": "{{payerfsp}}"
+									},
+									{
+										"key": "Accept",
+										"value": "{{acceptHeader}}",
+										"type": "text"
 									}
 								],
 								"body": {
@@ -1108,9 +1120,10 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "2d0fc377-5e55-4140-a5f5-a4d46a1be884",
+										"id": "fd4b6fe4-3608-4788-99fa-afcbaacc37d7",
 										"exec": [
-											""
+											"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");",
+											"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");"
 										],
 										"type": "text/javascript"
 									}
@@ -1118,7 +1131,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "4c802ad1-7944-4337-8ed9-57c271f476b1",
+										"id": "0d79695f-d615-4c81-957e-e0a8e892b447",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"  pm.response.to.have.status(202);",
@@ -1181,7 +1194,7 @@
 										"key": "Content-Type",
 										"name": "Content-Type",
 										"type": "text",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{contentType}}"
 									},
 									{
 										"key": "Date",
@@ -1189,7 +1202,7 @@
 									},
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.transfers+json;version=1"
+										"value": "{{acceptHeader}}"
 									},
 									{
 										"key": "FSPIOP-Source",
@@ -1238,9 +1251,10 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "9df93746-5c19-44a1-acbc-40f54acd0fc2",
+										"id": "477d3da3-443a-4b1d-9076-caa5d920b6c0",
 										"exec": [
-											""
+											"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");",
+											"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");"
 										],
 										"type": "text/javascript"
 									}
@@ -1248,7 +1262,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "c7d1a407-c393-448d-995e-aef4796fd4a3",
+										"id": "c8343f12-dfa2-4514-9f2d-1e7ff7ad6530",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -1314,7 +1328,7 @@
 										"key": "Content-Type",
 										"name": "Content-Type",
 										"type": "text",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{contentType}}"
 									},
 									{
 										"key": "Date",
@@ -1322,7 +1336,7 @@
 									},
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.transfers+json;version=1"
+										"value": "{{acceptHeader}}"
 									},
 									{
 										"key": "FSPIOP-Source",
@@ -1371,7 +1385,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "3b970d00-3cd2-401b-8609-293261fc071d",
+										"id": "61ec402f-3344-4154-be24-4779772a4d39",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -1391,7 +1405,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "195c82f2-592c-48f1-b786-ed3f7e1c2569",
+										"id": "8c8837aa-bb6a-4218-85bf-2c70dc054d0d",
 										"exec": [
 											""
 										],
@@ -1438,7 +1452,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "84ef9e07-2927-4119-a5f1-db60dbbbbca9",
+										"id": "809567a3-e059-4bb9-a898-50d4be36a828",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
@@ -1458,7 +1472,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "7ad77095-5b4b-4fd7-9ce0-6ac075dc6a27",
+										"id": "0635d29a-6563-4b48-b601-9ea3fc2c6f88",
 										"exec": [
 											""
 										],
@@ -1512,7 +1526,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "1e9ad78e-0730-4137-bf27-fcde66fd4d71",
+										"id": "00c6b857-1070-47e4-9c6e-a3becc251d7e",
 										"exec": [
 											"const uuid = require('uuid');",
 											"",
@@ -1536,7 +1550,8 @@
 											"pm.environment.set(\"amount\", 1);",
 											"pm.environment.set(\"amount2\", 1);",
 											"pm.environment.set(\"currency2\", \"USD\");",
-											""
+											"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");",
+											"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");"
 										],
 										"type": "text/javascript"
 									}
@@ -1544,7 +1559,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "c848cdac-a90a-4d7d-bb5c-6ee2d221cab4",
+										"id": "7343516f-cc0d-4f05-809d-322f45c5385a",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -1724,7 +1739,7 @@
 										"key": "Content-Type",
 										"name": "Content-Type",
 										"type": "text",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{contentType}}"
 									},
 									{
 										"key": "Date",
@@ -1732,7 +1747,7 @@
 									},
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.bulkTransfers+json;version=1"
+										"value": "{{acceptHeader}}"
 									},
 									{
 										"key": "FSPIOP-Source",
@@ -1780,9 +1795,10 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "a272ad8f-b40f-45dc-9558-7ab04e90f6bc",
+										"id": "2d13da76-6266-473c-b0b0-79bbd44aa5ee",
 										"exec": [
-											""
+											"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");",
+											"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");"
 										],
 										"type": "text/javascript"
 									}
@@ -1790,7 +1806,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "b4f4f23c-6434-4b27-a7c9-75318d80a7b1",
+										"id": "eff33f76-ee35-42b9-8872-e51d6762753d",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -1861,7 +1877,7 @@
 										"key": "Content-Type",
 										"name": "Content-Type",
 										"type": "text",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{contentType}}"
 									},
 									{
 										"key": "Date",
@@ -1869,7 +1885,7 @@
 									},
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.transfers+json;version=1"
+										"value": "{{acceptHeader}}"
 									},
 									{
 										"key": "FSPIOP-Source",
@@ -1918,9 +1934,10 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "0e5431cc-074c-4b71-815c-06ed2abba74b",
+										"id": "02447c8c-6320-4341-ba65-c6f4a9f991d3",
 										"exec": [
-											""
+											"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");",
+											"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");"
 										],
 										"type": "text/javascript"
 									}
@@ -1928,7 +1945,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "212081b3-8169-4aa6-8201-e59b4519f358",
+										"id": "955eb80a-5bb7-443e-b185-20379d937855",
 										"exec": [
 											"pm.test(\"Status code is 202\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -2005,7 +2022,7 @@
 										"key": "Content-Type",
 										"name": "Content-Type",
 										"type": "text",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{contentType}}"
 									},
 									{
 										"key": "Date",
@@ -2013,7 +2030,7 @@
 									},
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.transfers+json;version=1"
+										"value": "{{acceptHeader}}"
 									},
 									{
 										"key": "FSPIOP-Source",
@@ -2059,6 +2076,239 @@
 					],
 					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
+				},
+				{
+					"name": "FSPIOP headers",
+					"item": [
+						{
+							"name": "POST Bulk Transfer - Wrong Accept Header",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "38181271-78b9-4f84-a2a9-c3a27736ec80",
+										"exec": [
+											"const uuid = require('uuid');",
+											"",
+											"const delay = 1000 * 3600 * 24",
+											"const bulkTransferId = uuid.v4();",
+											"const bulkQuoteId = uuid.v4();",
+											"const transferId = uuid.v4();",
+											"const transferId2 = uuid.v4();",
+											"const now = new Date();",
+											"const headerDate = now.toUTCString();",
+											"const expirationDate = new Date(now.getTime() + delay).toISOString();",
+											"const completedTimestamp = now.toISOString();",
+											"",
+											"pm.environment.set(\"bulkTransferId\", bulkTransferId);",
+											"pm.environment.set(\"bulkQuoteId\", bulkQuoteId);",
+											"pm.environment.set(\"transferId\", transferId);",
+											"pm.environment.set(\"transferId2\", transferId2);",
+											"pm.environment.set(\"headerDate\", headerDate);",
+											"pm.environment.set(\"expirationDate\", expirationDate);",
+											"pm.environment.set(\"completedTimestamp\", completedTimestamp);",
+											"pm.environment.set(\"amount\", 1);",
+											"pm.environment.set(\"amount2\", 1);",
+											"pm.environment.set(\"currency2\", \"USD\");",
+											"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.transfers+json;version=1\");",
+											"pm.environment.set(\"contentType\", \"application/vnd.interoperability.bulkTransfers+json;version=1.0\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "fd1be23c-8ac2-4501-9448-477b25617737",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"Scheme validation error is returned\", function () {",
+											"    const res = pm.response.json();",
+											"    pm.expect(res.errorInformation.errorCode).to.eql('3101');",
+											"    pm.expect(res.errorInformation.errorDescription).to.eql('Malformed syntax - Invalid accept header');",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "{{contentType}}"
+									},
+									{
+										"key": "Date",
+										"value": "{{headerDate}}"
+									},
+									{
+										"key": "Accept",
+										"value": "{{acceptHeader}}"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "{{payerfsp}}"
+									},
+									{
+										"key": "FSPIOP-Destination",
+										"value": "{{payeefsp}}"
+									},
+									{
+										"key": "FSPIOP-Signature",
+										"type": "text",
+										"value": "~~{{payerfsp}}~~"
+									},
+									{
+										"key": "FSPIOP-URI",
+										"type": "text",
+										"value": "/bulkTransfers"
+									},
+									{
+										"key": "FSPIOP-HTTP-Method",
+										"value": "POST",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \n    \"bulkTransferId\": \"{{bulkTransferId}}\",\n    \"bulkQuoteId\": \"{{bulkQuoteId}}\",\n    \"payeeFsp\": \"{{payeefsp}}\",\n    \"payerFsp\": \"{{payerfsp}}\",\n    \"individualTransfers\":\n    [ {\n        \"transferId\": \"{{transferId}}\",\n        \"transferAmount\": {\n            \"currency\": \"{{currency}}\",\n            \"amount\": \"{{amount}}\"\n        },\n        \"ilpPacket\": \"{{validIlpPacket2}}\",\n        \"condition\": \"{{validCondition2}}\",\n        \"extensionList\": { \"extension\": [\n            { \"key\": \"extKey1\", \"value\": \"extValue1\"},\n            { \"key\": \"extKey2\", \"value\": \"extValue2\"}\n        ] }\n      },\n       {\n        \"transferId\": \"{{transferId2}}\",\n        \"transferAmount\": {\n            \"currency\": \"AED\",\n            \"amount\": \"{{amount2}}\"\n        },\n        \"ilpPacket\": \"{{validIlpPacket2}}\",\n        \"condition\": \"{{validCondition2}}\"\n    } ],\n    \"expiration\": \"{{expirationDate}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_BULK_ADAPTER}}/bulkTransfers",
+									"host": [
+										"{{HOST_BULK_ADAPTER}}"
+									],
+									"path": [
+										"bulkTransfers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Bulk Transfer - Wrong Content-Type Header",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "92dd7487-5969-49d9-9b56-60498921fa63",
+										"exec": [
+											"const uuid = require('uuid');",
+											"",
+											"const delay = 1000 * 3600 * 24",
+											"const bulkTransferId = uuid.v4();",
+											"const bulkQuoteId = uuid.v4();",
+											"const transferId = uuid.v4();",
+											"const transferId2 = uuid.v4();",
+											"const now = new Date();",
+											"const headerDate = now.toUTCString();",
+											"const expirationDate = new Date(now.getTime() + delay).toISOString();",
+											"const completedTimestamp = now.toISOString();",
+											"",
+											"pm.environment.set(\"bulkTransferId\", bulkTransferId);",
+											"pm.environment.set(\"bulkQuoteId\", bulkQuoteId);",
+											"pm.environment.set(\"transferId\", transferId);",
+											"pm.environment.set(\"transferId2\", transferId2);",
+											"pm.environment.set(\"headerDate\", headerDate);",
+											"pm.environment.set(\"expirationDate\", expirationDate);",
+											"pm.environment.set(\"completedTimestamp\", completedTimestamp);",
+											"pm.environment.set(\"amount\", 1);",
+											"pm.environment.set(\"amount2\", 1);",
+											"pm.environment.set(\"currency2\", \"USD\");",
+											"pm.environment.set(\"acceptHeader\", \"application/vnd.interoperability.bulkTransfers+json;version=1\");",
+											"pm.environment.set(\"contentType\", \"application/vnd.interoperability.transfers+json;version=1.0\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "c2e58670-1ac3-4a9f-8b53-40b7019c3964",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"Scheme validation error is returned\", function () {",
+											"    const res = pm.response.json();",
+											"    pm.expect(res.errorInformation.errorCode).to.eql('3101');",
+											"    pm.expect(res.errorInformation.errorDescription).to.eql('Malformed syntax - Invalid content-type header');",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "{{contentType}}"
+									},
+									{
+										"key": "Date",
+										"value": "{{headerDate}}"
+									},
+									{
+										"key": "Accept",
+										"value": "{{acceptHeader}}"
+									},
+									{
+										"key": "FSPIOP-Source",
+										"value": "{{payerfsp}}"
+									},
+									{
+										"key": "FSPIOP-Destination",
+										"value": "{{payeefsp}}"
+									},
+									{
+										"key": "FSPIOP-Signature",
+										"type": "text",
+										"value": "~~{{payerfsp}}~~"
+									},
+									{
+										"key": "FSPIOP-URI",
+										"type": "text",
+										"value": "/bulkTransfers"
+									},
+									{
+										"key": "FSPIOP-HTTP-Method",
+										"type": "text",
+										"value": "POST"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \n    \"bulkTransferId\": \"{{bulkTransferId}}\",\n    \"bulkQuoteId\": \"{{bulkQuoteId}}\",\n    \"payeeFsp\": \"{{payeefsp}}\",\n    \"payerFsp\": \"{{payerfsp}}\",\n    \"individualTransfers\":\n    [ {\n        \"transferId\": \"{{transferId}}\",\n        \"transferAmount\": {\n            \"currency\": \"{{currency}}\",\n            \"amount\": \"{{amount}}\"\n        },\n        \"ilpPacket\": \"{{validIlpPacket2}}\",\n        \"condition\": \"{{validCondition2}}\",\n        \"extensionList\": { \"extension\": [\n            { \"key\": \"extKey1\", \"value\": \"extValue1\"},\n            { \"key\": \"extKey2\", \"value\": \"extValue2\"}\n        ] }\n      },\n       {\n        \"transferId\": \"{{transferId2}}\",\n        \"transferAmount\": {\n            \"currency\": \"AED\",\n            \"amount\": \"{{amount2}}\"\n        },\n        \"ilpPacket\": \"{{validIlpPacket2}}\",\n        \"condition\": \"{{validCondition2}}\"\n    } ],\n    \"expiration\": \"{{expirationDate}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST_BULK_ADAPTER}}/bulkTransfers",
+									"host": [
+										"{{HOST_BULK_ADAPTER}}"
+									],
+									"path": [
+										"bulkTransfers"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -2069,7 +2319,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "cecde1fb-a08d-44c5-9bc2-9bae5577a2c6",
+						"id": "daa7d1c0-2b47-489c-abc7-d5abac72016c",
 						"exec": [
 							""
 						],
