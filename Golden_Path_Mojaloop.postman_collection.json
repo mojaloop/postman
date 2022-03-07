@@ -802,8 +802,8 @@
 													"            pm.expect(headers['fspiop-destination']).to.eql(pm.environment.get('SIMPAYEE_NAME'));",
 													"        });",
 													"        ",
-													"        pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be application/vnd.interoperability.parties+json;version=1.0`, function () {",
-													"            pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.parties+json;version=1.0');",
+													"        pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypePartiesRequest')}`, function () {",
+													"            pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypePartiesRequest'));",
 													"        });",
 													"        ",
 													"        pm.test(`${pm.environment.get('SIMPAYEE_NAME')} accept should be application/vnd.interoperability.parties+json;version=1.0`, function () {",
@@ -955,7 +955,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.parties+json;version=1.0"
+												"value": "{{contentTypePartiesRequest}}"
 											},
 											{
 												"key": "FSPIOP-Source",
@@ -1242,8 +1242,8 @@
 													"                });",
 													"                ",
 													"               ",
-													"                  pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {",
-													"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));",
+													"                  pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {",
+													"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));",
 													"            });",
 													"                ",
 													"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} fspiop-uri is /quotes`, function () {",
@@ -1381,7 +1381,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -1455,9 +1455,9 @@
 													"                    pm.expect(headers['fspiop-destination']).to.eql(`${pm.environment.get('SIMPAYEE_NAME')}`);",
 													"                });",
 													"                ",
-													"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-typeis same as sent in the request`, function () {",
-													"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
-													"                });",
+													"                 pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeTransfersRequest')}`, function () {",
+													"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfersRequest'));",
+													"            });",
 													"                ",
 													"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} accept is same as sent in the request`, function () {",
 													"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.transfers\\+json;version=1(\\.\\d)?/);",
@@ -1657,7 +1657,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{contentTypeTransfersRequest}}"
 											},
 											{
 												"key": "Date",
@@ -2104,8 +2104,9 @@
 													"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.quotes\\+json;version=1(\\.\\d)?/);",
 													"                });",
 													"                ",
-													"                  pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {",
-													"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));",
+													"                 ",
+													"                  pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {",
+													"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));",
 													"            });",
 													"                ",
 													"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} fspiop-uri is /quotes`, function () {",
@@ -2243,7 +2244,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -2316,9 +2317,9 @@
 													"                    pm.expect(headers['fspiop-destination']).to.eql(pm.environment.get('SIMPAYEE_NAME'));",
 													"                });",
 													"                ",
-													"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-typeis same as sent in the request`, function () {",
-													"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
-													"                });",
+													"                 pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeTransfersRequest')}`, function () {",
+													"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfersRequest'));",
+													"            });",
 													"                ",
 													"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} accept is same as sent in the request`, function () {",
 													"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.transfers\\+json;version=1(\\.\\d)?/);",
@@ -2513,7 +2514,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{contentTypeTransfersRequest}}"
 											},
 											{
 												"key": "Date",
@@ -3115,8 +3116,8 @@
 													"        //     pm.expect(headers['fspiop-destination']).to.eql('goldenpayeefsp');",
 													"        // });",
 													"        ",
-													"        pm.test(`On ${pm.environment.get('SIMPAYEE_NAME')} content-type should be application/vnd.interoperability.parties+json;version=1.0`, function () {",
-													"            pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.parties+json;version=1.0');",
+													"         pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypePartiesRequest')}`, function () {",
+													"            pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypePartiesRequest'));",
 													"        });",
 													"        ",
 													"        pm.test(`On ${pm.environment.get('SIMPAYEE_NAME')} accept should be application/vnd.interoperability.parties+json;version=1.0`, function () {",
@@ -3245,9 +3246,9 @@
 													"                    pm.expect(headers['fspiop-destination']).to.eql(pm.environment.get('SIMPAYEE_NAME'));",
 													"                });",
 													"                ",
-													"                pm.test(`On ${pm.environment.get('SIMPAYEE_NAME')} content-type is same as sent in the request`, function () {",
-													"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
-													"                });",
+													"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeTransfersRequest')}`, function () {",
+													"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfersRequest'));",
+													"            });",
 													"                ",
 													"                pm.test(`On ${pm.environment.get('SIMPAYEE_NAME')} accept is same as sent in the request`, function () {",
 													"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.transfers\\+json;version=1(\\.\\d)?/);",
@@ -4129,9 +4130,9 @@
 													"            //     pm.expect(headers['fspiop-destination']).to.eql('goldenpayeefsp');",
 													"            // });",
 													"",
-													"            pm.test(`On testfsp2 content-type should be application/vnd.interoperability.parties+json;version=1.0`, function () {",
-													"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.parties+json;version=1.0');",
-													"            });",
+													"             pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypePartiesRequest')}`, function () {",
+													"            pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypePartiesRequest'));",
+													"          });",
 													"",
 													"            pm.test(`On ${pm.environment.get('SIMPAYEE_NAME')} accept should be application/vnd.interoperability.parties+json;version=1.1`, function () {",
 													"                pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.parties\\+json;version=1(\\.\\d)?/);",
@@ -4259,8 +4260,8 @@
 													"                pm.expect(headers['fspiop-destination']).to.eql('testfsp1');",
 													"            });",
 													"",
-													"            pm.test(`On testfsp1 content-type is same as sent in the request`, function () {",
-													"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
+													"            pm.test(`${pm.environment.get('SIM1_NAME')} content-type should be ${pm.environment.get('contentTypeTransfersRequest')}`, function () {",
+													"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfersRequest'));",
 													"            });",
 													"",
 													"            pm.test(`On testfsp1 fspiop-http-method is PATCH`, function () {",
@@ -4323,8 +4324,8 @@
 													"                pm.expect(headers['fspiop-destination']).to.eql('testfsp2');",
 													"            });",
 													"",
-													"            pm.test(`On ${pm.environment.get('SIMPAYER_NAME')} content-type should be application/vnd.interoperability.transfers+json;v1`, function () {",
-													"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.1');",
+													"            pm.test(`${pm.environment.get('SIMPAYER_NAME')} content-type should be ${pm.environment.get('contentTypeTransfers')}`, function () {",
+													"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfers'));",
 													"            });",
 													"",
 													"            pm.test(`${pm.environment.get('SIMPAYER_NAME')} accept is empty`, function () {",
@@ -4834,8 +4835,9 @@
 											"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.quotes\\+json;version=1(\\.\\d)?/);",
 											"                });",
 											"                ",
-											"              pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {",
-											"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));",
+											"            ",
+											"                  pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {",
+											"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));",
 											"            });",
 											"                ",
 											"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} fspiop-uri is /quotes`, function () {",
@@ -4973,7 +4975,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{contentTypeQuotesRequest}}"
 									},
 									{
 										"key": "Date",
@@ -5173,7 +5175,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{contentTypeTransfersRequest}}"
 									},
 									{
 										"key": "Date",
@@ -5499,8 +5501,9 @@
 											"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.quotes\\+json;version=1(\\.\\d)?/);",
 											"                });",
 											"                ",
-											"               pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {",
-											"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));",
+											"              ",
+											"                  pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {",
+											"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));",
 											"            });",
 											"                ",
 											"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} fspiop-uri is /quotes`, function () {",
@@ -5638,7 +5641,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{contentTypeQuotesRequest}}"
 									},
 									{
 										"key": "Date",
@@ -5711,9 +5714,9 @@
 											"                    pm.expect(headers['fspiop-destination']).to.eql(pm.environment.get('SIMPAYEE_NAME'));",
 											"                });",
 											"                ",
-											"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-typeis same as sent in the request`, function () {",
-											"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
-											"                });",
+											"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeTransfersRequest')}`, function () {",
+											"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfersRequest'));",
+											"            });",
 											"                ",
 											"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} accept is same as sent in the request`, function () {",
 											"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.transfers\\+json;version=1(\\.\\d)?/);",
@@ -5899,7 +5902,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{contentTypeTransfersRequest}}"
 									},
 									{
 										"key": "Date",
@@ -6046,7 +6049,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{contentTypeTransfersRequest}}"
 									},
 									{
 										"key": "Date",
@@ -6224,7 +6227,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{contentTypeTransfersRequest}}"
 									},
 									{
 										"key": "Date",
@@ -6400,7 +6403,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{contentTypeTransfersRequest}}"
 									},
 									{
 										"key": "Date",
@@ -6524,7 +6527,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{contentTypeTransfersRequest}}"
 									},
 									{
 										"key": "Date",
@@ -6819,7 +6822,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{contentTypeTransfersRequest}}"
 											},
 											{
 												"key": "Date",
@@ -7109,7 +7112,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{contentTypeTransfersRequest}}"
 											},
 											{
 												"key": "Date",
@@ -7402,7 +7405,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{contentTypeTransfersRequest}}"
 											},
 											{
 												"key": "Date",
@@ -7689,7 +7692,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{contentTypeTransfersRequest}}"
 											},
 											{
 												"key": "Date",
@@ -7986,7 +7989,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{contentTypeTransfersRequest}}"
 									},
 									{
 										"key": "Date",
@@ -9181,8 +9184,9 @@
 																	"                pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.quotes\\+json;version=1(\\.\\d)?/);\r",
 																	"            });\r",
 																	"\r",
-																	"           pm.test(`${pm.environment.get('SIM2_NAME')} content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {\r",
-																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));\r",
+																	"          \r",
+																	"                  pm.test(`${pm.environment.get('SIM2_NAME')} content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {\r",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));\r",
 																	"            });\r",
 																	"\r",
 																	"            pm.test(`${pm.environment.get('SIM2_NAME')} fspiop-uri is /quotes`, function () {\r",
@@ -9320,7 +9324,7 @@
 															{
 																"key": "Content-Type",
 																"type": "text",
-																"value": "application/vnd.interoperability.quotes+json;version=1.0"
+																"value": "{{contentTypeQuotesRequest}}"
 															},
 															{
 																"key": "Date",
@@ -9396,8 +9400,8 @@
 																	"                    pm.expect(headers['fspiop-destination']).to.eql(pm.environment.get('SIM2_NAME'));\r",
 																	"                });\r",
 																	"                \r",
-																	"               pm.test(`${pm.environment.get('SIM2_NAME')} content-type should be application/vnd.interoperability.transfers+json;version=1.0`, function () {\r",
-																	"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');\r",
+																	"              pm.test(`${pm.environment.get('SIM2_NAME')} content-type should be ${pm.environment.get('contentTypeTransfersRequest')}`, function () {\r",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfersRequest'));\r",
 																	"            });\r",
 																	"                \r",
 																	"                pm.test(`${pm.environment.get('SIM2_NAME')} accept is same as sent in the request`, function () {\r",
@@ -9577,7 +9581,7 @@
 															{
 																"key": "Content-Type",
 																"type": "text",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0"
+																"value": "{{contentTypeTransfersRequest}}"
 															},
 															{
 																"key": "Date",
@@ -9749,8 +9753,8 @@
 																	"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.quotes\\+json;version=1(\\.\\d)?/);\r",
 																	"                });\r",
 																	"                \r",
-																	"               pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {\r",
-																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));\r",
+																	"              pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {\r",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));\r",
 																	"            });\r",
 																	"                \r",
 																	"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} fspiop-uri is /quotes`, function () {\r",
@@ -9888,7 +9892,7 @@
 															{
 																"key": "Content-Type",
 																"type": "text",
-																"value": "application/vnd.interoperability.quotes+json;version=1.0"
+																"value": "{{contentTypeQuotesRequest}}"
 															},
 															{
 																"key": "Date",
@@ -10022,8 +10026,8 @@
 																	"                    pm.expect(headers['fspiop-destination']).to.eql(pm.environment.get('SIMPAYEE_NAME'));\r",
 																	"                });\r",
 																	"                \r",
-																	"           pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be application/vnd.interoperability.transfers+json;version=1.0`, function () {\r",
-																	"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');\r",
+																	"            pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeTransfersRequest')}`, function () {\r",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfersRequest'));\r",
 																	"            });\r",
 																	"                \r",
 																	"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} accept is same as sent in the request`, function () {\r",
@@ -10145,7 +10149,7 @@
 															{
 																"key": "Content-Type",
 																"type": "text",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0"
+																"value": "{{contentTypeTransfersRequest}}"
 															},
 															{
 																"key": "Date",
@@ -10316,8 +10320,8 @@
 																	"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.quotes\\+json;version=1(\\.\\d)?/);\r",
 																	"                });\r",
 																	"                \r",
-																	"                pm.test(`${pm.environment.get('SIM1_NAME')} content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {\r",
-																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));\r",
+																	"               pm.test(`${pm.environment.get('SIM1_NAME')} content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {\r",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));\r",
 																	"            });\r",
 																	"                \r",
 																	"                pm.test(`${pm.environment.get('SIM1_NAME')} fspiop-uri is /quotes`, function () {\r",
@@ -10454,7 +10458,7 @@
 															{
 																"key": "Content-Type",
 																"type": "text",
-																"value": "application/vnd.interoperability.quotes+json;version=1.0"
+																"value": "{{contentTypeQuotesRequest}}"
 															},
 															{
 																"key": "Date",
@@ -10588,8 +10592,8 @@
 																	"                    pm.expect(headers['fspiop-destination']).to.eql(pm.environment.get('SIM1_NAME'));\r",
 																	"                });\r",
 																	"                \r",
-																	"              pm.test(`${pm.environment.get('SIM1_NAME')} content-type should be application/vnd.interoperability.transfers+json;version=1.0`, function () {\r",
-																	"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');\r",
+																	"             pm.test(`${pm.environment.get('SIM1_NAME')} content-type should be ${pm.environment.get('contentTypeTransfersRequest')}`, function () {\r",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfersRequest'));\r",
 																	"            });\r",
 																	"                \r",
 																	"                pm.test(`${pm.environment.get('SIM1_NAME')} accept is same as sent in the request`, function () {\r",
@@ -10717,7 +10721,7 @@
 															{
 																"key": "Content-Type",
 																"type": "text",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0"
+																"value": "{{contentTypeTransfersRequest}}"
 															},
 															{
 																"key": "Date",
@@ -10889,8 +10893,8 @@
 																	"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.quotes\\+json;version=1(\\.\\d)?/);\r",
 																	"                });\r",
 																	"                \r",
-																	"                 pm.test(`${pm.environment.get('SIMPAYER_NAME')} content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {\r",
-																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));\r",
+																	"                 pm.test(`${pm.environment.get('SIMPAYER_NAME')} content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {\r",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));\r",
 																	"            });\r",
 																	"                \r",
 																	"                pm.test(`${pm.environment.get('SIMPAYER_NAME')} fspiop-uri is /quotes`, function () {\r",
@@ -11027,7 +11031,7 @@
 															{
 																"key": "Content-Type",
 																"type": "text",
-																"value": "application/vnd.interoperability.quotes+json;version=1.0"
+																"value": "{{contentTypeQuotesRequest}}"
 															},
 															{
 																"key": "Date",
@@ -11167,8 +11171,8 @@
 																	"                    pm.expect(headers['fspiop-destination']).to.eql(pm.environment.get('SIMPAYER_NAME'));\r",
 																	"                });\r",
 																	"                \r",
-																	"              pm.test(`${pm.environment.get('SIMPAYER_NAME')} content-type should be application/vnd.interoperability.transfers+json;version=1.0`, function () {\r",
-																	"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');\r",
+																	"            pm.test(`${pm.environment.get('SIMPAYER_NAME')} content-type should be ${pm.environment.get('contentTypeTransfersRequest')}`, function () {\r",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfersRequest'));\r",
 																	"            });\r",
 																	"                \r",
 																	"                pm.test(`${pm.environment.get('SIMPAYER_NAME')} accept is same as sent in the request`, function () {\r",
@@ -11291,7 +11295,7 @@
 															{
 																"key": "Content-Type",
 																"type": "text",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0"
+																"value": "{{contentTypeTransfersRequest}}"
 															},
 															{
 																"key": "Date",
@@ -11462,8 +11466,8 @@
 																	"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.quotes\\+json;version=1(\\.\\d)?/);\r",
 																	"                });\r",
 																	"                \r",
-																	"                pm.test(`${pm.environment.get('SIM2_NAME')} content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {\r",
-																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));\r",
+																	"                 pm.test(`${pm.environment.get('SIM2_NAME')} content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {\r",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));\r",
 																	"            });\r",
 																	"                \r",
 																	"                pm.test(`${pm.environment.get('SIM2_NAME')} fspiop-uri is /quotes`, function () {\r",
@@ -11600,7 +11604,7 @@
 															{
 																"key": "Content-Type",
 																"type": "text",
-																"value": "application/vnd.interoperability.quotes+json;version=1.0"
+																"value": "{{contentTypeQuotesRequest}}"
 															},
 															{
 																"key": "Date",
@@ -11734,9 +11738,9 @@
 																	"                    pm.expect(headers['fspiop-destination']).to.eql(pm.environment.get('SIM2_NAME'));\r",
 																	"                });\r",
 																	"                \r",
-																	"                pm.test(`${pm.environment.get('SIM2_NAME')} content-typeis same as sent in the request`, function () {\r",
-																	"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');\r",
-																	"                });\r",
+																	"                pm.test(`${pm.environment.get('SIM2_NAME')} content-type should be ${pm.environment.get('contentTypeTransfersRequest')}`, function () {\r",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfersRequest'));\r",
+																	"            });\r",
 																	"                \r",
 																	"                pm.test(`${pm.environment.get('SIM2_NAME')} accept is same as sent in the request`, function () {\r",
 																	"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.transfers\\+json;version=1(\\.\\d)?/);\r",
@@ -11858,7 +11862,7 @@
 															{
 																"key": "Content-Type",
 																"type": "text",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0"
+																"value": "{{contentTypeTransfersRequest}}"
 															},
 															{
 																"key": "Date",
@@ -12029,8 +12033,8 @@
 																	"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.quotes\\+json;version=1(\\.\\d)?/);\r",
 																	"                });\r",
 																	"                \r",
-																	"                 pm.test(`${pm.environment.get('SIMPAYER_NAME')} content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {\r",
-																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));\r",
+																	"                pm.test(`${pm.environment.get('SIMPAYER_NAME')} content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {\r",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));\r",
 																	"            });\r",
 																	"                \r",
 																	"                pm.test(`${pm.environment.get('SIMPAYER_NAME')} fspiop-uri is /quotes`, function () {\r",
@@ -12167,7 +12171,7 @@
 															{
 																"key": "Content-Type",
 																"type": "text",
-																"value": "application/vnd.interoperability.quotes+json;version=1.0"
+																"value": "{{contentTypeQuotesRequest}}"
 															},
 															{
 																"key": "Date",
@@ -12301,9 +12305,9 @@
 																	"                    pm.expect(headers['fspiop-destination']).to.eql(pm.environment.get('SIMPAYER_NAME'));\r",
 																	"                });\r",
 																	"                \r",
-																	"                pm.test(`${pm.environment.get('SIMPAYER_NAME')} content-typeis same as sent in the request`, function () {\r",
-																	"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');\r",
-																	"                });\r",
+																	"                 pm.test(`${pm.environment.get('SIMPAYER_NAME')} content-type should be ${pm.environment.get('contentTypeTransfersRequest')}`, function () {\r",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfersRequest'));\r",
+																	"            });\r",
 																	"                \r",
 																	"                pm.test(`${pm.environment.get('SIMPAYER_NAME')} accept is same as sent in the request`, function () {\r",
 																	"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.transfers\\+json;version=1(\\.\\d)?/);\r",
@@ -12431,7 +12435,7 @@
 															{
 																"key": "Content-Type",
 																"type": "text",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0"
+																"value": "{{contentTypeTransfersRequest}}"
 															},
 															{
 																"key": "Date",
@@ -15059,8 +15063,8 @@
 													"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.quotes\\+json;version=1(\\.\\d)?/);",
 													"                });",
 													"                ",
-													"                 pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {",
-													"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));",
+													"                  pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {",
+													"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));",
 													"            });",
 													"                ",
 													"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} fspiop-uri is /quotes`, function () {",
@@ -15198,7 +15202,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -15337,7 +15341,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0",
+												"value": "{{contentTypeTransfersRequest}}",
 												"type": "text"
 											},
 											{
@@ -15531,7 +15535,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0",
+												"value": "{{contentTypeTransfersRequest}}",
 												"type": "text"
 											},
 											{
@@ -15685,7 +15689,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{contentTypeTransfersRequest}}"
 											},
 											{
 												"key": "Date",
@@ -15987,8 +15991,8 @@
 													"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.quotes\\+json;version=1(\\.\\d)?/);",
 													"                });",
 													"                ",
-													"                 pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {",
-													"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));",
+													"                  pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {",
+													"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));",
 													"            });",
 													"                ",
 													"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} fspiop-uri is /quotes`, function () {",
@@ -16126,7 +16130,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -16265,7 +16269,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0",
+												"value": "{{contentTypeTransfersRequest}}",
 												"type": "text"
 											},
 											{
@@ -16409,7 +16413,7 @@
 												"key": "Content-Type",
 												"name": "Content-Type",
 												"type": "text",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{contentTypeTransfersRequest}}"
 											},
 											{
 												"key": "Date",
@@ -16526,7 +16530,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{contentTypeTransfersRequest}}"
 											},
 											{
 												"key": "Date",
@@ -16855,7 +16859,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.transfers+json;version=1.1",
+												"value": "{{contentTypeTransfersRequest}}",
 												"type": "text"
 											},
 											{
@@ -17078,7 +17082,7 @@
 												"key": "Content-Type",
 												"name": "Content-Type",
 												"type": "text",
-												"value": "application/vnd.interoperability.transfers+json;version=1.1"
+												"value": "{{contentTypeTransfers}}"
 											},
 											{
 												"key": "Accept",
@@ -17331,7 +17335,7 @@
 												"key": "Content-Type",
 												"name": "Content-Type",
 												"type": "text",
-												"value": "application/vnd.interoperability.transfers+json;version=1.1"
+												"value": "{{contentTypeTransfers}}"
 											},
 											{
 												"key": "Accept",
@@ -17453,7 +17457,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{contentTypeTransfersRequest}}"
 											},
 											{
 												"key": "Date",
@@ -17774,8 +17778,8 @@
 															"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.quotes\\+json;version=1(\\.\\d)?/);",
 															"                });",
 															"                ",
-															"               pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {",
-															"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));",
+															"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {",
+															"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));",
 															"            });",
 															"                ",
 															"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} fspiop-uri is /quotes`, function () {",
@@ -17913,7 +17917,7 @@
 													},
 													{
 														"key": "Content-Type",
-														"value": "application/vnd.interoperability.quotes+json;version=1.0"
+														"value": "{{contentTypeQuotesRequest}}"
 													},
 													{
 														"key": "Date",
@@ -17986,9 +17990,9 @@
 															"                    pm.expect(headers['fspiop-destination']).to.eql(pm.environment.get('SIMPAYEE_NAME'));\r",
 															"                });\r",
 															"                \r",
-															"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-typeis same as sent in the request`, function () {\r",
-															"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');\r",
-															"                });\r",
+															"                 pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeTransfersRequest')}`, function () {\r",
+															"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfersRequest'));\r",
+															"            });\r",
 															"                \r",
 															"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} accept is same as sent in the request`, function () {\r",
 															"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.transfers\\+json;version=1(\\.\\d)?/);\r",
@@ -18176,7 +18180,7 @@
 													},
 													{
 														"key": "Content-Type",
-														"value": "application/vnd.interoperability.transfers+json;version=1.0",
+														"value": "{{contentTypeTransfersRequest}}",
 														"type": "text"
 													},
 													{
@@ -18380,7 +18384,7 @@
 													},
 													{
 														"key": "Content-Type",
-														"value": "application/vnd.interoperability.transfers+json;version=1.0",
+														"value": "{{contentTypeTransfersRequest}}",
 														"type": "text"
 													},
 													{
@@ -18565,8 +18569,8 @@
 																	"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.quotes\\+json;version=1(\\.\\d)?/);",
 																	"                });",
 																	"                ",
-																	"              pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {",
-																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));",
+																	"              pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));",
 																	"            });",
 																	"                ",
 																	"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} fspiop-uri is /quotes`, function () {",
@@ -18704,7 +18708,7 @@
 															},
 															{
 																"key": "Content-Type",
-																"value": "application/vnd.interoperability.quotes+json;version=1.0"
+																"value": "{{contentTypeQuotesRequest}}"
 															},
 															{
 																"key": "Date",
@@ -18849,7 +18853,7 @@
 															},
 															{
 																"key": "Content-Type",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{contentTypeTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -19041,7 +19045,7 @@
 															},
 															{
 																"key": "Content-Type",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{contentTypeTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -19238,7 +19242,7 @@
 															},
 															{
 																"key": "Content-Type",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{contentTypeTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -19395,7 +19399,7 @@
 															},
 															{
 																"key": "Content-Type",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0"
+																"value": "{{contentTypeTransfersRequest}}"
 															},
 															{
 																"key": "Date",
@@ -19556,8 +19560,8 @@
 																	"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.quotes\\+json;version=1(\\.\\d)?/);",
 																	"                });",
 																	"                ",
-																	"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {",
-																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));",
+																	"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));",
 																	"            });",
 																	"                ",
 																	"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} fspiop-uri is /quotes`, function () {",
@@ -19695,7 +19699,7 @@
 															},
 															{
 																"key": "Content-Type",
-																"value": "application/vnd.interoperability.quotes+json;version=1.0"
+																"value": "{{contentTypeQuotesRequest}}"
 															},
 															{
 																"key": "Date",
@@ -19840,7 +19844,7 @@
 															},
 															{
 																"key": "Content-Type",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{contentTypeTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -20036,7 +20040,7 @@
 															},
 															{
 																"key": "Content-Type",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{contentTypeTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -20235,7 +20239,7 @@
 															},
 															{
 																"key": "Content-Type",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{contentTypeTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -20444,10 +20448,10 @@
 																	"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.quotes\\+json;version=1(\\.\\d)?/);",
 																	"                });",
 																	"                ",
-																	"                  pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {",
-																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));",
+																	"                   pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));",
 																	"            });",
-																	"",
+																	"            ",
 																	"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} fspiop-uri is /quotes`, function () {",
 																	"                    pm.expect(headers['fspiop-uri']).to.eql('/quotes');",
 																	"                });",
@@ -20583,7 +20587,7 @@
 															},
 															{
 																"key": "Content-Type",
-																"value": "application/vnd.interoperability.quotes+json;version=1.0"
+																"value": "{{contentTypeQuotesRequest}}"
 															},
 															{
 																"key": "Date",
@@ -20728,7 +20732,7 @@
 															},
 															{
 																"key": "Content-Type",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{contentTypeTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -20870,9 +20874,9 @@
 																	"                    pm.expect(headers['accept']).to.eql(undefined);",
 																	"                });",
 																	"                ",
-																	"                pm.test(`${pm.environment.get('SIMPAYER_NAME')} content-type is same as sent in the request`, function () {",
-																	"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
-																	"                });",
+																	"                 pm.test(`${pm.environment.get('SIMPAYER_NAME')} content-type should be ${pm.environment.get('contentTypeTransfersRequest')}`, function () {",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfersRequest'));",
+																	"            });",
 																	"                ",
 																	"                pm.test(`${pm.environment.get('SIMPAYER_NAME')} fspiop-signature is not null`, function () {",
 																	"                    pm.expect(headers['fspiop-signature']).not.eql(undefined);",
@@ -20926,7 +20930,7 @@
 																"key": "Content-Type",
 																"name": "Content-Type",
 																"type": "text",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0"
+																"value": "{{contentTypeTransfersRequest}}"
 															},
 															{
 																"key": "Accept",
@@ -21074,9 +21078,9 @@
 																	"                    pm.expect(headers['accept']).to.eql(undefined);",
 																	"                });",
 																	"                ",
-																	"                pm.test(`${pm.environment.get('SIMPAYER_NAME')} content-type is same as sent in the request`, function () {",
-																	"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
-																	"                });",
+																	"                pm.test(`${pm.environment.get('SIMPAYER_NAME')} content-type should be ${pm.environment.get('contentTypeTransfersRequest')}`, function () {",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfersRequest'));",
+																	"            });",
 																	"                ",
 																	"                pm.test(`${pm.environment.get('SIMPAYER_NAME')} fspiop-signature is not null`, function () {",
 																	"                    pm.expect(headers['fspiop-signature']).not.eql(undefined);",
@@ -21128,7 +21132,7 @@
 														"header": [
 															{
 																"key": "Content-Type",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{contentTypeTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -21317,8 +21321,8 @@
 																	"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.quotes\\+json;version=1(\\.\\d)?/);",
 																	"                });",
 																	"                ",
-																	"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {",
-																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));",
+																	"                 pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));",
 																	"            });",
 																	"                ",
 																	"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} fspiop-uri is /quotes`, function () {",
@@ -21456,7 +21460,7 @@
 															},
 															{
 																"key": "Content-Type",
-																"value": "application/vnd.interoperability.quotes+json;version=1.0"
+																"value": "{{contentTypeQuotesRequest}}"
 															},
 															{
 																"key": "Date",
@@ -21601,7 +21605,7 @@
 															},
 															{
 																"key": "Content-Type",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{contentTypeTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -21743,9 +21747,9 @@
 																	"                    pm.expect(headers['accept']).to.eql(undefined);",
 																	"                });",
 																	"                ",
-																	"                pm.test(`${pm.environment.get('SIMPAYER_NAME')} content-type is same as sent in the request`, function () {",
-																	"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
-																	"                });",
+																	"                  pm.test(`${pm.environment.get('SIMPAYER_NAME')} content-type should be ${pm.environment.get('contentTypeTransfersRequest')}`, function () {",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfersRequest'));",
+																	"            });",
 																	"                ",
 																	"                pm.test(`${pm.environment.get('SIMPAYER_NAME')} fspiop-signature is not null`, function () {",
 																	"                    pm.expect(headers['fspiop-signature']).not.eql(undefined);",
@@ -21797,7 +21801,7 @@
 														"header": [
 															{
 																"key": "Content-Type",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{contentTypeTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -21946,9 +21950,9 @@
 																	"                    pm.expect(headers['accept']).to.eql(undefined);",
 																	"                });",
 																	"                ",
-																	"                pm.test(`${pm.environment.get('SIMPAYER_NAME')} content-type is same as sent in the request`, function () {",
-																	"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
-																	"                });",
+																	"                 pm.test(`${pm.environment.get('SIMPAYER_NAME')} content-type should be ${pm.environment.get('contentTypeTransfersRequest')}`, function () {",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfersRequest'));",
+																	"            });",
 																	"                ",
 																	"                pm.test(`${pm.environment.get('SIMPAYER_NAME')} fspiop-signature is not null`, function () {",
 																	"                    pm.expect(headers['fspiop-signature']).not.eql(undefined);",
@@ -22000,7 +22004,7 @@
 														"header": [
 															{
 																"key": "Content-Type",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{contentTypeTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -22365,7 +22369,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -22559,7 +22563,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{contentTypeTransfersRequest}}"
 											},
 											{
 												"key": "Date",
@@ -22785,8 +22789,8 @@
 													"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.quotes\\+json;version=1(\\.\\d)?/);\r",
 													"                });\r",
 													"                \r",
-													"                 pm.test(`${pm.environment.get('SIM2_NAME')} content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {\r",
-													"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));\r",
+													"                  pm.test(`${pm.environment.get('SIM2_NAME')} content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {\r",
+													"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));\r",
 													"            });\r",
 													"                \r",
 													"                pm.test(`${pm.environment.get('SIM2_NAME')} fspiop-uri is /quotes`, function () {\r",
@@ -22924,7 +22928,7 @@
 											{
 												"key": "Content-Type",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -23058,9 +23062,9 @@
 													"                    pm.expect(headers['fspiop-destination']).to.eql(pm.environment.get('SIM2_NAME'));\r",
 													"                });\r",
 													"                \r",
-													"                pm.test(`${pm.environment.get('SIM2_NAME')} content-typeis same as sent in the request`, function () {\r",
-													"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');\r",
-													"                });\r",
+													"                 pm.test(`${pm.environment.get('SIM2_NAME')} content-type should be ${pm.environment.get('contentTypeTransfersRequest')}`, function () {\r",
+													"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfersRequest'));\r",
+													"            });\r",
 													"                \r",
 													"                pm.test(`${pm.environment.get('SIM2_NAME')} accept is same as sent in the request`, function () {\r",
 													"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.transfers\\+json;version=1(\\.\\d)?/);\r",
@@ -23181,7 +23185,7 @@
 											{
 												"key": "Content-Type",
 												"type": "text",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{contentTypeTransfersRequest}}"
 											},
 											{
 												"key": "Date",
@@ -23480,8 +23484,8 @@
 													"                pm.expect(headers['fspiop-destination']).to.eql(pm.environment.get('SIM1_NAME'));",
 													"            });",
 													"",
-													"              pm.test(`${pm.environment.get('SIM1_NAME')} content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {",
-													"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));",
+													"              pm.test(`${pm.environment.get('SIM1_NAME')} content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {",
+													"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));",
 													"            });",
 													"",
 													"            pm.test(`${pm.environment.get('SIM1_NAME')} accept is empty`, function () {",
@@ -23580,7 +23584,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -23774,7 +23778,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{contentTypeTransfersRequest}}"
 											},
 											{
 												"key": "Date",
@@ -24002,8 +24006,8 @@
 													"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.quotes\\+json;version=1(\\.\\d)?/);\r",
 													"                });\r",
 													"                \r",
-													"                  pm.test(`${pm.environment.get('SIM2_NAME')} content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {\r",
-													"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));\r",
+													"                  pm.test(`${pm.environment.get('SIM2_NAME')} content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {\r",
+													"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));\r",
 													"            });\r",
 													"                \r",
 													"                pm.test(`${pm.environment.get('SIM2_NAME')} fspiop-uri is /quotes`, function () {\r",
@@ -24141,7 +24145,7 @@
 											{
 												"key": "Content-Type",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -24275,9 +24279,9 @@
 													"                    pm.expect(headers['fspiop-destination']).to.eql(pm.environment.get('SIM2_NAME'));\r",
 													"                });\r",
 													"                \r",
-													"                pm.test(`${pm.environment.get('SIM2_NAME')} content-typeis same as sent in the request`, function () {\r",
-													"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');\r",
-													"                });\r",
+													"                pm.test(`${pm.environment.get('SIM2_NAME')} content-type should be ${pm.environment.get('contentTypeTransfersRequest')}`, function () {\r",
+													"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfersRequest'));\r",
+													"            });\r",
 													"                \r",
 													"                pm.test(`${pm.environment.get('SIM2_NAME')} accept is same as sent in the request`, function () {\r",
 													"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.transfers\\+json;version=1(\\.\\d)?/);\r",
@@ -24398,7 +24402,7 @@
 											{
 												"key": "Content-Type",
 												"type": "text",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{contentTypeTransfersRequest}}"
 											},
 											{
 												"key": "Date",
@@ -24992,7 +24996,7 @@
 											{
 												"key": "Content-Type",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -25173,7 +25177,7 @@
 											{
 												"key": "Content-Type",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -25355,7 +25359,7 @@
 											{
 												"key": "Content-Type",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -25532,7 +25536,7 @@
 											{
 												"key": "Content-Type",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -25713,7 +25717,7 @@
 											{
 												"key": "Content-Type",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -25898,7 +25902,7 @@
 											{
 												"key": "Content-Type",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -26078,7 +26082,7 @@
 											{
 												"key": "Content-Type",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -26259,7 +26263,7 @@
 											{
 												"key": "Content-Type",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -26439,7 +26443,7 @@
 											{
 												"key": "Content-Type",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -26620,7 +26624,7 @@
 											{
 												"key": "Content-Type",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -26801,7 +26805,7 @@
 											{
 												"key": "Content-Type",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -26982,7 +26986,7 @@
 											{
 												"key": "Content-Type",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -27542,7 +27546,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{contentTypeQuotesRequest}}"
 									},
 									{
 										"key": "Date",
@@ -27790,7 +27794,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{contentTypeQuotesRequest}}"
 									},
 									{
 										"key": "Date",
@@ -28867,7 +28871,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{contentTypeQuotesRequest}}"
 									},
 									{
 										"key": "Date",
@@ -28986,7 +28990,7 @@
 										"key": "Content-Type",
 										"name": "Content-Type",
 										"type": "text",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{contentTypeTransfersRequest}}"
 									},
 									{
 										"key": "Date",
@@ -29079,7 +29083,7 @@
 										"key": "Content-Type",
 										"name": "Content-Type",
 										"type": "text",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{contentTypeQuotesRequest}}"
 									},
 									{
 										"key": "Date",
@@ -29246,9 +29250,9 @@
 											"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.quotes\\+json;version=1(\\.\\d)?/);",
 											"                });",
 											"                ",
-											"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-typeis same as sent in the request`, function () {",
-											"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.quotes+json;version=1.0');",
-											"                });",
+											"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {",
+											"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));",
+											"            });",
 											"                ",
 											"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} fspiop-uri is /quotes`, function () {",
 											"                    pm.expect(headers['fspiop-uri']).to.eql('/quotes');",
@@ -29389,7 +29393,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{contentTypeQuotesRequest}}"
 									},
 									{
 										"key": "Date",
@@ -29462,9 +29466,9 @@
 											"                    pm.expect(headers['fspiop-destination']).to.eql(pm.environment.get('SIMPAYEE_NAME'));",
 											"                });",
 											"                ",
-											"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-typeis same as sent in the request`, function () {",
-											"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
-											"                });",
+											"                  pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeTransfersRequest')}`, function () {",
+											"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfersRequest'));",
+											"            });",
 											"                ",
 											"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} accept is same as sent in the request`, function () {",
 											"                    pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.transfers\\+json;version=1(\\.\\d)?/);",
@@ -29663,7 +29667,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{contentTypeTransfersRequest}}"
 									},
 									{
 										"key": "Date",
@@ -29947,7 +29951,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{contentTypeTransfersRequest}}"
 									},
 									{
 										"key": "Date",
@@ -30099,7 +30103,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{contentTypeTransfersRequest}}"
 									},
 									{
 										"key": "Date",
@@ -30250,7 +30254,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{contentTypeTransfersRequest}}"
 									},
 									{
 										"key": "Date",
@@ -30446,7 +30450,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -30629,7 +30633,7 @@
 											{
 												"key": "Content-Type",
 												"name": "Content-Type",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0",
+												"value": "{{contentTypeQuotesRequest}}",
 												"type": "text"
 											},
 											{
@@ -30821,7 +30825,7 @@
 											{
 												"key": "Content-Type",
 												"name": "Content-Type",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0",
+												"value": "{{contentTypeQuotesRequest}}",
 												"type": "text"
 											},
 											{
@@ -31137,7 +31141,7 @@
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -31316,7 +31320,7 @@
 												"key": "Content-Type",
 												"name": "Content-Type",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{contentTypeQuotesRequest}}"
 											},
 											{
 												"key": "Date",
@@ -32110,7 +32114,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{contentTypeQuotesRequest}}"
 									},
 									{
 										"key": "Date",
@@ -32276,7 +32280,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{contentTypeQuotesRequest}}"
 									},
 									{
 										"key": "Date",
@@ -32443,7 +32447,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{contentTypeQuotesRequest}}"
 									},
 									{
 										"key": "Date",
@@ -32609,7 +32613,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{contentTypeQuotesRequest}}"
 									},
 									{
 										"key": "Date",
@@ -32789,7 +32793,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{contentTypeQuotesRequest}}"
 									},
 									{
 										"key": "Date",
@@ -32958,7 +32962,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{contentTypeQuotesRequest}}"
 									},
 									{
 										"key": "Date",
@@ -33132,7 +33136,7 @@
 									{
 										"key": "Content-Type",
 										"name": "Content-Type",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0",
+										"value": "{{contentTypeQuotesRequest}}",
 										"type": "text"
 									},
 									{
@@ -33239,7 +33243,7 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{contentTypeQuotesRequest}}"
 									},
 									{
 										"key": "Date",
@@ -33333,7 +33337,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{contentTypeQuotesRequest}}"
 									},
 									{
 										"key": "Date",
@@ -33416,7 +33420,7 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{contentTypeQuotesRequest}}"
 									},
 									{
 										"key": "FSPIOP-Source",
@@ -33932,7 +33936,7 @@
 							},
 							{
 								"key": "Content-Type",
-								"value": "application/vnd.interoperability.transfers+json;version=1.0"
+								"value": "{{contentTypeTransfersRequest}}"
 							},
 							{
 								"key": "Date",
@@ -38472,7 +38476,7 @@
 							},
 							{
 								"key": "Content-Type",
-								"value": "application/vnd.interoperability.quotes+json;version=1.0"
+								"value": "{{contentTypeQuotesRequest}}"
 							},
 							{
 								"key": "Date",
@@ -38596,7 +38600,7 @@
 							},
 							{
 								"key": "Content-Type",
-								"value": "application/vnd.interoperability.quotes+json;version=1.0"
+								"value": "{{contentTypeQuotesRequest}}"
 							},
 							{
 								"key": "Date",
@@ -38771,7 +38775,7 @@
 							},
 							{
 								"key": "Content-Type",
-								"value": "application/vnd.interoperability.quotes+json;version=1.0"
+								"value": "{{contentTypeQuotesRequest}}"
 							},
 							{
 								"key": "Date",
@@ -38947,7 +38951,7 @@
 							},
 							{
 								"key": "Content-Type",
-								"value": "application/vnd.interoperability.quotes+json;version=1.0"
+								"value": "{{contentTypeQuotesRequest}}"
 							},
 							{
 								"key": "Date",
@@ -39434,8 +39438,8 @@
 									"                    pm.expect(headers['accept']).to.eql('application/vnd.interoperability.quotes+json;version=1.0');",
 									"                });",
 									"                ",
-									"               pm.test(`payeefsp content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {",
-									"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));",
+									"               pm.test(`payeefsp content-type should be ${pm.environment.get('contentTypeQuotesRequest')}`, function () {",
+									"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotesRequest'));",
 									"            });",
 									"                ",
 									"          } else {",
@@ -39562,7 +39566,7 @@
 							},
 							{
 								"key": "Content-Type",
-								"value": "application/vnd.interoperability.quotes+json;version=1.0"
+								"value": "{{contentTypeQuotesRequest}}"
 							},
 							{
 								"key": "Date",
