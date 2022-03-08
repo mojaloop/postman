@@ -806,7 +806,7 @@
 													"            pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypePartiesRequest'));",
 													"        });",
 													"        ",
-													"        pm.test(`${pm.environment.get('SIMPAYEE_NAME')} accept should be application/vnd.interoperability.parties+json;version=1.0`, function () {",
+													"        pm.test(`${pm.environment.get('SIMPAYEE_NAME')} accept should be ${pm.environment.get('acceptPartiesRequest')}`, function () {",
 													"            pm.expect(headers['accept']).to.match(/application\\/vnd\\.interoperability\\.parties\\+json;version=1(\\.\\d)?/);",
 													"        });",
 													"        ",
@@ -951,7 +951,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.parties+json;version=1"
+												"value": "{{acceptPartiesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -1377,7 +1377,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -1653,7 +1653,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{acceptTransfersRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -4971,7 +4971,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{acceptQuotesRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -5171,7 +5171,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{acceptTransfersRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -5637,7 +5637,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{acceptQuotesRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -5898,7 +5898,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{acceptTransfersRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -6045,7 +6045,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{acceptTransfersRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -6223,7 +6223,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{acceptTransfersRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -6399,7 +6399,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{acceptTransfersRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -6523,7 +6523,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{acceptTransfersRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -6818,7 +6818,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{acceptTransfersRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -7108,7 +7108,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{acceptTransfersRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -7401,7 +7401,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{acceptTransfersRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -7688,7 +7688,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{acceptTransfersRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -7985,7 +7985,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{acceptTransfersRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -9319,7 +9319,7 @@
 															{
 																"key": "Accept",
 																"type": "text",
-																"value": "application/vnd.interoperability.quotes+json;version=1.0"
+																"value": "{{acceptQuotesRequest}}"
 															},
 															{
 																"key": "Content-Type",
@@ -9576,7 +9576,7 @@
 															{
 																"key": "Accept",
 																"type": "text",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0"
+																"value": "{{acceptTransfersRequest}}"
 															},
 															{
 																"key": "Content-Type",
@@ -9887,7 +9887,7 @@
 															{
 																"key": "Accept",
 																"type": "text",
-																"value": "application/vnd.interoperability.quotes+json;version=1.0"
+																"value": "{{acceptQuotesRequest}}"
 															},
 															{
 																"key": "Content-Type",
@@ -10144,7 +10144,7 @@
 															{
 																"key": "Accept",
 																"type": "text",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0"
+																"value": "{{acceptTransfersRequest}}"
 															},
 															{
 																"key": "Content-Type",
@@ -10453,7 +10453,7 @@
 															{
 																"key": "Accept",
 																"type": "text",
-																"value": "application/vnd.interoperability.quotes+json;version=1.0"
+																"value": "{{acceptQuotesRequest}}"
 															},
 															{
 																"key": "Content-Type",
@@ -10716,7 +10716,7 @@
 															{
 																"key": "Accept",
 																"type": "text",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0"
+																"value": "{{acceptTransfersRequest}}"
 															},
 															{
 																"key": "Content-Type",
@@ -11026,7 +11026,7 @@
 															{
 																"key": "Accept",
 																"type": "text",
-																"value": "application/vnd.interoperability.quotes+json;version=1.0"
+																"value": "{{acceptQuotesRequest}}"
 															},
 															{
 																"key": "Content-Type",
@@ -11290,7 +11290,7 @@
 															{
 																"key": "Accept",
 																"type": "text",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0"
+																"value": "{{acceptTransfersRequest}}"
 															},
 															{
 																"key": "Content-Type",
@@ -11599,7 +11599,7 @@
 															{
 																"key": "Accept",
 																"type": "text",
-																"value": "application/vnd.interoperability.quotes+json;version=1.0"
+																"value": "{{acceptQuotesRequest}}"
 															},
 															{
 																"key": "Content-Type",
@@ -11857,7 +11857,7 @@
 															{
 																"key": "Accept",
 																"type": "text",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0"
+																"value": "{{acceptTransfersRequest}}"
 															},
 															{
 																"key": "Content-Type",
@@ -12166,7 +12166,7 @@
 															{
 																"key": "Accept",
 																"type": "text",
-																"value": "application/vnd.interoperability.quotes+json;version=1.0"
+																"value": "{{acceptQuotesRequest}}"
 															},
 															{
 																"key": "Content-Type",
@@ -12430,7 +12430,7 @@
 															{
 																"key": "Accept",
 																"type": "text",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0"
+																"value": "{{acceptTransfersRequest}}"
 															},
 															{
 																"key": "Content-Type",
@@ -15198,7 +15198,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -15336,7 +15336,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0",
+												"value": "{{acceptTransfersRequest}}",
 												"type": "text"
 											},
 											{
@@ -15530,7 +15530,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0",
+												"value": "{{acceptTransfersRequest}}",
 												"type": "text"
 											},
 											{
@@ -15685,7 +15685,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{acceptTransfersRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -16126,7 +16126,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -16264,7 +16264,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0",
+												"value": "{{acceptTransfersRequest}}",
 												"type": "text"
 											},
 											{
@@ -16526,7 +16526,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{acceptTransfersRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -16854,7 +16854,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.transfers+json;version=1",
+												"value": "{{acceptTransfersRequest}}",
 												"type": "text"
 											},
 											{
@@ -17086,7 +17086,7 @@
 											},
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.transfers+json;version=1",
+												"value": "{{acceptTransfersRequest}}",
 												"type": "text"
 											},
 											{
@@ -17339,7 +17339,7 @@
 											},
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.transfers+json;version=1",
+												"value": "{{acceptTransfersRequest}}",
 												"type": "text"
 											},
 											{
@@ -17453,7 +17453,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{acceptTransfersRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -17913,7 +17913,7 @@
 												"header": [
 													{
 														"key": "Accept",
-														"value": "application/vnd.interoperability.quotes+json;version=1.0"
+														"value": "{{acceptQuotesRequest}}"
 													},
 													{
 														"key": "Content-Type",
@@ -18175,7 +18175,7 @@
 												"header": [
 													{
 														"key": "Accept",
-														"value": "application/vnd.interoperability.transfers+json;version=1.0",
+														"value": "{{acceptTransfersRequest}}",
 														"type": "text"
 													},
 													{
@@ -18379,7 +18379,7 @@
 												"header": [
 													{
 														"key": "Accept",
-														"value": "application/vnd.interoperability.transfers+json;version=1.0",
+														"value": "{{acceptTransfersRequest}}",
 														"type": "text"
 													},
 													{
@@ -18704,7 +18704,7 @@
 														"header": [
 															{
 																"key": "Accept",
-																"value": "application/vnd.interoperability.quotes+json;version=1.0"
+																"value": "{{acceptQuotesRequest}}"
 															},
 															{
 																"key": "Content-Type",
@@ -18848,7 +18848,7 @@
 														"header": [
 															{
 																"key": "Accept",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{acceptTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -18988,9 +18988,9 @@
 																	"                // });",
 																	"                ",
 																	"                ",
-																	"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type is same as sent in the request`, function () {",
-																	"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
-																	"                });",
+																	"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeTransfersRequest')}`, function () {",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfersRequest'));",
+																	"            });",
 																	"                ",
 																	"                pm.test(\"date header should not be empty\", function () {",
 																	"                    pm.expect(headers['date']).to.be.not.empty;",
@@ -19040,7 +19040,7 @@
 														"header": [
 															{
 																"key": "Accept",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{acceptTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -19237,7 +19237,7 @@
 														"header": [
 															{
 																"key": "Accept",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{acceptTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -19395,7 +19395,7 @@
 														"header": [
 															{
 																"key": "Accept",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0"
+																"value": "{{acceptTransfersRequest}}"
 															},
 															{
 																"key": "Content-Type",
@@ -19695,7 +19695,7 @@
 														"header": [
 															{
 																"key": "Accept",
-																"value": "application/vnd.interoperability.quotes+json;version=1.0"
+																"value": "{{acceptQuotesRequest}}"
 															},
 															{
 																"key": "Content-Type",
@@ -19839,7 +19839,7 @@
 														"header": [
 															{
 																"key": "Accept",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{acceptTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -19993,9 +19993,9 @@
 																	"                    pm.expect(headers['accept']).to.eql(undefined);",
 																	"                });",
 																	"                ",
-																	"                pm.test(\"content-type is same as sent in the request\", function () {",
-																	"                    pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.transfers+json;version=1.0');",
-																	"                });",
+																	"                pm.test(`${pm.environment.get('SIMPAYEE_NAME')} content-type should be ${pm.environment.get('contentTypeTransfersRequest')}`, function () {",
+																	"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeTransfersRequest'));",
+																	"            });",
 																	"                ",
 																	"                ",
 																	"             //Check data    ",
@@ -20035,7 +20035,7 @@
 														"header": [
 															{
 																"key": "Accept",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{acceptTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -20234,7 +20234,7 @@
 														"header": [
 															{
 																"key": "Accept",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{acceptTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -20583,7 +20583,7 @@
 														"header": [
 															{
 																"key": "Accept",
-																"value": "application/vnd.interoperability.quotes+json;version=1.0"
+																"value": "{{acceptQuotesRequest}}"
 															},
 															{
 																"key": "Content-Type",
@@ -20727,7 +20727,7 @@
 														"header": [
 															{
 																"key": "Accept",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{acceptTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -20934,7 +20934,7 @@
 															},
 															{
 																"key": "Accept",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{acceptTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -21137,7 +21137,7 @@
 															},
 															{
 																"key": "Accept",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{acceptTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -21456,7 +21456,7 @@
 														"header": [
 															{
 																"key": "Accept",
-																"value": "application/vnd.interoperability.quotes+json;version=1.0"
+																"value": "{{acceptQuotesRequest}}"
 															},
 															{
 																"key": "Content-Type",
@@ -21600,7 +21600,7 @@
 														"header": [
 															{
 																"key": "Accept",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{acceptTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -21806,7 +21806,7 @@
 															},
 															{
 																"key": "Accept",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{acceptTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -22009,7 +22009,7 @@
 															},
 															{
 																"key": "Accept",
-																"value": "application/vnd.interoperability.transfers+json;version=1.0",
+																"value": "{{acceptTransfersRequest}}",
 																"type": "text"
 															},
 															{
@@ -22365,7 +22365,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -22559,7 +22559,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{acceptTransfersRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -22923,7 +22923,7 @@
 											{
 												"key": "Accept",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -23180,7 +23180,7 @@
 											{
 												"key": "Accept",
 												"type": "text",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{acceptTransfersRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -23580,7 +23580,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -23774,7 +23774,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{acceptTransfersRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -24140,7 +24140,7 @@
 											{
 												"key": "Accept",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -24397,7 +24397,7 @@
 											{
 												"key": "Accept",
 												"type": "text",
-												"value": "application/vnd.interoperability.transfers+json;version=1.0"
+												"value": "{{acceptTransfersRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -24991,7 +24991,7 @@
 											{
 												"key": "Accept",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -25172,7 +25172,7 @@
 											{
 												"key": "Accept",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -25354,7 +25354,7 @@
 											{
 												"key": "Accept",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -25531,7 +25531,7 @@
 											{
 												"key": "Accept",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -25712,7 +25712,7 @@
 											{
 												"key": "Accept",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -25897,7 +25897,7 @@
 											{
 												"key": "Accept",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -26077,7 +26077,7 @@
 											{
 												"key": "Accept",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -26258,7 +26258,7 @@
 											{
 												"key": "Accept",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -26438,7 +26438,7 @@
 											{
 												"key": "Accept",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -26619,7 +26619,7 @@
 											{
 												"key": "Accept",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -26800,7 +26800,7 @@
 											{
 												"key": "Accept",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -26981,7 +26981,7 @@
 											{
 												"key": "Accept",
 												"type": "text",
-												"value": "application/vnd.interoperability.quotes+json;version=1"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -27542,7 +27542,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{acceptQuotesRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -27790,7 +27790,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{acceptQuotesRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -28180,12 +28180,12 @@
 									{
 										"key": "Accept",
 										"type": "text",
-										"value": "application/vnd.interoperability.parties+json;version=1.0"
+										"value": "{{acceptPartiesRequest}}"
 									},
 									{
 										"key": "Content-Type",
 										"type": "text",
-										"value": "application/vnd.interoperability.parties+json;version=1.0"
+										"value": "{{contentTypePartiesRequest}}"
 									},
 									{
 										"key": "FSPIOP-Source",
@@ -28347,11 +28347,11 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{acceptPartiesRequest}}"
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{contentTypePartiesRequest}}"
 									},
 									{
 										"key": "Date",
@@ -28492,11 +28492,11 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{acceptPartiesRequest}}"
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/vnd.interoperability.transfers+json;version=1.0"
+										"value": "{{contentTypePartiesRequest}}"
 									},
 									{
 										"key": "Date",
@@ -28697,7 +28697,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{acceptQuotesRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -29284,8 +29284,8 @@
 											"                pm.expect(headers['fspiop-destination']).to.eql(pm.environment.get('SIMPAYER_NAME'));",
 											"            });",
 											"            ",
-											"            pm.test(`${pm.environment.get('SIMPAYER_NAME')} content-type should be application/vnd.interoperability.quotes+json;version=1.0`, function () {",
-											"                pm.expect(headers['content-type']).to.eql('application/vnd.interoperability.quotes+json;version=1.0');",
+											"             pm.test(`${pm.environment.get('SIMPAYER_NAME')} content-type should be ${pm.environment.get('contentTypeQuotes')}`, function () {",
+											"                pm.expect(headers['content-type']).to.eql(pm.environment.get('contentTypeQuotes'));",
 											"            });",
 											"            ",
 											"            pm.test(`${pm.environment.get('SIMPAYER_NAME')} accept is empty`, function () {",
@@ -29389,7 +29389,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{acceptQuotesRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -30446,7 +30446,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -30628,7 +30628,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -30820,7 +30820,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -31137,7 +31137,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -31314,7 +31314,7 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.interoperability.quotes+json;version=1.0"
+												"value": "{{acceptQuotesRequest}}"
 											},
 											{
 												"key": "Content-Type",
@@ -31486,7 +31486,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{acceptQuotesRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -31649,7 +31649,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{acceptQuotesRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -31814,7 +31814,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{acceptQuotesRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -31944,7 +31944,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{acceptQuotesRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -32110,7 +32110,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{acceptQuotesRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -32276,7 +32276,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{acceptQuotesRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -32443,7 +32443,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{acceptQuotesRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -32609,7 +32609,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{acceptQuotesRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -32789,7 +32789,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{acceptQuotesRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -32958,7 +32958,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{acceptQuotesRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -33333,7 +33333,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{acceptQuotesRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -33416,7 +33416,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{acceptQuotesRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -33570,7 +33570,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/vnd.interoperability.quotes+json;version=1.0"
+										"value": "{{acceptQuotesRequest}}"
 									},
 									{
 										"key": "Content-Type",
@@ -33755,7 +33755,7 @@
 							{
 								"key": "Accept",
 								"type": "text",
-								"value": "application/vnd.interoperability.parties+json;version=1.0"
+								"value": "{{acceptPartiesRequest}}"
 							},
 							{
 								"key": "Date",
@@ -33770,7 +33770,7 @@
 							{
 								"key": "Content-Type",
 								"type": "text",
-								"value": "application/vnd.interoperability.parties+json;version=1.0"
+								"value": "{{contentTypePartiesRequest}}"
 							}
 						],
 						"url": {
@@ -33932,7 +33932,7 @@
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/vnd.interoperability.transfers+json;version=1.0"
+								"value": "{{acceptTransfersRequest}}"
 							},
 							{
 								"key": "Content-Type",
@@ -38472,7 +38472,7 @@
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/vnd.interoperability.quotes+json;version=1.0"
+								"value": "{{acceptQuotesRequest}}"
 							},
 							{
 								"key": "Content-Type",
@@ -38595,8 +38595,8 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "Accept",
-								"value": "application/vnd.interoperability.quotes+json;version=1.0"
+								"key": "Accep",
+								"value": "{{acceptQuotesRequest}}"
 							},
 							{
 								"key": "Content-Type",
@@ -38771,7 +38771,7 @@
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/vnd.interoperability.quotes+json;version=1.0"
+								"value": "{{acceptQuotesRequest}}"
 							},
 							{
 								"key": "Content-Type",
@@ -39036,7 +39036,7 @@
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/vnd.interoperability.quotes+json;version=1.0"
+								"value": "{{acceptQuotesRequest}}"
 							},
 							{
 								"key": "Content-Type",
@@ -39124,7 +39124,7 @@
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/vnd.interoperability.quotes+json;version=1.0"
+								"value": "{{acceptQuotesRequest}}"
 							},
 							{
 								"key": "Content-Type",
@@ -39562,7 +39562,7 @@
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/vnd.interoperability.quotes+json;version=1.0"
+								"value": "{{acceptQuotesRequest}}"
 							},
 							{
 								"key": "Content-Type",
