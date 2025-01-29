@@ -1,3 +1,9 @@
+# DEPRECATED
+Deprecation Notice
+This repo is deprecated as of 30th January 2025. It is no longer maintained, and is no longer referenced by any releases of Mojaloop.
+
+For a list of active Mojaloop repos, please refer to Mojaloop documentation. Mojaloop uses the Mojaloop Testing Toolkit (TTK) for testing purposes and the test colletions are hosted on the [test-cases](https://github.com/mojaloop/testing-toolkit-test-cases) repo.
+
 # Postman Collections for Mojaloop
 [![Git Commit](https://img.shields.io/github/last-commit/mojaloop/postman.svg?style=flat)](https://github.com/mojaloop/postman/commits/master)
 [![Git Releases](https://img.shields.io/github/release/mojaloop/postman.svg?style=flat)](https://github.com/mojaloop/postman/releases)
